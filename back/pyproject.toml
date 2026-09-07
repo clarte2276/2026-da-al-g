@@ -1,0 +1,46 @@
+[project]
+name = "daalgi-knowledge-api"
+version = "0.1.0"
+description = "Document ingestion and graph RAG API for the Da알지 project"
+requires-python = ">=3.11"
+dependencies = [
+  "python-docx>=1.2,<2",
+  "fastapi>=0.115,<1",
+  "uvicorn[standard]>=0.34,<1",
+  "python-multipart>=0.0.20,<1",
+  "pydantic-settings>=2.8,<3",
+  "sqlalchemy>=2.0.40,<3",
+  "pgvector>=0.3,<1",
+  "aiosqlite>=0.21,<1",
+  "psycopg[binary]>=3.2,<4",
+  "python-pptx>=1.0.2,<2",
+  "pypdf>=5,<6",
+  "python-hwpx>=6.2,<7",
+  "openai>=1.68,<2",
+  "reportlab>=4.2,<5",
+]
+
+[project.optional-dependencies]
+hwp = [
+  "rhwp-python>=0.8.1,<1",
+  "pyhwp>=0.1b15,<1",
+  "six>=1.16,<2",
+]
+ocr = [
+  "pillow>=11,<13",
+  "paddleocr>=3,<4",
+]
+dev = [
+  "httpx>=0.28,<1",
+  "pytest>=8.3,<9",
+  "pytest-asyncio>=0.25,<1",
+  "ruff>=0.11,<1",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
