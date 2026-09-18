@@ -2,10 +2,11 @@ from datetime import UTC, datetime
 from functools import lru_cache
 from typing import Annotated, Literal
 
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from .auth import AdminUser, require_admin
 from .config import get_settings
 from .db import get_db
 from .models import AuditEvent, Document, DocumentLink, DocumentVersion, Fragment
@@ -15,9 +16,8 @@ from .services.document_content import ensure_content, validate_selection, verif
 from .services.embedding import get_embedding_provider
 from .services.ingestion import IngestionService
 
-router = APIRouter(prefix="/api")
+router = APIRouter(prefix="/api", dependencies=[Depends(require_admin)])
 DB = Annotated[Session, Depends(get_db)]
-Actor = Annotated[str | None, Header(alias="X-Admin-Actor")]
 
 
 @lru_cache
@@ -98,8 +98,8 @@ def write_link(db: Session, link: DocumentLink, payload: LinkWrite, actor: str |
 
 
 @router.post("/links", status_code=201)
-def create_link(payload: LinkWrite, db: DB, actor: Actor = None) -> dict:
-    return write_link(db, DocumentLink(created_by=actor), payload, actor)
+def create_link(payload: LinkWrite, db: DB, admin: AdminUser) -> dict:
+    return write_link(db, DocumentLink(created_by=admin.id), payload, admin.id)
 
 
 @router.get("/links")
@@ -116,21 +116,21 @@ def get_link(link_id: str, db: DB) -> dict:
 
 
 @router.put("/links/{link_id}")
-def update_link(link_id: str, payload: LinkWrite, db: DB, actor: Actor = None) -> dict:
-    return write_link(db, require_link(db, link_id), payload, actor)
+def update_link(link_id: str, payload: LinkWrite, db: DB, admin: AdminUser) -> dict:
+    return write_link(db, require_link(db, link_id), payload, admin.id)
 
 
 @router.post("/links/{link_id}/{decision}")
 def decide_link(link_id: str, decision: Literal["approve", "reject"],
-                payload: EdgeDecision, db: DB) -> dict:
+                payload: EdgeDecision, db: DB, admin: AdminUser) -> dict:
     link = require_link(db, link_id)
     if decision == "approve":
         validate_selection(db, link.source_selection)
         validate_selection(db, link.target_selection)
     link.status = "approved" if decision == "approve" else "rejected"
-    link.approved_by = payload.actor if decision == "approve" else None
+    link.approved_by = admin.id if decision == "approve" else None
     link.approved_at = datetime.now(UTC) if decision == "approve" else None
-    db.add(AuditEvent(actor=payload.actor, action=f"link.{link.status}",
+    db.add(AuditEvent(actor=admin.id, action=f"link.{link.status}",
                       entity_type="document_link", entity_id=link.id))
     db.commit()
     return link_out(db, link)

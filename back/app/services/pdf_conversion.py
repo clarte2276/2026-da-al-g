@@ -3,6 +3,7 @@ from __future__ import annotations
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 from io import BytesIO
 from pathlib import Path
@@ -23,6 +24,42 @@ EMU_PER_INCH = 914400
 POINTS_PER_INCH = 72
 FONT_NAME = "DaalgiFallbackFont"
 PDF_CACHE_VERSION = "libreoffice-v2-fonts"
+# LibreOffice carries import filters for every format the ingestion parsers accept.
+OFFICE_SUFFIXES = {".pptx", ".ppt", ".docx", ".doc", ".hwp", ".hwpx", ".odt", ".odp", ".xlsx"}
+
+
+def _hwp5odt() -> Path | None:
+    """pyhwp ships the only converter that reads HWP 5 binary files correctly."""
+    names = ("hwp5odt.exe", "hwp5odt") if os.name == "nt" else ("hwp5odt",)
+    candidates = [Path(sys.executable).with_name(name) for name in names]
+    candidates.extend(Path(found) for name in names if (found := shutil.which(name)))
+    return next((path for path in candidates if path.is_file()), None)
+
+
+def _convert_hwp_to_odt(source: Path, output: Path) -> None:
+    """LibreOffice's own HWP filter garbles these documents, so go through pyhwp."""
+    converter = _hwp5odt()
+    if converter is None:
+        raise PdfConversionError(
+            "HWP 변환기(pyhwp)를 찾을 수 없습니다. `uv sync --extra hwp`로 설치하세요."
+        )
+    try:
+        completed = subprocess.run(
+            [str(converter), "--output", str(output), str(source)],
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=1800,
+        )
+    except subprocess.TimeoutExpired as exc:
+        raise PdfConversionError("HWP 변환이 30분을 넘겨 중단했습니다.") from exc
+    except (OSError, subprocess.SubprocessError) as exc:
+        raise PdfConversionError(f"HWP 변환 실패: {exc}") from exc
+    if completed.returncode != 0 or not output.is_file() or output.stat().st_size == 0:
+        details = (completed.stderr or completed.stdout or "알 수 없는 오류").strip()
+        raise PdfConversionError(f"HWP 변환 실패: {details[-1000:]}")
 
 
 class PdfConversionError(RuntimeError):
@@ -198,6 +235,7 @@ def _fallback_convert(source: Path, output: Path) -> None:
 class PdfConversionService:
     def __init__(self, settings: Settings) -> None:
         self.settings = settings
+        self._hwp_filter: bool | None = None
 
     def _cache_path(self, source: Path, cache_key: str, variant: str = PDF_CACHE_VERSION) -> Path:
         cache_dir = self.settings.storage_root / "converted-pdf"
@@ -276,11 +314,53 @@ class PdfConversionService:
                 f"변환된 PDF 페이지 수가 원본과 다릅니다: 원본 {expected_pages}장, PDF {pages}장"
             )
 
+    def _profile_path(self) -> Path:
+        """One LibreOffice profile per install so extensions stay available.
+
+        ponytail: a shared profile means one conversion at a time; the render
+        executor is single threaded, split profiles if that ever throttles.
+        """
+        profile = (self.settings.storage_root / "libreoffice-profile").resolve()
+        profile.mkdir(parents=True, exist_ok=True)
+        return profile
+
+    def _has_hwp_filter(self, converter: Path) -> bool:
+        """H2Orestart reads HWP far better and ~20x faster than pyhwp."""
+        if self._hwp_filter is None:
+            unopkg = converter.with_name("unopkg.exe" if os.name == "nt" else "unopkg")
+            profile = f"-env:UserInstallation={self._profile_path().as_uri()}"
+            self._hwp_filter = False
+            # The extension may be installed for this profile or shared by the image.
+            for scope in ([], ["--shared"]):
+                try:
+                    listed = subprocess.run(
+                        [str(unopkg), "list", *scope, profile],
+                        check=False,
+                        capture_output=True,
+                        text=True,
+                        encoding="utf-8",
+                        errors="replace",
+                        timeout=180,
+                        env=self._converter_environment(converter),
+                    )
+                except (OSError, subprocess.SubprocessError):
+                    continue
+                if "H2Orestart" in (listed.stdout or ""):
+                    self._hwp_filter = True
+                    break
+        return self._hwp_filter
+
     def _convert_with_libreoffice(self, source: Path, output: Path, converter: Path) -> None:
+        target = (
+            "pdf:impress_pdf_Export" if source.suffix.lower() in {".pptx", ".ppt", ".odp"} else "pdf"
+        )
+        original = source
+        profile_path = self._profile_path()
         with tempfile.TemporaryDirectory(prefix="daalgi-pptx-pdf-") as temporary:
             temporary_path = Path(temporary)
-            profile_path = temporary_path / "profile"
-            profile_path.mkdir()
+            if source.suffix.lower() == ".hwp" and not self._has_hwp_filter(converter):
+                source = temporary_path / f"{source.stem}.odt"
+                _convert_hwp_to_odt(original, source)
             try:
                 completed = subprocess.run(
                     [
@@ -293,7 +373,7 @@ class PdfConversionService:
                         "--norestore",
                         "--nolockcheck",
                         "--convert-to",
-                        "pdf:impress_pdf_Export",
+                        target,
                         "--outdir",
                         str(temporary_path),
                         str(source),
@@ -301,7 +381,9 @@ class PdfConversionService:
                     check=False,
                     capture_output=True,
                     text=True,
-                    timeout=300,
+                    encoding="utf-8",
+                    errors="replace",
+                    timeout=900,
                     env=self._converter_environment(converter),
                 )
             except (OSError, subprocess.SubprocessError) as exc:
@@ -311,14 +393,15 @@ class PdfConversionService:
             if completed.returncode != 0 or not generated.is_file() or generated.stat().st_size == 0:
                 details = (completed.stderr or completed.stdout or "알 수 없는 오류").strip()
                 raise PdfConversionError(f"LibreOffice PDF 변환 실패: {details[-1000:]}")
-            self._validate_pdf(source, generated)
+            if source.suffix.lower() == ".pptx":
+                self._validate_pdf(source, generated)
             shutil.copyfile(generated, output)
 
     def convert(self, source: Path, cache_key: str) -> tuple[Path, str]:
         if source.suffix.lower() == ".pdf":
             return source, "source-pdf"
-        if source.suffix.lower() != ".pptx":
-            raise PdfConversionError("PDF 변환은 PPTX와 PDF 파일만 지원합니다.")
+        if source.suffix.lower() not in OFFICE_SUFFIXES:
+            raise PdfConversionError(f"PDF 변환을 지원하지 않는 형식입니다: {source.suffix}")
 
         converter = self._find_converter()
         if converter:
@@ -328,9 +411,9 @@ class PdfConversionService:
             self._convert_with_libreoffice(source, output, converter)
             return output, "libreoffice"
 
-        if not self.settings.allow_approximate_pdf_fallback:
+        if source.suffix.lower() != ".pptx" or not self.settings.allow_approximate_pdf_fallback:
             raise PdfConversionError(
-                "실제 PPTX PDF 변환기를 찾을 수 없습니다. "
+                "문서를 PDF로 변환할 수 있는 LibreOffice를 찾을 수 없습니다. "
                 "LibreOffice/soffice를 설치하거나 PPTX_PDF_CONVERTER를 설정하세요."
             )
 
@@ -346,3 +429,40 @@ class PdfConversionService:
                 raise
             raise PdfConversionError(f"테스트용 PDF 변환 실패: {exc}") from exc
         return output, "reportlab-fallback"
+
+    def render_page(self, source: Path, cache_key: str, page: int, width: int = 1200) -> Path:
+        """Rasterize one page of the PDF rendition so any client can show the original."""
+        pdf_path, _ = self.convert(source, cache_key)
+        cache_dir = self.settings.storage_root / "page-images"
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        output = cache_dir / f"{cache_key}-{source.stem}-p{page}-w{width}.png"
+        if output.is_file() and output.stat().st_size > 0:
+            return output
+        import pymupdf
+
+        with pymupdf.open(str(pdf_path)) as document:
+            if not 1 <= page <= document.page_count:
+                raise PdfConversionError(f"{document.page_count}쪽 문서에 {page}쪽은 없습니다.")
+            loaded = document.load_page(page - 1)
+            zoom = width / max(loaded.rect.width, 1)
+            loaded.get_pixmap(matrix=pymupdf.Matrix(zoom, zoom)).save(str(output))
+        return output
+
+    def find_page(self, source: Path, cache_key: str, quote: str) -> int | None:
+        """Locate the page of the PDF rendition that holds a retrieved passage."""
+        needle = "".join(quote.split())[:60]
+        if not needle:
+            return None
+        pdf_path, _ = self.convert(source, cache_key)
+        import pymupdf
+
+        with pymupdf.open(str(pdf_path)) as document:
+            for number, page in enumerate(document, start=1):
+                haystack = "".join(page.get_text().split())
+                if needle in haystack:
+                    return number
+            for number, page in enumerate(document, start=1):
+                haystack = "".join(page.get_text().split())
+                if needle[:20] and needle[:20] in haystack:
+                    return number
+        return None

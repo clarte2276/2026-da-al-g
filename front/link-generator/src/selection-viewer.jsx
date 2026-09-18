@@ -152,7 +152,7 @@ export function PageThumbnail({ resource, number, width = 100 }) {
   return <div className="page-thumbnail" aria-hidden="true"><div ref={root} />{error}</div>;
 }
 
-function PagesPane({ content, selection, onSelect, apiBase, onResource }) {
+function PagesPane({ content, selection, onSelect, apiBase, authToken, onResource }) {
   const stage = useRef(null);
   const [resource, setResource] = useState(null);
   const [page, setPage] = useState(selection?.pages[0] || 1);
@@ -165,7 +165,10 @@ function PagesPane({ content, selection, onSelect, apiBase, onResource }) {
     const abort = new AbortController();
     async function load() {
       try {
-        const response = await fetch(`${apiBase}/api/documents/${content.document_id}/source?version_id=${content.version_id}`, { signal: abort.signal });
+        const response = await fetch(`${apiBase}/api/documents/${content.document_id}/source?version_id=${content.version_id}`, {
+          signal: abort.signal,
+          headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+        });
         if (!response.ok) throw new Error((await response.json()).detail || "원본을 열 수 없습니다.");
         const data = await response.arrayBuffer();
         if (gone) return;
@@ -187,7 +190,7 @@ function PagesPane({ content, selection, onSelect, apiBase, onResource }) {
     }
     load();
     return () => { gone = true; abort.abort(); onResource?.(null); viewer?.destroy(); void loadingTask?.destroy(); };
-  }, [content.version_id, apiBase]);
+  }, [content.version_id, apiBase, authToken]);
 
   useEffect(() => {
     if (!resource) return;
@@ -244,14 +247,33 @@ function PagesPane({ content, selection, onSelect, apiBase, onResource }) {
   </>;
 }
 
-export function SelectionViewer({ content, selection, onSelect, apiBase, onResource }) {
+async function openProtectedSource(url, authToken) {
+  const popup = window.open("about:blank", "_blank");
+  try {
+    const response = await fetch(url, {
+      headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+    });
+    if (!response.ok) throw new Error("원본을 열 수 없습니다.");
+    const objectUrl = URL.createObjectURL(await response.blob());
+    if (popup) popup.location.href = objectUrl;
+    else window.open(objectUrl, "_blank", "noopener,noreferrer");
+    window.setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
+  } catch (error) {
+    popup?.close();
+    throw error;
+  }
+}
+
+export function SelectionViewer({ content, selection, onSelect, apiBase, authToken, onResource }) {
   if (!content) return <div className="viewer-empty">문서 탐색에서 이쪽에 열 문서를 선택하세요.</div>;
   return <section className="selection-viewer">
     <h2>{content.filename}</h2>
     <span className="version-label">문서 버전 {content.version_number}</span>{" · "}
-    <a href={`${apiBase}/api/documents/${content.document_id}/source?version_id=${content.version_id}`}
-      target="_blank" rel="noreferrer">원본 확인</a>
+    <button type="button" onClick={() => openProtectedSource(
+      `${apiBase}/api/documents/${content.document_id}/source?version_id=${content.version_id}`,
+      authToken,
+    ).catch(error => window.alert(error.message))}>원본 확인</button>
     {content.kind === "text" ? <TextPane key={content.version_id} {...{ content, selection, onSelect }} />
-      : <PagesPane key={content.version_id} {...{ content, selection, onSelect, apiBase, onResource }} />}
+      : <PagesPane key={content.version_id} {...{ content, selection, onSelect, apiBase, authToken, onResource }} />}
   </section>;
 }

@@ -5,18 +5,52 @@ import { PageThumbnail, SelectionViewer } from "./selection-viewer";
 import "./styles.css";
 import "./workspace.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? "" : "http://localhost:8000");
+const TOKEN_KEY = "daalgi_admin_token";
+let authToken = "";
+
+function setAuthToken(token) {
+  authToken = token || "";
+}
+
 async function api(path, options = {}) {
-  const response = await fetch(`${API_BASE}${path}`, options);
+  const headers = new Headers(options.headers || {});
+  if (authToken) headers.set("Authorization", `Bearer ${authToken}`);
+  const response = await fetch(`${API_BASE}${path}`, { ...options, headers });
   const body = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(typeof body.detail === "string" ? body.detail : `요청 실패 (${response.status})`);
+  if (!response.ok) {
+    const error = new Error(typeof body.detail === "string" ? body.detail : `요청 실패 (${response.status})`);
+    error.status = response.status;
+    throw error;
+  }
   return body;
 }
-const write = (method, body) => ({ method, headers: { "Content-Type": "application/json", "X-Admin-Actor": "local-admin" }, body: JSON.stringify(body) });
+const write = (method, body) => ({ method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
 const textRanges = selection => selection?.ranges || (selection?.exact ? [selection] : []);
 const selectionLabel = selection => selection?.kind === "text"
   ? textRanges(selection).map(range => range.exact).join(" … ")
   : selection ? `${selection.pages.join(", ")} 페이지·슬라이드` : "선택하지 않음";
+
+function AdminLogin({ onLogin, busy, error }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  return <main className="auth-shell">
+    <section className="auth-card">
+      <p className="eyebrow">Da-Al-G ADMIN</p>
+      <h1>문서 연결 관리자</h1>
+      <p className="subtitle">문서 연결과 검색 근거를 관리하려면 로그인하세요.</p>
+      {error && <div className="notice error" role="alert">{error}</div>}
+      <form onSubmit={async event => {
+        event.preventDefault();
+        await onLogin(username.trim(), password);
+      }}>
+        <label>아이디<input autoFocus value={username} onChange={event => setUsername(event.target.value)} /></label>
+        <label>비밀번호<input type="password" value={password} onChange={event => setPassword(event.target.value)} /></label>
+        <button className="primary-button" disabled={busy || !username.trim() || !password}>{busy ? "로그인 중…" : "로그인"}</button>
+      </form>
+    </section>
+  </main>;
+}
 
 function SelectionSummary({ content, selection, resource, onSelect, label }) {
   return <section className="chosen-selection">
@@ -44,6 +78,11 @@ function SelectionSummary({ content, selection, resource, onSelect, label }) {
 }
 
 function App() {
+  const [token, setToken] = useState(() => localStorage.getItem(TOKEN_KEY) || "");
+  const [sessionReady, setSessionReady] = useState(() => !token);
+  const [user, setUser] = useState(null);
+  const [authBusy, setAuthBusy] = useState(false);
+  const [authError, setAuthError] = useState("");
   const [tab, setTab] = useState("edit");
   const [roots, setRoots] = useState([]), [rootId, setRootId] = useState("");
   const [query, setQuery] = useState(""), [files, setFiles] = useState([]);
@@ -59,24 +98,89 @@ function App() {
   const openRequests = useRef({ source: 0, target: 0 });
   const [explorerOpen, setExplorerOpen] = useState(true);
 
+  function clearSession() {
+    localStorage.removeItem(TOKEN_KEY);
+    setAuthToken("");
+    setToken("");
+    setUser(null);
+    setSessionReady(true);
+  }
+
+  async function logout() {
+    try {
+      if (token) await api("/api/auth/logout", { method: "POST" });
+    } catch (_) {
+      // The local session is cleared even if the server is unavailable.
+    } finally {
+      clearSession();
+    }
+  }
+
+  async function login(username, password) {
+    setAuthBusy(true); setAuthError("");
+    try {
+      const body = await api("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+      if (body.user?.role !== "admin") throw new Error("관리자 계정으로 로그인해 주세요.");
+      localStorage.setItem(TOKEN_KEY, body.access_token);
+      setAuthToken(body.access_token);
+      setUser(body.user);
+      setToken(body.access_token);
+      setSessionReady(true);
+    } catch (reason) {
+      setAuthError(reason.message);
+    } finally {
+      setAuthBusy(false);
+    }
+  }
+
+  useEffect(() => {
+    setAuthToken(token);
+    if (!token) { setUser(null); setSessionReady(true); return undefined; }
+    let gone = false;
+    setSessionReady(false);
+    api("/api/auth/me").then(me => {
+      if (me.role !== "admin") throw new Error("관리자 권한이 없습니다.");
+      if (!gone) { setUser(me); setSessionReady(true); }
+    }).catch(reason => {
+      if (!gone) { setAuthError(reason.message); clearSession(); }
+    });
+    return () => { gone = true; };
+  }, [token]);
+
   async function task(action) {
     setBusy(true); setError("");
-    try { await action(); } catch (reason) { setError(reason.message); }
+    try { await action(); } catch (reason) {
+      if (reason.status === 401) { void logout(); return; }
+      setError(reason.message);
+    }
     finally { setBusy(false); }
   }
   useEffect(() => {
     let gone = false;
+    if (!user) return () => { gone = true; };
     api("/api/local/roots").then(items => {
       if (!gone) { setRoots(items); setRootId(items[0]?.id || ""); }
-    }).catch(reason => { if (!gone) setError(reason.message); });
+    }).catch(reason => {
+      if (gone) return;
+      if (reason.status === 401) void logout();
+      else setError(reason.message);
+    });
     return () => { gone = true; };
-  }, []);
+  }, [user]);
   useEffect(() => {
     let gone = false;
-    if (rootId) api(`/api/local/files?${new URLSearchParams({ root_id: rootId, query })}`)
-      .then(items => { if (!gone) setFiles(items); }).catch(reason => { if (!gone) setError(reason.message); });
+    if (user && rootId) api(`/api/local/files?${new URLSearchParams({ root_id: rootId, query })}`)
+      .then(items => { if (!gone) setFiles(items); }).catch(reason => {
+        if (gone) return;
+        if (reason.status === 401) void logout();
+        else setError(reason.message);
+      });
     return () => { gone = true; };
-  }, [rootId, query]);
+  }, [user, rootId, query]);
   async function refresh() {
     const [current, previous] = await Promise.all([api("/api/links"), api("/api/edges?limit=1000")]);
     setLinks(current); setLegacy(previous);
@@ -126,7 +230,7 @@ function App() {
   }
   function decide(id, decision, old = false) {
     task(async () => {
-      await api(`/api/${old ? "edges" : "links"}/${id}/${decision}`, write("POST", { actor: "local-admin" }));
+      await api(`/api/${old ? "edges" : "links"}/${id}/${decision}`, write("POST", {}));
       await refresh(); setMessage(decision === "approve" ? "연결을 승인했습니다." : "연결을 반려했습니다.");
     });
   }
@@ -138,10 +242,13 @@ function App() {
     });
   }
 
+  if (!sessionReady) return <main className="auth-shell"><p>관리자 세션을 확인하는 중입니다…</p></main>;
+  if (!user) return <AdminLogin onLogin={login} busy={authBusy} error={authError} />;
+
   return <main className="app-shell human-workspace">
-    <header className="topbar"><div><p className="eyebrow">DAALGI</p><h1>문서 연결</h1>
+    <header className="topbar"><div><p className="eyebrow">Da-Al-G</p><h1>문서 연결</h1>
       <p className="subtitle">구절과 페이지를 읽고, 관련 자료를 연결하세요.</p></div>
-      <span role="status">{busy ? "처리 중…" : ""}</span></header>
+      <div className="pane-toolbar"><span role="status">{busy ? "처리 중…" : user.display_name}</span><button onClick={logout}>로그아웃</button></div></header>
     <nav className="workspace-tabs" aria-label="작업 화면">
       {[["edit", "문서 연결"], ["review", "연결 검토"], ["search", "검색 검증"]].map(([value, label]) =>
         <button key={value} aria-current={tab === value ? "page" : undefined} onClick={() => setTab(value)}>{label}</button>)}
@@ -157,8 +264,8 @@ function App() {
         <FileExplorer files={files} rootId={rootId} query={query} onOpen={openFile} />
       </details>
       <div className="reading-panes">
-        <SelectionViewer content={source} selection={sourceSelection} onSelect={setSourceSelection} apiBase={API_BASE} onResource={setSourceResource} />
-        <SelectionViewer content={target} selection={targetSelection} onSelect={setTargetSelection} apiBase={API_BASE} onResource={setTargetResource} />
+        <SelectionViewer content={source} selection={sourceSelection} onSelect={setSourceSelection} apiBase={API_BASE} authToken={token} onResource={setSourceResource} />
+        <SelectionViewer content={target} selection={targetSelection} onSelect={setTargetSelection} apiBase={API_BASE} authToken={token} onResource={setTargetResource} />
       </div>
       <section className="connection-bar">
         <div className="selection-pair">

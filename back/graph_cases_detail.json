@@ -1,0 +1,76 @@
+{
+  "guide_door": [
+    {
+      "page": 47,
+      "text": "1 ) 전체 출입문 열림불능 시 ̶ 점검사항\n\nCE.RLDCT\n\n1064\n\n746\n\nTCR 1\n\n1061\n\n1063\n\nAP.CBDIL\n\nDIL\n\nDIR\n\nDIL\n\nDIR\n\nDIR\n\nDIL\n\nCE.RLDCT\n\nHCR 1\n\nHCR 1\n\n전체차량 출입문\n닫힘확인 계전기\n\n704\n\n746\n\n1061\n\n1063\n\nOV746\n\n전부Tc차\n\n후부Tc차\n\n중간차\n\nTCR 1\n\n704\n\nAP.CBDIL\n\n전체차량 출입문\n닫힘확인 계전기\n\n전부Tc차\n\nS\n\nHCR 여자\nTCR 여자\n\nAP.\nCBDO4TC\n\nAP.\nCB1KPHL(좌) CB1KPHR(우)\n\n(1Km/h계전기)\n\n출입문 열림지령\n\n출입문 열림지령\n\nCE.RLDIL/R\n\nAP.\nCBDO1CC(좌) CBDO2CC(우)\n\nCE.RLDEOL/R\n\n인접차 비상열림\n\n출입문 개방\n\n704\n\n704\n\n704\n\n출입문열림S/W 누름\n\nATC장치\n\nCE.RL1KPHL\nCE.RL1KPHR\n\n두드려 본다\n\n시작\n\nCC\n\nTC\n\n전체 출입문 열림 제어 해설도\n\n46\n\n전자변 여자\n\n전부Tc차\n운전실\n\nLine 6 신내"
+    },
+    {
+      "page": 48,
+      "text": "현 상\n\n(1) TCMS 화면에 차량 전체출입문 닫힘 현시\n\n조 치 사 항\n\n※ 미달, 진과정차 또는 지상신호(ODL / ODR) 미수신 시 관제센터 보고 후 지시에 따른다\n - 진과정차 시 운전모드 비상, 역전기 후진, 출입문모드 수/수로 정위치조정운전 후\n 운전모드 수동, 출입문모드 수/수 및 CCTV 확인 후 승강장쪽 측면 출입문열림버튼 취급\n(1) 전부Tc차 ① AP.CB1KPHL/R 확인 후 차단 시 복귀\n(2) 전부Tc차 ② 1Km/h계전기(CE.RL1KPHL/R)를 가볍게 두드려 본다\n(3) 전부Tc차 ③ AP.CBDO4TC 확인 후 차단 시 복귀\n(4) ATC 정상 : 운전모드 수동 및 출입문모드 수/수 전환 후 측면 출입문열림버튼 취급\n ※ ④ ATC 고장 시 : 운전모드 비상 및 출입문모드 수/수 전환 후 측면 출입문열림버튼 취급\n(5) 개방불능 시 승객안내방송 후 관제센터 보고 및 지시에 의함\n - 후부Tc차에서 출입문 취급 후 회송\n\n1 ) 전체 출입문 열림불능 시 ̶ 길라잡이\n\n확인\n사항\n\n출입문 수/수\n\n정위치 미달, 진과 정차\n\nDwell Light 소등\n\nODL/ODR 미수신\n\n47\n\nLine 6 신내"
+    },
+    {
+      "page": 49,
+      "text": "1 ) 전체 출입문 열림불능 시 ̶ 점검사항\n\n1054\n\nDS1\n\nCE.RLDIL\n\nAP.CBDO1CC\n\n차측등(좌측)\n\n전자변\n\nL1\n\nL2\n\nL3\n\nL4\n\n1033\n\nL1출입문 열림신호\n\n1034\n\n1035\n\n1036\n\nCE.RLDIL\n\nL1 열림\n\nL2 열림\n\nL3 열림\n\nL4 열림\n\n출입문바이패스 S/W\n\nDS1\n\nDS2\n\nDS3\n\nDS4\n\nDS2\n\nDS3\n\nDS4\n\n1091\n\n닫힘 시 접촉\n\n열림 시 접촉\n\nBS1\n\nBS2\n\nBS3\n\nBS4\n\n1401\n\n1402\n\n1403\n\n1404\n\n1037\n\n1038\n\n1039\n\n1040\n\n1083\n\n1084\n\nOV711\n\nOV24-3\n\n1Km/h계전기(좌)\n\nATC\n\nTWC\n\nATC\n\nTCMS\n\n신호기계실\n(지상 ATC)\n\nOpen Door 신호수신\n - 출입문열림신호(ODL, ODR) 수신\n - TCMS로 출입문 열림명령 전송\n\nTB전송\n\nTB수신 승강장쪽\nOpen Door 신호송출\n\nL2출입문 열림신호\n\nL3출입문 열림신호\n\nL4출입문 열림신호\n\nTEST\n\nOV711\n\nATC\n\n비상운전모드\n\nEDL\n\nEDR\n\nVC.RL1HC\n\nCE.RL1KPHL\n\nCE.RL1KPHR\n\nAP.\nCB1KPHL\n\nAP.\nCB1KPHR\n\n1010\n\n1020\n\n704\n\n1092\n\nOV711\n\nTB(열차정지신호) 송신조건\nPSM4 검지\nTWC 지상 반송파 검출\n열차정지(1km/h이하)\n\n출입문열림 허용계전기(EDL, EDR) \n여자로 ATC의 출입문 열림조건 완성\n\n비상운전모드에서는 ATC와 상관없이 전부운전실에서 좌•우출입문 개방가능\n\n출입문바이패스\nS/W 취급 시\n해당 출입문전자변\n여자 안됨\n\n출입문바이패스 \n S/W 취급 시 TCMS 화면 현시\n\n출입문연동\n계전기(L)\n\n704\n\n711\n\nTC로 부터 열림지령\n입력 시 DC100V출력\n\n출입문 감시\n(열림정보 입력)\n\n인접차에서\n젼원공급\n\n우측\n\n전체 출입문 열림 제어 시스템 해설도\n\n48\n\n【출입문 열림제어 순서 】\n\nCC\n\nLine 6 신내"
+    },
+    {
+      "page": 50,
+      "text": "원 인\n\n(1) 전부Tc차 AP.CB1KPHL/R 차단 시(1Km/h계전기 전원 차단) \n - 출입문 전자변 여자 불능\n(2) 미달, 진과정차로 인해 출입문열림신호(ODL / ODR) 수신 불능 시\n - ATC의 출입문열림허용계전기(EDL, EDR) 여자 불능\n(3) ATC 장치 고장 시\n(4) 차상 TWC 통신고장 시\n(5) 지상신호장치 이상으로 정지표시등(Dwell Light) 미점등 또는 고장 시\n(6) 출입문닫힘버튼 고착 시, 수동열림 위치에서 열림버튼 불량 시\n(7) 반대편 출입문이 1개라도 열려 있을 때\n - 출입문이 1개라도 열림신호가 입력되면 반대편 열림신호 출력 안함\n ※ 단, 출입문바이패스(DSBS) S/W가 취급된 경우는 예외이며, \n 전체출입문바이패스(ADBP) S/W 취급시는 개방된 반대편 출입문은 열리지 않는다.\n\n1 ) 전체 출입문 열림불능 시 ̶ 길라잡이\n\n49\n\nLine 6 신내"
+    }
+  ],
+  "guide_psd": [
+    {
+      "page": 28,
+      "text": "승강장안전문(PSD) 무선(RF) 닫힘불능으로 기관사조작반 수동닫힘 2개역 이상 취급 시\n\n① 승강장안전문 (PSD) 무선(RF) 닫힘불능 시 조치방법\n\n27\n\n☞ PSD 무선(RF) 닫힘불능\n\n☞ 수동닫힘 취급\n\n전원\nS/W\n\n노선모드\n\n닫힘\n\n승강장안전문(PSD)\n개방 상태\n\n승강장안전문(PSD) \n전체닫힘 완료\n\n차상PSD 무선(RF) 장치\n\n노선모드 − 운행 방향(상선 또는 하선) 선택 후 출입문 닫힘 취급\n\n차상PSD 무선(RF) 장치 우측면 전원 S/W RESET 후 출입문 닫힘 취급(복귀불능 시)\n\n☞ PSD 무선(RF) 닫힘완료\n\n운행 방향(상선 또는 하선) 선택\n\n5 ) 6호선 승강장안전문(PSD) 고장 시\n\nLine 6 신내"
+    },
+    {
+      "page": 29,
+      "text": "RESET\n\n램프시험\n\n열림\n\n닫힘\n\n재개방\n\nBY-PASS\n\n정상\n\n비상\n\n모드 S/W 비상 선택 (PSD 자동개방 됨)\n\nPSD ATO 열림불능\n\n모드 S/W 비상 선택 시 PSD 열림\n\n기관사조작반 열림 취급\n\n승강장안전문(PSD) ATO 열림불능으로 기관사조작반 수동열림 취급 했으나 전체 미개방 시\n\n28\n\n승강장안전문(PSD) 전체 미개방\n\n승강장안전문(PSD) 전체열림 완료\n\n5 ) 6호선 승강장안전문(PSD) 고장 시\n\n②승강장안전문 (PSD) ATO 열림불능 시 조치방법\n\nLine 6 신내"
+    }
+  ],
+  "guide_pantograph": [
+    {
+      "page": 35,
+      "text": "3 ) 판토그래프 상승불능 시 ̶ 점검사항\n\n판토그래프 상승 해설도_M1차(2호, 6호) 설치\n\nT1 T2\n\n비상차단 계전기\n\nHV.RLET\n\nTCMS\n입력\n\nVVVF\n정지\n\nHB, LB\n차단\n\n판토\n하강\n\nTCMS\n입력\n\nVVVF\n정지\n\nHB, LB\n차단\n\n판토\n하강\n\n비상차단 계전기\n\nHV.RLET\n\nSIV로\n\nSIV로\n\n전부Tc(6100호)차\n\n후부Tc(6000호)차\n\nVC.PBET\n\nEPANDS\n\nVC.PBET\n\nEPANDS\n\nAP.CBET\n(비상전원차단)\n\n①\n\nM차\n\nM차\n\n704\n\n전부Tc차\n 운전실\n\nHV. RLPANU\n\nHV. RLPAND\n\nAP.\nCBDO5CC\n\nAP.\nCBSUCC\n\n판토상승계전기\n\n704\n\nM1차(2호, 6호)\n\nAP.\nCBLBC\n\n판토하강계전기\n\n판토하강 S/W\n\n판토상승 S/W\n\n704\n\n715\n\n710\n\n704\n\n∘ AP.CBSUCC 차단 시 \n - TCMS 화면에는 판토하강 현시\n (실제는 상승상태 유지)\n\n∘ AP.CBDO5CC 차단 시\n - 판토상승 또는 판토하강 불가\n (비상전원차단 S/W 누른다)\n\n34\n\n※ AP.CBET는\n 6100호에만 설치 됨\n\nTC\n\nCC\n\nLine 6 신내"
+    },
+    {
+      "page": 36,
+      "text": "현 상\n\n(1) 전차선 전압계 “0” V 현시\n(2) 비상전원차단 표시등 점등(객실 AC형광등 소등)\n(3)TCMS화면에 판토하강, 보조전원장치(SIV) OFF 현시\n\n원 인\n\n(1) 운전실 판토상승/주회로차단기 폐S/W 또는 M1차(2호, 6호) CC 자체 고장 시\n(2) 6100호차 운전실 AP.CBET(비상전원차단회로) 차단 시\n(3) M1차(2호, 6호) AP.CBSUCC 또는 AP.CBDO5CC, AP.CBLBC 차단 시\n(4) M1차(2호, 6호) 판토상승계전기(HV.RLPANU) 불량 시\n(5) M1차(2호, 6호) PANPS1, 2 접점불량 시\n\n3 ) 판토그래프 상승불능 시 ̶ 길라잡이\n\n조 치 사 항\n\n(1) 운전실제어대 ① EPANDS(VC.PBET) 상태확인 및 주간제어기 역행 이외의 위치 확인\n(2) 6100호차 ② AP.CBET 확인 후 차단 시 복귀\n(3) M1차(2호, 6호) ③ AP.CBSUCC ④ AP.CBDO5CC ⑤ AP.CBLBC 확인 후 차단 시 복귀\n(4) 상기조치 후 판토상승 S/W를 취급하여도 상승불능 시\n - 출고 시 → 차량교환(주박지에서는 관제센터 보고 및 차량기동반 출동 요청)\n - 본선운행 중에는 최근정거장까지 타행운행, 정차 후 재기동 불능 시 구원운전 조치\n\n35\n\nLine 6 신내"
+    }
+  ],
+  "guide_emergency_brake": [
+    {
+      "page": 2,
+      "text": "1 ) 비상제동 풀림불능 시 ̶ 점검사항\n\n⑥\n\n⑤\n\n비상제동 풀림 제어 해설도\n\n66\n\n※ AP.CBEMBR은 전•후부 병렬설치 되어\n 전•후부Tc차 모두 차단되어야 비상제동\n 체결 됨\n\nB7 단 비상제동 풀림 확인\n\nAP.\nCBSU1TC\n\nAP.\nCBSU2TC\n\nAP.\nCBSU1TC\n\nAP.\nCBSU2TC\n\n전부Tc차\n\n후부Tc차\n\nLine 6 신내"
+    },
+    {
+      "page": 3,
+      "text": "조 치 사 항\n\n♣ 우선조치(운행이 가능하게 조치하고 원인은 나중에 찾는다)\n ▶ 운전모드 수동 전환 후 주간제어기 제동7단 후 역행 시도\n → 비상제동차단(EBCOS) S/W 취급 후 역행 시도 → 운전모드 비상 전환 후 역행 시도\n(1) MR압력 6.5 kg/㎠ 이하 시 ① MRPS OFF\n - 주공기압축기(CM)구동 확인 및 정상구동 시 주공기관 파열 및 공기라인 공기누설 확인(소음) 및 조치\n(2) 관련 스위치 ② 비상제동(EBS) S/W 및 ③ 구원운전(ROS) S/W 취급 확인 후 복귀\n(3) 관련 차단기 전•후부Tc차 ④ AP.CBEMBR, ⑤ AP.CBSU1TC•2TC 확인 후 차단 시 복귀\n ※ AP.CBEMBR 전•후부 병렬설치 되어 전•후부Tc차 모두 차단되어야 비상제동 체결 됨\n(4) TC1, TC2 고장 시 : TC1, TC2 동시 고장 시\n - 비상전원차단스위치(EPANDS) 취급으로 판토하강 → 약 5초 후 재기동 시도\n(5) 상기조치 후 비상제동 풀림불능 시 관제센터 구원요청 후 재기동 실시\n\n1 ) 비상제동 풀림불능 시 ̶ 길라잡이\n\n현 상\n\n(1) 비상제동 표시등(RED) 점등\n(2) BC압력계 3.0 kg/㎠\n(3) TCMS 화면표시\n - F/N. 078 역행차단, 비상제동\n\n67\n\nLine 6 신내"
+    },
+    {
+      "page": 4,
+      "text": "1 ) 비상제동 풀림불능 시 ̶ 점검사항\n\n비상제동 풀림불능 시 관련 원인\n\n주간제어기 EB 위치\n\nROS 구원위치\n\nEBS 취급\n\nMRPS OFF 시\n\nATC 고장 시\n\nAP.CBSU1TC•2TC 차단\n\nAP.CBEMBR 차단\n\nAP.CBDO4TC 차단\n\n인통선 880선 탈락\n\nHCR, TCR 동작불량\n\n68\n\nLine 6 신내"
+    },
+    {
+      "page": 5,
+      "text": "원 인\n\n(1) 주간제어기 『비상제동(EB)』 위치 시\n(2) 구원운전(VC.SWREO-ROS) S/W – 구원위치 시\n(3) 비상제동(VC.PBEMBR-EBS) S/W 취급 시\n(4) MR 압력 6.5 kg/㎠ 이하 시(MRPS OFF)\n(5) ATC 비상제동 지령 시(ATC 고장 포함)\n(6) AP.CBSU1TC • 2TC 동시 차단 시(TC1, TC2 동시 고장 포함)\n - HCR 및 TCR 소자\n(7) 전·후부Tc차 AP.CBEMBR 모두 차단 시\n(8) AP.CBDO4TC 차단 시 ------ BC.RLMCEB 및 HCR, TCR 소자\n(9) 열차 분리(점퍼선 880선 접촉불량 포함) 시\n - EBCOS 취급 후 상태확인에서 각 차량 BC압력 확인\n - 880선 점퍼선 접촉불량 개소 이전 차량 : 정차제동, 이후 차량 : 비상제동 체결\n\n1 ) 비상제동 풀림불능 시 ̶ 길라잡이\n\n69\n\nLine 6 신내"
+    },
+    {
+      "page": 6,
+      "text": "일부 차량 제동 풀림불능 시 제어 해설도\n\n역행취급\n\n강제완해명령\n\n역행 4단\n\n우선 - 1\n\n강제완해 S/W\n(VC. PBCMPR)\n\nBC\n압력측정\n\nAS\n압력입력\n\nECU\n\nBOU\n\nAP. CBBECU\n\nAP. CBBOU\n\nBC제동통\n\n덤프밸브\n\n704\n\n704\n\n차륜\n\n제동불완해 감시 (NRB)\n\n제동불완해 검지(NRBD)\n\n강제완해 지령(CPR)\n\n우선 - 2\n\n※ 상기조치 후 복귀불능 시 해당차량 BOU콕크 또는 BC콕크 개방\n - 제동축수 부족에 따른 운행 준수\n\n2 ) 일부 차량 제동 풀림불능 시 ̶ 점검사항\n\n70\n\n※ 주간제어기 역행4단, 강제완해 S/W 누르는 순서는 상관없다\n\nCC\n\nTC\n\nLine 6 신내"
+    },
+    {
+      "page": 7,
+      "text": "현 상\n\n※ 운행 중 TCMS에 의해 일부 차량 제동 불완해 현상이 검지되면 자동운전이\n 취소되고 FSB가 체결되어 정차한다.\n(1) 출입문 대표등은 점등 되었으나 역행운전이 되지 않는다.\n(2) TCMS 화면하단에 고장 『제동불완해 검지』 현시\n - 역행 시 TCMS(제동장치) 해당차 BC압력 1.0 kg/㎠ 이상 현시\n\n원 인\n\n(1) 전공변환변의 상용전자변(SBV) 고장, BOU함내 BC압력센서 고장\n(2) ECU(제동 전자제어장치)의 제동통 압력스위치(BC.PSBCP) 불량\n(3) 『제동불완해』검지(역행 시 BC압력 1.0 kg/㎠ 이상, 5초 이상 지속 시)\n\n조 치 사 항\n\n(1) 운전모드 수동 전환 → 주간제어기 역행4단 시도 → 강제완해(VC. PBCMPR) S/W를 누른다 \n(2) 해당차량 ① AP.CBBECU 차단 후 복귀(ECU RESET기능) –운전실칸 일 때\n(3) 운전모드 비상 전환 → 주간제어기 역행4단 시도(ATC에 의한 역행차단 방지)\n(4) 강제풀림 불능 시 해당차량 ① AP.CBBECU, ② AP.CBBOU 차단 \n - 제동풀림 소음(공기누설) 미확인 시 해당차량 BOU콕크 또는 BC콕크 개방\n(5) BOU콕크 개방 또는 BC콕크 개방 시 제동축수 부족에 따른 운행 준수\n - BC압력 0.9 kg/㎠ 이하 시(TCMS확인) 제동불완해 검지 불능 → AP.CBBECU 차단\n\n2 ) 일부 차량 제동 풀림불능 시 ̶ 길라잡이\n\n71\n\nLine 6 신내"
+    }
+  ],
+  "guide_atc": [
+    {
+      "page": 46,
+      "text": "10 ) ATC 장치 고장 시 ̶ 점검사항\n\n운전실 \n\n현상\n\nATC 장치 고장 시 현상 및 조치 해설도\n\nRESET 방법(S/W1•2 동시 차단 후 복귀)\n\nRESET 방법 (AP.CBATC1, AP.CBATC2 동시 차단 후 복귀)\n\n① TCMS 고장메세지 현시\n\n② 주•보조 ATC고장 등 점등\n\n③ 비상제동체결 및 등 점등\n\n④ 3.0 kg/㎠ 현시\n\n【공기압력계】\n\n110\n\n♣ ATC1고장 시 ATC2로 자동절체 되지 않을 때\n - S/W1 또는 AP.CBATC1을 차단(OFF) 시킨다\n\n【ADU】\n\n【고장표시등】\n\n【TCMS 모니터】\n\n※ NFB 번호는 편의상 임의표기 함(현차는 미표기)\n\nLine 6 신내"
+    },
+    {
+      "page": 47,
+      "text": "현 상\n\n1) TCMS 화면에 고장메세지 현시\n2) ADU 주 • 보조 ATC 고장 등 점등\n3) 비상제동체결(주 • 보조 ATC 모두 고장 시) 및 표시등 점등\n4) 공기압력계 비상제동압력 3.0 kg/㎠ 현시\n\n원 인\n\n1) ATC 자체고장 또는 TC와 ATC간 통신고장 시\n2) 타코메타 고장 시 : 역행시 실제속도 4~5Km/h 정도에서 비상제동 체결\n3) POR 계전기 고장 시 : 역행 시 비상제동 체결\n4) AP.CBATC1, 2 차단 시\n5) ATC 리셋 S/W1•2 차단 시\n\n조 치 사 항\n\n1) ① RESET S/W1•2 또는 ② ATC 제어차단기(AP.CBATC1•2) 동시 차단 후 복귀\n ※ 승강장에서 출입문 개방 중 ATC고장 발생 또는 ATC RESET 시 출입문 닫힘 후 실시 \n - 리셋 후 30초 정도 지나서 ADU에 속도코드 현시\n - 타코메타 고장 시 : ADU상 실제속도 현시\n - POR계전기 고장 시 : ADU상 실제속도 현시하지 않음\n2) 복귀불능 시 관제센터 보고 및 지시에 따라 지령식 운행(운전모드 비상, 출입문모드 수/수 전환)\n ♣ ATO 고장 시 : 복귀불능 시 운전모드 수동 출입문모드 수/수\n - 현상 : 자동운전(불가) 취소, TCMS 화면에 고장 현시\n - 원인 : ATO 자체고장 또는 TC와 ATO 간 통신고장 시\n - 조치 : ATC 제어 차단기(AP.CBATC1•2) 또는 리셋 S/W1•2) 동시 차단 후 복귀\n\n10 ) ATC 장치 고장 시 ̶ 길라잡이\n\n111\n\nLine 6 신내"
+    }
+  ]
+}

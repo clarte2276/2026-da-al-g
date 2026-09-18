@@ -1,7 +1,7 @@
 [project]
 name = "daalgi-knowledge-api"
 version = "0.1.0"
-description = "Document ingestion and graph RAG API for the Da알지 project"
+description = "Document ingestion and graph RAG API for the Da-Al-G project"
 requires-python = ">=3.11"
 dependencies = [
   "python-docx>=1.2,<2",
@@ -17,7 +17,9 @@ dependencies = [
   "pypdf>=5,<6",
   "python-hwpx>=6.2,<7",
   "openai>=1.68,<2",
+  "pwdlib[argon2]>=0.2,<1",
   "reportlab>=4.2,<5",
+  "pymupdf>=1.24,<2",
 ]
 
 [project.optional-dependencies]
@@ -29,6 +31,10 @@ hwp = [
 ocr = [
   "pillow>=11,<13",
   "paddleocr>=3,<4",
+]
+eval = [
+  "ragas==0.4.3",
+  "langchain-community>=0.3,<0.4",
 ]
 dev = [
   "httpx>=0.28,<1",

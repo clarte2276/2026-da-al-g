@@ -2,23 +2,30 @@ from __future__ import annotations
 
 import mimetypes
 import secrets
+from concurrent.futures import Future, ThreadPoolExecutor
+from concurrent.futures import TimeoutError as FutureTimeoutError
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Annotated
 
-from fastapi import Depends, FastAPI, File, Header, HTTPException, Query, UploadFile
+from fastapi import Depends, FastAPI, File, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse, Response
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from .auth import AdminUser, CurrentUser, ensure_bootstrap_accounts
+from .auth import router as auth_router
 from .config import get_settings
-from .db import get_db, init_db
+from .db import SessionLocal, get_db, init_db
 from .links import get_version
 from .links import router as links_router
 from .models import AuditEvent, Document, DocumentVersion, Fragment, KnowledgeEdge
 from .schemas import (
+    ChatRequest,
+    ChatResponse,
     DocumentOut,
     EdgeBatchCreate,
     EdgeBatchOut,
@@ -37,25 +44,29 @@ from .schemas import (
     SelectionAnchor,
     VersionOut,
 )
+from .services.chat import ChatService
 from .services.document_content import verified_source
 from .services.embedding import get_embedding_provider
 from .services.ingestion import IngestionService
 from .services.local_files import LocalFile, LocalFileService
 from .services.pdf_conversion import PdfConversionError, PdfConversionService
-from .services.rag import GraphRAGService
+from .services.rag import Evidence, GraphRAGService
 
 settings = get_settings()
 embedding_provider = get_embedding_provider(settings)
 ingestion_service = IngestionService(settings, embedding_provider)
 local_file_service = LocalFileService(settings)
 rag_service = GraphRAGService(settings, embedding_provider)
+chat_service = ChatService(settings, rag_service)
 pdf_conversion_service = PdfConversionService(settings)
 
 app = FastAPI(title=settings.app_name, version="0.1.0")
+app.include_router(auth_router)
 app.include_router(links_router)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[origin.strip() for origin in settings.cors_origins.split(",") if origin.strip()]
+    or ["*"],
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -65,6 +76,13 @@ app.add_middleware(
 @app.on_event("startup")
 def startup() -> None:
     init_db()
+    with SessionLocal() as db:
+        ensure_bootstrap_accounts(db)
+
+
+admin_dist = Path(__file__).resolve().parents[2] / "admin-dist"
+if admin_dist.is_dir():
+    app.mount("/admin", StaticFiles(directory=admin_dist, html=True), name="admin")
 
 
 def _fragment_out(fragment: Fragment) -> FragmentOut:
@@ -111,6 +129,24 @@ def _edge_out(edge: KnowledgeEdge) -> EdgeOut:
         approved_by=edge.approved_by,
         created_at=edge.created_at,
         approved_at=edge.approved_at,
+    )
+
+
+def _evidence_out(item: Evidence) -> EvidenceOut:
+    return EvidenceOut(
+        fragment=None if item.link_id else _fragment_out(item.fragment),
+        text=item.fragment.text if item.link_id else None,
+        score=item.score,
+        hop=item.hop,
+        path=item.path,
+        via_relation=item.via_relation,
+        link_id=item.link_id,
+        selection=item.selection,
+        document_id=item.document_id,
+        filename=item.filename,
+        location=item.location,
+        version_id=item.version_id,
+        page=item.page,
     )
 
 
@@ -169,7 +205,7 @@ def health() -> dict[str, str]:
 
 
 @app.get("/api/local/roots", response_model=list[LocalRootOut])
-def list_local_roots() -> list[LocalRootOut]:
+def list_local_roots(_admin: AdminUser) -> list[LocalRootOut]:
     return [
         LocalRootOut(id=root.id, label=root.path.name or str(root.path))
         for root in local_file_service.roots()
@@ -179,6 +215,7 @@ def list_local_roots() -> list[LocalRootOut]:
 
 @app.get("/api/local/files", response_model=list[LocalFileOut])
 def list_local_files(
+    _admin: AdminUser,
     root_id: str | None = Query(default=None),
     query: str | None = Query(default=None, max_length=200),
     limit: int = Query(default=500, ge=1, le=20000),
@@ -194,6 +231,7 @@ def list_local_files(
 def open_local_document(
     payload: LocalOpenRequest,
     db: Annotated[Session, Depends(get_db)],
+    _admin: AdminUser,
 ) -> LocalOpenOut:
     try:
         local_file = local_file_service.resolve(payload.root_id, payload.relative_path)
@@ -228,12 +266,19 @@ def open_local_document(
 
 
 @app.get("/api/documents", response_model=list[DocumentOut])
-def list_documents(db: Annotated[Session, Depends(get_db)]) -> list[Document]:
+def list_documents(
+    db: Annotated[Session, Depends(get_db)],
+    _user: CurrentUser,
+) -> list[Document]:
     return list(db.scalars(select(Document).order_by(Document.created_at.desc())).all())
 
 
 @app.get("/api/documents/{document_id}", response_model=DocumentOut)
-def get_document(document_id: str, db: Annotated[Session, Depends(get_db)]) -> Document:
+def get_document(
+    document_id: str,
+    db: Annotated[Session, Depends(get_db)],
+    _user: CurrentUser,
+) -> Document:
     document = db.get(Document, document_id)
     if not document:
         raise HTTPException(status_code=404, detail="Document not found")
@@ -241,7 +286,11 @@ def get_document(document_id: str, db: Annotated[Session, Depends(get_db)]) -> D
 
 
 @app.get("/api/documents/{document_id}/versions", response_model=list[VersionOut])
-def list_versions(document_id: str, db: Annotated[Session, Depends(get_db)]) -> list[VersionOut]:
+def list_versions(
+    document_id: str,
+    db: Annotated[Session, Depends(get_db)],
+    _user: CurrentUser,
+) -> list[VersionOut]:
     versions = list(
         db.scalars(
             select(DocumentVersion)
@@ -270,6 +319,7 @@ def list_versions(document_id: str, db: Annotated[Session, Depends(get_db)]) -> 
 def reingest_document(
     document_id: str,
     db: Annotated[Session, Depends(get_db)],
+    _admin: AdminUser,
 ) -> VersionOut:
     try:
         version = ingestion_service.ingest_existing_document(db, document_id)
@@ -301,6 +351,7 @@ def reingest_document(
 def upload_document(
     file: Annotated[UploadFile, File(...)],
     db: Annotated[Session, Depends(get_db)],
+    _admin: AdminUser,
 ) -> dict:
     suffix = Path(file.filename or "").suffix.lower()
     if suffix not in {".docx", ".hwp", ".hwpx", ".pptx", ".pdf"}:
@@ -346,6 +397,7 @@ def upload_document(
 def list_fragments(
     document_id: str,
     db: Annotated[Session, Depends(get_db)],
+    _user: CurrentUser,
     kind: str | None = Query(default=None),
     limit: int = Query(default=1000, ge=1, le=20000),
 ) -> list[FragmentOut]:
@@ -367,6 +419,7 @@ def list_fragments(
 def get_document_source(
     document_id: str,
     db: Annotated[Session, Depends(get_db)],
+    _user: CurrentUser,
     version_id: str | None = None,
 ) -> FileResponse:
     """Stream the original bytes to the browser-native document renderers."""
@@ -386,6 +439,7 @@ def get_document_source(
 def get_document_pdf(
     document_id: str,
     db: Annotated[Session, Depends(get_db)],
+    _user: CurrentUser,
     version_id: str | None = None,
 ) -> FileResponse:
     """Return a PDF representation rendered by an Office-compatible converter."""
@@ -407,8 +461,79 @@ def get_document_pdf(
     )
 
 
+# LibreOffice needs up to a few minutes for a large HWP, far longer than a mobile
+# client will hold a request open. Render in the background and let the client poll.
+_page_renders: dict[str, Future] = {}
+# One worker: the conversions share a single LibreOffice profile.
+_page_executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="page-render")
+
+
+def _render_page(source_path: Path, cache_key: str, page: int | None, quote: str, width: int) -> Path:
+    if page is None:
+        page = pdf_conversion_service.find_page(source_path, cache_key, quote)
+    if page is None:
+        raise PdfConversionError("원문에서 해당 구절의 페이지를 찾지 못했습니다.")
+    return pdf_conversion_service.render_page(source_path, cache_key, page, width)
+
+
+@app.get("/api/documents/{document_id}/page.png")
+def get_document_page_image(
+    document_id: str,
+    db: Annotated[Session, Depends(get_db)],
+    _user: CurrentUser,
+    version_id: str | None = None,
+    page: int | None = None,
+    quote: str | None = None,
+    width: int = 1200,
+) -> Response:
+    """Render one page of the original document so a chat client can show it as-is.
+
+    Returns 202 while the first conversion of a document is still running; the
+    client retries until the cached image is ready.
+    """
+
+    document = db.get(Document, document_id)
+    if not document or not document.source_path:
+        raise HTTPException(status_code=404, detail="Document source not found")
+    version = get_version(db, document_id, version_id)
+    source_path = verified_source(version)
+    width = max(200, min(width, 2000))
+    quote = (quote or "")[:200]
+
+    job_key = f"{version.sha256}:{page}:{quote}:{width}"
+    render = _page_renders.get(job_key)
+    if render is None:
+        render = _page_executor.submit(
+            _render_page, source_path, version.sha256, page, quote, width
+        )
+        _page_renders[job_key] = render
+    try:
+        image_path = render.result(timeout=10)
+    except FutureTimeoutError:
+        return JSONResponse(
+            status_code=202,
+            content={"detail": "원문을 변환하는 중입니다. 잠시 후 다시 시도합니다."},
+        )
+    except Exception as exc:
+        # Drop the failed job so the next request retries instead of replaying the error.
+        _page_renders.pop(job_key, None)
+        if isinstance(exc, PdfConversionError):
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+        raise
+    _page_renders.pop(job_key, None)
+    return FileResponse(
+        image_path,
+        media_type="image/png",
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
+
+
 @app.get("/api/fragments/{fragment_id}", response_model=FragmentOut)
-def get_fragment(fragment_id: str, db: Annotated[Session, Depends(get_db)]) -> FragmentOut:
+def get_fragment(
+    fragment_id: str,
+    db: Annotated[Session, Depends(get_db)],
+    _user: CurrentUser,
+) -> FragmentOut:
     fragment = db.get(Fragment, fragment_id)
     if not fragment:
         raise HTTPException(status_code=404, detail="Fragment not found")
@@ -419,6 +544,7 @@ def get_fragment(fragment_id: str, db: Annotated[Session, Depends(get_db)]) -> F
 def get_fragment_asset(
     fragment_id: str,
     db: Annotated[Session, Depends(get_db)],
+    _user: CurrentUser,
 ) -> FileResponse:
     fragment = db.get(Fragment, fragment_id)
     if not fragment or not fragment.asset_path:
@@ -442,7 +568,7 @@ def get_fragment_asset(
 def create_edge(
     payload: EdgeCreate,
     db: Annotated[Session, Depends(get_db)],
-    actor: Annotated[str | None, Header(alias="X-Admin-Actor")] = None,
+    admin: AdminUser,
 ) -> EdgeOut:
     source = db.get(Fragment, payload.source_fragment_id)
     target = db.get(Fragment, payload.target_fragment_id)
@@ -472,7 +598,7 @@ def create_edge(
         target_anchor_json=(
             payload.target_anchor.model_dump(mode="json") if payload.target_anchor else None
         ),
-        created_by=payload.created_by or actor,
+        created_by=admin.id,
         status="draft",
     )
     db.add(edge)
@@ -480,7 +606,7 @@ def create_edge(
         db.flush()
         _audit(
             db,
-            actor=payload.created_by or actor,
+            actor=admin.id,
             action="edge.created",
             entity_type="knowledge_edge",
             entity_id=edge.id,
@@ -498,7 +624,7 @@ def create_edge(
 def create_edge_batch(
     payload: EdgeBatchCreate,
     db: Annotated[Session, Depends(get_db)],
-    actor: Annotated[str | None, Header(alias="X-Admin-Actor")] = None,
+    admin: AdminUser,
 ) -> EdgeBatchOut:
     """Turn one selection on each side into a many-to-many set of edges."""
 
@@ -549,7 +675,7 @@ def create_edge_batch(
                 confidence=payload.confidence,
                 source_anchor_json=source_anchor.model_dump(mode="json"),
                 target_anchor_json=target_anchor.model_dump(mode="json"),
-                created_by=payload.created_by or actor,
+                created_by=admin.id,
                 status="draft",
             )
             db.add(edge)
@@ -560,7 +686,7 @@ def create_edge_batch(
         for edge in edges:
             _audit(
                 db,
-                actor=payload.created_by or actor,
+                actor=admin.id,
                 action="edge.created",
                 entity_type="knowledge_edge",
                 entity_id=edge.id,
@@ -587,6 +713,7 @@ def create_edge_batch(
 @app.get("/api/edges", response_model=list[EdgeOut])
 def list_edges(
     db: Annotated[Session, Depends(get_db)],
+    _admin: AdminUser,
     status: str | None = Query(default=None),
     limit: int = Query(default=200, ge=1, le=2000),
 ) -> list[EdgeOut]:
@@ -597,7 +724,11 @@ def list_edges(
 
 
 @app.get("/api/edges/{edge_id}", response_model=EdgeOut)
-def get_edge(edge_id: str, db: Annotated[Session, Depends(get_db)]) -> EdgeOut:
+def get_edge(
+    edge_id: str,
+    db: Annotated[Session, Depends(get_db)],
+    _admin: AdminUser,
+) -> EdgeOut:
     edge = db.get(KnowledgeEdge, edge_id)
     if not edge:
         raise HTTPException(status_code=404, detail="Edge not found")
@@ -609,13 +740,13 @@ def approve_edge(
     edge_id: str,
     payload: EdgeDecision,
     db: Annotated[Session, Depends(get_db)],
-    actor: Annotated[str | None, Header(alias="X-Admin-Actor")] = None,
+    admin: AdminUser,
 ) -> EdgeOut:
     edge = db.get(KnowledgeEdge, edge_id)
     if not edge:
         raise HTTPException(status_code=404, detail="Edge not found")
     edge.status = "approved"
-    edge.approved_by = payload.actor or actor or "admin"
+    edge.approved_by = admin.id
     edge.approved_at = datetime.now(UTC)
     _audit(
         db,
@@ -633,7 +764,7 @@ def approve_edge(
 def reject_edge(
     edge_id: str,
     db: Annotated[Session, Depends(get_db)],
-    actor: Annotated[str | None, Header(alias="X-Admin-Actor")] = None,
+    admin: AdminUser,
 ) -> EdgeOut:
     edge = db.get(KnowledgeEdge, edge_id)
     if not edge:
@@ -641,7 +772,7 @@ def reject_edge(
     edge.status = "rejected"
     _audit(
         db,
-        actor=actor,
+        actor=admin.id,
         action="edge.rejected",
         entity_type="knowledge_edge",
         entity_id=edge.id,
@@ -655,6 +786,7 @@ def reject_edge(
 def neighbors(
     fragment_id: str,
     db: Annotated[Session, Depends(get_db)],
+    _user: CurrentUser,
     include_drafts: bool = False,
 ) -> list[NeighborOut]:
     fragment = db.get(Fragment, fragment_id)
@@ -684,7 +816,11 @@ def neighbors(
 
 
 @app.post("/api/rag/query", response_model=RAGResponse)
-def rag_query(payload: RAGQuery, db: Annotated[Session, Depends(get_db)]) -> RAGResponse:
+def rag_query(
+    payload: RAGQuery,
+    db: Annotated[Session, Depends(get_db)],
+    _user: CurrentUser,
+) -> RAGResponse:
     evidence = rag_service.retrieve(
         db,
         payload.question,
@@ -695,21 +831,30 @@ def rag_query(payload: RAGQuery, db: Annotated[Session, Depends(get_db)]) -> RAG
     answer = rag_service.answer(payload.question, evidence, payload.model)
     return RAGResponse(
         answer=answer,
-        evidence=[
-            EvidenceOut(
-                fragment=None if item.link_id else _fragment_out(item.fragment),
-                text=item.fragment.text if item.link_id else None,
-                score=item.score,
-                hop=item.hop,
-                path=item.path,
-                via_relation=item.via_relation,
-                link_id=item.link_id,
-                selection=item.selection,
-                document_id=item.document_id,
-                filename=item.filename,
-            )
-            for item in evidence
-        ],
+        evidence=[_evidence_out(item) for item in evidence],
         embedding_provider=embedding_provider.name,
         graph_expanded=any(item.hop > 0 for item in evidence),
+    )
+
+
+@app.post("/api/chat", response_model=ChatResponse)
+def chat(
+    payload: ChatRequest,
+    db: Annotated[Session, Depends(get_db)],
+    _user: CurrentUser,
+) -> ChatResponse:
+    result = chat_service.respond(
+        db,
+        payload.message,
+        [{"role": item.role, "content": item.content} for item in payload.history],
+        top_k=payload.top_k,
+        max_hops=payload.max_hops,
+        model=payload.model,
+    )
+    return ChatResponse(
+        answer=result.answer,
+        mode=result.mode,
+        evidence=[_evidence_out(item) for item in result.evidence],
+        embedding_provider=embedding_provider.name,
+        graph_expanded=any(item.hop > 0 for item in result.evidence),
     )

@@ -5,6 +5,8 @@ from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+PROJECT_ROOT_ENV = Path(__file__).resolve().parents[2] / ".env"
+
 
 class Settings(BaseSettings):
     app_name: str = "daalgi-knowledge-api"
@@ -17,13 +19,24 @@ class Settings(BaseSettings):
     embedding_dimensions: int = 1536
     embedding_batch_size: int = 64
     openai_api_key: str | None = None
-    llm_model: str = "gpt-4o-mini"
+    llm_model: str = "gpt-5.6-luna"
     max_upload_bytes: int = 524_288_000
     default_graph_hops: int = 2
     local_document_roots: str = ""
     local_scan_limit: int = 10_000
+    enable_registration: bool = True
+    enable_test_account: bool = True
+    auth_session_hours: int = 24
+    bootstrap_admin_username: str | None = None
+    bootstrap_admin_password: str | None = None
+    bootstrap_admin_display_name: str = "관리자"
+    cors_origins: str = "*"
 
-    model_config = SettingsConfigDict(env_file=".env", env_prefix="", extra="ignore")
+    # Load the backend-local file first, then the repository-root file. This
+    # lets `cd back; uv run ...` use the root `.env` without copying secrets.
+    model_config = SettingsConfigDict(
+        env_file=(".env", PROJECT_ROOT_ENV), env_prefix="", extra="ignore"
+    )
 
     def prepare_directories(self) -> None:
         self.storage_root.mkdir(parents=True, exist_ok=True)

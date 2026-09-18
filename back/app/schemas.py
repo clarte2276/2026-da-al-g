@@ -182,10 +182,60 @@ class EvidenceOut(BaseModel):
     selection: dict[str, Any] | None = None
     document_id: str | None = None
     filename: str | None = None
+    location: str | None = None
+    version_id: str | None = None
+    page: int | None = None
 
 
 class RAGResponse(BaseModel):
     answer: str
+    evidence: list[EvidenceOut]
+    embedding_provider: str
+    graph_expanded: bool
+
+
+class UserOut(BaseModel):
+    id: str
+    username: str
+    display_name: str
+    role: Literal["user", "admin"]
+    is_active: bool
+
+
+class AuthLoginRequest(BaseModel):
+    username: str = Field(min_length=1, max_length=64)
+    password: str = Field(min_length=1, max_length=128)
+
+
+class AuthRegisterRequest(BaseModel):
+    username: str = Field(min_length=3, max_length=64)
+    password: str = Field(min_length=8, max_length=128)
+    display_name: str | None = Field(default=None, max_length=100)
+
+
+class AuthResponse(BaseModel):
+    access_token: str
+    token_type: Literal["bearer"]
+    expires_at: datetime
+    user: UserOut
+
+
+class ChatHistoryMessage(BaseModel):
+    role: Literal["user", "assistant"]
+    content: str = Field(min_length=1, max_length=10000)
+
+
+class ChatRequest(BaseModel):
+    message: str = Field(min_length=1, max_length=10000)
+    history: list[ChatHistoryMessage] = Field(default_factory=list, max_length=12)
+    top_k: int = Field(default=5, ge=1, le=30)
+    max_hops: int = Field(default=2, ge=0, le=4)
+    model: str | None = Field(default=None, max_length=100)
+
+
+class ChatResponse(BaseModel):
+    answer: str
+    mode: Literal["general", "rag", "insufficient_evidence"]
     evidence: list[EvidenceOut]
     embedding_provider: str
     graph_expanded: bool

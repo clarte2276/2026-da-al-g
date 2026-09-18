@@ -10,6 +10,7 @@ from sqlalchemy import create_engine, delete, inspect, select
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
+from app.auth import get_current_user, require_admin
 from app.config import Settings
 from app.db import Base, get_db
 from app.links import content_indexer, router
@@ -20,6 +21,7 @@ from app.models import (
     DocumentVersion,
     Fragment,
     KnowledgeEdge,
+    User,
 )
 from app.parsers import ParserError, get_parser
 from app.services import ingestion as ingestion_module
@@ -42,6 +44,16 @@ def workspace(tmp_path):
         app.include_router(router)
         app.dependency_overrides[get_db] = lambda: db
         app.dependency_overrides[content_indexer] = lambda: service
+        test_user = User(
+            id="test-admin",
+            username="tester",
+            password_hash="unused",
+            display_name="Tester",
+            role="admin",
+            is_active=True,
+        )
+        app.dependency_overrides[get_current_user] = lambda: test_user
+        app.dependency_overrides[require_admin] = lambda: test_user
         with TestClient(app) as client:
             yield db, client, service, GraphRAGService(settings, provider), tmp_path
     engine.dispose()

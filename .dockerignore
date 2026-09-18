@@ -1,0 +1,15 @@
+.git
+.gitignore
+.env
+**/.env
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
+**/.dart_tool
+**/build
+**/node_modules
+front/link-generator/dist
+front/user
+data_raw
+back/runtime
+back/.venv

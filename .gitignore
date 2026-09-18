@@ -6,6 +6,7 @@ __pycache__/
 .venv/
 
 # Local runtime data and secrets
+.env
 backend/.env
 back/.env
 backend/runtime/
@@ -22,3 +23,4 @@ dist/
 # Local-only data and tool state
 data_raw/
 .omo/
+data_pdf/

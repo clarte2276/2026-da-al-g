@@ -1,2 +1,2 @@
-"""Da알지 document and graph RAG backend."""
+"""Da-Al-G document and graph RAG backend."""
 

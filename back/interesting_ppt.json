@@ -1,0 +1,2358 @@
+{
+  "무선": [
+    {
+      "id": "e0010f70-1db0-4006-a223-0148a341a73f",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 7,
+      "text": "TC2\n\nTC1\n\nTC1\n\n6\n\nTRC4\n\nECU\n\nECU\n\nECU\n\nECU\n\nECU\n\n제어대\n\nTC2\n\nATO\n\nATC\n\nTWC\n\n방송장치\n\n표시기\n\n열차무선\n\nATO\n\nATC\n\nTWC\n\n방송장치\n\n표시기\n\n열차무선\n\nTRC4\n\nCC\n\nNode\n\nCC\n\nNode\n\nCC\n\nNode\n\nCC\n\nNode\n\nCC\n\nNode\n\nCC\n\n출입문\n\n출입문\n\n출입문\n\n출입문\n\n출입문\n\n출입문\n\nSIV\n\nVVVF\n\nVVVF\n\nSIV\n\nPAN\n\nCM\n\nTc\n\nM1\n\nM2\n\nT1\n\nTc\n\nT2\nM1M2\n\n♣ TCMS백업시스템 : 운전실 인터페이스를 위한 TC1•2 사용\n – TC1 고장 시 ATC/ATO 작동불능, 모니터제어 불능, 메타계 DOWM(공기압력계 정상)\n 예외) TC2는 ATC/ATO와 통신(TRC4)선이 연결되어 "
+    },
+    {
+      "id": "a847fab6-7fc2-4497-b423-35a590deabb3",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 7,
+      "text": "열차무선"
+    },
+    {
+      "id": "a64e16d3-0a5d-4bab-aead-cdebfb45d18b",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 7,
+      "text": "열차무선"
+    },
+    {
+      "id": "9ed27b18-57bc-4c19-8737-ec8487afa768",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 7,
+      "text": "♣ TC(Train Computer)\n – 운전실 제어대의 각종 스위치 및 장비와 연결, 주간제어기, 표시등, 푸시버튼 등을 제어 감시\n 운전실에 설치된 주변 장치(ATC, ATO, TWC, 방송, 표시기, 열차무선)을 제어 감시\n 각 차량 CC와 직렬통신, 열차제어에 필요한 각종 데이터 송 ∙ 수신, 1개 유닛에 2개의 컴퓨터(TC1, TC2)로 구성"
+    },
+    {
+      "id": "cf54d61a-da1a-4d4a-8890-9a6f4a17304a",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 15,
+      "text": "⑪ 무정전 무선제어 비상방송조명장치(운전실 비치) 사용 방법\n\n1 ) 6호선 전동차 일반\n\n측면 봉인줄 제거 후\n 커버를 개방한다\n\n송신기를 꺼내면서 \n충전케이블 분리한다.\n\n전원 ON/OFF 시 상단 전원버튼 길게 누름\n\n중앙버튼 누룸 시 방송\n되며 조명이 자동 켜짐\n\n전원ON 시 편성번호가 \n동일한지 확인\n\n조명소등은 측면 ▲▼버튼을 동시에 누르고\n승무원간 통신은 측면 M버튼을 누르면 된다.\n\n14\n\n♣ 전동차의 모든 전원(DC전원 포함) OFF되어 객실등 소등 및 객실방송 안될 때, 차량분리 등 이례상황 발생 시 사용\n\n♣ 무정전 무선제어 비상방송조명장치 사용방법\n\n【조명소등】\n\n【승무원간 통신】\n\nM\n\n조명소등은 측면 ▲▼버튼을 동시에 누릅니다. \n동시에만 누른다면 길게 누르지 않아도 조명 소등은 됩"
+    },
+    {
+      "id": "f57b6f9c-31a2-4c21-bc95-746e7c183139",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 15,
+      "text": "⑪ 무정전 무선제어 비상방송조명장치(운전실 비치) 사용 방법"
+    },
+    {
+      "id": "515edb9b-0938-4670-b8dc-6a505d0afd72",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 15,
+      "text": "♣ 무정전 무선제어 비상방송조명장치 사용방법"
+    },
+    {
+      "id": "27828aeb-a13b-4d35-8c0a-08c5dbf88989",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 18,
+      "text": "2 ) 운전실 선택 및 컴퓨터 기능\n\n전부Tc차\nHCR여자되면\n\n전부표지등 좌측\n\n전부표지등 우측\n\n모든출입문 닫힘계전기(DCT) 여자\n\n비상제동 안전루프 회로\n\n열차무선전화기\n\nADU 전원입력\n\n전부Tc차TCR\n소자조건\n\n비상모드에서 ATC 비상제동 완해\n\n비상제동계전기(RLEB) 여자\n\n후부Tc차TCR여자되면\n\n후부표지등 우측\n\n출입문 연동회로\n(모든출입문 닫힘감시)\n\n후부운전실\n비상제동 안전루프 구성\n\nATC로 HCR 여자신호 입력\n\n후부표지등 좌측\n\n17\n\n역전기 F / R\n\nLIU1\n\nLIU2\n\nAP. CBSU1TC\n\nAP. CBSU2TC\n\nAP. CBDO4TC\n\n704\n\nVC.RL1HC\n\nVC.RL2HC\n\nVC.RL1TC\n\nVC.RL2TC\n\nLIU1\n\nLIU2\n\nVC.RL1HC\n\nVC.RL2HC\n"
+    },
+    {
+      "id": "5869547c-5ed0-4f8f-a278-cce06e564a7e",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 18,
+      "text": "열차무선전화기"
+    },
+    {
+      "id": "1a693f6e-279a-4f67-8c45-e4640fd713fb",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 28,
+      "text": "승강장안전문(PSD) 무선(RF) 닫힘불능으로 기관사조작반 수동닫힘 2개역 이상 취급 시\n\n① 승강장안전문 (PSD) 무선(RF) 닫힘불능 시 조치방법\n\n27\n\n☞ PSD 무선(RF) 닫힘불능\n\n☞ 수동닫힘 취급\n\n전원\nS/W\n\n노선모드\n\n닫힘\n\n승강장안전문(PSD)\n개방 상태\n\n승강장안전문(PSD) \n전체닫힘 완료\n\n차상PSD 무선(RF) 장치\n\n노선모드 − 운행 방향(상선 또는 하선) 선택 후 출입문 닫힘 취급\n\n차상PSD 무선(RF) 장치 우측면 전원 S/W RESET 후 출입문 닫힘 취급(복귀불능 시)\n\n☞ PSD 무선(RF) 닫힘완료\n\n운행 방향(상선 또는 하선) 선택\n\n5 ) 6호선 승강장안전문(PSD) 고장 시\n\nLine 6 신내"
+    },
+    {
+      "id": "e7efbb1d-ffdb-4904-8e34-3084d03a3329",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 28,
+      "text": "승강장안전문(PSD) 무선(RF) 닫힘불능으로 기관사조작반 수동닫힘 2개역 이상 취급 시"
+    },
+    {
+      "id": "ec000149-9d95-466d-bc14-199301b60dee",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 28,
+      "text": "① 승강장안전문 (PSD) 무선(RF) 닫힘불능 시 조치방법"
+    },
+    {
+      "id": "48cf43c4-5559-4120-8d43-b9f3051c69ef",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 28,
+      "text": "☞ PSD 무선(RF) 닫힘불능"
+    },
+    {
+      "id": "f90ea189-017f-42b2-a6aa-50a7d375bbdb",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 28,
+      "text": "차상PSD 무선(RF) 장치"
+    },
+    {
+      "id": "a1003248-1b50-4af6-aebd-7409d69be8c6",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 28,
+      "text": "차상PSD 무선(RF) 장치 우측면 전원 S/W RESET 후 출입문 닫힘 취급(복귀불능 시)"
+    },
+    {
+      "id": "31633be5-bf92-4a31-b7a5-f9d995f5dbfe",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 28,
+      "text": "☞ PSD 무선(RF) 닫힘완료"
+    },
+    {
+      "id": "1b1e6649-e79f-430b-8d51-f1578c959575",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 32,
+      "text": "현 상\n\n(1) 역전기 전·후진 위치에서 전차선 및 축전지전압계 “0” V 현시\n(2) TCMS 모니터 현시 불능\n(3) 운전실 내 각종 표시등 소등\n(4) ADU 무현시 및 열차무선 불능\n\n조 치 사 항\n\n(1) 역전기 중립(약 5초 경과) 후 재차 전·후진 해본다\n(2) 전·후부Tc차 ① AP.CBBCC 확인 후 차단 시 복귀\n - 운행 중 전·후부Tc차 중 한쪽이 차단되어도 직류모선(704선) 가압상태 유지\n - 복귀 후 반드시 재기동 또는 AP.CBSU1TC RESET(차단 후 복귀) 시도\n (TC의 AP.CBBCC 차단확인 감시기능 소거)\n(3) 전부Tc차 기동불능 시 후부Tc차 기동 시도, 불능 시 비상열차무선으로 관제센터 보고\n - 축전지 전압상태 및 차량기동반 출동 요청\n ♣ 운행 중 발생 시"
+    },
+    {
+      "id": "65026dcb-16ab-4732-92fe-304adba2eb47",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 32,
+      "text": "(1) 역전기 전·후진 위치에서 전차선 및 축전지전압계 “0” V 현시\n(2) TCMS 모니터 현시 불능\n(3) 운전실 내 각종 표시등 소등\n(4) ADU 무현시 및 열차무선 불능"
+    },
+    {
+      "id": "4172ff5a-5af0-468c-a031-8b9623ed9dc7",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 32,
+      "text": "(1) 역전기 중립(약 5초 경과) 후 재차 전·후진 해본다\n(2) 전·후부Tc차 ① AP.CBBCC 확인 후 차단 시 복귀\n - 운행 중 전·후부Tc차 중 한쪽이 차단되어도 직류모선(704선) 가압상태 유지\n - 복귀 후 반드시 재기동 또는 AP.CBSU1TC RESET(차단 후 복귀) 시도\n (TC의 AP.CBBCC 차단확인 감시기능 소거)\n(3) 전부Tc차 기동불능 시 후부Tc차 기동 시도, 불능 시 비상열차무선으로 관제센터 보고\n - 축전지 전압상태 및 차량기동반 출동 요청\n ♣ 운행 중 발생 시 “무정전 무선제어 비상방송조명장치” 사용하여 승객안내방송 실시"
+    },
+    {
+      "id": "663d4ffe-45c3-45e8-b0c9-4b225005bfde",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 54,
+      "text": "번호 | 명 칭 | 고 장 현 상\n205 | AP.CBSCPABR | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(206) : 주차제동 인가 ㅇ 주차제동등 점등\n ※ TC가 인지하고 있을 뿐 실제는 주차제동 체결 안됨\n206 | AP.CBET\n(6100호대) | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(334) : PAN 하강 고장 ㅇ PAN 하강등 점등 및 전차선 전압계『0』현시\nㅇ TCMS PAN 하강『◇』 및 VVVF『CUT』현시 ※ 6000호대 운전실 AP.CBET 차단 시 이상 없음\n207 | AP.CBHTLL | ㅇ 고장코드(551) : DC NFB Trip ※ 전조등 및 후미등 점등 불가\n208 | AP.CBPAU | ㅇ 고장코드(551) : DC NFB Trip"
+    },
+    {
+      "id": "e79f8617-360e-49a3-9282-a1989d99f276",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 54,
+      "text": "번호 | 명 칭 | 고 장 현 상\n205 | AP.CBSCPABR | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(206) : 주차제동 인가 ㅇ 주차제동등 점등\n ※ TC가 인지하고 있을 뿐 실제는 주차제동 체결 안됨\n206 | AP.CBET\n(6100호대) | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(334) : PAN 하강 고장 ㅇ PAN 하강등 점등 및 전차선 전압계『0』현시\nㅇ TCMS PAN 하강『◇』 및 VVVF『CUT』현시 ※ 6000호대 운전실 AP.CBET 차단 시 이상 없음\n207 | AP.CBHTLL | ㅇ 고장코드(551) : DC NFB Trip ※ 전조등 및 후미등 점등 불가\n208 | AP.CBPAU | ㅇ 고장코드(551) : DC NFB Trip"
+    },
+    {
+      "id": "4ee9531d-c5b3-4d5e-995a-7e7824fe4b69",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 64,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n61 | AP.CBPAPWAU | PA POWER AMP. CIRCUIT BREAKER | 방송장치 전원증폭기용 회로 차단기 | 방송장치 전원증폭기 입력단 보호용\n62 | AP.CBPAPWAU | PA POWER APP. CIRCUIT BREAKER | 방송 출력 증폭기 | 방송 출력 증폭\n63 | AP.CBPAU | PUBLIC ADDRESS UNIT CIRCUIT BREAKER | 방송장치 회로 차단기 | 방송장치 전원 보호용\n64 | AP.CBSCPARR | SECURITY/PARKING BRAKE CIRCUIT BREAKER | 보안제동/주차제동 회로 차단기 | 보안제동/주차제동 전원 보호용\n65 | AP.CBSIVC | SIV CONTROL CIR"
+    },
+    {
+      "id": "c9faf722-1056-47e2-97ff-fc0a8177c64a",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 64,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n61 | AP.CBPAPWAU | PA POWER AMP. CIRCUIT BREAKER | 방송장치 전원증폭기용 회로 차단기 | 방송장치 전원증폭기 입력단 보호용\n62 | AP.CBPAPWAU | PA POWER APP. CIRCUIT BREAKER | 방송 출력 증폭기 | 방송 출력 증폭\n63 | AP.CBPAU | PUBLIC ADDRESS UNIT CIRCUIT BREAKER | 방송장치 회로 차단기 | 방송장치 전원 보호용\n64 | AP.CBSCPARR | SECURITY/PARKING BRAKE CIRCUIT BREAKER | 보안제동/주차제동 회로 차단기 | 보안제동/주차제동 전원 보호용\n65 | AP.CBSIVC | SIV CONTROL CIR"
+    },
+    {
+      "id": "0ff4f11f-797f-4d86-8bf4-d8a6a33c4cb7",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 66,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n121 | BC.RLREO | RESCUE OPERATION RELAY | 구원운전 계전기 | 구원운전 신호 발생\n122 | BC.ST1,2,3,4 | SPEED SENSOR | 속도 감지기 | 전차 속도 감지\n123 | BC.SWAS1CO | AIR SPRIG CUT-OUT COCK BOGIC 1 | 공기스프링 차단 콕크 1 | 대차 1의 공기스프링압 차단\n124 | BC.SWAS2CO | AIR SPRIG CUT-OUT COCK BOGIC 2 | 공기스프링 차단 콕크 2 | 대차 2의 공기스프링압 차단\n125 | BC.SWBR1CO | BRAKE CUT-OUT COCK BOGIC 1 | 제동 차단 콕크 1 | 대차 1의 제동압 차단\n126 | BC.SW"
+    },
+    {
+      "id": "8a79317a-d221-410a-95da-b596940ede06",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 66,
+      "text": "| AIR CONDITION UNIT 1 | 냉방장치 1 | 실내 냉방\n144 | CE.ACU2 | AIR CONDITION UNIT 2 | 냉방장치 2 | 실내 냉방\n145 | CE.ANTTR | TRAIN RADIO ANTERNNA | 열차무선장치 안테나 | 열차무선장치 안테나\n146 | CE.CDX1 | LOW TENTION JUNCTION 1 | 저압 연결기 1 | 저압 인통선 연결\n147 | CE.CDX2 | LOW TENTION JUNCTION 2 | 저압 연결기 2 | 저압 인통선 연결\n148 | CE.CFEF1 | LINE FLOWER FANS CONTACTOR 1 | 증발기 팬 접촉기 1 | 증발기\n149 | CE.CFEF2 | LINE FLOWER FANS CONTACTOR 2 | 증발기 "
+    },
+    {
+      "id": "ef98ee4d-2f3a-498f-bf10-0f1a60de3dfa",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 66,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n121 | BC.RLREO | RESCUE OPERATION RELAY | 구원운전 계전기 | 구원운전 신호 발생\n122 | BC.ST1,2,3,4 | SPEED SENSOR | 속도 감지기 | 전차 속도 감지\n123 | BC.SWAS1CO | AIR SPRIG CUT-OUT COCK BOGIC 1 | 공기스프링 차단 콕크 1 | 대차 1의 공기스프링압 차단\n124 | BC.SWAS2CO | AIR SPRIG CUT-OUT COCK BOGIC 2 | 공기스프링 차단 콕크 2 | 대차 2의 공기스프링압 차단\n125 | BC.SWBR1CO | BRAKE CUT-OUT COCK BOGIC 1 | 제동 차단 콕크 1 | 대차 1의 제동압 차단\n126 | BC.SW"
+    },
+    {
+      "id": "755c3b5d-f0c1-4fe3-804b-33820c672c1a",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 66,
+      "text": "| AIR CONDITION UNIT 1 | 냉방장치 1 | 실내 냉방\n144 | CE.ACU2 | AIR CONDITION UNIT 2 | 냉방장치 2 | 실내 냉방\n145 | CE.ANTTR | TRAIN RADIO ANTERNNA | 열차무선장치 안테나 | 열차무선장치 안테나\n146 | CE.CDX1 | LOW TENTION JUNCTION 1 | 저압 연결기 1 | 저압 인통선 연결\n147 | CE.CDX2 | LOW TENTION JUNCTION 2 | 저압 연결기 2 | 저압 인통선 연결\n148 | CE.CFEF1 | LINE FLOWER FANS CONTACTOR 1 | 증발기 팬 접촉기 1 | 증발기\n149 | CE.CFEF2 | LINE FLOWER FANS CONTACTOR 2 | 증발기 "
+    },
+    {
+      "id": "61e795f4-5147-46ff-a98e-074f657878da",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 71,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n271 | CE.SP1RM | ROOM SPEAKER 1 | 실내 스피커1 | 차내 방송\n272 | CE.SP2RM | ROOM SPEAKER 2 | 실내 스피커2 | 차내 방송\n273 | CE.SP3RM | ROOM SPEAKER 3 | 실내 스피커3 | 차내 방송\n274 | CE.SP4RM | ROOM SPEAKER 4 | 실내 스피커4 | 차내 방송\n275 | CE.SP5RM | ROOM SPEAKER 5 | 실내 스피커5 | 차내 방송\n276 | CE.SP6RM | ROOM SPEAKER 6 | 실내 스피커6 | 차내 방송\n277 | CE.SPHOR | ELECTRICAL HORN SPEAKER | 전자 혼 스피커 | 전자 혼 스피커\n278 | CE"
+    },
+    {
+      "id": "43b038d5-25ad-4c1c-aefb-49031ea19eb5",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 71,
+      "text": "RAIN NUMBER SIGN UNIT | 열차 번호 표시기 | 열차 번호 표시\n295 | CE.TRU | TRAIN RADIO UNIT | 열차 무선 장치 | 열차 무선 장치\n296 | CE.TSACU1 | ACU1 THERMOSTAT | 냉방기 온도 조절기 1 | 냉방기 온도 조절\n297 | CE.TSACU2 | ACU2 THERMOSTAT | 냉방기 온도 조절기 2 | 냉방기 온도 조절\n298 | CE.TSRHT | ROOM HEATER THERMOSTAT | 난방기 온도 조절기 | 난방기 온도 조절\n299 | CHRE | CHARGING RESISTOR | 충전 저항 | 인버터 초기기동시 과도전류 제한\n300 | CMGR | CM GO RELAY | CM 기동 계전기 | CM 기동장치 기동\n\n135\n"
+    },
+    {
+      "id": "97d6e8f5-2340-45fb-8725-064602ffda3b",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 71,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n271 | CE.SP1RM | ROOM SPEAKER 1 | 실내 스피커1 | 차내 방송\n272 | CE.SP2RM | ROOM SPEAKER 2 | 실내 스피커2 | 차내 방송\n273 | CE.SP3RM | ROOM SPEAKER 3 | 실내 스피커3 | 차내 방송\n274 | CE.SP4RM | ROOM SPEAKER 4 | 실내 스피커4 | 차내 방송\n275 | CE.SP5RM | ROOM SPEAKER 5 | 실내 스피커5 | 차내 방송\n276 | CE.SP6RM | ROOM SPEAKER 6 | 실내 스피커6 | 차내 방송\n277 | CE.SPHOR | ELECTRICAL HORN SPEAKER | 전자 혼 스피커 | 전자 혼 스피커\n278 | CE"
+    },
+    {
+      "id": "0b42e62f-6c5a-4c60-9fb3-f4ea6e1b93ca",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 71,
+      "text": "RAIN NUMBER SIGN UNIT | 열차 번호 표시기 | 열차 번호 표시\n295 | CE.TRU | TRAIN RADIO UNIT | 열차 무선 장치 | 열차 무선 장치\n296 | CE.TSACU1 | ACU1 THERMOSTAT | 냉방기 온도 조절기 1 | 냉방기 온도 조절\n297 | CE.TSACU2 | ACU2 THERMOSTAT | 냉방기 온도 조절기 2 | 냉방기 온도 조절\n298 | CE.TSRHT | ROOM HEATER THERMOSTAT | 난방기 온도 조절기 | 난방기 온도 조절\n299 | CHRE | CHARGING RESISTOR | 충전 저항 | 인버터 초기기동시 과도전류 제한\n300 | CMGR | CM GO RELAY | CM 기동 계전기 | CM 기동장치 기동"
+    },
+    {
+      "id": "89df6059-27ee-4f3b-89dd-620b52f82a6b",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 78,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 001 | TC-TC간 통신고장 | 1.고장차 모니터 제어불능\u000b2. ADU 내 주•보조 ATC 고장등 점등\u000b3. 추진력 정상\u000b4. 후부TC 고장 시 열차운행 지장 없음 | 1. 해당 차호 AP.CBSU1TC 차단여부 확인\u000b2. 재기동\u000b3. 복귀불능 시 비상모드 운전 가능\nF/N 002 | 1호차 TC-LIU2간 통신고장 | 정상운행 | 해당 차호 AP.CBSU2TC 차단여부 확인\nF/N 003 | 0호차 TC-LIU2간 통신고장 | 정상운행 | \nF/N 004 | TC 모니터 무응답 | 1. TCMS 모니터 현시불능\u000b2. 정상운행 가능 | 모니터 전원(AP.CBDISPU) 차단여부 확인 \u000b − 복귀불능시 관제지시 따름\nF/N 005 | T"
+    },
+    {
+      "id": "cad9b7ee-ce58-4859-85da-18446de55739",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 78,
+      "text": "038 | TC - TWC 통신고장 | 1. 자동운전 불가, \u000b2. 방송 및 표시기 동작 안됨\u000b3. 출입문은 출입문 수/수만 동작 | 1. 수동운전, 출입문 수/수 취급\u000b2. 육성방송 실시\nF/N 039 | TC - 구원 통신고장 | 기관차아의 구원시에만 적용 | −\nF/N 040 | TC - 무선장치 통신고장 | 열차무선 안됨 | AP.CBSU1TC NFB 재투입, 후부절체 확인, 정상운행\nF/N 041 | TC - 방송장치 통신고장 | 자동방송 안됨 | 통합설정기 전원 NFB 재투입, 후부절체 확인, 정상운행\nF/N 042 | TC - 표시기장치 통신고장 | 행선, 열번, 객실안내표시기 표출 안됨 | 통합설정기 전원 NFB 재투입, 후부절체 확인, 정상운행\n\n142\n\n1 ) TCMS운전실(TCMS/DC)"
+    },
+    {
+      "id": "7640e3e8-357a-4c82-881d-a526337f582a",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 78,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 001 | TC-TC간 통신고장 | 1.고장차 모니터 제어불능\u000b2. ADU 내 주•보조 ATC 고장등 점등\u000b3. 추진력 정상\u000b4. 후부TC 고장 시 열차운행 지장 없음 | 1. 해당 차호 AP.CBSU1TC 차단여부 확인\u000b2. 재기동\u000b3. 복귀불능 시 비상모드 운전 가능\nF/N 002 | 1호차 TC-LIU2간 통신고장 | 정상운행 | 해당 차호 AP.CBSU2TC 차단여부 확인\nF/N 003 | 0호차 TC-LIU2간 통신고장 | 정상운행 | \nF/N 004 | TC 모니터 무응답 | 1. TCMS 모니터 현시불능\u000b2. 정상운행 가능 | 모니터 전원(AP.CBDISPU) 차단여부 확인 \u000b − 복귀불능시 관제지시 따름\nF/N 005 | T"
+    },
+    {
+      "id": "e18a48e9-7f87-4e3e-ba6d-9f8d5cd1835a",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 78,
+      "text": "038 | TC - TWC 통신고장 | 1. 자동운전 불가, \u000b2. 방송 및 표시기 동작 안됨\u000b3. 출입문은 출입문 수/수만 동작 | 1. 수동운전, 출입문 수/수 취급\u000b2. 육성방송 실시\nF/N 039 | TC - 구원 통신고장 | 기관차아의 구원시에만 적용 | −\nF/N 040 | TC - 무선장치 통신고장 | 열차무선 안됨 | AP.CBSU1TC NFB 재투입, 후부절체 확인, 정상운행\nF/N 041 | TC - 방송장치 통신고장 | 자동방송 안됨 | 통합설정기 전원 NFB 재투입, 후부절체 확인, 정상운행\nF/N 042 | TC - 표시기장치 통신고장 | 행선, 열번, 객실안내표시기 표출 안됨 | 통합설정기 전원 NFB 재투입, 후부절체 확인, 정상운행"
+    }
+  ],
+  "atc": [
+    {
+      "id": "e0010f70-1db0-4006-a223-0148a341a73f",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 7,
+      "text": "TC2\n\nTC1\n\nTC1\n\n6\n\nTRC4\n\nECU\n\nECU\n\nECU\n\nECU\n\nECU\n\n제어대\n\nTC2\n\nATO\n\nATC\n\nTWC\n\n방송장치\n\n표시기\n\n열차무선\n\nATO\n\nATC\n\nTWC\n\n방송장치\n\n표시기\n\n열차무선\n\nTRC4\n\nCC\n\nNode\n\nCC\n\nNode\n\nCC\n\nNode\n\nCC\n\nNode\n\nCC\n\nNode\n\nCC\n\n출입문\n\n출입문\n\n출입문\n\n출입문\n\n출입문\n\n출입문\n\nSIV\n\nVVVF\n\nVVVF\n\nSIV\n\nPAN\n\nCM\n\nTc\n\nM1\n\nM2\n\nT1\n\nTc\n\nT2\nM1M2\n\n♣ TCMS백업시스템 : 운전실 인터페이스를 위한 TC1•2 사용\n – TC1 고장 시 ATC/ATO 작동불능, 모니터제어 불능, 메타계 DOWM(공기압력계 정상)\n 예외) TC2는 ATC/ATO와 통신(TRC4)선이 연결되어 "
+    },
+    {
+      "id": "cdf45e5c-9f88-447e-88c4-5b83668bafcd",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 7,
+      "text": "ATC"
+    },
+    {
+      "id": "71070e20-a407-44c2-80e0-f57027a73722",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 7,
+      "text": "ATC"
+    },
+    {
+      "id": "1b1c982f-8877-4d4b-b15b-d67f35eda759",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 7,
+      "text": "♣ TCMS백업시스템 : 운전실 인터페이스를 위한 TC1•2 사용\n – TC1 고장 시 ATC/ATO 작동불능, 모니터제어 불능, 메타계 DOWM(공기압력계 정상)\n 예외) TC2는 ATC/ATO와 통신(TRC4)선이 연결되어 있지 않기 때문에 \n – TC1고장 시 예비 컴퓨터인 TC2가 최소한의 열차제어 기능 수행으로\n 비상모드운전 및 출입문 수/수 기능만 가능"
+    },
+    {
+      "id": "9ed27b18-57bc-4c19-8737-ec8487afa768",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 7,
+      "text": "♣ TC(Train Computer)\n – 운전실 제어대의 각종 스위치 및 장비와 연결, 주간제어기, 표시등, 푸시버튼 등을 제어 감시\n 운전실에 설치된 주변 장치(ATC, ATO, TWC, 방송, 표시기, 열차무선)을 제어 감시\n 각 차량 CC와 직렬통신, 열차제어에 필요한 각종 데이터 송 ∙ 수신, 1개 유닛에 2개의 컴퓨터(TC1, TC2)로 구성"
+    },
+    {
+      "id": "629e861d-d3c5-4f09-afbc-b4c81e2cb121",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 8,
+      "text": "7\n\n④ TCMS 제어 및 감시 시스템\n\nTCMS\n\n운전실\n\nATO\n\nATC\n\nATC/ATO\n장치\n\n추진장치\n\nVVVF 인버터\n\nM\n\n범례 : TCMS인터페이스\n\n차제장치\n\n냉난방\n객실등\n승객경보\n방송\n표시기\n\n승\n객\n\n}\n\n출입문\n\nADU\n\n기관사\n\n차륜\n\n고압장치\n\n비상전원차단(Emergency Trip)\n\n판토그라프\n\n지상신호장치\n\n모든 출입문 닫힘\n\n출입문 열림허가\n\n비상, 보안, 주차제동\n\n공기제동\n\n역행,\n회생제동\n\nAC380V\nDC100V\n\nIVHB\n\nHB\n\n제동장치\nCM\n\n보조전원장치\n\nSIV\n\n1 ) 6호선 전동차 일반\n\nLine 6 신내"
+    },
+    {
+      "id": "283ee7d3-6f10-4812-aa99-4b10d7592b5f",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 8,
+      "text": "ATC"
+    },
+    {
+      "id": "c99c2338-e57a-45b0-b724-6b76176178b8",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 8,
+      "text": "ATC/ATO\n장치"
+    },
+    {
+      "id": "caae3130-f668-41b1-93a8-fefa0c948c5e",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 9,
+      "text": "⑤ ATO 자동운전 설정 시스템\n\n【ATO 자동운전 설정 조건】\n\n【ATO 자동운전 설정 시스템】\n\n8\n\n(1) 기지 출고선 TWC 루프 또는 본선 TWC 루프 위\n ◦ 운전모드 : 자동, 역전기 : 전진, 주간제어기 : 중립\n(2) TCMS : HCR 여자 → ATC CONTROL ON 시킴. \n(3) TCMS는 ATC로부터 모드유효 신호를 수신한 후 ATO로 ATO 활성화 신호 전송\n(4) ATO는 Track Data Base를 읽은 후 TCMS로 ATO Ready 전송\n(5) ATC는 지상으로부터 ATC 신호 수신 후 TCMS로 출발허용신호 전송\n(6) 출발버튼 점등(TCMS) 후 출발 버튼(Departure P.B) 취급에 따라 자동 출발\n\n【ATO 자동운전 설정 과정】\n\n1 ) 6호선 전동차 일반\n"
+    },
+    {
+      "id": "3e4fed6b-3497-4df0-af15-daa1ed1706ee",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 9,
+      "text": "(1) 기지 출고선 TWC 루프 또는 본선 TWC 루프 위\n ◦ 운전모드 : 자동, 역전기 : 전진, 주간제어기 : 중립\n(2) TCMS : HCR 여자 → ATC CONTROL ON 시킴. \n(3) TCMS는 ATC로부터 모드유효 신호를 수신한 후 ATO로 ATO 활성화 신호 전송\n(4) ATO는 Track Data Base를 읽은 후 TCMS로 ATO Ready 전송\n(5) ATC는 지상으로부터 ATC 신호 수신 후 TCMS로 출발허용신호 전송\n(6) 출발버튼 점등(TCMS) 후 출발 버튼(Departure P.B) 취급에 따라 자동 출발"
+    },
+    {
+      "id": "e793073a-0451-4d57-9d1e-018ae8cb4724",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 10,
+      "text": "PSM4\n\n(3.5M)\n\nPSM3\n\n(21M)\n\n정지위치 전\n\n(108.5M)\n\nPSM2\n\n정지위치 전\n\n(546M)\n\nPSM1\n\n⑥ ATO 정속제어와 PSM 기능\n\nPSM : Precision Stop Marker(정밀 정지 표시) : 정차목표 ±35cm 이내의 범위에 자동적으로 열차정지\n\nPSM 1, 2 연속 미검지시 : FSB 체결\n\nPSM 4 미검지 시\n출입문 자동열림 불능\n\nPRO\nFILE 2\n\n정지위치 전\n\n출발역\n\n정지위치\n\n도 착 역\n\n정속도제어\n\n정속도제어\n\n감속제어\n\n가속제어\n\n정밀정차제어\n\n정밀정차\nPTOFILE 1\n\n가속제어\n\n출발제어\n\n80신호\n\n70신호\n\n60신호\n\nATC 제한속도\n\nATC 제한속도\n\n9\n\n− PSM 5 : 역방향 진행용 표지, 검지해서는 안 될 PSM 1.5M 전방"
+    },
+    {
+      "id": "d72a614c-8e44-4783-89a1-8d413b7e81fd",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 10,
+      "text": "ATC 제한속도"
+    },
+    {
+      "id": "eea16df4-9653-49b6-aa52-3e80890806bb",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 10,
+      "text": "ATC 제한속도"
+    },
+    {
+      "id": "2f288883-dcef-47ef-a99a-d9626abdb43e",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 11,
+      "text": "♣ 지상신호장치\n• 열차정지신호(TB) 수신 \n - ODR 여자 속도코드 제거 출입문 열림\n• 시간경과 또는 열차 출입문 닫힘 정보 수신\n - ODR 소자 속도코드 송출\n\n⑦ ATC 시스템의 차상 지상 간 신호흐름\n\n10\n\nATC 시스템의 속도코드(Code Rate) 수신 및 해석 과정\n\n♣ 차상 ATC 장치\n• 지상으로 부터 신호 수신 \n - 신호해독\n 주파수별 속도코드 분석\n - 속도코드, 출입문 코드 구분\n• 과속검지\n - 지령속도와 실제속도 비교\n - 과속검지, TCMS로 FSB 요구\n - 감속도 부족 시 비상제동 체결\n• 출입문 열림 허가\n\nTWC\n안테나\n\nGOV\n\n필터\n\n실제속도\n\n지령속도\n\nCPU\n\n- 신호해독\n- 과속검지\n- 출입문 제어\n\nATO\n\nTCMS\n\n지령속도\n\n- 출입문\n 열림허용\n "
+    },
+    {
+      "id": "88e63c51-f283-45b2-a001-360a0985c040",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 11,
+      "text": "⑦ ATC 시스템의 차상 지상 간 신호흐름"
+    },
+    {
+      "id": "bee1b145-fe4b-4175-a1b3-45f80615261b",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 11,
+      "text": "ATC 시스템의 속도코드(Code Rate) 수신 및 해석 과정"
+    },
+    {
+      "id": "053ffb11-b78e-4888-b6aa-6d9ac9863191",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 11,
+      "text": "♣ 차상 ATC 장치\n• 지상으로 부터 신호 수신 \n - 신호해독\n 주파수별 속도코드 분석\n - 속도코드, 출입문 코드 구분\n• 과속검지\n - 지령속도와 실제속도 비교\n - 과속검지, TCMS로 FSB 요구\n - 감속도 부족 시 비상제동 체결\n• 출입문 열림 허가"
+    },
+    {
+      "id": "c589f9f3-331d-49fd-99ed-069b7def2075",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 11,
+      "text": "ATC타코메타"
+    },
+    {
+      "id": "34bba851-2206-4494-bc51-8007563ba6ee",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 11,
+      "text": "ATC\n안테나"
+    },
+    {
+      "id": "428f419e-6015-437f-9eb1-ca060d6112a7",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 11,
+      "text": "ATC(지상)"
+    },
+    {
+      "id": "45ed44d1-ed72-4b15-8b73-ae6e50c714a7",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 11,
+      "text": "ATC"
+    },
+    {
+      "id": "0a9a8a3b-137c-49f6-8bfd-990ad80e0e76",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 12,
+      "text": "TWC Carrior 검지\n\nPSM 4 검지\n\n열차정지 0 Km/h\n\n목표지점 45cm 이내\n\n＆\n\nATO TB 생성\n\n※ TB: Train Berthed, 열차 정지신호\n 출입문 자동열림을 위해서는 열차가 승강장\n 정위치 정차 지점에 완전 정차가 확인되어야 \n TB를 생성, 지상 신호장치로 전송\n\nATO\n\nTWC\n\nTC\n\nATC\n\nCC\n\nTWC 안테나\n\nATC 안테나\n\nOD LOOP\n\n궤도회로\n\nLCTC\n\n⑦ 출입문 열림지령\n\n③ TB\n\n③ TB(열차정차신호)\n\n④ TB\n\n⑥ EDR / L\n\n⑤ ODR / L\n\n⑤ ODR / L\n\n① TB\n\n② TB\n\n지상신호장치\n\n속도신호\n\nOD신호\n\n♣ 출입문 자동열림 절차(ATC 및 TCMS 인터페이스) 과정\n ∘ TCMS의 출입문 제어는 ATC 시스템과 연계되어 동"
+    },
+    {
+      "id": "3b2629ba-355c-4d95-ac4f-ff2a15e9efb8",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 12,
+      "text": "ATC"
+    },
+    {
+      "id": "850bdcf5-23c9-4e90-a07d-e1594a06a5f3",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 12,
+      "text": "ATC 안테나"
+    },
+    {
+      "id": "7538c16b-e3c5-415c-868a-342d535d1b3d",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 12,
+      "text": "♣ 출입문 자동열림 절차(ATC 및 TCMS 인터페이스) 과정\n ∘ TCMS의 출입문 제어는 ATC 시스템과 연계되어 동작"
+    },
+    {
+      "id": "83708da5-be7a-46d8-96fb-15a3affcc07a",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 12,
+      "text": "⑧ ATC 장치의 출입문 자동열림 과정"
+    },
+    {
+      "id": "27828aeb-a13b-4d35-8c0a-08c5dbf88989",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 18,
+      "text": "2 ) 운전실 선택 및 컴퓨터 기능\n\n전부Tc차\nHCR여자되면\n\n전부표지등 좌측\n\n전부표지등 우측\n\n모든출입문 닫힘계전기(DCT) 여자\n\n비상제동 안전루프 회로\n\n열차무선전화기\n\nADU 전원입력\n\n전부Tc차TCR\n소자조건\n\n비상모드에서 ATC 비상제동 완해\n\n비상제동계전기(RLEB) 여자\n\n후부Tc차TCR여자되면\n\n후부표지등 우측\n\n출입문 연동회로\n(모든출입문 닫힘감시)\n\n후부운전실\n비상제동 안전루프 구성\n\nATC로 HCR 여자신호 입력\n\n후부표지등 좌측\n\n17\n\n역전기 F / R\n\nLIU1\n\nLIU2\n\nAP. CBSU1TC\n\nAP. CBSU2TC\n\nAP. CBDO4TC\n\n704\n\nVC.RL1HC\n\nVC.RL2HC\n\nVC.RL1TC\n\nVC.RL2TC\n\nLIU1\n\nLIU2\n\nVC.RL1HC\n\nVC.RL2HC\n"
+    },
+    {
+      "id": "d2866ef6-9d6d-48d7-9dbc-2c545efd4f8a",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 18,
+      "text": "비상모드에서 ATC 비상제동 완해"
+    },
+    {
+      "id": "dd15c988-6f69-43e3-ab54-c8053d562cb6",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 18,
+      "text": "ATC로 HCR 여자신호 입력"
+    },
+    {
+      "id": "3fcb3c6f-1c61-4278-9a77-6ee688c00c66",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 21,
+      "text": "① Tc차(1호, 0호) 제어분전함 주요 NFB 기능\n\n출입문 관련 : 녹색\n\n101번 : AP.CBDO1CC : 좌측 출입문 제어\n102번 : AP.CBDO2CC : 우측 출입문 제어\n108번 : AP.CBDCOC : 인접차출입문닫힘\n120번 : AP.CBDIL : 출입문 연동\n123번 : AP.CB1KPHL : 1Km/h 이하 속도(좌)\n124번 : AP.CB1KPHR : 1Km/h 이하 속도(우)\n\n전원제어 관련 : 빨강\n\n111번 : AP.CBSU1TC : 1TC 전원공급\n112번 : AP.CBSU2TC : 2TC 전원공급\n113번 : AP.CBSUCC : CC 전원공급\n\n206번 : AP.CBET : 비상전원차단\n209번 : AP.CBDISPU : 모니터 전원\n210번 : AP.CBATC1 : AT"
+    },
+    {
+      "id": "1ae2dddf-cefc-4a6b-9c32-df044dac0f9c",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 21,
+      "text": "전원제어 관련 : 빨강\n\n111번 : AP.CBSU1TC : 1TC 전원공급\n112번 : AP.CBSU2TC : 2TC 전원공급\n113번 : AP.CBSUCC : CC 전원공급\n\n206번 : AP.CBET : 비상전원차단\n209번 : AP.CBDISPU : 모니터 전원\n210번 : AP.CBATC1 : ATC1 전원공급\n211번 : AP.CBATC2 : ATC2 전원공급\n223번 : AP.CBBCC : 축전지접촉기"
+    },
+    {
+      "id": "5d44e70e-03e5-4485-ac21-68850d951954",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 47,
+      "text": "1 ) 전체 출입문 열림불능 시 ̶ 점검사항\n\nCE.RLDCT\n\n1064\n\n746\n\nTCR 1\n\n1061\n\n1063\n\nAP.CBDIL\n\nDIL\n\nDIR\n\nDIL\n\nDIR\n\nDIR\n\nDIL\n\nCE.RLDCT\n\nHCR 1\n\nHCR 1\n\n전체차량 출입문\n닫힘확인 계전기\n\n704\n\n746\n\n1061\n\n1063\n\nOV746\n\n전부Tc차\n\n후부Tc차\n\n중간차\n\nTCR 1\n\n704\n\nAP.CBDIL\n\n전체차량 출입문\n닫힘확인 계전기\n\n전부Tc차\n\nS\n\nHCR 여자\nTCR 여자\n\nAP.\nCBDO4TC\n\nAP.\nCB1KPHL(좌) CB1KPHR(우)\n\n(1Km/h계전기)\n\n출입문 열림지령\n\n출입문 열림지령\n\nCE.RLDIL/R\n\nAP.\nCBDO1CC(좌) CBDO2CC(우)\n\nCE.RLDEOL/R\n\n인접차 비상열림\n\n출입문"
+    },
+    {
+      "id": "072fece9-14dd-42c3-bcae-75553bca1d1a",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 47,
+      "text": "ATC장치"
+    },
+    {
+      "id": "bda5cafb-944a-4135-b9d0-65e3a7354cca",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 48,
+      "text": "현 상\n\n(1) TCMS 화면에 차량 전체출입문 닫힘 현시\n\n조 치 사 항\n\n※ 미달, 진과정차 또는 지상신호(ODL / ODR) 미수신 시 관제센터 보고 후 지시에 따른다\n - 진과정차 시 운전모드 비상, 역전기 후진, 출입문모드 수/수로 정위치조정운전 후\n 운전모드 수동, 출입문모드 수/수 및 CCTV 확인 후 승강장쪽 측면 출입문열림버튼 취급\n(1) 전부Tc차 ① AP.CB1KPHL/R 확인 후 차단 시 복귀\n(2) 전부Tc차 ② 1Km/h계전기(CE.RL1KPHL/R)를 가볍게 두드려 본다\n(3) 전부Tc차 ③ AP.CBDO4TC 확인 후 차단 시 복귀\n(4) ATC 정상 : 운전모드 수동 및 출입문모드 수/수 전환 후 측면 출입문열림버튼 취급\n ※ ④ ATC 고장 시 : 운전모드 비상 및 출입문모드"
+    },
+    {
+      "id": "d12c08fb-951c-42a0-b7ca-bc8652b2fbaf",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 48,
+      "text": "※ 미달, 진과정차 또는 지상신호(ODL / ODR) 미수신 시 관제센터 보고 후 지시에 따른다\n - 진과정차 시 운전모드 비상, 역전기 후진, 출입문모드 수/수로 정위치조정운전 후\n 운전모드 수동, 출입문모드 수/수 및 CCTV 확인 후 승강장쪽 측면 출입문열림버튼 취급\n(1) 전부Tc차 ① AP.CB1KPHL/R 확인 후 차단 시 복귀\n(2) 전부Tc차 ② 1Km/h계전기(CE.RL1KPHL/R)를 가볍게 두드려 본다\n(3) 전부Tc차 ③ AP.CBDO4TC 확인 후 차단 시 복귀\n(4) ATC 정상 : 운전모드 수동 및 출입문모드 수/수 전환 후 측면 출입문열림버튼 취급\n ※ ④ ATC 고장 시 : 운전모드 비상 및 출입문모드 수/수 전환 후 측면 출입문열림버튼 취급\n(5) 개방불능 시 승객안내방송 후"
+    },
+    {
+      "id": "289bacbb-b23e-40a7-b367-00b535b83d41",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 49,
+      "text": "1 ) 전체 출입문 열림불능 시 ̶ 점검사항\n\n1054\n\nDS1\n\nCE.RLDIL\n\nAP.CBDO1CC\n\n차측등(좌측)\n\n전자변\n\nL1\n\nL2\n\nL3\n\nL4\n\n1033\n\nL1출입문 열림신호\n\n1034\n\n1035\n\n1036\n\nCE.RLDIL\n\nL1 열림\n\nL2 열림\n\nL3 열림\n\nL4 열림\n\n출입문바이패스 S/W\n\nDS1\n\nDS2\n\nDS3\n\nDS4\n\nDS2\n\nDS3\n\nDS4\n\n1091\n\n닫힘 시 접촉\n\n열림 시 접촉\n\nBS1\n\nBS2\n\nBS3\n\nBS4\n\n1401\n\n1402\n\n1403\n\n1404\n\n1037\n\n1038\n\n1039\n\n1040\n\n1083\n\n1084\n\nOV711\n\nOV24-3\n\n1Km/h계전기(좌)\n\nATC\n\nTWC\n\nATC\n\nTCMS\n\n신호기계실\n(지상 ATC)\n\nOpen Door 신호수신\n - 출입"
+    },
+    {
+      "id": "a4707665-ff33-4c92-b1eb-5e251f333031",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 49,
+      "text": "ATC"
+    },
+    {
+      "id": "9c35c6a5-7c3b-4c4a-8a62-77a50cf891d8",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 49,
+      "text": "ATC"
+    },
+    {
+      "id": "b182191d-5d33-428f-a5ac-ffedc70c3adc",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 49,
+      "text": "신호기계실\n(지상 ATC)"
+    },
+    {
+      "id": "de1f67a7-9839-4dc5-b3e6-15ad34599805",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 49,
+      "text": "ATC"
+    },
+    {
+      "id": "3e988dfe-bd97-47c8-a3fb-568dff59845b",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 49,
+      "text": "출입문열림 허용계전기(EDL, EDR) \n여자로 ATC의 출입문 열림조건 완성"
+    },
+    {
+      "id": "540e054a-d3ff-442b-909a-79ea2fa6aed0",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 49,
+      "text": "비상운전모드에서는 ATC와 상관없이 전부운전실에서 좌•우출입문 개방가능"
+    },
+    {
+      "id": "2ce24b8c-b630-4a35-a236-d3134210f39c",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 50,
+      "text": "원 인\n\n(1) 전부Tc차 AP.CB1KPHL/R 차단 시(1Km/h계전기 전원 차단) \n - 출입문 전자변 여자 불능\n(2) 미달, 진과정차로 인해 출입문열림신호(ODL / ODR) 수신 불능 시\n - ATC의 출입문열림허용계전기(EDL, EDR) 여자 불능\n(3) ATC 장치 고장 시\n(4) 차상 TWC 통신고장 시\n(5) 지상신호장치 이상으로 정지표시등(Dwell Light) 미점등 또는 고장 시\n(6) 출입문닫힘버튼 고착 시, 수동열림 위치에서 열림버튼 불량 시\n(7) 반대편 출입문이 1개라도 열려 있을 때\n - 출입문이 1개라도 열림신호가 입력되면 반대편 열림신호 출력 안함\n ※ 단, 출입문바이패스(DSBS) S/W가 취급된 경우는 예외이며, \n 전체출입문바이패스(ADBP) S/W 취급시는 개방된 "
+    },
+    {
+      "id": "9d41fe3b-a6ec-4d88-bfa5-51aef062c48c",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 50,
+      "text": "(1) 전부Tc차 AP.CB1KPHL/R 차단 시(1Km/h계전기 전원 차단) \n - 출입문 전자변 여자 불능\n(2) 미달, 진과정차로 인해 출입문열림신호(ODL / ODR) 수신 불능 시\n - ATC의 출입문열림허용계전기(EDL, EDR) 여자 불능\n(3) ATC 장치 고장 시\n(4) 차상 TWC 통신고장 시\n(5) 지상신호장치 이상으로 정지표시등(Dwell Light) 미점등 또는 고장 시\n(6) 출입문닫힘버튼 고착 시, 수동열림 위치에서 열림버튼 불량 시\n(7) 반대편 출입문이 1개라도 열려 있을 때\n - 출입문이 1개라도 열림신호가 입력되면 반대편 열림신호 출력 안함\n ※ 단, 출입문바이패스(DSBS) S/W가 취급된 경우는 예외이며, \n 전체출입문바이패스(ADBP) S/W 취급시는 개방된 반대편 출"
+    },
+    {
+      "id": "213258f3-af55-41d5-81de-16a9d575cd33",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 51,
+      "text": "CE.RLDCT\n\n1064\n\n746\n\nVC.RL1TC\n\n1061\n\n1063\n\nCE.RLDCOC\n\n704\n\nTC\n\n출입문 열림 S/W\n출입문 닫힘 S/W\n\nATC\n\nAP.CBDIL\n\nAP.CBDIL\n\nVC.RL1TC\n\nCE.RLDIL\n\nCE.RLDIR\n\nDIL\n\nDIR\n\nCE.RLDIR\n\nCE.RLDIL\n\nCE.RLDCT\n\nVC.RL1HC\n\nVC.RL1HC\n\n전체차량 출입문\n닫힘확인 계전기\n\nATC\n\n비상운전모드\n\nEDL\n\nEDR\n\nVC.RL1HC\n\nCE.RL1KPHL\n\nCE.RL1KPHR\n\nAP.CB1KPHL\n\nAP.CBDCOC\n\nAP.\nCBDO1CC\n\nAP.CB1KPHR\n\n인접차\n\n인접차 출입문\n닫힘 계전기\n\nCE.RLDEOL\n\nAP.CBDO1CC\n\n1080\n\n1032\n\nCE.RLDIL\n\nTEST\n\n차측등"
+    },
+    {
+      "id": "494af5e4-5ab6-4e54-b1e6-22b226ff7044",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 51,
+      "text": "ATC"
+    },
+    {
+      "id": "e49a693b-3cad-4450-88bf-92905db0b7fd",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 51,
+      "text": "ATC"
+    },
+    {
+      "id": "d87d2996-7c4e-4080-8938-843f69ed9884",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 4,
+      "text": "1 ) 비상제동 풀림불능 시 ̶ 점검사항\n\n비상제동 풀림불능 시 관련 원인\n\n주간제어기 EB 위치\n\nROS 구원위치\n\nEBS 취급\n\nMRPS OFF 시\n\nATC 고장 시\n\nAP.CBSU1TC•2TC 차단\n\nAP.CBEMBR 차단\n\nAP.CBDO4TC 차단\n\n인통선 880선 탈락\n\nHCR, TCR 동작불량\n\n68\n\nLine 6 신내"
+    },
+    {
+      "id": "c55e6b60-3412-4fed-bd67-441e326f6e18",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 4,
+      "text": "ATC 고장 시"
+    },
+    {
+      "id": "cf703ec4-ceea-4cac-bb87-05ed3b88c95e",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 5,
+      "text": "원 인\n\n(1) 주간제어기 『비상제동(EB)』 위치 시\n(2) 구원운전(VC.SWREO-ROS) S/W – 구원위치 시\n(3) 비상제동(VC.PBEMBR-EBS) S/W 취급 시\n(4) MR 압력 6.5 kg/㎠ 이하 시(MRPS OFF)\n(5) ATC 비상제동 지령 시(ATC 고장 포함)\n(6) AP.CBSU1TC • 2TC 동시 차단 시(TC1, TC2 동시 고장 포함)\n - HCR 및 TCR 소자\n(7) 전·후부Tc차 AP.CBEMBR 모두 차단 시\n(8) AP.CBDO4TC 차단 시 ------ BC.RLMCEB 및 HCR, TCR 소자\n(9) 열차 분리(점퍼선 880선 접촉불량 포함) 시\n - EBCOS 취급 후 상태확인에서 각 차량 BC압력 확인\n - 880선 점퍼선 접촉불량 개소 이전 차량 : "
+    },
+    {
+      "id": "87645c74-437b-4f2a-bb86-4cd6e1e88a9f",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 5,
+      "text": "(1) 주간제어기 『비상제동(EB)』 위치 시\n(2) 구원운전(VC.SWREO-ROS) S/W – 구원위치 시\n(3) 비상제동(VC.PBEMBR-EBS) S/W 취급 시\n(4) MR 압력 6.5 kg/㎠ 이하 시(MRPS OFF)\n(5) ATC 비상제동 지령 시(ATC 고장 포함)\n(6) AP.CBSU1TC • 2TC 동시 차단 시(TC1, TC2 동시 고장 포함)\n - HCR 및 TCR 소자\n(7) 전·후부Tc차 AP.CBEMBR 모두 차단 시\n(8) AP.CBDO4TC 차단 시 ------ BC.RLMCEB 및 HCR, TCR 소자\n(9) 열차 분리(점퍼선 880선 접촉불량 포함) 시\n - EBCOS 취급 후 상태확인에서 각 차량 BC압력 확인\n - 880선 점퍼선 접촉불량 개소 이전 차량 : 정차제동,"
+    },
+    {
+      "id": "73d81d57-a345-4841-89c4-4ce5b53f19a9",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 7,
+      "text": "현 상\n\n※ 운행 중 TCMS에 의해 일부 차량 제동 불완해 현상이 검지되면 자동운전이\n 취소되고 FSB가 체결되어 정차한다.\n(1) 출입문 대표등은 점등 되었으나 역행운전이 되지 않는다.\n(2) TCMS 화면하단에 고장 『제동불완해 검지』 현시\n - 역행 시 TCMS(제동장치) 해당차 BC압력 1.0 kg/㎠ 이상 현시\n\n원 인\n\n(1) 전공변환변의 상용전자변(SBV) 고장, BOU함내 BC압력센서 고장\n(2) ECU(제동 전자제어장치)의 제동통 압력스위치(BC.PSBCP) 불량\n(3) 『제동불완해』검지(역행 시 BC압력 1.0 kg/㎠ 이상, 5초 이상 지속 시)\n\n조 치 사 항\n\n(1) 운전모드 수동 전환 → 주간제어기 역행4단 시도 → 강제완해(VC. PBCMPR) S/W를 누른다 \n(2) 해당차량 "
+    },
+    {
+      "id": "37748be6-eef2-455a-91f8-158a9f461e21",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 7,
+      "text": "(1) 운전모드 수동 전환 → 주간제어기 역행4단 시도 → 강제완해(VC. PBCMPR) S/W를 누른다 \n(2) 해당차량 ① AP.CBBECU 차단 후 복귀(ECU RESET기능) –운전실칸 일 때\n(3) 운전모드 비상 전환 → 주간제어기 역행4단 시도(ATC에 의한 역행차단 방지)\n(4) 강제풀림 불능 시 해당차량 ① AP.CBBECU, ② AP.CBBOU 차단 \n - 제동풀림 소음(공기누설) 미확인 시 해당차량 BOU콕크 또는 BC콕크 개방\n(5) BOU콕크 개방 또는 BC콕크 개방 시 제동축수 부족에 따른 운행 준수\n - BC압력 0.9 kg/㎠ 이하 시(TCMS확인) 제동불완해 검지 불능 → AP.CBBECU 차단"
+    },
+    {
+      "id": "2e249a3b-f101-4226-9bb6-330f72c20ef5",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 27,
+      "text": "6\n\n91\n\n신내승무사업소\n\n컴퓨터장치 고장 시 길라잡이\n\n1) 전부 TC1 고장 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 92\n2) 전부 TC2 고장 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 94\n3) 전부 TC1•2 동시고장 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 96 \n4) 후부 TC1•2 동시고장 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 98\n5) 전부 TC1 및 후부 TC1•2 동시고장 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 100\n6) 후부 TC1 또는 TC2 고장 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 102\n7) 전부Tc차 CC 고장 시 ∙∙∙∙∙∙"
+    },
+    {
+      "id": "0995e9ae-b4b9-40f7-9d71-0071c7d3a062",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 27,
+      "text": "1) 전부 TC1 고장 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 92\n2) 전부 TC2 고장 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 94\n3) 전부 TC1•2 동시고장 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 96 \n4) 후부 TC1•2 동시고장 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 98\n5) 전부 TC1 및 후부 TC1•2 동시고장 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 100\n6) 후부 TC1 또는 TC2 고장 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 102\n7) 전부Tc차 CC 고장 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ "
+    },
+    {
+      "id": "228563e6-4e7a-48d0-b8f7-f46e5c47e807",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 28,
+      "text": "전부 TC1 고장 시 현상 및 조치 해설도\n\n1 ) 전부 TC1 고장 시 ̶ 점검사항\n\n제어불능(터치 시 무반응)\n\n【TCMS 모니터】\n\n주 • 보조 ATC고장 등 점등\n속도코드 무현시\n\n【ADU】\n\n전차선전압계 • 전류계, 축전지전압계 DOWN\n공기압력계는 정상\n\n운전모드 비상 이외 위치에서 역행 시 비상제동체결\n\n운전실 현상\n\n전부Tc차 TC1 차단 후 복귀\n\n차단 시\n\n92\n\n【고장표시등】\n\n【METER계】\n\n※ NFB 번호는 편의상 임의표기 함(현차는 미표기)\n\nTC1 고장 시\n\nLine 6 신내"
+    },
+    {
+      "id": "e7b215ea-abe1-4693-a3b8-8aa7d1830f9e",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 28,
+      "text": "주 • 보조 ATC고장 등 점등\n속도코드 무현시"
+    },
+    {
+      "id": "8b5f8bb7-e99c-48f8-baa7-76fc8c3fed81",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 29,
+      "text": "현 상\n\n1) TCMS 모니터 제어 불능(터치 시 무반응)\n2) ADU상 주•보조 ATC 고장 등 점등, ADU상 속도코드 무현시\n3) 운전모드 “비상＂이외의 위치에서 역행 시 “비상제동 체결＂\n4) 전차선전압계•전류계•축전지전압계 DOWN, 공기압력계는 정상\n\n원 인\n\n1) TC-TC 통신불량(TC1 자체고장 포함)\n2) AP.CBSU1TC 차단\n\n조 치 사 항\n\n1) 전부Tc차 ① AP.CBSU1TC 차단 후 복귀(TC1 RESET 기능)\n2) 상기조치로 복귀불능 시 관제센터 보고 및 지시에 따라 TC2로 비상운전\n - 운전모드 비상, 출입문모드 수/수 전환 후 지령식 시행\n\n1 ) 전부 TC1 고장 시 ̶ 길라잡이\n\n93\n\nLine 6 신내"
+    },
+    {
+      "id": "75eae169-765b-4057-a0e8-6f732e5ab7d7",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 29,
+      "text": "1) TCMS 모니터 제어 불능(터치 시 무반응)\n2) ADU상 주•보조 ATC 고장 등 점등, ADU상 속도코드 무현시\n3) 운전모드 “비상＂이외의 위치에서 역행 시 “비상제동 체결＂\n4) 전차선전압계•전류계•축전지전압계 DOWN, 공기압력계는 정상"
+    },
+    {
+      "id": "70e431d5-2337-4fe3-b71e-51daaa4d78a1",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 32,
+      "text": "전부 TC1 • 2 동시 고장 시 현상 및 조치 해설도\n\n3 ) 전부 TC1 • 2 동시 고장 시(TC2 절체불가 시 포함) ̶ 점검사항\n\n제어불능(터치 시 무반응)\n\n주 •보조 ATC고장 등 점등\n속도코드 무 현시\n\n전차선전압계, 전류계, 축전지전압계 DOWN\n공기압력계는 정상\n\n비상제동 체결(HCR, TCR소자), \n등 점등 및 출입문제어불가(HCR 소자)\n\n운전실 현상\n\n전부Tc차 TC1•TC2 동시 차단 후 복귀\n\n차단 시\n\n차단 시\n\n96\n\n【고장표시등】\n\n【METER계】\n\n【ADU】\n\n【TCMS 모니터】\n\n♣ 이전역에 유치선 있을 시 관제센터 승인 후 운전실 교환하여 되돌이 운전으로 유치선 유치\n\n※ NFB 번호는 편의상 임의표기 함(현차는 미표기)\n\nTC1 • TC2 동시 고장 시\n\nLine 6"
+    },
+    {
+      "id": "a88ae5df-8b03-4df4-b3a9-c1419910dda7",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 32,
+      "text": "주 •보조 ATC고장 등 점등\n속도코드 무 현시"
+    },
+    {
+      "id": "55f17e00-ce11-42c0-9586-94706b001f39",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 33,
+      "text": "현 상\n\n1) TCMS 모니터 제어불능(터치 시 무반응)\n2) ADU상 주•보조 ATC 고장 등 점등, ADU상 속도코드 무현시\n3) 비상제동 체결(HCR, TCR 소자) • 등 점등 및 출입문 제어 불가(HCR소자)\n4) 전차선전압계•전류계•축전지전압계 DOWN, 공기압력계는 정상\n\n원 인\n\n1) TC와 TC, TC1와 LIU2 통신불량(자체고장 포함)\n2) AP.CBSU1TC •2TC 차단\n\n조 치 사 항\n\n1) 전부Tc차 TC리셋 ① AP.CBSU1TC•2TC 동시 차단 후 복귀(TC RESET 기능)\n2) 전부Tc차 AP.CBSU1TC 차단(TC2로 강제 절체 기능)\n - TC2 절체 시(HCR 여자상태 확인) 관제센터 승인 후 운전모드 비상, 출입문 수/수 운전\n3) 상기조치 후 복귀불능 시 관제센"
+    },
+    {
+      "id": "275f285a-6384-4b19-8d49-4d4907bcf976",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 33,
+      "text": "1) TCMS 모니터 제어불능(터치 시 무반응)\n2) ADU상 주•보조 ATC 고장 등 점등, ADU상 속도코드 무현시\n3) 비상제동 체결(HCR, TCR 소자) • 등 점등 및 출입문 제어 불가(HCR소자)\n4) 전차선전압계•전류계•축전지전압계 DOWN, 공기압력계는 정상"
+    },
+    {
+      "id": "f8bb3fb2-79ce-4cea-acf1-36837a1215b1",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 36,
+      "text": "전부TC1 및 후부 TC1 • 2 동시 고장 시 현상 및 조치 해설도\n\n5 ) 전부 TC1 및 후부 TC1 • 2 동시 고장 시 ̶ 점검사항\n\n출입문대표등 소등(TCR소자) 및 \nTCMS 제어불능(터치 시 무반응)\n\n주 •보조 ATC고장 등 점등\n속도코드 현시 불능\n\n전차선전압계 • 전류계, 축전지전압계 DOWN\n공기압력계는 정상\n\n비상제동 체결 및 표시등 점등\n\n운전실 현상\n\n출입문\n\n전부Tc차 TC1 차단\n 후 복귀\n\n차단 시\n\n후부Tc차 TC1 • TC2 동시 차단 후 복귀\n\n동시고장 및\n차단시\n\n전부Tc차 비상제동차단\n(EBCOS) S/W 취급\n\n전부Tc차\n전체출입문바이패스(ADBP)\nS/W 취급\n\n(비상제동 풀림)\n\n100\n\n♣ 자력운전 가능\n\n【고장표시등】\n\n【METER계】\n\n【ADU】\n\n(출입문"
+    },
+    {
+      "id": "0311068c-7455-4250-9867-ac34e7238d86",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 36,
+      "text": "주 •보조 ATC고장 등 점등\n속도코드 현시 불능"
+    },
+    {
+      "id": "ca9ff6e3-8af3-460a-9bc2-024b8a8e1b3e",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 37,
+      "text": "현 상\n\n1) 출입문대표등 소등(TCR 소자) 및 TCMS 모니터 제어불능(터치 시 무반응)\n2) ADU상 주•보조 ATC 고장 등 점등 및 ADU상 속도코드 현시 불능\n3) 비상제동체결•표시등 점등\n4) 전차선전압계•전류계•축전지전압계 DOWN\n\n원 인\n\n1) TC와 TC 및 TC와 LIU2 통신고장(자체고장 포함)\n2) 전부 AP.CBSU1TC 및 AP.CBSU1TC•2TC 동시 차단 시\n\n조 치 사 항\n\n1) 전부Tc차 1TC 리셋 ① AP.CBSU1TC 차단 후 복귀\n2) 후부Tc차 TC리셋 ② AP.CBSU1TC•2TC 동시 차단 후 복귀(복귀불능 시)\n3) 전부Tc차 ③ 전체출입문바이패스(ADBP) S/W 취급(출입문대표등 점등, 역행회로 구성)\n4) 전부Tc차 운전모드 비상, 출입문모드 수/수 "
+    },
+    {
+      "id": "3dd1d163-2e29-4d90-9447-24c62f8a9250",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 37,
+      "text": "1) 출입문대표등 소등(TCR 소자) 및 TCMS 모니터 제어불능(터치 시 무반응)\n2) ADU상 주•보조 ATC 고장 등 점등 및 ADU상 속도코드 현시 불능\n3) 비상제동체결•표시등 점등\n4) 전차선전압계•전류계•축전지전압계 DOWN"
+    },
+    {
+      "id": "ba1ab498-1735-41d2-bca0-ce4d0b4714f2",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 46,
+      "text": "10 ) ATC 장치 고장 시 ̶ 점검사항\n\n운전실 \n\n현상\n\nATC 장치 고장 시 현상 및 조치 해설도\n\nRESET 방법(S/W1•2 동시 차단 후 복귀)\n\nRESET 방법 (AP.CBATC1, AP.CBATC2 동시 차단 후 복귀)\n\n① TCMS 고장메세지 현시\n\n② 주•보조 ATC고장 등 점등\n\n③ 비상제동체결 및 등 점등\n\n④ 3.0 kg/㎠ 현시\n\n【공기압력계】\n\n110\n\n♣ ATC1고장 시 ATC2로 자동절체 되지 않을 때\n - S/W1 또는 AP.CBATC1을 차단(OFF) 시킨다\n\n【ADU】\n\n【고장표시등】\n\n【TCMS 모니터】\n\n※ NFB 번호는 편의상 임의표기 함(현차는 미표기)\n\nLine 6 신내"
+    },
+    {
+      "id": "6292afe3-f1f9-45b8-b63b-4316d4af0656",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 46,
+      "text": "10 ) ATC 장치 고장 시 ̶ 점검사항"
+    },
+    {
+      "id": "93807d13-c5ce-4d39-8c3b-9ca643fe95d6",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 46,
+      "text": "ATC 장치 고장 시 현상 및 조치 해설도"
+    },
+    {
+      "id": "7b3c339b-0505-4b04-a7d2-bcbcb884a217",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 46,
+      "text": "RESET 방법 (AP.CBATC1, AP.CBATC2 동시 차단 후 복귀)"
+    },
+    {
+      "id": "2478290a-55c3-428e-b0ce-36b06345013b",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 46,
+      "text": "② 주•보조 ATC고장 등 점등"
+    },
+    {
+      "id": "4738eedb-7c0d-42e4-9b35-db62287cf928",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 46,
+      "text": "♣ ATC1고장 시 ATC2로 자동절체 되지 않을 때\n - S/W1 또는 AP.CBATC1을 차단(OFF) 시킨다"
+    },
+    {
+      "id": "28548ce5-7dbd-4919-bf61-f66b26637ad4",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 47,
+      "text": "현 상\n\n1) TCMS 화면에 고장메세지 현시\n2) ADU 주 • 보조 ATC 고장 등 점등\n3) 비상제동체결(주 • 보조 ATC 모두 고장 시) 및 표시등 점등\n4) 공기압력계 비상제동압력 3.0 kg/㎠ 현시\n\n원 인\n\n1) ATC 자체고장 또는 TC와 ATC간 통신고장 시\n2) 타코메타 고장 시 : 역행시 실제속도 4~5Km/h 정도에서 비상제동 체결\n3) POR 계전기 고장 시 : 역행 시 비상제동 체결\n4) AP.CBATC1, 2 차단 시\n5) ATC 리셋 S/W1•2 차단 시\n\n조 치 사 항\n\n1) ① RESET S/W1•2 또는 ② ATC 제어차단기(AP.CBATC1•2) 동시 차단 후 복귀\n ※ 승강장에서 출입문 개방 중 ATC고장 발생 또는 ATC RESET 시 출입문 닫힘 후 실시 \n - "
+    },
+    {
+      "id": "a72385ae-7ae7-431b-955a-744e71ebe7ab",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 47,
+      "text": "1) TCMS 화면에 고장메세지 현시\n2) ADU 주 • 보조 ATC 고장 등 점등\n3) 비상제동체결(주 • 보조 ATC 모두 고장 시) 및 표시등 점등\n4) 공기압력계 비상제동압력 3.0 kg/㎠ 현시"
+    },
+    {
+      "id": "8cc91fbd-f158-4e95-93fd-5546a222dbe6",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 47,
+      "text": "1) ATC 자체고장 또는 TC와 ATC간 통신고장 시\n2) 타코메타 고장 시 : 역행시 실제속도 4~5Km/h 정도에서 비상제동 체결\n3) POR 계전기 고장 시 : 역행 시 비상제동 체결\n4) AP.CBATC1, 2 차단 시\n5) ATC 리셋 S/W1•2 차단 시"
+    },
+    {
+      "id": "be2ff3eb-df4f-4a19-9c17-85eec1e8ad12",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 47,
+      "text": "1) ① RESET S/W1•2 또는 ② ATC 제어차단기(AP.CBATC1•2) 동시 차단 후 복귀\n ※ 승강장에서 출입문 개방 중 ATC고장 발생 또는 ATC RESET 시 출입문 닫힘 후 실시 \n - 리셋 후 30초 정도 지나서 ADU에 속도코드 현시\n - 타코메타 고장 시 : ADU상 실제속도 현시\n - POR계전기 고장 시 : ADU상 실제속도 현시하지 않음\n2) 복귀불능 시 관제센터 보고 및 지시에 따라 지령식 운행(운전모드 비상, 출입문모드 수/수 전환)\n ♣ ATO 고장 시 : 복귀불능 시 운전모드 수동 출입문모드 수/수\n - 현상 : 자동운전(불가) 취소, TCMS 화면에 고장 현시\n - 원인 : ATO 자체고장 또는 TC와 ATO 간 통신고장 시\n - 조치 : ATC 제어 차단기(AP.CB"
+    },
+    {
+      "id": "64011c3c-4b19-474e-966f-8b93415d0dfb",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 47,
+      "text": "10 ) ATC 장치 고장 시 ̶ 길라잡이"
+    },
+    {
+      "id": "1d9bcba0-a961-44a1-b3c2-77e45d3cf498",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 48,
+      "text": "ADU 장치 관련기기 및 제어 해설도\n\n11 ) ADU(Aspect Display Unit) 장치 고장 시 ̶ 점검사항\n\n【ADU 장치 동작 흐름도】\n\n【ADU 장치 관련 기기】\n\n112\n\nAP.CBATC1\n\nAP.CBATC2\n\nHCR\n\nTach1\n\nPOR계전기\n\n704\n\n704\n\nS/W 1\n\nS/W 2\n\nATC\nRESET\nS/W\n\n운전모드 비상 \n선택 시 ADU 직결\n\n전원공급장치\nPS1\n\n전원공급장치\nPS2\n\nLine 6 신내"
+    },
+    {
+      "id": "41c4352c-d460-4c8b-a3ec-9f9f53dac8a3",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 48,
+      "text": "AP.CBATC1"
+    },
+    {
+      "id": "b396606f-1b6c-4770-bba6-23db7233b496",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 48,
+      "text": "AP.CBATC2"
+    },
+    {
+      "id": "a6bbee87-90bd-4624-b89e-8ad21bc3de7a",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 48,
+      "text": "ATC\nRESET\nS/W"
+    },
+    {
+      "id": "3ee7cb3d-c733-4c7b-ac3c-1982326acc52",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 49,
+      "text": "현 상\n\n(1) 출입문표시등 소등\n(2) 비상제동 체결(BC 3.5Kg/cm²) - 비상제동등 확인\n(3) ADU(표시기 장치) 소등 및 관련 표시등 무현시\n - 6개 항목 : 주, 보조ATC, 출발전 시험, 무코드, 회복모드, TWC\n\n조 치 사 항\n\n(1) AP.CBATC2 차단 후 복귀\n(2) AP.CBDO4TC 차단(HCR소자) 확인 후 차단 시 복귀 \n(3) ADU(표시기 장치) 자체 고장 시 운전취급\n - 비상제동차단(EBCOS) S/W 취급\n - 전체차량출입문바이패스(ADBP) S/W 취급\n(4) 관제센터 보고 및 지시에 따라 운전모드 비상, 출입문모드 수/수 후 지령식(45Km/h이하) 시행\n ※ ADU 장치 고장으로 속도가 현시되지 않을 때\n - TCMS – 검수메뉴 – 인터페이스 신호검사 "
+    },
+    {
+      "id": "d1d95759-3305-4a3c-98a0-110c108a8a72",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 49,
+      "text": "(1) 출입문표시등 소등\n(2) 비상제동 체결(BC 3.5Kg/cm²) - 비상제동등 확인\n(3) ADU(표시기 장치) 소등 및 관련 표시등 무현시\n - 6개 항목 : 주, 보조ATC, 출발전 시험, 무코드, 회복모드, TWC"
+    },
+    {
+      "id": "ba40f03d-ad20-489b-8557-648c6b5f741b",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 49,
+      "text": "(1) AP.CBATC2 차단 후 복귀\n(2) AP.CBDO4TC 차단(HCR소자) 확인 후 차단 시 복귀 \n(3) ADU(표시기 장치) 자체 고장 시 운전취급\n - 비상제동차단(EBCOS) S/W 취급\n - 전체차량출입문바이패스(ADBP) S/W 취급\n(4) 관제센터 보고 및 지시에 따라 운전모드 비상, 출입문모드 수/수 후 지령식(45Km/h이하) 시행\n ※ ADU 장치 고장으로 속도가 현시되지 않을 때\n - TCMS – 검수메뉴 – 인터페이스 신호검사 – 차축속도확인"
+    },
+    {
+      "id": "efe05aa7-6db2-47f4-a617-aaefc5b995f8",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 49,
+      "text": "(1) AP.CBATC2 차단 시\n(2) AP.CBDO4TC 차단(HCR소자) 차단 시\n(3) ADU 장치 자체 고장 시"
+    },
+    {
+      "id": "2438af0a-806c-4eec-9b77-dc58a00fa372",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 52,
+      "text": "번호 | 명 칭 | 고 장 현 상\n110 | AP.CBDSTCU | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(801) : 표시기 장치 통신 고장\n ※ 각종 표시기 장치(행선표시기, 열차번호, 승객안내표시기) 동작 불가\n111 | AP.CBSU1TC\n(전부 6100호대) | ㅇ TCMS 화면 제어 불능 ㅇ 각종 메타계 현시 불능(전차선 및 축전지 전압계, 전류계) ㅇ 주․보조 ATC 고장등 점등\nㅇ 출입문 대표등 소등 후 5초 후에 재 점등 ※ 비상모드 전환 시 열차 역행가능, 복귀 시 TCMS 초기화\n112 | AP.CBSU2TC\n(전부 6100호대) | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(002) : 1호차 TC-LIU2 통신고장 ㅇ 고장코드(019) : TCMS "
+    },
+    {
+      "id": "fa7b1311-e0b2-49f6-b110-e2bf8a465b81",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 52,
+      "text": "번호 | 명 칭 | 고 장 현 상\n110 | AP.CBDSTCU | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(801) : 표시기 장치 통신 고장\n ※ 각종 표시기 장치(행선표시기, 열차번호, 승객안내표시기) 동작 불가\n111 | AP.CBSU1TC\n(전부 6100호대) | ㅇ TCMS 화면 제어 불능 ㅇ 각종 메타계 현시 불능(전차선 및 축전지 전압계, 전류계) ㅇ 주․보조 ATC 고장등 점등\nㅇ 출입문 대표등 소등 후 5초 후에 재 점등 ※ 비상모드 전환 시 열차 역행가능, 복귀 시 TCMS 초기화\n112 | AP.CBSU2TC\n(전부 6100호대) | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(002) : 1호차 TC-LIU2 통신고장 ㅇ 고장코드(019) : TCMS "
+    },
+    {
+      "id": "f2adb769-ab62-40b5-b885-3ee912351223",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 53,
+      "text": "번호 | 명 칭 | 고 장 현 상\n119 | AP.CBDO4TC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 비상제동체결 및 출입문 대표등 소등 ㅇ HCR 및 TCR 소자\nㅇ 고장코드(132) : ATC 제어기능 상실 고장 ㅇ 고장코드(129) : ADU 고장\n120 | AP.CBDO5TC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 운전모드 LED 소등 ㅇ 고장 및 출발표시등 점등 불가\n121 | AP.CBDO6TC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(801 또는 802) : 표시기 장치 고장\n122 | AP.CBDIL | ㅇ 고장코드(551) : DC NFB Trip ※ 후부 운전실 AP.CBDIL 차단 시 : 출입문 대표등 소등, 역행 불가\n 전부 운전실 A"
+    },
+    {
+      "id": "43c1cf97-f101-4de8-bd58-e8b7fe593af6",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 53,
+      "text": "번호 | 명 칭 | 고 장 현 상\n119 | AP.CBDO4TC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 비상제동체결 및 출입문 대표등 소등 ㅇ HCR 및 TCR 소자\nㅇ 고장코드(132) : ATC 제어기능 상실 고장 ㅇ 고장코드(129) : ADU 고장\n120 | AP.CBDO5TC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 운전모드 LED 소등 ㅇ 고장 및 출발표시등 점등 불가\n121 | AP.CBDO6TC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(801 또는 802) : 표시기 장치 고장\n122 | AP.CBDIL | ㅇ 고장코드(551) : DC NFB Trip ※ 후부 운전실 AP.CBDIL 차단 시 : 출입문 대표등 소등, 역행 불가\n 전부 운전실 A"
+    },
+    {
+      "id": "663d4ffe-45c3-45e8-b0c9-4b225005bfde",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 54,
+      "text": "번호 | 명 칭 | 고 장 현 상\n205 | AP.CBSCPABR | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(206) : 주차제동 인가 ㅇ 주차제동등 점등\n ※ TC가 인지하고 있을 뿐 실제는 주차제동 체결 안됨\n206 | AP.CBET\n(6100호대) | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(334) : PAN 하강 고장 ㅇ PAN 하강등 점등 및 전차선 전압계『0』현시\nㅇ TCMS PAN 하강『◇』 및 VVVF『CUT』현시 ※ 6000호대 운전실 AP.CBET 차단 시 이상 없음\n207 | AP.CBHTLL | ㅇ 고장코드(551) : DC NFB Trip ※ 전조등 및 후미등 점등 불가\n208 | AP.CBPAU | ㅇ 고장코드(551) : DC NFB Trip"
+    },
+    {
+      "id": "e79f8617-360e-49a3-9282-a1989d99f276",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 54,
+      "text": "번호 | 명 칭 | 고 장 현 상\n205 | AP.CBSCPABR | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(206) : 주차제동 인가 ㅇ 주차제동등 점등\n ※ TC가 인지하고 있을 뿐 실제는 주차제동 체결 안됨\n206 | AP.CBET\n(6100호대) | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(334) : PAN 하강 고장 ㅇ PAN 하강등 점등 및 전차선 전압계『0』현시\nㅇ TCMS PAN 하강『◇』 및 VVVF『CUT』현시 ※ 6000호대 운전실 AP.CBET 차단 시 이상 없음\n207 | AP.CBHTLL | ㅇ 고장코드(551) : DC NFB Trip ※ 전조등 및 후미등 점등 불가\n208 | AP.CBPAU | ㅇ 고장코드(551) : DC NFB Trip"
+    },
+    {
+      "id": "d370a06b-cdc1-4c6f-94aa-efcb546f7471",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 62,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n1 | AP.BA | BATTERY | 축전지 | 초기 기동 전원\n2 | AP.BFF | BATTERY FAN FAULT | 축전지 팬 고장 | 축전지 팬 고장\n3 | AP.BFK | BATTERY FAN CONTACT | 축전지 팬 접촉기 | 축전지 팬 제어용\n4 | AP.BFOCD | BATTERY FAN OVER CURRENT DETECTOR | 축전지 팬 과전류 검지 계전기 | 축전지 팬 고장 검지\n5 | AP.CAMOBFF | BATTERY FAN MOTOR CAPACITOR | 축전지 팬용 콘덴서 | 축전지 팬 구동용\n6 | AP.CB1IL | INTERIOR LIGHT CIRCUIT BREAKER 1 | 실내등 회로 차단기 1 | 실내등 입력단"
+    },
+    {
+      "id": "659f554f-4a7b-4ec3-8c9d-3b219a99bcab",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 62,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n1 | AP.BA | BATTERY | 축전지 | 초기 기동 전원\n2 | AP.BFF | BATTERY FAN FAULT | 축전지 팬 고장 | 축전지 팬 고장\n3 | AP.BFK | BATTERY FAN CONTACT | 축전지 팬 접촉기 | 축전지 팬 제어용\n4 | AP.BFOCD | BATTERY FAN OVER CURRENT DETECTOR | 축전지 팬 과전류 검지 계전기 | 축전지 팬 고장 검지\n5 | AP.CAMOBFF | BATTERY FAN MOTOR CAPACITOR | 축전지 팬용 콘덴서 | 축전지 팬 구동용\n6 | AP.CB1IL | INTERIOR LIGHT CIRCUIT BREAKER 1 | 실내등 회로 차단기 1 | 실내등 입력단"
+    },
+    {
+      "id": "f0e0c41d-6752-4aca-8019-39ec56aba2e8",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 72,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n301 | CMK | COMPRESSOR MOTOR CONTACTOR | CM 접촉기 | CM 기동장치 출력 제어 접촉기\n302 | CMKR | CMK RELAY | CMK용 계전기 | CMK 제어용\n303 | CMN | COMPRESSOR MOTOR NFB | CM 기동 장치 회로 차단기 | CM 기동장치 입력단 보호\n304 | CMSTAR | CM START RELAY | CM 기동 검지 계전기 | CM 기동 신호 TCMS 출력\n305 | CT.ATCU | AUTOMATIC TRAIN CONTROL UNIT | 자동 열차 제어 장치(ATC) | 과속 방지\n306 | CT.CPCCU | CAR COMPUTER UNIT | 차량 제어 컴퓨터(CC) | 차량"
+    },
+    {
+      "id": "c78411f4-de6c-4e8d-b79e-ff26ba0b1c12",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 72,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n301 | CMK | COMPRESSOR MOTOR CONTACTOR | CM 접촉기 | CM 기동장치 출력 제어 접촉기\n302 | CMKR | CMK RELAY | CMK용 계전기 | CMK 제어용\n303 | CMN | COMPRESSOR MOTOR NFB | CM 기동 장치 회로 차단기 | CM 기동장치 입력단 보호\n304 | CMSTAR | CM START RELAY | CM 기동 검지 계전기 | CM 기동 신호 TCMS 출력\n305 | CT.ATCU | AUTOMATIC TRAIN CONTROL UNIT | 자동 열차 제어 장치(ATC) | 과속 방지\n306 | CT.CPCCU | CAR COMPUTER UNIT | 차량 제어 컴퓨터(CC) | 차량"
+    },
+    {
+      "id": "870f0f02-0c60-4e01-a5ab-95053ea12aff",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 75,
+      "text": "LRAM ACKNOWLEDGE PUSH BUTTON | 승객경보 인식 푸쉬 버튼 | 승객경보 인식용 푸쉬 버튼\n411 | VC.PBPABRA | PARKING BRAKE APPLY PUSH BUTTON | 주차제동 적용 누름 스위치 | 주차제동 적용 명령\n412 | VC.PBPAND | PANTO DOWN PUSH BUTTON | 집전기 하강 누름 스위치 | 판토하강을 위한 입력 전달 스위치\n413 | VC.PBPANU | PANTO UP PUSH BUTTON | 집전기 상승 누름 스위치 | 판토상승을 위한 입력 전달 스위치\n414 | VC.PBPARRA | PARKING BRAKE RELEASE PUSH BUTTON | 주차제동 완해 누름 스위치 | 주차제동 완해 명령\n415 | VC.REIL | RESI"
+    },
+    {
+      "id": "98ca0db4-22f4-4467-8415-5210e63b2bad",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 75,
+      "text": "LRAM ACKNOWLEDGE PUSH BUTTON | 승객경보 인식 푸쉬 버튼 | 승객경보 인식용 푸쉬 버튼\n411 | VC.PBPABRA | PARKING BRAKE APPLY PUSH BUTTON | 주차제동 적용 누름 스위치 | 주차제동 적용 명령\n412 | VC.PBPAND | PANTO DOWN PUSH BUTTON | 집전기 하강 누름 스위치 | 판토하강을 위한 입력 전달 스위치\n413 | VC.PBPANU | PANTO UP PUSH BUTTON | 집전기 상승 누름 스위치 | 판토상승을 위한 입력 전달 스위치\n414 | VC.PBPARRA | PARKING BRAKE RELEASE PUSH BUTTON | 주차제동 완해 누름 스위치 | 주차제동 완해 명령\n415 | VC.REIL | RESI"
+    },
+    {
+      "id": "ed03ff33-ebc1-48d2-bc8f-936aa9e6c57d",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 77,
+      "text": "신내승무사업소\n\nTCMS 고장코드별 조치방법\n\n1) TCMS 운전실(TCMS/DC) ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 142\n2) 신호장비(ATC/ATO) ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 144\n3) 제동장치(BC) ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 147 \n4) 고압전기(HV) ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 149\n5) 추진장치(PE) ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 150\n6) 보조전원장치(SIV) ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 152\n7) 차체전기장치(CE) "
+    },
+    {
+      "id": "c27e2b11-4c6d-4a80-b3f7-43692ba46498",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 77,
+      "text": "1) TCMS 운전실(TCMS/DC) ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 142\n2) 신호장비(ATC/ATO) ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 144\n3) 제동장치(BC) ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 147 \n4) 고압전기(HV) ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 149\n5) 추진장치(PE) ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 150\n6) 보조전원장치(SIV) ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 152\n7) 차체전기장치(CE) ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙"
+    },
+    {
+      "id": "89df6059-27ee-4f3b-89dd-620b52f82a6b",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 78,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 001 | TC-TC간 통신고장 | 1.고장차 모니터 제어불능\u000b2. ADU 내 주•보조 ATC 고장등 점등\u000b3. 추진력 정상\u000b4. 후부TC 고장 시 열차운행 지장 없음 | 1. 해당 차호 AP.CBSU1TC 차단여부 확인\u000b2. 재기동\u000b3. 복귀불능 시 비상모드 운전 가능\nF/N 002 | 1호차 TC-LIU2간 통신고장 | 정상운행 | 해당 차호 AP.CBSU2TC 차단여부 확인\nF/N 003 | 0호차 TC-LIU2간 통신고장 | 정상운행 | \nF/N 004 | TC 모니터 무응답 | 1. TCMS 모니터 현시불능\u000b2. 정상운행 가능 | 모니터 전원(AP.CBDISPU) 차단여부 확인 \u000b − 복귀불능시 관제지시 따름\nF/N 005 | T"
+    },
+    {
+      "id": "7640e3e8-357a-4c82-881d-a526337f582a",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 78,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 001 | TC-TC간 통신고장 | 1.고장차 모니터 제어불능\u000b2. ADU 내 주•보조 ATC 고장등 점등\u000b3. 추진력 정상\u000b4. 후부TC 고장 시 열차운행 지장 없음 | 1. 해당 차호 AP.CBSU1TC 차단여부 확인\u000b2. 재기동\u000b3. 복귀불능 시 비상모드 운전 가능\nF/N 002 | 1호차 TC-LIU2간 통신고장 | 정상운행 | 해당 차호 AP.CBSU2TC 차단여부 확인\nF/N 003 | 0호차 TC-LIU2간 통신고장 | 정상운행 | \nF/N 004 | TC 모니터 무응답 | 1. TCMS 모니터 현시불능\u000b2. 정상운행 가능 | 모니터 전원(AP.CBDISPU) 차단여부 확인 \u000b − 복귀불능시 관제지시 따름\nF/N 005 | T"
+    },
+    {
+      "id": "3dcabac6-7291-43b1-bfb8-59604947d376",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 79,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 043\n~ 048 | TC / LIU2 DI.00-07 불일치\n DI.40-47 불일치 등 | 정상운행 가능 | −\nF/N 049 | 정차제동 완해, 열차속도계산불가 | 역행 불가능(M차 AP.VVVFIC 4개 모두 차단 시) | 재기동 후 복귀불능 시 관제센터 보고 후 구원운전\nF/N 050 | LIU2로 열차 제어 절환 | 1. 열차정지, TCMS 모니터 현시불능\u000b2. 비상운전만 가능(추진력 정상) | 1.해당Tc차 AP.CBSU1TC 리셋\u000b2. 복귀불능시 비상운전\nF/N 051 | 주간제어기 입력#2로 절환 | 정상운행 가능 | \nF/N 052 | 인접차 출입문제어 왼쪽 | 정상운행 가능 | 필요시 해당차량 AP.CBSUCC 리셋\nF"
+    },
+    {
+      "id": "a588adec-c34f-4467-86c3-4d26d9ea4caf",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 79,
+      "text": "일부차량 완해불능(기계고장) 시 해당차 BC1,2콕크 차단\nF/N 080 | 역행차단, 주차 제동 | 주차제동 완해불능 및 램프 점등 | 주차제동 완해버튼 수회 취급 후 주차제동 전자변 수동취급\n 및 주차제동당김고리(전후 각2개) 당김, VC.SWPBBP 취급\nF/N 082 | ATC/ATO 모드 무효화, 추진차단 | 운전모드 무효, 역행불능 | 운전모드스위치를 수회 전환 후 수동운전 가능\nF/N 083 | 역행차단, BC COCK CUT-OUT | TCMS 모니터에 BC COCK 고장현시, 역행불능 | TCMS 모니터에 BC COCK 차단 차호확인, TC리셋\nF/N 091 | 제어용 커넥터 연결 안됨 | CC와 전장품(인버터, CM 등)간 통신불능시 | 운행에 지장이 없는 경우는 정상운행\n\n143\n\n1 )"
+    },
+    {
+      "id": "4e9efcd1-d6d4-4b4f-8fda-67cefa5c4042",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 79,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 043\n~ 048 | TC / LIU2 DI.00-07 불일치\n DI.40-47 불일치 등 | 정상운행 가능 | −\nF/N 049 | 정차제동 완해, 열차속도계산불가 | 역행 불가능(M차 AP.VVVFIC 4개 모두 차단 시) | 재기동 후 복귀불능 시 관제센터 보고 후 구원운전\nF/N 050 | LIU2로 열차 제어 절환 | 1. 열차정지, TCMS 모니터 현시불능\u000b2. 비상운전만 가능(추진력 정상) | 1.해당Tc차 AP.CBSU1TC 리셋\u000b2. 복귀불능시 비상운전\nF/N 051 | 주간제어기 입력#2로 절환 | 정상운행 가능 | \nF/N 052 | 인접차 출입문제어 왼쪽 | 정상운행 가능 | 필요시 해당차량 AP.CBSUCC 리셋\nF"
+    },
+    {
+      "id": "4dc4dbab-f1a2-4890-9826-5a4a2b14ab97",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 79,
+      "text": "일부차량 완해불능(기계고장) 시 해당차 BC1,2콕크 차단\nF/N 080 | 역행차단, 주차 제동 | 주차제동 완해불능 및 램프 점등 | 주차제동 완해버튼 수회 취급 후 주차제동 전자변 수동취급\n 및 주차제동당김고리(전후 각2개) 당김, VC.SWPBBP 취급\nF/N 082 | ATC/ATO 모드 무효화, 추진차단 | 운전모드 무효, 역행불능 | 운전모드스위치를 수회 전환 후 수동운전 가능\nF/N 083 | 역행차단, BC COCK CUT-OUT | TCMS 모니터에 BC COCK 고장현시, 역행불능 | TCMS 모니터에 BC COCK 차단 차호확인, TC리셋\nF/N 091 | 제어용 커넥터 연결 안됨 | CC와 전장품(인버터, CM 등)간 통신불능시 | 운행에 지장이 없는 경우는 정상운행"
+    },
+    {
+      "id": "ba68b5ce-05bb-4a54-b30b-b7ae7d1ebd2a",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 80,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 101\u000b (132) | 제어 ATC 통신고장\u000b(비 제어 ATC 고장) | 1. ATC에 의한 FSB 체결 정차\u000b2. 보조ATC로 자동 절체 | 수동운전 전환, 정차 후 ATC1,2 Reset 후 복귀시 정상운행\nF/N 102 | ATC1, ATC2 고장 | 비상제동 체결 정차 | ATC1,2 고장으로 자동 및 수동운전 불가, 비상운전 가능\nF/N 103 | 지상 KEY-UP신호수신실패, 시간초과 | 무인모드 설정 안됨(자동 및 수동운전 가능 | 무인운전모드 설정 불가 (자동 및 수동운전 가능)\nF/N 104 | 후부차 비상운전모드에서 무인설정 | 무인모드 설정 안됨(자동 및 수동운전 가능 | 후부차 운전모드 스위치 비상위치 여부 확인 조치"
+    },
+    {
+      "id": "56b2c916-96a8-4c86-a5a9-b7348f91b306",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 80,
+      "text": "보조ATC로 자동절체 | 역전기를 재 취급 후 고장유지시 보조 ATC로 절체 수동운전\nF/N 132 | ATC-속도센서 입력 고장 | 101번 참고 | \nF/N 134\u000b (156) | ATC/ATO 통신고장\u000b(ATO/ATC1 통신고장) | 자동운전 해제, FSB 체결, 보조ATC로 자동절체 | 1. 주간제어기를 B7단 후 완해시는 수동운전\n2. 고장유지 시 보조 ATC로 절체하여 수동운전행\nF/N 135\u000b (175) | ATC/TWC 통신고장\u000b(TWC/ATC1 통신고장) | 1. 주ATC 고장으로 통신고장 발생 시 | 1. 주간제어기를 B7단 위치후 완해시는 수동운전\n2. 고장유지 시 보조 ATC로 절체하여 수동운전으로 운행\nF/N 136 | ATC/ADU 통신고장 | 1. 자동운전 해제, 비상제동 체결\u000b2"
+    },
+    {
+      "id": "eeec9bdb-df15-4957-b350-c6d33591a325",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 80,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 101\u000b (132) | 제어 ATC 통신고장\u000b(비 제어 ATC 고장) | 1. ATC에 의한 FSB 체결 정차\u000b2. 보조ATC로 자동 절체 | 수동운전 전환, 정차 후 ATC1,2 Reset 후 복귀시 정상운행\nF/N 102 | ATC1, ATC2 고장 | 비상제동 체결 정차 | ATC1,2 고장으로 자동 및 수동운전 불가, 비상운전 가능\nF/N 103 | 지상 KEY-UP신호수신실패, 시간초과 | 무인모드 설정 안됨(자동 및 수동운전 가능 | 무인운전모드 설정 불가 (자동 및 수동운전 가능)\nF/N 104 | 후부차 비상운전모드에서 무인설정 | 무인모드 설정 안됨(자동 및 수동운전 가능 | 후부차 운전모드 스위치 비상위치 여부 확인 조치"
+    },
+    {
+      "id": "719a599c-38e3-4c48-b896-345c76770915",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 80,
+      "text": "보조ATC로 자동절체 | 역전기를 재 취급 후 고장유지시 보조 ATC로 절체 수동운전\nF/N 132 | ATC-속도센서 입력 고장 | 101번 참고 | \nF/N 134\u000b (156) | ATC/ATO 통신고장\u000b(ATO/ATC1 통신고장) | 자동운전 해제, FSB 체결, 보조ATC로 자동절체 | 1. 주간제어기를 B7단 후 완해시는 수동운전\n2. 고장유지 시 보조 ATC로 절체하여 수동운전행\nF/N 135\u000b (175) | ATC/TWC 통신고장\u000b(TWC/ATC1 통신고장) | 1. 주ATC 고장으로 통신고장 발생 시 | 1. 주간제어기를 B7단 위치후 완해시는 수동운전\n2. 고장유지 시 보조 ATC로 절체하여 수동운전으로 운행\nF/N 136 | ATC/ADU 통신고장 | 1. 자동운전 해제, 비상제동 체결\u000b2"
+    },
+    {
+      "id": "ec45b531-0959-4cb9-a4d7-211a173c6ffc",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 80,
+      "text": "2 ) 신호장비(ATC/ATO) ①_F/N.101 ~ 199"
+    },
+    {
+      "id": "6d64bf06-7597-4957-8e68-18f30401d7e5",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 81,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 145 | 열차정지, ATO고장 | 자동운전 해제, FSB 체결, 정차 | 수동모드 전환, 주간제어기 B7단 후 완해시 수동운전\nF/N 146 | 열차정지, NRBD 검지 | 〃 | 1. 수동모드 전환, 강제완해SW 취급 P4단 취급\u000b2. 고장유지시 AP.CBBECU, AP.CBBOU 차단 후 운행\nF/N 147\u000b (193) | 열차정지, ATO 운전중 주간제어기 취급 | 〃 | 수동모드 전환, 주간제어기 B7단 후 완해시 수동운전\nF/N 148\u000b (194) | 열차정지, ATO 운전중 역전기 취급 | 〃 | 수동모드 전환, 주간제어기 B7단 후 완해시 수동운전\nF/N 149 | 열차정지,ATO 운전중 운전모드 취소 | 〃 | 수동모드 전"
+    },
+    {
+      "id": "ef3871e3-8f46-45da-a027-63a63f9ebdb4",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 81,
+      "text": "| 1. 주간제어기 B7단 후 완해 시 수동운전\n2. ATC1,2 Reset 후 복귀 시 정상운행\nF/N 164 | ATO - 자동회차 실패 | FSB 체결 정차, 자동회차 안됨 | 수동운전\nF/N 166 | ATO - 유효하지 않은 TWC 어드레스 수신 | 자동모드 설정 안됨 | 수동운전\nF/N 167 | ATO - 정차점 미달정차 | 약 1M 미달 정차 | 수동운전 전환하여 정위치 정차\nF/N 168 | ATO - 과주정차 | 약 1M 지나서 정차 | 관제보고 및 협의 후 정위치 조정운전\nF/N 169 | ATO - 기대하지 않은 PSM 수신 | 자동운전 해제, FSB 체결, 정차 | 수동모드 전환, 주간제어기 B7단 후 완해 시 수동운전\nF/N 170 | ATO - 유효하지 않은 PSM 수신 | 정상운"
+    },
+    {
+      "id": "2f3d6401-4018-4ffb-a2cf-6aedcdb47327",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 81,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 145 | 열차정지, ATO고장 | 자동운전 해제, FSB 체결, 정차 | 수동모드 전환, 주간제어기 B7단 후 완해시 수동운전\nF/N 146 | 열차정지, NRBD 검지 | 〃 | 1. 수동모드 전환, 강제완해SW 취급 P4단 취급\u000b2. 고장유지시 AP.CBBECU, AP.CBBOU 차단 후 운행\nF/N 147\u000b (193) | 열차정지, ATO 운전중 주간제어기 취급 | 〃 | 수동모드 전환, 주간제어기 B7단 후 완해시 수동운전\nF/N 148\u000b (194) | 열차정지, ATO 운전중 역전기 취급 | 〃 | 수동모드 전환, 주간제어기 B7단 후 완해시 수동운전\nF/N 149 | 열차정지,ATO 운전중 운전모드 취소 | 〃 | 수동모드 전"
+    },
+    {
+      "id": "92dae69a-e916-4e2e-a949-15f985daf093",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 81,
+      "text": "| 1. 주간제어기 B7단 후 완해 시 수동운전\n2. ATC1,2 Reset 후 복귀 시 정상운행\nF/N 164 | ATO - 자동회차 실패 | FSB 체결 정차, 자동회차 안됨 | 수동운전\nF/N 166 | ATO - 유효하지 않은 TWC 어드레스 수신 | 자동모드 설정 안됨 | 수동운전\nF/N 167 | ATO - 정차점 미달정차 | 약 1M 미달 정차 | 수동운전 전환하여 정위치 정차\nF/N 168 | ATO - 과주정차 | 약 1M 지나서 정차 | 관제보고 및 협의 후 정위치 조정운전\nF/N 169 | ATO - 기대하지 않은 PSM 수신 | 자동운전 해제, FSB 체결, 정차 | 수동모드 전환, 주간제어기 B7단 후 완해 시 수동운전\nF/N 170 | ATO - 유효하지 않은 PSM 수신 | 정상운"
+    },
+    {
+      "id": "903584f0-6e28-49c4-8266-abdea651e7e6",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 81,
+      "text": "2 ) 신호장비(ATC/ATO) ②_F/N.101 ~ 199"
+    },
+    {
+      "id": "5eaec61c-82dd-4a5c-a75e-849372ffd94a",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 82,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 171 | TWC 통신고장 | 자동운전 해제, FSB 체결, 정차 | 1. 주간제어기 B7단 후 완해 시 수동운전\n2. ATC1,2 Reset 후 복귀 시 정상운행\nF/N 172 | TWC 하드웨어 고장 | 자동운전 해제, FSB 체결, 정차 | 1. 주간제어기 B7단 후 완해 시 수동운전\n2. ATC1,2 Reset 후 복귀 시 정상운행\nF/N 173 | 순간적인 TWC 리셋 고장 | 자동운전 해제, FSB 체결, 정차 | 1. 주간제어기 B7단 후 완해 시 수동운전\n2. ATC1,2 Reset 후 복귀 시 정상운행\nF/N 174 | TWC 반송파 검출 고장 | 자동모드 설정 불가, 실내안내표시기 현시 안됨 | 1. 수동운전, 출입문 수"
+    },
+    {
+      "id": "16d3bb4b-d1e7-4f0d-9fc1-59e0dbdd6428",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 82,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 171 | TWC 통신고장 | 자동운전 해제, FSB 체결, 정차 | 1. 주간제어기 B7단 후 완해 시 수동운전\n2. ATC1,2 Reset 후 복귀 시 정상운행\nF/N 172 | TWC 하드웨어 고장 | 자동운전 해제, FSB 체결, 정차 | 1. 주간제어기 B7단 후 완해 시 수동운전\n2. ATC1,2 Reset 후 복귀 시 정상운행\nF/N 173 | 순간적인 TWC 리셋 고장 | 자동운전 해제, FSB 체결, 정차 | 1. 주간제어기 B7단 후 완해 시 수동운전\n2. ATC1,2 Reset 후 복귀 시 정상운행\nF/N 174 | TWC 반송파 검출 고장 | 자동모드 설정 불가, 실내안내표시기 현시 안됨 | 1. 수동운전, 출입문 수"
+    },
+    {
+      "id": "f0ea74a0-01fa-4ae5-8bf3-8324cd439bf3",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 82,
+      "text": "2 ) 신호장비(ATC/ATO) ③_F/N.101 ~ 199"
+    },
+    {
+      "id": "f6cf8847-f249-4759-aee2-138135556f59",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 83,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 201 | ATC 비상제동 | 1. 비상제동 체결 및 등 점등\u000b2. 자동운전취소 및 역행 불가 | 1. 수동모드 전환, 주간제어기 B7단 비상제동 완해\u000b2. 주/보조 ATC 리셋\u000b3. 완해불능시 비상모드 전환, 지령식 시행\nF/N 202 | 비상운전모드시 비상제동 | 비상제동 체결 및 등 점등, 역행 불가 | 1 주간제어기 B7단, 운전모드 수회 변경 시도\u000b2. 비상완해계전기(BC.RLEMEB) 가볍게 두드림\u000b3. 조치불능 시 관제센터 협의 후 구원운전\nF/N 203 | 비상제동스위치 취급 | 비상제동 체결 및 등 점등, 역행 불가 | 비상제동스위치 복귀, 고장유지시 EBCOS 취급\nF/N 204 | 비상제동차단스위치 취급 | 비상제동 차"
+    },
+    {
+      "id": "82774d3d-6e4d-4e89-8ac7-8012bd21132c",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 83,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 201 | ATC 비상제동 | 1. 비상제동 체결 및 등 점등\u000b2. 자동운전취소 및 역행 불가 | 1. 수동모드 전환, 주간제어기 B7단 비상제동 완해\u000b2. 주/보조 ATC 리셋\u000b3. 완해불능시 비상모드 전환, 지령식 시행\nF/N 202 | 비상운전모드시 비상제동 | 비상제동 체결 및 등 점등, 역행 불가 | 1 주간제어기 B7단, 운전모드 수회 변경 시도\u000b2. 비상완해계전기(BC.RLEMEB) 가볍게 두드림\u000b3. 조치불능 시 관제센터 협의 후 구원운전\nF/N 203 | 비상제동스위치 취급 | 비상제동 체결 및 등 점등, 역행 불가 | 비상제동스위치 복귀, 고장유지시 EBCOS 취급\nF/N 204 | 비상제동차단스위치 취급 | 비상제동 차"
+    },
+    {
+      "id": "cf89ebb3-ab8a-4a74-bbe4-d24821fa93e1",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 87,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 425 | VVVF-보호동작, \n차륜슬립/슬라이드(WSD) | TCMS 현시, 매 번 자동 리셋 되며\u000b역행시 L/B 1,2 재투입으로 정상운행 가능 | 1. 운행에 지장 없음\u000b2. 수동운전모드 전환 수동운전\nF/N 426 | VVVF-보호동작, \n후진 속도 검지(BSD) | TCMS 현시, 매 번 자동 리셋 되며\u000b역행시 L/B 1,2 재투입으로 정상운행 가능 | \nF/N 427 | VVVF-중고장, HB 차단(HBD) | 1. TCMS 화면 VVVF 표시 \"CUT(적색)\"로 표시\u000b2. 출력감소 및 인버터 제어 차단 상태, 자동 리셋 불가능 | 1. TCMS 확인 및 출입문 닫힘 상태에서 \u000b2. 고장차 AP.CBSUCC 및 AP.CBVVVF"
+    },
+    {
+      "id": "2a86659e-3927-43af-ac25-54191b52b451",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 87,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 425 | VVVF-보호동작, \n차륜슬립/슬라이드(WSD) | TCMS 현시, 매 번 자동 리셋 되며\u000b역행시 L/B 1,2 재투입으로 정상운행 가능 | 1. 운행에 지장 없음\u000b2. 수동운전모드 전환 수동운전\nF/N 426 | VVVF-보호동작, \n후진 속도 검지(BSD) | TCMS 현시, 매 번 자동 리셋 되며\u000b역행시 L/B 1,2 재투입으로 정상운행 가능 | \nF/N 427 | VVVF-중고장, HB 차단(HBD) | 1. TCMS 화면 VVVF 표시 \"CUT(적색)\"로 표시\u000b2. 출력감소 및 인버터 제어 차단 상태, 자동 리셋 불가능 | 1. TCMS 확인 및 출입문 닫힘 상태에서 \u000b2. 고장차 AP.CBSUCC 및 AP.CBVVVF"
+    },
+    {
+      "id": "4b267296-646d-431b-b97b-e22f97038834",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 90,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 603 | 모든 출입문 바이패스 됨 | 출입문 열림시에도 출입문 표시등 점등 됨 | 운전실 VC.SWADBP 취급 시\nF/N 604 | 출입문 바이패스 | TCMS 화면에 바이패스 표시 됨 | 출입문 개별바이패스 취급 시\n개별 출입문 열림 • 닫힘 상태를 검지하여 TCMS 모니터에 현시하는 것은 출입문 Limit Switch(DS 접점) 열림접점(b)에 의해 검지 됨 | | | \nF/N 611\u000b ~ 614 | 1~4 출입문 닫히지 않음, 왼쪽 | 출입문 닫힘취급시 닫히지 않은 출입문 발생 | 1개 출입문 닫히지 않을 때에 조치에 따라 조치\nF/N 615\u000b ~ 618 | 1~4 출입문 닫히지 않음, 오른쪽 | 〃 〃 | 〃 〃\nF/N 621"
+    },
+    {
+      "id": "1599ecf5-90e9-4119-aae7-1d548fb270e4",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 90,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 603 | 모든 출입문 바이패스 됨 | 출입문 열림시에도 출입문 표시등 점등 됨 | 운전실 VC.SWADBP 취급 시\nF/N 604 | 출입문 바이패스 | TCMS 화면에 바이패스 표시 됨 | 출입문 개별바이패스 취급 시\n개별 출입문 열림 • 닫힘 상태를 검지하여 TCMS 모니터에 현시하는 것은 출입문 Limit Switch(DS 접점) 열림접점(b)에 의해 검지 됨 | | | \nF/N 611\u000b ~ 614 | 1~4 출입문 닫히지 않음, 왼쪽 | 출입문 닫힘취급시 닫히지 않은 출입문 발생 | 1개 출입문 닫히지 않을 때에 조치에 따라 조치\nF/N 615\u000b ~ 618 | 1~4 출입문 닫히지 않음, 오른쪽 | 〃 〃 | 〃 〃\nF/N 621"
+    }
+  ],
+  "판토": [
+    {
+      "id": "629e861d-d3c5-4f09-afbc-b4c81e2cb121",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 8,
+      "text": "7\n\n④ TCMS 제어 및 감시 시스템\n\nTCMS\n\n운전실\n\nATO\n\nATC\n\nATC/ATO\n장치\n\n추진장치\n\nVVVF 인버터\n\nM\n\n범례 : TCMS인터페이스\n\n차제장치\n\n냉난방\n객실등\n승객경보\n방송\n표시기\n\n승\n객\n\n}\n\n출입문\n\nADU\n\n기관사\n\n차륜\n\n고압장치\n\n비상전원차단(Emergency Trip)\n\n판토그라프\n\n지상신호장치\n\n모든 출입문 닫힘\n\n출입문 열림허가\n\n비상, 보안, 주차제동\n\n공기제동\n\n역행,\n회생제동\n\nAC380V\nDC100V\n\nIVHB\n\nHB\n\n제동장치\nCM\n\n보조전원장치\n\nSIV\n\n1 ) 6호선 전동차 일반\n\nLine 6 신내"
+    },
+    {
+      "id": "87cc0206-d9f2-4912-993e-d466340b2da1",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 8,
+      "text": "판토그라프"
+    },
+    {
+      "id": "3e0932ae-c9e3-408e-bcde-5e6d20e51283",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 20,
+      "text": "19\n\n※ NFB색상 및 번호는 편의상 임의표기 함(현차는 미표기)\n\n2 ) 운전실 선택 및 컴퓨터 기능\n\nAP.CBDO1CC\n\nAP.CBDO2CC\n\nAP.CBDO3CC\n\nAP.CBDO4CC\n\nAP.CBDO5CC\n\nAP.CBDO6CC\n\n왼쪽 출입문\n\n오른쪽 출입문\n\n냉난방 제어\n\n객실등 제어\n\n객실송풍기\n제동불완해 검지 출력\nBOU로 강제완해 지령\n\nTc차 축전지저전압 검지시 축전지접촉기 차단\n판토하강전 SIV 정지신호 송출\nSIV 고장시 Reset 지령\n\nTc\n\nM1\n\nM2\n\nT1\n\n판토상승 계전기 여자\n판토하강 계전기 여자\nACM 접촉기 여자\n\n주공기압축기 기동신호 출력\n\n연장급전 접촉기 여자\n\n704선\n\nCC\n\n③ CC 컴퓨터 출력 기능\n\nLine 6 신내"
+    },
+    {
+      "id": "f5cf225b-29ac-433d-b051-db9701898946",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 20,
+      "text": "Tc차 축전지저전압 검지시 축전지접촉기 차단\n판토하강전 SIV 정지신호 송출\nSIV 고장시 Reset 지령"
+    },
+    {
+      "id": "e83951f5-26d1-4150-aef2-4298fb106912",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 20,
+      "text": "판토상승 계전기 여자\n판토하강 계전기 여자\nACM 접촉기 여자"
+    },
+    {
+      "id": "3fcb3c6f-1c61-4278-9a77-6ee688c00c66",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 21,
+      "text": "① Tc차(1호, 0호) 제어분전함 주요 NFB 기능\n\n출입문 관련 : 녹색\n\n101번 : AP.CBDO1CC : 좌측 출입문 제어\n102번 : AP.CBDO2CC : 우측 출입문 제어\n108번 : AP.CBDCOC : 인접차출입문닫힘\n120번 : AP.CBDIL : 출입문 연동\n123번 : AP.CB1KPHL : 1Km/h 이하 속도(좌)\n124번 : AP.CB1KPHR : 1Km/h 이하 속도(우)\n\n전원제어 관련 : 빨강\n\n111번 : AP.CBSU1TC : 1TC 전원공급\n112번 : AP.CBSU2TC : 2TC 전원공급\n113번 : AP.CBSUCC : CC 전원공급\n\n206번 : AP.CBET : 비상전원차단\n209번 : AP.CBDISPU : 모니터 전원\n210번 : AP.CBATC1 : AT"
+    },
+    {
+      "id": "00ebb751-5150-42a6-8e64-fad0443642c5",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 21,
+      "text": "보조전원(SIV) 관련 : 노랑\n\n105번 : AP.CBDO5CC : CC출력 5(SIV로 판토하강 지령)\n202번 : AP.CBSIVC : SIV(보조전원장치)"
+    },
+    {
+      "id": "adcc4b86-27c9-40d1-8cc2-1e49604b34ae",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 22,
+      "text": "② M1차(2호, 6호) 제어분전함 주요 NFB 기능\n\n전원제어 관련 : 빨강\n\n 5번 : AP.CBDO5CC : CC출력 5\n (판토하강 불가, ACM구동 불능)\n10번 : AP.CBSUCC : CC 전원공급\n13번 : AP.CBACO : 보조공기압축기(ACM) 제어\n\n제동제어 관련 : 분홍\n\n9번 : AP.CBBECU : 제동전자제어장치(ECU제동불완해)\n22번 : AP.CBBOU : 제동제어기(BCU 통신고장)\n\n역행제어 관련 : 파랑\n\n12번 : AP.CBVVVFIC : 인버터제어(인버터통신고장)\n20번 : AP.CBHBC : HB제어(HB, LB1,2 OFF)\n21번 : AP.CBLBC : LB제어(운행 중 판토1,2 하강 현시)\n (HB, LB1,2 OFF, VVVF CUT, SIV OFF)\n\nB"
+    },
+    {
+      "id": "f370bf41-c830-401e-bdf6-39535fe0dc0d",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 22,
+      "text": "전원제어 관련 : 빨강\n\n 5번 : AP.CBDO5CC : CC출력 5\n (판토하강 불가, ACM구동 불능)\n10번 : AP.CBSUCC : CC 전원공급\n13번 : AP.CBACO : 보조공기압축기(ACM) 제어"
+    },
+    {
+      "id": "4f67e3e1-d6ae-44c5-a67c-2bffbe3e4cc9",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 22,
+      "text": "역행제어 관련 : 파랑\n\n12번 : AP.CBVVVFIC : 인버터제어(인버터통신고장)\n20번 : AP.CBHBC : HB제어(HB, LB1,2 OFF)\n21번 : AP.CBLBC : LB제어(운행 중 판토1,2 하강 현시)\n (HB, LB1,2 OFF, VVVF CUT, SIV OFF)"
+    },
+    {
+      "id": "1a55a6c0-b6d4-4025-bee3-1cfeb894d376",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 30,
+      "text": "2\n\n신내승무사업소\n\n1) 직류모선(704선) 가압불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 30\n2) 보조공기압축기(ACM) 구동불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 32\n3) 판토그래프 상승불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 34 \n4) 전 차량 주공기압축기(CM) 구동불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 36\n5) 1개 UNIT 주공기압축기(CM) 구동불능 시 ∙∙∙∙∙∙∙∙∙∙∙ 38\n6) 보조전원장치(SIV) 기동불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 40\n7) 주간제어기 고장 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 42\n\n기동 제어 고장 시 길라잡이\n\n29"
+    },
+    {
+      "id": "9baa56df-3e29-4119-af02-4ca22db95052",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 30,
+      "text": "1) 직류모선(704선) 가압불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 30\n2) 보조공기압축기(ACM) 구동불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 32\n3) 판토그래프 상승불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 34 \n4) 전 차량 주공기압축기(CM) 구동불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 36\n5) 1개 UNIT 주공기압축기(CM) 구동불능 시 ∙∙∙∙∙∙∙∙∙∙∙ 38\n6) 보조전원장치(SIV) 기동불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 40\n7) 주간제어기 고장 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 42"
+    },
+    {
+      "id": "c4dc2404-16dd-4248-aa80-ff36f311e10d",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 33,
+      "text": "2 ) 보조공기압축기(ACM) 구동불능 시 ̶ 점검사항\n\n비상전원차단 램프(RED)\n\nOV735\n\n461\n\n411\n\n412\n\nOV24-1\n\nPanto up L/B close\n\nVC.PBPANU\n\nPanto down L/B Open\n\nVC.PBPAND\n\n판토상승\nL/B 닫힘\n\n판토하강\nL/B 개방\n\n818\n\n813\n\n811\n\nOV24-1\n\nVC.PBACOO\n\nACM ON (M1차)\n\nBC.PSAAP\n\n812\n\nBC.CRACO\n\n보조공기 저압\n(6.5 kg/㎠ 이하)\n\nACM접촉기 닫힘\n\nBC.CRACO\n\nACM접촉기\n\n704\n\n739\n\n807\n\n808\n\n809\n\nOV739\n\n전부Tc차\n운전실\n\nM1차(2호, 6호)\n\n판토상승 S/W 를 누르면\nTC→M1차 CC→6.5kg/㎠이하 시\n→818선 가압(ACM접촉기"
+    },
+    {
+      "id": "0ade73dd-fbda-44af-9a65-61e36ebe237a",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 33,
+      "text": "판토상승\nL/B 닫힘"
+    },
+    {
+      "id": "763b3d7c-8631-4170-a88d-90bed323179c",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 33,
+      "text": "판토하강\nL/B 개방"
+    },
+    {
+      "id": "d1195715-6bbc-47bb-8438-eb6bf42ef5fa",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 33,
+      "text": "판토상승 S/W 를 누르면\nTC→M1차 CC→6.5kg/㎠이하 시\n→818선 가압(ACM접촉기 여자)로\n ACM구동"
+    },
+    {
+      "id": "338ac5b1-ca72-4c54-9663-23022397d52a",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 33,
+      "text": "판토상승 S/W"
+    },
+    {
+      "id": "ea8a5c20-a08d-436c-be9c-d80f0dbe0da0",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 33,
+      "text": "판토하강 S/W"
+    },
+    {
+      "id": "8550bc96-18d3-497d-9ca6-3886cf9ce8e5",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 34,
+      "text": "현 상\n\n(1) 판토상승 S/W를 취급 하였으나 TCMS화면 M1차(2호, 6호) ACM“NG＂\n(2) 비상전원차단 표시등(RED) 점등상태 유지\n(3) M1차(2호, 6호차) ACM 구동 음이 들리지 않음\n\n조 치 사 항\n\n(1) M1차(2호, 6호) ① AP.CBSUCC 및 ② AP.CBDO5CC, ③ AP.CBACO 확인 후 차단 시 복귀\n(2) M1차(2호, 6호) ④ ACM접촉기(BC.CRACO) 동작(투입) 여부 확인\n(3) 상기조치 후 복귀불능시에는 관제센터 보고 및 차량기동반 출동 요청\n ※ 축전지저전압 시 전원소비 최소화 위해 객실DC등 소등 및 각종 서비스 NFB 차단\n 1개 UNIT AP.CBACO는 차단시키고 1개 UNIT 보조공기압축기(ACM)만 기동할 것\n\n원 인\n\n(1) 축전지 저"
+    },
+    {
+      "id": "95543fe5-de9b-46b8-8fd3-5756e0fa6a74",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 34,
+      "text": "(1) 판토상승 S/W를 취급 하였으나 TCMS화면 M1차(2호, 6호) ACM“NG＂\n(2) 비상전원차단 표시등(RED) 점등상태 유지\n(3) M1차(2호, 6호차) ACM 구동 음이 들리지 않음"
+    },
+    {
+      "id": "f9a14548-8250-4a59-8700-80c9022ab3d7",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 35,
+      "text": "3 ) 판토그래프 상승불능 시 ̶ 점검사항\n\n판토그래프 상승 해설도_M1차(2호, 6호) 설치\n\nT1 T2\n\n비상차단 계전기\n\nHV.RLET\n\nTCMS\n입력\n\nVVVF\n정지\n\nHB, LB\n차단\n\n판토\n하강\n\nTCMS\n입력\n\nVVVF\n정지\n\nHB, LB\n차단\n\n판토\n하강\n\n비상차단 계전기\n\nHV.RLET\n\nSIV로\n\nSIV로\n\n전부Tc(6100호)차\n\n후부Tc(6000호)차\n\nVC.PBET\n\nEPANDS\n\nVC.PBET\n\nEPANDS\n\nAP.CBET\n(비상전원차단)\n\n①\n\nM차\n\nM차\n\n704\n\n전부Tc차\n 운전실\n\nHV. RLPANU\n\nHV. RLPAND\n\nAP.\nCBDO5CC\n\nAP.\nCBSUCC\n\n판토상승계전기\n\n704\n\nM1차(2호, 6호)\n\nAP.\nCBLBC\n\n판토하강계전기\n\n판토하강 S/W\n\n판토상"
+    },
+    {
+      "id": "9a9b80e3-5582-4358-b32a-fb8e3613f023",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 35,
+      "text": "3 ) 판토그래프 상승불능 시 ̶ 점검사항"
+    },
+    {
+      "id": "4a94a3c0-b6f7-4090-81e9-bf76a94fcb4f",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 35,
+      "text": "판토그래프 상승 해설도_M1차(2호, 6호) 설치"
+    },
+    {
+      "id": "7027ff27-9d8f-4eac-956b-5f3b1113f11a",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 35,
+      "text": "판토\n하강"
+    },
+    {
+      "id": "9e545f9d-0b83-4f4c-9e92-9dcfd1b39815",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 35,
+      "text": "판토\n하강"
+    },
+    {
+      "id": "557b2266-0ca9-47a4-b8ba-3eded79fff1c",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 35,
+      "text": "판토상승계전기"
+    },
+    {
+      "id": "a7f0483d-3991-4ad6-a68d-da54b2556471",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 35,
+      "text": "판토하강계전기"
+    },
+    {
+      "id": "f6fa75d2-d724-4bc0-94c3-9b9101d3ed0c",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 35,
+      "text": "판토하강 S/W"
+    },
+    {
+      "id": "5a52d756-1a9e-4ea0-abe7-2273e66a3b71",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 35,
+      "text": "판토상승 S/W"
+    },
+    {
+      "id": "baae76d7-89ad-41a6-a97e-e2749321dabc",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 35,
+      "text": "∘ AP.CBSUCC 차단 시 \n - TCMS 화면에는 판토하강 현시\n (실제는 상승상태 유지)\n\n∘ AP.CBDO5CC 차단 시\n - 판토상승 또는 판토하강 불가\n (비상전원차단 S/W 누른다)"
+    },
+    {
+      "id": "9a3eeaee-4ea6-4a52-9b8d-ce8f56b66b53",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 36,
+      "text": "현 상\n\n(1) 전차선 전압계 “0” V 현시\n(2) 비상전원차단 표시등 점등(객실 AC형광등 소등)\n(3)TCMS화면에 판토하강, 보조전원장치(SIV) OFF 현시\n\n원 인\n\n(1) 운전실 판토상승/주회로차단기 폐S/W 또는 M1차(2호, 6호) CC 자체 고장 시\n(2) 6100호차 운전실 AP.CBET(비상전원차단회로) 차단 시\n(3) M1차(2호, 6호) AP.CBSUCC 또는 AP.CBDO5CC, AP.CBLBC 차단 시\n(4) M1차(2호, 6호) 판토상승계전기(HV.RLPANU) 불량 시\n(5) M1차(2호, 6호) PANPS1, 2 접점불량 시\n\n3 ) 판토그래프 상승불능 시 ̶ 길라잡이\n\n조 치 사 항\n\n(1) 운전실제어대 ① EPANDS(VC.PBET) 상태확인 및 주간제어기 역행 이외의 "
+    },
+    {
+      "id": "a1bcb861-73c0-44ea-b8c8-495029249b3f",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 36,
+      "text": "(1) 전차선 전압계 “0” V 현시\n(2) 비상전원차단 표시등 점등(객실 AC형광등 소등)\n(3)TCMS화면에 판토하강, 보조전원장치(SIV) OFF 현시"
+    },
+    {
+      "id": "d7985ae9-112b-4dfc-8191-9c005e4a0609",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 36,
+      "text": "(1) 운전실 판토상승/주회로차단기 폐S/W 또는 M1차(2호, 6호) CC 자체 고장 시\n(2) 6100호차 운전실 AP.CBET(비상전원차단회로) 차단 시\n(3) M1차(2호, 6호) AP.CBSUCC 또는 AP.CBDO5CC, AP.CBLBC 차단 시\n(4) M1차(2호, 6호) 판토상승계전기(HV.RLPANU) 불량 시\n(5) M1차(2호, 6호) PANPS1, 2 접점불량 시"
+    },
+    {
+      "id": "caeacc64-421e-4f70-8c2b-67a7d49be8d2",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 36,
+      "text": "3 ) 판토그래프 상승불능 시 ̶ 길라잡이"
+    },
+    {
+      "id": "e4b0abff-3dec-4e8f-9204-4668d36cb635",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 36,
+      "text": "(1) 운전실제어대 ① EPANDS(VC.PBET) 상태확인 및 주간제어기 역행 이외의 위치 확인\n(2) 6100호차 ② AP.CBET 확인 후 차단 시 복귀\n(3) M1차(2호, 6호) ③ AP.CBSUCC ④ AP.CBDO5CC ⑤ AP.CBLBC 확인 후 차단 시 복귀\n(4) 상기조치 후 판토상승 S/W를 취급하여도 상승불능 시\n - 출고 시 → 차량교환(주박지에서는 관제센터 보고 및 차량기동반 출동 요청)\n - 본선운행 중에는 최근정거장까지 타행운행, 정차 후 재기동 불능 시 구원운전 조치"
+    },
+    {
+      "id": "586dc202-f55f-4fd6-a9b1-124264273759",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 38,
+      "text": "현 상\n\n(1) TCMS 일반화면의 M2차(3호, 7호) 주공기압축기(CM) 모두 OFF 현시\n(2) MR 압력이 8.0 kg/㎠ 이하로 떨어짐 \n - 6.5 kg/㎠ 이하 시 비상제동 체결\n - 3.5 kg/㎠ 이하 시 주차제동 체결\n\n원 인\n\n(1) 전차선 단전 또는 전 차량 판토하강 시 또는 2개 UNIT SIV 구동불능 시\n(2) M2차(3호, 7호) CC 고장 또는 관련 차단기(각 차량 1개 이상) 차단 시\n - AP.CBSUCC, AP.CBDO5CC, AP.CBMCMC, AP.CBMC\n(3) M2차(3호, 7호) CMG 고착 또는 주공기압축기(CM) 과열(오일온도 115 °C 이상) 시\n\n조 치 사 항\n\n(1) 전차선 단전 및 전체 차량 판토하강 시 → 이전3) 판토그래프 상승불능 시 상황에 따른"
+    },
+    {
+      "id": "190b8a2c-eda7-43fa-8f9c-2a1be2d562e1",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 38,
+      "text": "(1) 전차선 단전 또는 전 차량 판토하강 시 또는 2개 UNIT SIV 구동불능 시\n(2) M2차(3호, 7호) CC 고장 또는 관련 차단기(각 차량 1개 이상) 차단 시\n - AP.CBSUCC, AP.CBDO5CC, AP.CBMCMC, AP.CBMC\n(3) M2차(3호, 7호) CMG 고착 또는 주공기압축기(CM) 과열(오일온도 115 °C 이상) 시"
+    },
+    {
+      "id": "c5f87e07-3cc5-456e-90ee-b1e5bc45286a",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 38,
+      "text": "(1) 전차선 단전 및 전체 차량 판토하강 시 → 이전3) 판토그래프 상승불능 시 상황에 따른 조치\n(2) 주공기압축기(CM) 과열(오일온도 115 °C 이상) 시 → 100 °C 이하가 되면 자동으로 구동 됨\n(3) M2차(3호, 7호) 관련 차단기 확인 후 차단 시 복귀\n ① AP.CBSUCC – CC전원, ② AP.CBDO5CC – CMG ON신호, \n ③ AP.CBMCMC – CMSB제어전원, ④ AP.CBMC – CM기동전원\n(4) 상기조치 후 구동불능 시\n - 관제센터 보고 및 지시에 따라 승객하차 후 구원운전 조치\n - 운전모드 수동 전환 후 가능한 타력으로 종착역 또는 대피선까지 자력운전(단거리 시)\n - 가까운 곳에 유치선이 없으면 신속히 구원요청\n - 정차시킬 수 있는 제동력 상실, 주공기"
+    },
+    {
+      "id": "93a8a81d-9c71-42e0-88e4-bdcb8943dc02",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 41,
+      "text": "보조전원장치(SIV) 기동 해설도 _Tc차(1호, 0호) 설치\n\nIVS\n\ncc\n\nSIVK\n\nFDR\n\nHKAR\n\nM12\n\nHBAR\n\nTMR\n\nIVHB\n\nHK\n\nHK\n\nHBAR\n\nTMR\n\nTMR\n\nHBR\n\nHKAR\n\nM12\n\nFDR\n\nGKR\n\nPS1\n\nCPU\n\nINTERFACE CIRCUIT\n\n<IVHB 기동지령>\n\n<SIVK 기동지령>\n\n<고장검지>\n\nIVHB\n\nAP.\nCBSIVC\n\nGKR\n\n115\n\n444\n\n비상전원차단(RLET) 회로 정보입력\n\n전원공급장치\n\n440\n\n비상전원차단(RLET) 회로 구성\n\n442\n\nHK\n\nHT • SENSOR\n\nGUB\n\nIVHB\n\nFL\n\nIVS\n\nRC\n\nBTH\n\nTR1\n\nU상\n\nV상\n\nW상\n\nMKAR\n\nSIVK\n\n601\n\n602\n\n603\n\nTR2\n\nSIVN\n\nNFB1\n\nRF\n"
+    },
+    {
+      "id": "4940950a-9152-4c02-b7e1-3f2c67d4aa02",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 41,
+      "text": "판토하강<판토하강 시 SIV 차단명령>"
+    },
+    {
+      "id": "ec8506b6-88b9-44fe-9984-65c1b7d0b302",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 41,
+      "text": "< SIV 차단조건>\n(1) FDR이 신호에 의해 TCMS리셋 된 후 3분이내 재 동작 시 \n(2) SIV 리셋신호 후 2분이내에 SIVK가 닫히지 않을 시\n(3) 판토상승 후 SIV 기동고장 감지 시\n(4) AP.CBSIVC 차단 시"
+    },
+    {
+      "id": "6a31592f-a132-44f8-ad39-d19156cc81aa",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 42,
+      "text": "현 상\n\n(1) TCMS 화면에 “SIV 기동고장” 메시지 현시 → 판토상승 시\n(2) TCMS 화면에 “SIV 차단“ 현시\n(3) TCMS 화면 보조전원장치(SIV)에 『OFF』 현시\n(4) 1개 UNIT 객실등(AC) 및 운전실 좌측등(AC) 소등\n - 연장급전 시 TCMS 화면 보조전원장치(SIV)에 『 』 표시 및 AC등 반감\n\n원 인\n\n(1) SIV 중고장(FDR) 발생 후 TCMS RESET 후 3분 이내 재 동작 시\n(2) SIV RESET 후 2분 이내 SIVK가 닫혀지지 않을 때\n(3) 판토상승 후 SIV 기동고장이 감지 되었을 때\n(4) AP.CBSIVC 차단 시\n\n조 치 사 항\n\n(1) 관제센터 보고 후 차량기동반 요청\n(2) TCMS 화면으로 연장급전 상태 확인 후 불능 시 안내방송 시"
+    },
+    {
+      "id": "a151f5ca-f8b0-4fc2-87af-b8094f80cfbf",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 42,
+      "text": "(1) TCMS 화면에 “SIV 기동고장” 메시지 현시 → 판토상승 시\n(2) TCMS 화면에 “SIV 차단“ 현시\n(3) TCMS 화면 보조전원장치(SIV)에 『OFF』 현시\n(4) 1개 UNIT 객실등(AC) 및 운전실 좌측등(AC) 소등\n - 연장급전 시 TCMS 화면 보조전원장치(SIV)에 『 』 표시 및 AC등 반감"
+    },
+    {
+      "id": "68feb47a-cae3-4463-bddf-33636426b529",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 42,
+      "text": "(1) SIV 중고장(FDR) 발생 후 TCMS RESET 후 3분 이내 재 동작 시\n(2) SIV RESET 후 2분 이내 SIVK가 닫혀지지 않을 때\n(3) 판토상승 후 SIV 기동고장이 감지 되었을 때\n(4) AP.CBSIVC 차단 시"
+    },
+    {
+      "id": "61bda887-c1ff-4d6d-8832-f4eb21851840",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 3,
+      "text": "조 치 사 항\n\n♣ 우선조치(운행이 가능하게 조치하고 원인은 나중에 찾는다)\n ▶ 운전모드 수동 전환 후 주간제어기 제동7단 후 역행 시도\n → 비상제동차단(EBCOS) S/W 취급 후 역행 시도 → 운전모드 비상 전환 후 역행 시도\n(1) MR압력 6.5 kg/㎠ 이하 시 ① MRPS OFF\n - 주공기압축기(CM)구동 확인 및 정상구동 시 주공기관 파열 및 공기라인 공기누설 확인(소음) 및 조치\n(2) 관련 스위치 ② 비상제동(EBS) S/W 및 ③ 구원운전(ROS) S/W 취급 확인 후 복귀\n(3) 관련 차단기 전•후부Tc차 ④ AP.CBEMBR, ⑤ AP.CBSU1TC•2TC 확인 후 차단 시 복귀\n ※ AP.CBEMBR 전•후부 병렬설치 되어 전•후부Tc차 모두 차단되어야 비상제동 체결 됨\n(4) "
+    },
+    {
+      "id": "4ef4f420-6d2e-45c0-b4a5-f014dbd1d650",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 3,
+      "text": "♣ 우선조치(운행이 가능하게 조치하고 원인은 나중에 찾는다)\n ▶ 운전모드 수동 전환 후 주간제어기 제동7단 후 역행 시도\n → 비상제동차단(EBCOS) S/W 취급 후 역행 시도 → 운전모드 비상 전환 후 역행 시도\n(1) MR압력 6.5 kg/㎠ 이하 시 ① MRPS OFF\n - 주공기압축기(CM)구동 확인 및 정상구동 시 주공기관 파열 및 공기라인 공기누설 확인(소음) 및 조치\n(2) 관련 스위치 ② 비상제동(EBS) S/W 및 ③ 구원운전(ROS) S/W 취급 확인 후 복귀\n(3) 관련 차단기 전•후부Tc차 ④ AP.CBEMBR, ⑤ AP.CBSU1TC•2TC 확인 후 차단 시 복귀\n ※ AP.CBEMBR 전•후부 병렬설치 되어 전•후부Tc차 모두 차단되어야 비상제동 체결 됨\n(4) TC1, TC2 "
+    },
+    {
+      "id": "3c80bea5-7a8a-46ba-a5f8-28414307ac09",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 22,
+      "text": "전 차량 역행불능 시 관련원인 및 조치 해설도\n\n전 차량 역행\n차단 발생\n\n주간제어기 고장 시\n\n※ AP.CBSU1TC • 2TC\n OFF ON (TC 리셋)\n\n전 차량 VVVF\n 인버터장치 고장 시\n\n※ 재 기동 실시\n\n아래조치 후 역행불능 시 관제센터 \n보고 및 지시에 따른 구원조치\n\n♣ 운행 중 전 차량 판토하강 시 조치 → 최근정거장까지 타력운행 \n1) EPANDS(VC.PBET) 취급 확인, 6100호 AP.CBET 확인 후 차단 시 복귀\n2) M1차(2호, 6호) AP.CBSUCC, AP.CBDO5CC, AP.CBLBC 확인 후 차단 시 복귀\n3) 정차 후 판토상승 S/W 취급(반드시 정차 후 취급)\n - 상기조치 후 판토상승 불능 시 관제센터 보고 및 지시에 따른 구원조치\n\n1 ) 전 차량 역행"
+    },
+    {
+      "id": "fa59946d-4a88-49bb-bc9e-24abd68b5f8b",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 22,
+      "text": "♣ 운행 중 전 차량 판토하강 시 조치 → 최근정거장까지 타력운행 \n1) EPANDS(VC.PBET) 취급 확인, 6100호 AP.CBET 확인 후 차단 시 복귀\n2) M1차(2호, 6호) AP.CBSUCC, AP.CBDO5CC, AP.CBLBC 확인 후 차단 시 복귀\n3) 정차 후 판토상승 S/W 취급(반드시 정차 후 취급)\n - 상기조치 후 판토상승 불능 시 관제센터 보고 및 지시에 따른 구원조치"
+    },
+    {
+      "id": "89e4059e-c67b-4cf8-baa0-2e7351e28712",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 23,
+      "text": "현 상\n\n(1) 전차선 전압은 정상이나 전류계 상승 안됨\n(2) 운전실제어대 각종 표시등 점등\n - 비상, 주차, 보안제동 표시등, 출입문대표등, 비상전원차단 표시등 점등 여부\n(3) 모니터에 관련 고장내용 및 VVVF 상태 현시\n - ” ̶ “ VVVF 또는 TCMS 통신고장, “NG” 제어(전원) 차단, “OFF” MDS 차단\n\n원 인\n\n(1) 주간제어기 불량 시 : “주간제어기 전원공급 또는 입력고장 현시“\n(2) 제동장치 풀림불능 시 : 비상, 보안, 주차, 일부 차량 제동 풀림불능 시\n(3) 출입문 닫힘불능 시 : 전체차량 출입문닫힘확인계전기(CE.RLDCT) 무 여자 시\n(4) M차 VVVF 모두 고장 또는 M차 관련 차단기(각 차량 1개 이상) 차단 시\n - AP.CBLBC 및 AP.CBSUCC"
+    },
+    {
+      "id": "b1e6c268-a838-4b73-8768-4b2a7e822167",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 23,
+      "text": "(1) 주간제어기 고장 시 : TC 리셋(AP.CBSU1TC • 2TC 동시 차단 후 복귀)\n(2) 제동장치 풀림불능 시 : 제2장 제동 제어 응급조치 시행\n(3) 출입문 닫힘불능 시 : 제3장 출입문 제어 응급조치 시행\n(4) 전 차량 VVVF(인버터장치) 고장 시 → 재 기동 시행\n ♣ 운행 중 전 차량 판토하강 시 조치 → 정차 후 판토상승 S/W 취급(반드시 정차 후 취급)\n - 최근정거장까지 타력운행 및 EPANDS(VC.PBET) 취급확인 및 6100호 AP.CBET 확인 후 차단 시 복귀\n - M1차(2호, 6호) AP.CBSUCC, AP.CBDO5CC, AP.CBLBC 확인 후 차단 시 복귀\n(5) 조치불능 시 관제센터 보고 및 관제센터 지시에 따라 구원운전 시행"
+    },
+    {
+      "id": "ab75f920-5279-4cc6-acfd-e3700b9d4efb",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 24,
+      "text": "인버터장치 제어 해설도\n\n♣ 선로차단기 투입순서( → ) \n1) 판토상승 S/W누름 → PANPS 4.7 kg/㎠ 이상 검지 → HBR 여자 → HBK여자 → HB투입\n2) HB투입 1초 후 가선전압 1200V 이상 시 역행신호 입력되면 LBOR여자 → LB1투입\n3) CHRe(충전저항) 통해 300ms 이내 FC 300V 이상 충전 시 LBTR여자 → LB2투입\n\nHBR : 판토상승 S/W 누룸 시 여자\nLBOR : 최초 역행지령(주간제어기 P위치) 시 여자\nLBTR : HB1, LB1 투입되고 1초 이내(300ms) FC에 DC300V 충전 시 여자\nOCR : VVVF 인버터 내부에 고장 및 과전류 검지가 없을 때 여자\n\n2 ) 인버터장치 출력 반감(1/2) 시 ̶ 점검사항\n\nCTU\n\nCTV\n\nU상\n\nV"
+    },
+    {
+      "id": "d0fc14af-e751-4607-9f1f-f70819aea1e2",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 24,
+      "text": "♣ 선로차단기 투입순서( → ) \n1) 판토상승 S/W누름 → PANPS 4.7 kg/㎠ 이상 검지 → HBR 여자 → HBK여자 → HB투입\n2) HB투입 1초 후 가선전압 1200V 이상 시 역행신호 입력되면 LBOR여자 → LB1투입\n3) CHRe(충전저항) 통해 300ms 이내 FC 300V 이상 충전 시 LBTR여자 → LB2투입"
+    },
+    {
+      "id": "9756cdcd-586a-4429-bf46-8f88b291bad5",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 24,
+      "text": "HBR : 판토상승 S/W 누룸 시 여자\nLBOR : 최초 역행지령(주간제어기 P위치) 시 여자\nLBTR : HB1, LB1 투입되고 1초 이내(300ms) FC에 DC300V 충전 시 여자\nOCR : VVVF 인버터 내부에 고장 및 과전류 검지가 없을 때 여자"
+    },
+    {
+      "id": "6bd4d60c-6eab-4dfd-8e1b-7ac7160e0673",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 25,
+      "text": "현 상\n\n1) TCMS 화면에 고장내용 현시\n2) TCMS 화면에 1개 UNIT 판토하강 현시(판토하강 시)\n3) TCMS 화면에 VVVF 2개 “ ̶ “, “NG” 현시\n4) TCMS 화면에 HB 및 LB1•2 “OFF” 현시\n\n원 인\n\n1) 1개 UNIT 판토하강 시(PANPS 4.2 kg/㎠ 이하, 압력저하 시)\n2) 1개 UNIT HB 차단 시\n3) 1개 UNIT LB1•2 고장 시\n4) VVVF 인버터장치 2개 고장 시\n5) M차 차단기(AP.CBHBC, AP.CBLBC, AP.CBVVVFIC)각 차량 1개 이상 차단 시\n6) 운행 중 AP.CBSUCC 차단 시 TCMS 화면에는 판토하강 현시(실제는 상승상태 유지)\n7) 운행 중 AP.CBDO5CC 차단 시\n - 해당차량 판토상승 또는 판토하강 불"
+    },
+    {
+      "id": "b5e5930f-f4f0-47ec-8b40-eb082216c2b4",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 25,
+      "text": "1) TCMS 화면에 고장내용 현시\n2) TCMS 화면에 1개 UNIT 판토하강 현시(판토하강 시)\n3) TCMS 화면에 VVVF 2개 “ ̶ “, “NG” 현시\n4) TCMS 화면에 HB 및 LB1•2 “OFF” 현시"
+    },
+    {
+      "id": "2fdeb951-9abc-45bd-a90c-bc59b29e133b",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 25,
+      "text": "1) 1개 UNIT 판토하강 시(PANPS 4.2 kg/㎠ 이하, 압력저하 시)\n2) 1개 UNIT HB 차단 시\n3) 1개 UNIT LB1•2 고장 시\n4) VVVF 인버터장치 2개 고장 시\n5) M차 차단기(AP.CBHBC, AP.CBLBC, AP.CBVVVFIC)각 차량 1개 이상 차단 시\n6) 운행 중 AP.CBSUCC 차단 시 TCMS 화면에는 판토하강 현시(실제는 상승상태 유지)\n7) 운행 중 AP.CBDO5CC 차단 시\n - 해당차량 판토상승 또는 판토하강 불능(이 경우 비상전원차단 S/W 누른다)"
+    },
+    {
+      "id": "d92da18b-055e-4ac1-ae5a-28e4055ab0fe",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 42,
+      "text": "8 ) M1차 CC 고장 시 ̶ 점검사항\n\nM1차(2호, 6호) CC 고장 시 현상 및 조치 해설도\n\nTCMS화면\n\n현상\n\n① 일반화면 고장메세지 및 M1차 승객경보 NG, \n 판토하강『 』표시(실제 상승상태 유지)\n VVVF, 제동장치, 공기압축기(ACM) 『— 』현시\n\n② 장치2/TCMS 화면 M1차 CC NG 현시\n\n차단 시\n\n106\n\nM1차(2호, 6호) AP.CBSUCC 차단 후 복귀\n\n※ NFB 번호는 편의상 임의표기 함(현차는 미표기)\n\n통신\n고장\n\nCC\n\nLine 6 신내"
+    },
+    {
+      "id": "63676729-006c-4d0e-bb2f-34459e02dd34",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 42,
+      "text": "① 일반화면 고장메세지 및 M1차 승객경보 NG, \n 판토하강『 』표시(실제 상승상태 유지)\n VVVF, 제동장치, 공기압축기(ACM) 『— 』현시"
+    },
+    {
+      "id": "9d9e8152-c37f-4275-8458-1d80cac118a4",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 43,
+      "text": "원 인\n\n1) TC와 M1차(2호, 6호) CC간 통신고장(CC 자체고장 포함)\n2) M1차(2호, 6호) AP.CBSUCC 차단\n\n조 치 사 항\n\n1) M1차(2호, 6호) ① AP.CBSUCC 차단 후 복귀(CC RESET 기능)\n2) 상기조치로 복귀불능 시 관제센터 보고 및 지시에 따름\n\n8 ) M1차 CC 고장 시 ̶ 길라잡이\n\n현 상\n\n1) TCMS 하단에 “TC – M1(2호, 6호)차 CC간 통신고장” 현시 및\n 일반화면의 M1차 판토하강『 』표시(실제 상승상태 유지),\n VVVF, 제동장치, 공기압축기(ACM) 『–』현시, 승객경보 NG 현시\n2) TCMS/장치2 화면에 M1차 CC NG 현시\n3) 3/4 출력(해당차 VVVF OFF), ACM 구동 불능\n4) M1차 (2호, 6호) 객실 AC"
+    },
+    {
+      "id": "03c091fb-1d3b-4ec9-b3fb-0047b56c6a96",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 43,
+      "text": "1) TCMS 하단에 “TC – M1(2호, 6호)차 CC간 통신고장” 현시 및\n 일반화면의 M1차 판토하강『 』표시(실제 상승상태 유지),\n VVVF, 제동장치, 공기압축기(ACM) 『–』현시, 승객경보 NG 현시\n2) TCMS/장치2 화면에 M1차 CC NG 현시\n3) 3/4 출력(해당차 VVVF OFF), ACM 구동 불능\n4) M1차 (2호, 6호) 객실 AC등 소등, 회생제동, 상용, 정차제동 불가, 비상제동 가능"
+    },
+    {
+      "id": "f7413f51-74e7-485e-9efd-b4dc88bcfcf0",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 73,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n331 | HV.FR | FILTER REACTOR | 필터 리엑터 | 인버터 입력 전류필터 및 고주파 제거\n332 | HV.HB | HIGH SPEED BREAKER | 고속 차단기 | 주회로 과전류시 차단\n333 | HV.JBTM1~4 | TRACTION MOTOR JUNCTION BOX | 견인전동기 연결 상자 | 견인전동기 입력 및 속도신호 연결\n334 | HV.LB | LINE BREAKER | 선로 차단기 | 인버터 입력 투입 및 차단\n335 | HV.MDS | MAIN DISCONNECTING SWITCH | 주 분리 스위치 | 주회로 분리 및 접지 스위치\n336 | HV.MF | MAIN FUSE | 주 퓨즈 | 주 회로 보호용 퓨즈\n337 "
+    },
+    {
+      "id": "8aa14240-2c9e-40af-994e-5701a385b22b",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 73,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n331 | HV.FR | FILTER REACTOR | 필터 리엑터 | 인버터 입력 전류필터 및 고주파 제거\n332 | HV.HB | HIGH SPEED BREAKER | 고속 차단기 | 주회로 과전류시 차단\n333 | HV.JBTM1~4 | TRACTION MOTOR JUNCTION BOX | 견인전동기 연결 상자 | 견인전동기 입력 및 속도신호 연결\n334 | HV.LB | LINE BREAKER | 선로 차단기 | 인버터 입력 투입 및 차단\n335 | HV.MDS | MAIN DISCONNECTING SWITCH | 주 분리 스위치 | 주회로 분리 및 접지 스위치\n336 | HV.MF | MAIN FUSE | 주 퓨즈 | 주 회로 보호용 퓨즈\n337 "
+    },
+    {
+      "id": "19f04511-8ef7-4868-9d79-8c4b843cafca",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 75,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n391 | VC.ILPBA | PARKING BRAKE APPLIED INDICATION LAMP | 주차제동 표시 램프 | 주차제동시 점등\n392 | VC.ILPDO | PANTO DOWN/LB INDICATION LAMP | 판토 하강/LB개방 표시 램프 | 판토 하강/LB개방시 점등\n393 | VC.ILSBA | SECURITY BRAKE APPLIED INDICATION LAMP | 보안제동 표시 램프 | 보안제동시 점등\n394 | VC.PB1DC | DOOR CLOSE PUSH BUTTON 1 | 출입문 닫힘 푸쉬버튼 1 | 출입문 닫힘용\n395 | VC.PB1DOL | DOOR OPEN LEFT PUSH BUTTON 1 | 출입문 열림 푸쉬버튼("
+    },
+    {
+      "id": "870f0f02-0c60-4e01-a5ab-95053ea12aff",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 75,
+      "text": "LRAM ACKNOWLEDGE PUSH BUTTON | 승객경보 인식 푸쉬 버튼 | 승객경보 인식용 푸쉬 버튼\n411 | VC.PBPABRA | PARKING BRAKE APPLY PUSH BUTTON | 주차제동 적용 누름 스위치 | 주차제동 적용 명령\n412 | VC.PBPAND | PANTO DOWN PUSH BUTTON | 집전기 하강 누름 스위치 | 판토하강을 위한 입력 전달 스위치\n413 | VC.PBPANU | PANTO UP PUSH BUTTON | 집전기 상승 누름 스위치 | 판토상승을 위한 입력 전달 스위치\n414 | VC.PBPARRA | PARKING BRAKE RELEASE PUSH BUTTON | 주차제동 완해 누름 스위치 | 주차제동 완해 명령\n415 | VC.REIL | RESI"
+    },
+    {
+      "id": "96aa61be-51ae-4731-9bb1-eb1c2de65781",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 75,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n391 | VC.ILPBA | PARKING BRAKE APPLIED INDICATION LAMP | 주차제동 표시 램프 | 주차제동시 점등\n392 | VC.ILPDO | PANTO DOWN/LB INDICATION LAMP | 판토 하강/LB개방 표시 램프 | 판토 하강/LB개방시 점등\n393 | VC.ILSBA | SECURITY BRAKE APPLIED INDICATION LAMP | 보안제동 표시 램프 | 보안제동시 점등\n394 | VC.PB1DC | DOOR CLOSE PUSH BUTTON 1 | 출입문 닫힘 푸쉬버튼 1 | 출입문 닫힘용\n395 | VC.PB1DOL | DOOR OPEN LEFT PUSH BUTTON 1 | 출입문 열림 푸쉬버튼("
+    },
+    {
+      "id": "98ca0db4-22f4-4467-8415-5210e63b2bad",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 75,
+      "text": "LRAM ACKNOWLEDGE PUSH BUTTON | 승객경보 인식 푸쉬 버튼 | 승객경보 인식용 푸쉬 버튼\n411 | VC.PBPABRA | PARKING BRAKE APPLY PUSH BUTTON | 주차제동 적용 누름 스위치 | 주차제동 적용 명령\n412 | VC.PBPAND | PANTO DOWN PUSH BUTTON | 집전기 하강 누름 스위치 | 판토하강을 위한 입력 전달 스위치\n413 | VC.PBPANU | PANTO UP PUSH BUTTON | 집전기 상승 누름 스위치 | 판토상승을 위한 입력 전달 스위치\n414 | VC.PBPARRA | PARKING BRAKE RELEASE PUSH BUTTON | 주차제동 완해 누름 스위치 | 주차제동 완해 명령\n415 | VC.REIL | RESI"
+    },
+    {
+      "id": "3dcabac6-7291-43b1-bfb8-59604947d376",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 79,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 043\n~ 048 | TC / LIU2 DI.00-07 불일치\n DI.40-47 불일치 등 | 정상운행 가능 | −\nF/N 049 | 정차제동 완해, 열차속도계산불가 | 역행 불가능(M차 AP.VVVFIC 4개 모두 차단 시) | 재기동 후 복귀불능 시 관제센터 보고 후 구원운전\nF/N 050 | LIU2로 열차 제어 절환 | 1. 열차정지, TCMS 모니터 현시불능\u000b2. 비상운전만 가능(추진력 정상) | 1.해당Tc차 AP.CBSU1TC 리셋\u000b2. 복귀불능시 비상운전\nF/N 051 | 주간제어기 입력#2로 절환 | 정상운행 가능 | \nF/N 052 | 인접차 출입문제어 왼쪽 | 정상운행 가능 | 필요시 해당차량 AP.CBSUCC 리셋\nF"
+    },
+    {
+      "id": "4e9efcd1-d6d4-4b4f-8fda-67cefa5c4042",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 79,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 043\n~ 048 | TC / LIU2 DI.00-07 불일치\n DI.40-47 불일치 등 | 정상운행 가능 | −\nF/N 049 | 정차제동 완해, 열차속도계산불가 | 역행 불가능(M차 AP.VVVFIC 4개 모두 차단 시) | 재기동 후 복귀불능 시 관제센터 보고 후 구원운전\nF/N 050 | LIU2로 열차 제어 절환 | 1. 열차정지, TCMS 모니터 현시불능\u000b2. 비상운전만 가능(추진력 정상) | 1.해당Tc차 AP.CBSU1TC 리셋\u000b2. 복귀불능시 비상운전\nF/N 051 | 주간제어기 입력#2로 절환 | 정상운행 가능 | \nF/N 052 | 인접차 출입문제어 왼쪽 | 정상운행 가능 | 필요시 해당차량 AP.CBSUCC 리셋\nF"
+    },
+    {
+      "id": "cd16f801-096d-49e3-b8fc-3e59ce57cad9",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 85,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 301 | 비상전원 차단 | 1. 판토하강, 비상전원차단등 점등\u000b2. HB차단, 역행 차단 | 1. 비상전원차단스위치 복귀(전후 운전실 확인)\u000b2. 판토상승 버튼 취급\nF/N 311 | 판도상승시 MDS 서비스 위치 아님 | 판토상승 불가 | 주박지에서 MDS 이상 시 기동검수 출장요청\nF/N 312 | 판도상승시 IVS 서비스 위치 아님 | 기동시 판토상승 불가 | 주박지에서 IVS 이상 시 기동검수 출장요청\nF/N 313 | MDS 서비스 위치 아님 | 기동시 판토상승 불가 | 주박지에서 MDS 이상 시 기동검수 출장요청\nF/N 314 | IVS 서비스 위치 아님 | 기동시 판토상승 불가 | 주박지에서 IVS 이상 시 기동검수 출장요청"
+    },
+    {
+      "id": "08b587f9-80de-4514-b7b3-57cde091908b",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 85,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 301 | 비상전원 차단 | 1. 판토하강, 비상전원차단등 점등\u000b2. HB차단, 역행 차단 | 1. 비상전원차단스위치 복귀(전후 운전실 확인)\u000b2. 판토상승 버튼 취급\nF/N 311 | 판도상승시 MDS 서비스 위치 아님 | 판토상승 불가 | 주박지에서 MDS 이상 시 기동검수 출장요청\nF/N 312 | 판도상승시 IVS 서비스 위치 아님 | 기동시 판토상승 불가 | 주박지에서 IVS 이상 시 기동검수 출장요청\nF/N 313 | MDS 서비스 위치 아님 | 기동시 판토상승 불가 | 주박지에서 MDS 이상 시 기동검수 출장요청\nF/N 314 | IVS 서비스 위치 아님 | 기동시 판토상승 불가 | 주박지에서 IVS 이상 시 기동검수 출장요청"
+    },
+    {
+      "id": "720990b9-bb44-4997-ac17-04c2cd9c846b",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 88,
+      "text": "152\n\n고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 501 | SIV 통신고장 | 객실 교류형광등 정상(단순 통신고장 시)\u000b객실 교류형광등 반감(SIV고장으로 연장급전 시) | AP.CBSUCC 및 AP.CBSIVC 리셋\n− 연장급전 동작은 TCMS에서 총괄하기 때문에 RESET 하려면 열차를 재기동 하여야 한다, 모든 조치는 출입문이 닫힌 상태에서 실시할 것.\u000b− 연장급전 상태로 운전할 경우 회차시 충분한 시간적 여유가 있을 경우 관제세터 보고 후 1회에 한하여 재기동 시도 | | | \nF/N 502 | SIV-경고장, 교류출력단락 | 5초후 자동으로 재기동(SIV RESET)\u000b연속 4회 발생시 연장급전 됨 | 연장급전 불능 시 AP.CBSIVC OFF\nF/N 503 | SIV-"
+    },
+    {
+      "id": "5197975b-e9ed-4e4f-9189-128bb2e5ea65",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 88,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 501 | SIV 통신고장 | 객실 교류형광등 정상(단순 통신고장 시)\u000b객실 교류형광등 반감(SIV고장으로 연장급전 시) | AP.CBSUCC 및 AP.CBSIVC 리셋\n− 연장급전 동작은 TCMS에서 총괄하기 때문에 RESET 하려면 열차를 재기동 하여야 한다, 모든 조치는 출입문이 닫힌 상태에서 실시할 것.\u000b− 연장급전 상태로 운전할 경우 회차시 충분한 시간적 여유가 있을 경우 관제세터 보고 후 1회에 한하여 재기동 시도 | | | \nF/N 502 | SIV-경고장, 교류출력단락 | 5초후 자동으로 재기동(SIV RESET)\u000b연속 4회 발생시 연장급전 됨 | 연장급전 불능 시 AP.CBSIVC OFF\nF/N 503 | SIV-경고장, "
+    }
+  ],
+  "비상제동": [
+    {
+      "id": "2f288883-dcef-47ef-a99a-d9626abdb43e",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 11,
+      "text": "♣ 지상신호장치\n• 열차정지신호(TB) 수신 \n - ODR 여자 속도코드 제거 출입문 열림\n• 시간경과 또는 열차 출입문 닫힘 정보 수신\n - ODR 소자 속도코드 송출\n\n⑦ ATC 시스템의 차상 지상 간 신호흐름\n\n10\n\nATC 시스템의 속도코드(Code Rate) 수신 및 해석 과정\n\n♣ 차상 ATC 장치\n• 지상으로 부터 신호 수신 \n - 신호해독\n 주파수별 속도코드 분석\n - 속도코드, 출입문 코드 구분\n• 과속검지\n - 지령속도와 실제속도 비교\n - 과속검지, TCMS로 FSB 요구\n - 감속도 부족 시 비상제동 체결\n• 출입문 열림 허가\n\nTWC\n안테나\n\nGOV\n\n필터\n\n실제속도\n\n지령속도\n\nCPU\n\n- 신호해독\n- 과속검지\n- 출입문 제어\n\nATO\n\nTCMS\n\n지령속도\n\n- 출입문\n 열림허용\n "
+    },
+    {
+      "id": "053ffb11-b78e-4888-b6aa-6d9ac9863191",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 11,
+      "text": "♣ 차상 ATC 장치\n• 지상으로 부터 신호 수신 \n - 신호해독\n 주파수별 속도코드 분석\n - 속도코드, 출입문 코드 구분\n• 과속검지\n - 지령속도와 실제속도 비교\n - 과속검지, TCMS로 FSB 요구\n - 감속도 부족 시 비상제동 체결\n• 출입문 열림 허가"
+    },
+    {
+      "id": "27828aeb-a13b-4d35-8c0a-08c5dbf88989",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 18,
+      "text": "2 ) 운전실 선택 및 컴퓨터 기능\n\n전부Tc차\nHCR여자되면\n\n전부표지등 좌측\n\n전부표지등 우측\n\n모든출입문 닫힘계전기(DCT) 여자\n\n비상제동 안전루프 회로\n\n열차무선전화기\n\nADU 전원입력\n\n전부Tc차TCR\n소자조건\n\n비상모드에서 ATC 비상제동 완해\n\n비상제동계전기(RLEB) 여자\n\n후부Tc차TCR여자되면\n\n후부표지등 우측\n\n출입문 연동회로\n(모든출입문 닫힘감시)\n\n후부운전실\n비상제동 안전루프 구성\n\nATC로 HCR 여자신호 입력\n\n후부표지등 좌측\n\n17\n\n역전기 F / R\n\nLIU1\n\nLIU2\n\nAP. CBSU1TC\n\nAP. CBSU2TC\n\nAP. CBDO4TC\n\n704\n\nVC.RL1HC\n\nVC.RL2HC\n\nVC.RL1TC\n\nVC.RL2TC\n\nLIU1\n\nLIU2\n\nVC.RL1HC\n\nVC.RL2HC\n"
+    },
+    {
+      "id": "fba4e124-3f36-47e9-9289-607e73024a67",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 18,
+      "text": "비상제동 안전루프 회로"
+    },
+    {
+      "id": "d2866ef6-9d6d-48d7-9dbc-2c545efd4f8a",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 18,
+      "text": "비상모드에서 ATC 비상제동 완해"
+    },
+    {
+      "id": "2bfbe7a3-e5d0-4280-8933-87691dfbf83f",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 18,
+      "text": "비상제동계전기(RLEB) 여자"
+    },
+    {
+      "id": "4032d074-2048-4990-84d6-6152ed6d0e68",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 18,
+      "text": "후부운전실\n비상제동 안전루프 구성"
+    },
+    {
+      "id": "3fcb3c6f-1c61-4278-9a77-6ee688c00c66",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 21,
+      "text": "① Tc차(1호, 0호) 제어분전함 주요 NFB 기능\n\n출입문 관련 : 녹색\n\n101번 : AP.CBDO1CC : 좌측 출입문 제어\n102번 : AP.CBDO2CC : 우측 출입문 제어\n108번 : AP.CBDCOC : 인접차출입문닫힘\n120번 : AP.CBDIL : 출입문 연동\n123번 : AP.CB1KPHL : 1Km/h 이하 속도(좌)\n124번 : AP.CB1KPHR : 1Km/h 이하 속도(우)\n\n전원제어 관련 : 빨강\n\n111번 : AP.CBSU1TC : 1TC 전원공급\n112번 : AP.CBSU2TC : 2TC 전원공급\n113번 : AP.CBSUCC : CC 전원공급\n\n206번 : AP.CBET : 비상전원차단\n209번 : AP.CBDISPU : 모니터 전원\n210번 : AP.CBATC1 : AT"
+    },
+    {
+      "id": "4a880f2a-fe31-47e8-8f16-48a030715247",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 21,
+      "text": "제동제어 관련 : 분홍\n\n109번 : AP.CBBECU : 제동전자제어장치\n (ECU제동불완해)\n117번 : AP.CBDO4TC : 주컴퓨터 출력4\n (HCR, TCR제어)\n122번 : AP.CBBOU : 제동제어기\n (BCU 통신고장)\n204번 : AP.CBEMBR : 비상제동\n205번 : AP.CBSCPABR : 주차제동"
+    },
+    {
+      "id": "3469bd70-e20b-486b-8723-c6d17da7ed1f",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 26,
+      "text": "① 구원운전 S/W(ROS)와 12핀 점퍼선 기능\n\n(1) 역행불능의 경우 구원운전 S/W(ROS)를 6호선 위치로 전환하면 고장열차에서 역행 및 제동취급과 연락방송 가능\n(2) 비상제동 풀림불능의 경우 구원운전 S/W(ROS)를 취급하지 않으므로 기관사 상호간 연락방송 기능만 수행\n\n구원운전 S/W(ROS)와 12핀 점퍼선 기능\n\n정상위치\n\n구원위치\n\n비상방송 제어선\n전후열차 운전실 간\n방송장치 연결\n(ROS 위치와 관계없다)\n\n비상제동 제어선\n구원운전 S/W(ROS)를 6호선 위치로 전환하면 안전루프 연결\n\nTCMS 직렬 통신선\n구원운전 S/W(ROS) \n6호선 위치에서 고장차, 구원차 TC간 직렬통신으로 역행/제동지령 수신\n\n비상방송 제어선\n전후열차 운전실 간\n방송장치 연결\n(ROS 위치와 관계없다)\n"
+    },
+    {
+      "id": "ddb6081a-202e-4f50-bdbd-6743a5fc613f",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 26,
+      "text": "(1) 역행불능의 경우 구원운전 S/W(ROS)를 6호선 위치로 전환하면 고장열차에서 역행 및 제동취급과 연락방송 가능\n(2) 비상제동 풀림불능의 경우 구원운전 S/W(ROS)를 취급하지 않으므로 기관사 상호간 연락방송 기능만 수행"
+    },
+    {
+      "id": "f314b940-ee47-4230-acce-9f89a074e444",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 26,
+      "text": "비상제동 제어선\n구원운전 S/W(ROS)를 6호선 위치로 전환하면 안전루프 연결"
+    },
+    {
+      "id": "9ff0de28-e960-47d6-b6b7-b6ad214a79a8",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 26,
+      "text": "비상제동 제어선\n구원운전 S/W(ROS)를 6호선 위치로 전환하면 안전루프 연결"
+    },
+    {
+      "id": "1641ee66-3d5f-4681-b5fb-5f787be57764",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 27,
+      "text": "② 비상제동 풀림불능 시 구원운전 방법\n\n고장차(BOU 콕크 개방)\n\n구원차\n\n(1) 구원준비 : 구름방지(보안제동 체결), 후부Tc차 2종방호, 구원연결 후 MR관 관통, 12핀 점퍼선 연결, 운전실간 방송시험\n\n(2) 전부Tc차로 이동 시 각 차량 BOU콕크 개방 후 구름방지해제(보안제동 풀림), 운전실간 방송시험\n\n4 ) 6호선 전동차 구원운전\n\n26\n\n구 분 | 고장 차 | | 구원 차\n | 전부Tc차 운전실 | 후부 운전실 | 전부Tc차 운전실\n역전기 | 전진 | | 전진\n운전모드/출입문모드 | 비상, 수/수 | | 비상, 수/수\n구원운전 S/W(ROS) | LINE6 위치 취급 | LINE6 위치 취급 | 취급 안함\n주간제어기 | 중립위치 | | 역행/제동 등 운전위치\n\n(3) 구원운전 시 운전실"
+    },
+    {
+      "id": "a4eed08b-a0b9-4616-8247-d9e73068295e",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 27,
+      "text": "② 비상제동 풀림불능 시 구원운전 방법"
+    },
+    {
+      "id": "586dc202-f55f-4fd6-a9b1-124264273759",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 38,
+      "text": "현 상\n\n(1) TCMS 일반화면의 M2차(3호, 7호) 주공기압축기(CM) 모두 OFF 현시\n(2) MR 압력이 8.0 kg/㎠ 이하로 떨어짐 \n - 6.5 kg/㎠ 이하 시 비상제동 체결\n - 3.5 kg/㎠ 이하 시 주차제동 체결\n\n원 인\n\n(1) 전차선 단전 또는 전 차량 판토하강 시 또는 2개 UNIT SIV 구동불능 시\n(2) M2차(3호, 7호) CC 고장 또는 관련 차단기(각 차량 1개 이상) 차단 시\n - AP.CBSUCC, AP.CBDO5CC, AP.CBMCMC, AP.CBMC\n(3) M2차(3호, 7호) CMG 고착 또는 주공기압축기(CM) 과열(오일온도 115 °C 이상) 시\n\n조 치 사 항\n\n(1) 전차선 단전 및 전체 차량 판토하강 시 → 이전3) 판토그래프 상승불능 시 상황에 따른"
+    },
+    {
+      "id": "e81eac89-f2a5-4062-8c11-ac5aaffa7088",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 38,
+      "text": "(1) TCMS 일반화면의 M2차(3호, 7호) 주공기압축기(CM) 모두 OFF 현시\n(2) MR 압력이 8.0 kg/㎠ 이하로 떨어짐 \n - 6.5 kg/㎠ 이하 시 비상제동 체결\n - 3.5 kg/㎠ 이하 시 주차제동 체결"
+    },
+    {
+      "id": "567d1025-91df-497b-8f27-d9775b563db4",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 44,
+      "text": "현 상\n\n(1) 주간제어기가 P(역행), N(중립), B(제동) 위치에서 차가 움직이지 않는다.\n(2) TCMS 화면에 “주간제어기 출력 또는 입력 이상“ 현시\n\n원 인\n\n(1) 주간제어기 Limit S/W 접점 자체불량 시\n(2) 주간제어기 출력전압 이상(0~0.2V 또는 10.1V 이상)\n(3) 주간제어기 입력전압 이상(14.7~15.3V 범위를 벗어남)\n\n조 치 사 항\n\n(1) 주간제어기 고착(Limit S/W 접점) 발생\n - 정거장 진입 중 발생 시 비상제동(VC.PBEMBR-EBS) S/W 취급하여 정차\n - 관제센터 보고 및 승객안내방송 후 지시에 의한 구원운전 및 승객하차(출입문 확인 철저)\n - ① AP.CBSU1TC•2TC 차단 후 TC1, TC2 동시 고장에 의한 구원운전(본선 정차 시 "
+    },
+    {
+      "id": "335031dd-3c15-4586-9ad2-e8558181290d",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 44,
+      "text": "(1) 주간제어기 고착(Limit S/W 접점) 발생\n - 정거장 진입 중 발생 시 비상제동(VC.PBEMBR-EBS) S/W 취급하여 정차\n - 관제센터 보고 및 승객안내방송 후 지시에 의한 구원운전 및 승객하차(출입문 확인 철저)\n - ① AP.CBSU1TC•2TC 차단 후 TC1, TC2 동시 고장에 의한 구원운전(본선 정차 시 포함)\n(2) 주간제어기 출력전압 이상\n - 관제센터 보고 후 ① AP.CBSU1TC•2TC RESET(동시 차단 후 복귀) 시도\n - 복귀불능 시 후부Tc차 자력운전(후부운전실 밀기운전, 전부운전실 감시자 승차) \n 또는구원운전(고장차의 주간제어기 불량으로 구원차 운전실에서 밀기운전)\n(3) 주간제어기 입력전압 이상\n - 관제센터 보고 후 ① AP.CBSU1TC•2TC RES"
+    },
+    {
+      "id": "5439243f-cbe3-4588-9cd5-86c877851c0e",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 66,
+      "text": "4\n\n65\n\n신내승무사업소\n\n제동 제어 고장 시 길라잡이\n\n1) 비상제동 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 66\n2) 일부 차량 제동 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 70\n3) 주공기관(Air Filter) 파열 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 72 \n4) 주공기관 파열로 주차제동 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 74\n5)-1. 전부Tc차 보안제동(S/W) 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 78\n5)-2. 후부Tc차 보안제동(S/W) 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 80\n5)-3. 전부Tc차 보안제동(S/W) 풀림불능 시 구원운전 ∙∙∙"
+    },
+    {
+      "id": "823df12a-a1bd-4247-a8b8-7707c3c26876",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 66,
+      "text": "1) 비상제동 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 66\n2) 일부 차량 제동 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 70\n3) 주공기관(Air Filter) 파열 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 72 \n4) 주공기관 파열로 주차제동 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 74\n5)-1. 전부Tc차 보안제동(S/W) 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 78\n5)-2. 후부Tc차 보안제동(S/W) 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 80\n5)-3. 전부Tc차 보안제동(S/W) 풀림불능 시 구원운전 ∙∙∙∙ 82\n5)-4. 후부Tc차 보안제동(S/W) 풀림불능 시"
+    },
+    {
+      "id": "8743031a-6518-454a-9779-9eb3d9cfcfad",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 1,
+      "text": "4\n\n65\n\n신내승무사업소\n\n제동 제어 고장 시 길라잡이\n\n1) 비상제동 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 66\n2) 일부 차량 제동 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 70\n3) 주공기관(Air Filter) 파열 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 72 \n4) 주공기관 파열로 주차제동 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 74\n5)-1. 전부Tc차 보안제동(S/W) 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 78\n5)-2. 후부Tc차 보안제동(S/W) 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 80\n5)-3. 전부Tc차 보안제동(S/W) 풀림불능 시 구원운전 ∙∙∙"
+    },
+    {
+      "id": "b8d48b83-2486-4b1f-b39b-e009a55a29d1",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 1,
+      "text": "1) 비상제동 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 66\n2) 일부 차량 제동 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 70\n3) 주공기관(Air Filter) 파열 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 72 \n4) 주공기관 파열로 주차제동 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 74\n5)-1. 전부Tc차 보안제동(S/W) 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 78\n5)-2. 후부Tc차 보안제동(S/W) 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 80\n5)-3. 전부Tc차 보안제동(S/W) 풀림불능 시 구원운전 ∙∙∙∙ 82\n5)-4. 후부Tc차 보안제동(S/W) 풀림불능 시"
+    },
+    {
+      "id": "58a36ffe-0bf4-4951-933d-70e772f71af0",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 2,
+      "text": "1 ) 비상제동 풀림불능 시 ̶ 점검사항\n\n⑥\n\n⑤\n\n비상제동 풀림 제어 해설도\n\n66\n\n※ AP.CBEMBR은 전•후부 병렬설치 되어\n 전•후부Tc차 모두 차단되어야 비상제동\n 체결 됨\n\nB7 단 비상제동 풀림 확인\n\nAP.\nCBSU1TC\n\nAP.\nCBSU2TC\n\nAP.\nCBSU1TC\n\nAP.\nCBSU2TC\n\n전부Tc차\n\n후부Tc차\n\nLine 6 신내"
+    },
+    {
+      "id": "625e5b04-d1dc-4c70-8dfd-621b2ca1182c",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 2,
+      "text": "1 ) 비상제동 풀림불능 시 ̶ 점검사항"
+    },
+    {
+      "id": "1c4d3995-196d-4558-81e2-7c24e70111a9",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 2,
+      "text": "비상제동 풀림 제어 해설도"
+    },
+    {
+      "id": "c953b1a9-6fe0-497b-b385-7a87992c3bbf",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 2,
+      "text": "※ AP.CBEMBR은 전•후부 병렬설치 되어\n 전•후부Tc차 모두 차단되어야 비상제동\n 체결 됨"
+    },
+    {
+      "id": "6b37487f-4c18-410c-8783-bd8f86777ce1",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 2,
+      "text": "B7 단 비상제동 풀림 확인"
+    },
+    {
+      "id": "61bda887-c1ff-4d6d-8832-f4eb21851840",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 3,
+      "text": "조 치 사 항\n\n♣ 우선조치(운행이 가능하게 조치하고 원인은 나중에 찾는다)\n ▶ 운전모드 수동 전환 후 주간제어기 제동7단 후 역행 시도\n → 비상제동차단(EBCOS) S/W 취급 후 역행 시도 → 운전모드 비상 전환 후 역행 시도\n(1) MR압력 6.5 kg/㎠ 이하 시 ① MRPS OFF\n - 주공기압축기(CM)구동 확인 및 정상구동 시 주공기관 파열 및 공기라인 공기누설 확인(소음) 및 조치\n(2) 관련 스위치 ② 비상제동(EBS) S/W 및 ③ 구원운전(ROS) S/W 취급 확인 후 복귀\n(3) 관련 차단기 전•후부Tc차 ④ AP.CBEMBR, ⑤ AP.CBSU1TC•2TC 확인 후 차단 시 복귀\n ※ AP.CBEMBR 전•후부 병렬설치 되어 전•후부Tc차 모두 차단되어야 비상제동 체결 됨\n(4) "
+    },
+    {
+      "id": "4ef4f420-6d2e-45c0-b4a5-f014dbd1d650",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 3,
+      "text": "♣ 우선조치(운행이 가능하게 조치하고 원인은 나중에 찾는다)\n ▶ 운전모드 수동 전환 후 주간제어기 제동7단 후 역행 시도\n → 비상제동차단(EBCOS) S/W 취급 후 역행 시도 → 운전모드 비상 전환 후 역행 시도\n(1) MR압력 6.5 kg/㎠ 이하 시 ① MRPS OFF\n - 주공기압축기(CM)구동 확인 및 정상구동 시 주공기관 파열 및 공기라인 공기누설 확인(소음) 및 조치\n(2) 관련 스위치 ② 비상제동(EBS) S/W 및 ③ 구원운전(ROS) S/W 취급 확인 후 복귀\n(3) 관련 차단기 전•후부Tc차 ④ AP.CBEMBR, ⑤ AP.CBSU1TC•2TC 확인 후 차단 시 복귀\n ※ AP.CBEMBR 전•후부 병렬설치 되어 전•후부Tc차 모두 차단되어야 비상제동 체결 됨\n(4) TC1, TC2 "
+    },
+    {
+      "id": "b8684a62-86d1-4e9e-9e0b-b3938dd6b872",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 3,
+      "text": "1 ) 비상제동 풀림불능 시 ̶ 길라잡이"
+    },
+    {
+      "id": "60a2ba66-a2d3-4bdb-aace-5d5e70a34641",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 3,
+      "text": "(1) 비상제동 표시등(RED) 점등\n(2) BC압력계 3.0 kg/㎠\n(3) TCMS 화면표시\n - F/N. 078 역행차단, 비상제동"
+    },
+    {
+      "id": "d87d2996-7c4e-4080-8938-843f69ed9884",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 4,
+      "text": "1 ) 비상제동 풀림불능 시 ̶ 점검사항\n\n비상제동 풀림불능 시 관련 원인\n\n주간제어기 EB 위치\n\nROS 구원위치\n\nEBS 취급\n\nMRPS OFF 시\n\nATC 고장 시\n\nAP.CBSU1TC•2TC 차단\n\nAP.CBEMBR 차단\n\nAP.CBDO4TC 차단\n\n인통선 880선 탈락\n\nHCR, TCR 동작불량\n\n68\n\nLine 6 신내"
+    },
+    {
+      "id": "d9042d56-df16-46d9-8ff5-742ec51a6e2e",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 4,
+      "text": "1 ) 비상제동 풀림불능 시 ̶ 점검사항"
+    },
+    {
+      "id": "ec81bd3e-12a5-4f82-b54b-95d41d77d99b",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 4,
+      "text": "비상제동 풀림불능 시 관련 원인"
+    },
+    {
+      "id": "cf703ec4-ceea-4cac-bb87-05ed3b88c95e",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 5,
+      "text": "원 인\n\n(1) 주간제어기 『비상제동(EB)』 위치 시\n(2) 구원운전(VC.SWREO-ROS) S/W – 구원위치 시\n(3) 비상제동(VC.PBEMBR-EBS) S/W 취급 시\n(4) MR 압력 6.5 kg/㎠ 이하 시(MRPS OFF)\n(5) ATC 비상제동 지령 시(ATC 고장 포함)\n(6) AP.CBSU1TC • 2TC 동시 차단 시(TC1, TC2 동시 고장 포함)\n - HCR 및 TCR 소자\n(7) 전·후부Tc차 AP.CBEMBR 모두 차단 시\n(8) AP.CBDO4TC 차단 시 ------ BC.RLMCEB 및 HCR, TCR 소자\n(9) 열차 분리(점퍼선 880선 접촉불량 포함) 시\n - EBCOS 취급 후 상태확인에서 각 차량 BC압력 확인\n - 880선 점퍼선 접촉불량 개소 이전 차량 : "
+    },
+    {
+      "id": "87645c74-437b-4f2a-bb86-4cd6e1e88a9f",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 5,
+      "text": "(1) 주간제어기 『비상제동(EB)』 위치 시\n(2) 구원운전(VC.SWREO-ROS) S/W – 구원위치 시\n(3) 비상제동(VC.PBEMBR-EBS) S/W 취급 시\n(4) MR 압력 6.5 kg/㎠ 이하 시(MRPS OFF)\n(5) ATC 비상제동 지령 시(ATC 고장 포함)\n(6) AP.CBSU1TC • 2TC 동시 차단 시(TC1, TC2 동시 고장 포함)\n - HCR 및 TCR 소자\n(7) 전·후부Tc차 AP.CBEMBR 모두 차단 시\n(8) AP.CBDO4TC 차단 시 ------ BC.RLMCEB 및 HCR, TCR 소자\n(9) 열차 분리(점퍼선 880선 접촉불량 포함) 시\n - EBCOS 취급 후 상태확인에서 각 차량 BC압력 확인\n - 880선 점퍼선 접촉불량 개소 이전 차량 : 정차제동,"
+    },
+    {
+      "id": "c743d0ec-20a1-47ab-990d-1be441aeeffe",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 5,
+      "text": "1 ) 비상제동 풀림불능 시 ̶ 길라잡이"
+    },
+    {
+      "id": "20036fbf-7980-459d-b382-bccada5c7d62",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 9,
+      "text": "현 상\n\n(1) MR 압력 급 강하\n - 6.5 kg/㎠ 이하 시 비상제동 체결, 3.5 kg/㎠ 이하 시 주차제동 체결\n\n조 치 사 항\n\n(1) 주공기관 파열 시에는 인접차(파손되지 않은 차량) MR콕크 차단\n 가) Tc차(6100호, 6000호) 또는 M1차(6200호) 파손 시\n ① Tc차 파손 : 6200호 또는 6700호 차량 MR콕크 차단 \n ② M1차(6200호) 파손 : 6300호 차량 MR콕크 차단\n ③ 비상제동차단(EBCOS) S/W 취급 및 주차제동당김고리(전·후 각 2개) 취급 후\n 주차제동바이패스(VC.PBBP) S/W 취급\n ④ 출입문 취급불능 시 승객하차 시킨 후 전체출입문바이패스(ADBP) S/W 취급\n 나) M1차(6600호) 파손 시 : 6500호, 6700호 MR콕크 차단\n"
+    },
+    {
+      "id": "8fde0f8f-c509-4ad3-bd24-b971a1c6422b",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 9,
+      "text": "(1) MR 압력 급 강하\n - 6.5 kg/㎠ 이하 시 비상제동 체결, 3.5 kg/㎠ 이하 시 주차제동 체결"
+    },
+    {
+      "id": "ce316c17-2115-4dad-8354-6d4270fa94df",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 9,
+      "text": "(1) 주공기관 파열 시에는 인접차(파손되지 않은 차량) MR콕크 차단\n 가) Tc차(6100호, 6000호) 또는 M1차(6200호) 파손 시\n ① Tc차 파손 : 6200호 또는 6700호 차량 MR콕크 차단 \n ② M1차(6200호) 파손 : 6300호 차량 MR콕크 차단\n ③ 비상제동차단(EBCOS) S/W 취급 및 주차제동당김고리(전·후 각 2개) 취급 후\n 주차제동바이패스(VC.PBBP) S/W 취급\n ④ 출입문 취급불능 시 승객하차 시킨 후 전체출입문바이패스(ADBP) S/W 취급\n 나) M1차(6600호) 파손 시 : 6500호, 6700호 MR콕크 차단\n - 해당차 출입문 취급불능 : 출입문바이패스(DSBS) S/W 8개 취급\n 다) M2차(6300호, 6700호) 파손 시(CM호스파열 포함"
+    },
+    {
+      "id": "1276a483-5bc5-4a53-b84d-acbc5788107a",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 15,
+      "text": "현 상\n\n(1) 보안제동 표시등(YELLOW) 점등\n(2) BC압력계 4.0 kg/㎠ 현시 \n(3) TCMS 화면 현시\n - F/N. 078 역행차단, 보안제동\n\n원 인\n\n(1) 보안제동 S/W 체결 후 고착 또는 고장 시\n\n조 치 사 항\n\n♣ 이전역에 유치선 있을 시 관제센터 승인 후 운전실 교환하여 되돌이 운전으로 유치선 유치\n\n ※ TCMS 화면 검수메뉴 → 인터페이스 신호(TC 4/14) → 보안제동 체결 차호(전부Tc차) 확인\n(1) 전부Tc차 보안제동 S/W 풀림 취급 수회 시도 후 보안제동 풀림불능 시\n(2) 승객안내방송 후 관제센터에 구원요청(구원준비 시 인포3번 누를 것)\n - 마스콘키 제거 및 후부Tc차 2종방호, 구원연결 전 충격대비 승객안내방송 실시\n(3) 구원연결(연락처 교환), MR"
+    },
+    {
+      "id": "91769c11-3a56-494e-aeff-8e6969519598",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 15,
+      "text": "♣ 이전역에 유치선 있을 시 관제센터 승인 후 운전실 교환하여 되돌이 운전으로 유치선 유치\n\n ※ TCMS 화면 검수메뉴 → 인터페이스 신호(TC 4/14) → 보안제동 체결 차호(전부Tc차) 확인\n(1) 전부Tc차 보안제동 S/W 풀림 취급 수회 시도 후 보안제동 풀림불능 시\n(2) 승객안내방송 후 관제센터에 구원요청(구원준비 시 인포3번 누를 것)\n - 마스콘키 제거 및 후부Tc차 2종방호, 구원연결 전 충격대비 승객안내방송 실시\n(3) 구원연결(연락처 교환), MR관통 및 12핀 점퍼선 연결 후 운전실간 방송시험(역전기 미취급)\n - 전부Tc차로 이동 시 BC1•2 콕크 개방 안함\n(4) 고장차 전부Tc차 ① AP.CBBECU ② AP.CBSU1TC ③ AP.CBSU2TC 차단\n ④ 운전모드 비상 ⑤ "
+    },
+    {
+      "id": "08d18f55-3c10-4f93-9434-ff1c9c40d51f",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 17,
+      "text": "현 상\n\n(1) 보안제동 표시등(YELLOW) 점등\n(2) BC압력계 4.0 kg/㎠ 현시 \n(3) TCMS 화면 현시\n - F/N. 078 역행차단, 보안제동\n\n원 인\n\n(1) 보안제동 S/W 체결 후 고착 또는 고장 시\n\n조 치 사 항\n\n♣ 자력운전 가능\n※ TCMS 화면 검수메뉴 → 인터페이스 신호(TC 4/14) → 보안제동 체결 차호(후부Tc차) 확인\n - 승객안내방송 후 관제센터 보고 및 지시에 따라 인포3번 취급, 후부Tc차 고장 조치\n(1) 후부Tc차 보안제동 S/W 풀림 취급 수회 시도 후 보안제동 풀림불능 시\n(2) 후부Tc차 ① AP.CBBECU ② AP.CBSU1TC ③ AP.CBSU2TC 차단\n - 보안제동 풀림 확인(공기압력계 또는 TCMS 제동장치) 후 전부Tc차로 이동\n(3) 전"
+    },
+    {
+      "id": "9cf450e6-6cb0-48ee-955e-64385177ea1b",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 17,
+      "text": "♣ 자력운전 가능\n※ TCMS 화면 검수메뉴 → 인터페이스 신호(TC 4/14) → 보안제동 체결 차호(후부Tc차) 확인\n - 승객안내방송 후 관제센터 보고 및 지시에 따라 인포3번 취급, 후부Tc차 고장 조치\n(1) 후부Tc차 보안제동 S/W 풀림 취급 수회 시도 후 보안제동 풀림불능 시\n(2) 후부Tc차 ① AP.CBBECU ② AP.CBSU1TC ③ AP.CBSU2TC 차단\n - 보안제동 풀림 확인(공기압력계 또는 TCMS 제동장치) 후 전부Tc차로 이동\n(3) 전부Tc차 운전모드 비상, 역전기 전진, 주간제어기 중립, 출입문 수/수, \n EBCOS 취급 – 비상제동 풀림, 전체출입문바이패스(ADBP) S/W 취급 – 출입문대표등 점등\n(4) 관제센터 보고 및 지시에 따라 역행시험 및 승객안내방송 후 "
+    },
+    {
+      "id": "228563e6-4e7a-48d0-b8f7-f46e5c47e807",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 28,
+      "text": "전부 TC1 고장 시 현상 및 조치 해설도\n\n1 ) 전부 TC1 고장 시 ̶ 점검사항\n\n제어불능(터치 시 무반응)\n\n【TCMS 모니터】\n\n주 • 보조 ATC고장 등 점등\n속도코드 무현시\n\n【ADU】\n\n전차선전압계 • 전류계, 축전지전압계 DOWN\n공기압력계는 정상\n\n운전모드 비상 이외 위치에서 역행 시 비상제동체결\n\n운전실 현상\n\n전부Tc차 TC1 차단 후 복귀\n\n차단 시\n\n92\n\n【고장표시등】\n\n【METER계】\n\n※ NFB 번호는 편의상 임의표기 함(현차는 미표기)\n\nTC1 고장 시\n\nLine 6 신내"
+    },
+    {
+      "id": "0afb380d-c711-4c35-aead-cb9ee66b60cd",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 28,
+      "text": "운전모드 비상 이외 위치에서 역행 시 비상제동체결"
+    },
+    {
+      "id": "8b5f8bb7-e99c-48f8-baa7-76fc8c3fed81",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 29,
+      "text": "현 상\n\n1) TCMS 모니터 제어 불능(터치 시 무반응)\n2) ADU상 주•보조 ATC 고장 등 점등, ADU상 속도코드 무현시\n3) 운전모드 “비상＂이외의 위치에서 역행 시 “비상제동 체결＂\n4) 전차선전압계•전류계•축전지전압계 DOWN, 공기압력계는 정상\n\n원 인\n\n1) TC-TC 통신불량(TC1 자체고장 포함)\n2) AP.CBSU1TC 차단\n\n조 치 사 항\n\n1) 전부Tc차 ① AP.CBSU1TC 차단 후 복귀(TC1 RESET 기능)\n2) 상기조치로 복귀불능 시 관제센터 보고 및 지시에 따라 TC2로 비상운전\n - 운전모드 비상, 출입문모드 수/수 전환 후 지령식 시행\n\n1 ) 전부 TC1 고장 시 ̶ 길라잡이\n\n93\n\nLine 6 신내"
+    },
+    {
+      "id": "75eae169-765b-4057-a0e8-6f732e5ab7d7",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 29,
+      "text": "1) TCMS 모니터 제어 불능(터치 시 무반응)\n2) ADU상 주•보조 ATC 고장 등 점등, ADU상 속도코드 무현시\n3) 운전모드 “비상＂이외의 위치에서 역행 시 “비상제동 체결＂\n4) 전차선전압계•전류계•축전지전압계 DOWN, 공기압력계는 정상"
+    },
+    {
+      "id": "70e431d5-2337-4fe3-b71e-51daaa4d78a1",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 32,
+      "text": "전부 TC1 • 2 동시 고장 시 현상 및 조치 해설도\n\n3 ) 전부 TC1 • 2 동시 고장 시(TC2 절체불가 시 포함) ̶ 점검사항\n\n제어불능(터치 시 무반응)\n\n주 •보조 ATC고장 등 점등\n속도코드 무 현시\n\n전차선전압계, 전류계, 축전지전압계 DOWN\n공기압력계는 정상\n\n비상제동 체결(HCR, TCR소자), \n등 점등 및 출입문제어불가(HCR 소자)\n\n운전실 현상\n\n전부Tc차 TC1•TC2 동시 차단 후 복귀\n\n차단 시\n\n차단 시\n\n96\n\n【고장표시등】\n\n【METER계】\n\n【ADU】\n\n【TCMS 모니터】\n\n♣ 이전역에 유치선 있을 시 관제센터 승인 후 운전실 교환하여 되돌이 운전으로 유치선 유치\n\n※ NFB 번호는 편의상 임의표기 함(현차는 미표기)\n\nTC1 • TC2 동시 고장 시\n\nLine 6"
+    },
+    {
+      "id": "5b12b7bf-a0e0-4459-bcf4-7a6b4f52f1c7",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 32,
+      "text": "비상제동 체결(HCR, TCR소자), \n등 점등 및 출입문제어불가(HCR 소자)"
+    },
+    {
+      "id": "55f17e00-ce11-42c0-9586-94706b001f39",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 33,
+      "text": "현 상\n\n1) TCMS 모니터 제어불능(터치 시 무반응)\n2) ADU상 주•보조 ATC 고장 등 점등, ADU상 속도코드 무현시\n3) 비상제동 체결(HCR, TCR 소자) • 등 점등 및 출입문 제어 불가(HCR소자)\n4) 전차선전압계•전류계•축전지전압계 DOWN, 공기압력계는 정상\n\n원 인\n\n1) TC와 TC, TC1와 LIU2 통신불량(자체고장 포함)\n2) AP.CBSU1TC •2TC 차단\n\n조 치 사 항\n\n1) 전부Tc차 TC리셋 ① AP.CBSU1TC•2TC 동시 차단 후 복귀(TC RESET 기능)\n2) 전부Tc차 AP.CBSU1TC 차단(TC2로 강제 절체 기능)\n - TC2 절체 시(HCR 여자상태 확인) 관제센터 승인 후 운전모드 비상, 출입문 수/수 운전\n3) 상기조치 후 복귀불능 시 관제센"
+    },
+    {
+      "id": "275f285a-6384-4b19-8d49-4d4907bcf976",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 33,
+      "text": "1) TCMS 모니터 제어불능(터치 시 무반응)\n2) ADU상 주•보조 ATC 고장 등 점등, ADU상 속도코드 무현시\n3) 비상제동 체결(HCR, TCR 소자) • 등 점등 및 출입문 제어 불가(HCR소자)\n4) 전차선전압계•전류계•축전지전압계 DOWN, 공기압력계는 정상"
+    },
+    {
+      "id": "d4253aea-11f7-48bf-9af7-3052e8a9d396",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 33,
+      "text": "1) 전부Tc차 TC리셋 ① AP.CBSU1TC•2TC 동시 차단 후 복귀(TC RESET 기능)\n2) 전부Tc차 AP.CBSU1TC 차단(TC2로 강제 절체 기능)\n - TC2 절체 시(HCR 여자상태 확인) 관제센터 승인 후 운전모드 비상, 출입문 수/수 운전\n3) 상기조치 후 복귀불능 시 관제센터 보고 및 구원요청\n ♣ 이전역에 유치선 있을 시 관제센터 승인 후 운전실 교환하여 되돌이 운전으로 유치선 유치\n - 전부Tc차 AP.CBSU1TC•2TC 차단 및 구름방지(보안제동 체결), 후부Tc차 2종방호\n - 구원연결(12핀 점퍼선 연결), MR관 관통 및 운전실간 방송시험(역전기 미취급)\n - 고장차 전부Tc차로 이동 후 구름방지해제(보안제동 풀림), 운전실간 방송시험\n - 고장차 전부Tc차 : 운전모"
+    },
+    {
+      "id": "127e7dff-6aef-4438-9a03-e516eb8fc814",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 34,
+      "text": "4 ) 후부 TC1 • 2 동시 고장 시 ̶ 점검사항\n\n후부Tc차 TC1•TC2 동시 차단 후 복귀\n\n전차선전압계 • 전류계, 축전지전압계 정상 현시\n\nTCMS 모니터 제어 정상\n\n비상제동 체결 및 표시등 점등\n\n출입문대표등 소등\n(TCR 소자)\n\n출입문\n\n전부Tc차 비상제동차단\n (EBCOS) S/W 취급\n\n전부Tc차 전체출입문바이패스(ADBP) \nS/W 취급\n\n운전실\n 현상\n\n(출입문대표등 점등 및 역행회로 구성)\n\n(비상제동 풀림)\n\n차단 시\n\n차단 시\n\n98\n\n【출입문대표등】\n\n♣ 자력운전 가능\n\n【고장표시등】\n\n【METER계】\n\n【TCMS 모니터】\n\n※ NFB 번호는 편의상 임의표기 함(현차는 미표기)\n\n후부 TC1 • 2 동시 고장 시 현상 및 조치 해설도\n\nLine 6 신내"
+    },
+    {
+      "id": "7cd6fca5-a31d-46d0-8748-aa2f389c246d",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 34,
+      "text": "비상제동 체결 및 표시등 점등"
+    },
+    {
+      "id": "554fe662-a598-40b2-8bee-e330e5870d6d",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 34,
+      "text": "전부Tc차 비상제동차단\n (EBCOS) S/W 취급"
+    },
+    {
+      "id": "25988a0a-7f64-42e9-8e86-325572db9a3b",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 34,
+      "text": "(비상제동 풀림)"
+    },
+    {
+      "id": "a05f5db1-c97b-4a2b-be9e-f3b453646c08",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 35,
+      "text": "현 상\n\n1) 출입문대표등 소등(TCR 소자)\n2) 비상제동 체결 및 표시등 점등\n3) TCMS 모니터 제어 정상 \n4) 전차선전압계•전류계•축전지전압계 정상 현시\n\n원 인\n\n1) TC와 TC 및 TC와 LIU2 통신고장(자체고장 포함)\n2) AP.CBSU1TC•2TC 동시 차단 시\n\n조 치 사 항\n\n1) 후부Tc차 TC리셋 ① AP.CBSU1TC•2TC 동시 차단 후 복귀(복귀불능 시)\n2) 전부Tc차 ② 전체출입문바이패스(ADBP) S/W 취급 : 출입문대표등 점등, 역행회로 구성\n3) 전부Tc차 ③ 비상제동차단(EBCOS) S/W 취급 : TCR 소자로 인한 안전루프 차단 해소\n - 비상제동 풀림, 역행가능\n4) 관제센터 보고 및 지시에 따라 회송조치(자력운전)\n\n4 ) 후부 TC1 • 2 동시 고장 "
+    },
+    {
+      "id": "219dde46-1e4e-4b4d-9730-a6c4d482c81c",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 35,
+      "text": "1) 출입문대표등 소등(TCR 소자)\n2) 비상제동 체결 및 표시등 점등\n3) TCMS 모니터 제어 정상 \n4) 전차선전압계•전류계•축전지전압계 정상 현시"
+    },
+    {
+      "id": "0ebabe39-f69e-4781-9dd7-2b1abcb9550e",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 35,
+      "text": "1) 후부Tc차 TC리셋 ① AP.CBSU1TC•2TC 동시 차단 후 복귀(복귀불능 시)\n2) 전부Tc차 ② 전체출입문바이패스(ADBP) S/W 취급 : 출입문대표등 점등, 역행회로 구성\n3) 전부Tc차 ③ 비상제동차단(EBCOS) S/W 취급 : TCR 소자로 인한 안전루프 차단 해소\n - 비상제동 풀림, 역행가능\n4) 관제센터 보고 및 지시에 따라 회송조치(자력운전)"
+    },
+    {
+      "id": "f8bb3fb2-79ce-4cea-acf1-36837a1215b1",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 36,
+      "text": "전부TC1 및 후부 TC1 • 2 동시 고장 시 현상 및 조치 해설도\n\n5 ) 전부 TC1 및 후부 TC1 • 2 동시 고장 시 ̶ 점검사항\n\n출입문대표등 소등(TCR소자) 및 \nTCMS 제어불능(터치 시 무반응)\n\n주 •보조 ATC고장 등 점등\n속도코드 현시 불능\n\n전차선전압계 • 전류계, 축전지전압계 DOWN\n공기압력계는 정상\n\n비상제동 체결 및 표시등 점등\n\n운전실 현상\n\n출입문\n\n전부Tc차 TC1 차단\n 후 복귀\n\n차단 시\n\n후부Tc차 TC1 • TC2 동시 차단 후 복귀\n\n동시고장 및\n차단시\n\n전부Tc차 비상제동차단\n(EBCOS) S/W 취급\n\n전부Tc차\n전체출입문바이패스(ADBP)\nS/W 취급\n\n(비상제동 풀림)\n\n100\n\n♣ 자력운전 가능\n\n【고장표시등】\n\n【METER계】\n\n【ADU】\n\n(출입문"
+    },
+    {
+      "id": "061f44ee-02c0-4fa9-b3e5-2b9f0f95221c",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 36,
+      "text": "비상제동 체결 및 표시등 점등"
+    },
+    {
+      "id": "841e70d8-da47-4b57-bfb0-02b1c8120bed",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 36,
+      "text": "전부Tc차 비상제동차단\n(EBCOS) S/W 취급"
+    },
+    {
+      "id": "28f11bd0-cf3f-493c-abed-1d8e9fc94693",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 36,
+      "text": "(비상제동 풀림)"
+    },
+    {
+      "id": "ca9ff6e3-8af3-460a-9bc2-024b8a8e1b3e",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 37,
+      "text": "현 상\n\n1) 출입문대표등 소등(TCR 소자) 및 TCMS 모니터 제어불능(터치 시 무반응)\n2) ADU상 주•보조 ATC 고장 등 점등 및 ADU상 속도코드 현시 불능\n3) 비상제동체결•표시등 점등\n4) 전차선전압계•전류계•축전지전압계 DOWN\n\n원 인\n\n1) TC와 TC 및 TC와 LIU2 통신고장(자체고장 포함)\n2) 전부 AP.CBSU1TC 및 AP.CBSU1TC•2TC 동시 차단 시\n\n조 치 사 항\n\n1) 전부Tc차 1TC 리셋 ① AP.CBSU1TC 차단 후 복귀\n2) 후부Tc차 TC리셋 ② AP.CBSU1TC•2TC 동시 차단 후 복귀(복귀불능 시)\n3) 전부Tc차 ③ 전체출입문바이패스(ADBP) S/W 취급(출입문대표등 점등, 역행회로 구성)\n4) 전부Tc차 운전모드 비상, 출입문모드 수/수 "
+    },
+    {
+      "id": "3dd1d163-2e29-4d90-9447-24c62f8a9250",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 37,
+      "text": "1) 출입문대표등 소등(TCR 소자) 및 TCMS 모니터 제어불능(터치 시 무반응)\n2) ADU상 주•보조 ATC 고장 등 점등 및 ADU상 속도코드 현시 불능\n3) 비상제동체결•표시등 점등\n4) 전차선전압계•전류계•축전지전압계 DOWN"
+    },
+    {
+      "id": "cef45698-91c0-4cc9-9286-e7156143352b",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 37,
+      "text": "1) 전부Tc차 1TC 리셋 ① AP.CBSU1TC 차단 후 복귀\n2) 후부Tc차 TC리셋 ② AP.CBSU1TC•2TC 동시 차단 후 복귀(복귀불능 시)\n3) 전부Tc차 ③ 전체출입문바이패스(ADBP) S/W 취급(출입문대표등 점등, 역행회로 구성)\n4) 전부Tc차 운전모드 비상, 출입문모드 수/수 전환, ④ 비상제동차단(EBCOS) S/W 취급\n - 비상제동 풀림, 역행 가능, 관제센터 보고 및 지시에 따라 회송조치(자력운전)\n - 지령식 45Km/h 이하 주의운전"
+    },
+    {
+      "id": "102dfa9d-2346-484f-899f-fc4c97395201",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 41,
+      "text": "현 상\n\n1) TCMS 하단에 “TC – 1호차 CC간 통신고장” 현시 및\n 일반화면의 보조전원장치, 제동장치 『–』현시 및 승객경보 NG 현시\n2) TCMS/장치2 화면에 표시기장치『–』현시 및 Tc차 CC NG 현시\n3) 공기압력계 BC압력 0.0 kg/㎠ 현시(상용, 정차제동 작용 안됨 … 비상제동 제외)\n4) Tc차 객실 AC등 소등\n\n원 인\n\n1) TC와 해당차 CC간 통신고장(CC 자체고장 포함)\n2) Tc차 AP.CBSUCC 차단\n\n조 치 사 항\n\n1) 전부Tc차 ① AP.CBSUCC 차단 후 복귀(CC RESET 기능)\n2) 상기조치로 복귀불능 시 관제센터 보고 및 지시에 따름\n\n7 ) 전부Tc차 CC 고장 시 ̶ 길라잡이\n\n105\n\nLine 6 신내"
+    },
+    {
+      "id": "d9c22b50-6492-46d0-8300-bb2a9cb7b519",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 41,
+      "text": "1) TCMS 하단에 “TC – 1호차 CC간 통신고장” 현시 및\n 일반화면의 보조전원장치, 제동장치 『–』현시 및 승객경보 NG 현시\n2) TCMS/장치2 화면에 표시기장치『–』현시 및 Tc차 CC NG 현시\n3) 공기압력계 BC압력 0.0 kg/㎠ 현시(상용, 정차제동 작용 안됨 … 비상제동 제외)\n4) Tc차 객실 AC등 소등"
+    },
+    {
+      "id": "9d9e8152-c37f-4275-8458-1d80cac118a4",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 43,
+      "text": "원 인\n\n1) TC와 M1차(2호, 6호) CC간 통신고장(CC 자체고장 포함)\n2) M1차(2호, 6호) AP.CBSUCC 차단\n\n조 치 사 항\n\n1) M1차(2호, 6호) ① AP.CBSUCC 차단 후 복귀(CC RESET 기능)\n2) 상기조치로 복귀불능 시 관제센터 보고 및 지시에 따름\n\n8 ) M1차 CC 고장 시 ̶ 길라잡이\n\n현 상\n\n1) TCMS 하단에 “TC – M1(2호, 6호)차 CC간 통신고장” 현시 및\n 일반화면의 M1차 판토하강『 』표시(실제 상승상태 유지),\n VVVF, 제동장치, 공기압축기(ACM) 『–』현시, 승객경보 NG 현시\n2) TCMS/장치2 화면에 M1차 CC NG 현시\n3) 3/4 출력(해당차 VVVF OFF), ACM 구동 불능\n4) M1차 (2호, 6호) 객실 AC"
+    },
+    {
+      "id": "03c091fb-1d3b-4ec9-b3fb-0047b56c6a96",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 43,
+      "text": "1) TCMS 하단에 “TC – M1(2호, 6호)차 CC간 통신고장” 현시 및\n 일반화면의 M1차 판토하강『 』표시(실제 상승상태 유지),\n VVVF, 제동장치, 공기압축기(ACM) 『–』현시, 승객경보 NG 현시\n2) TCMS/장치2 화면에 M1차 CC NG 현시\n3) 3/4 출력(해당차 VVVF OFF), ACM 구동 불능\n4) M1차 (2호, 6호) 객실 AC등 소등, 회생제동, 상용, 정차제동 불가, 비상제동 가능"
+    },
+    {
+      "id": "0d3d93f5-b8b7-46c8-b819-7cce8f98bda4",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 45,
+      "text": "현 상\n\n1) TCMS 하단에 “TC – M2(3호, 7호)차 CC간 통신고장” 현시 및\n 일반화면의 M2차 VVVF, 제동장치, 공기압축기(CM) 『–』현시, 승객경보 NG 현시\n2) TCMS/장치2 화면에 M2차 CC NG 현시\n3) 3/4 출력(해당차 VVVF OFF), CM 구동 불능\n4) M2차(3호, 7호) 객실 AC등 소등, 회생제동, 상용, 정차제동 불가, 비상제동 가능\n\n원 인\n\n1) TC와 M2차(3호, 7호) CC간 통신고장(CC 자체고장 포함)\n2) M2차(3호, 7호) AP.CBSUCC 차단\n\n조 치 사 항\n\n1) M2차(3호, 7호) ① AP.CBSUCC 차단 후 복귀(CC RESET 기능)\n2) 상기조치로 복귀불능 시 관제센터 보고 및 지시에 따름\n\n9 ) M2차 CC 고장 시 ̶"
+    },
+    {
+      "id": "7a1a70d4-792d-4e85-838e-a94f5be5b964",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 45,
+      "text": "1) TCMS 하단에 “TC – M2(3호, 7호)차 CC간 통신고장” 현시 및\n 일반화면의 M2차 VVVF, 제동장치, 공기압축기(CM) 『–』현시, 승객경보 NG 현시\n2) TCMS/장치2 화면에 M2차 CC NG 현시\n3) 3/4 출력(해당차 VVVF OFF), CM 구동 불능\n4) M2차(3호, 7호) 객실 AC등 소등, 회생제동, 상용, 정차제동 불가, 비상제동 가능"
+    },
+    {
+      "id": "ba1ab498-1735-41d2-bca0-ce4d0b4714f2",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 46,
+      "text": "10 ) ATC 장치 고장 시 ̶ 점검사항\n\n운전실 \n\n현상\n\nATC 장치 고장 시 현상 및 조치 해설도\n\nRESET 방법(S/W1•2 동시 차단 후 복귀)\n\nRESET 방법 (AP.CBATC1, AP.CBATC2 동시 차단 후 복귀)\n\n① TCMS 고장메세지 현시\n\n② 주•보조 ATC고장 등 점등\n\n③ 비상제동체결 및 등 점등\n\n④ 3.0 kg/㎠ 현시\n\n【공기압력계】\n\n110\n\n♣ ATC1고장 시 ATC2로 자동절체 되지 않을 때\n - S/W1 또는 AP.CBATC1을 차단(OFF) 시킨다\n\n【ADU】\n\n【고장표시등】\n\n【TCMS 모니터】\n\n※ NFB 번호는 편의상 임의표기 함(현차는 미표기)\n\nLine 6 신내"
+    },
+    {
+      "id": "69c2c8f9-881a-4585-8c05-f375171224b8",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 46,
+      "text": "③ 비상제동체결 및 등 점등"
+    },
+    {
+      "id": "28548ce5-7dbd-4919-bf61-f66b26637ad4",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 47,
+      "text": "현 상\n\n1) TCMS 화면에 고장메세지 현시\n2) ADU 주 • 보조 ATC 고장 등 점등\n3) 비상제동체결(주 • 보조 ATC 모두 고장 시) 및 표시등 점등\n4) 공기압력계 비상제동압력 3.0 kg/㎠ 현시\n\n원 인\n\n1) ATC 자체고장 또는 TC와 ATC간 통신고장 시\n2) 타코메타 고장 시 : 역행시 실제속도 4~5Km/h 정도에서 비상제동 체결\n3) POR 계전기 고장 시 : 역행 시 비상제동 체결\n4) AP.CBATC1, 2 차단 시\n5) ATC 리셋 S/W1•2 차단 시\n\n조 치 사 항\n\n1) ① RESET S/W1•2 또는 ② ATC 제어차단기(AP.CBATC1•2) 동시 차단 후 복귀\n ※ 승강장에서 출입문 개방 중 ATC고장 발생 또는 ATC RESET 시 출입문 닫힘 후 실시 \n - "
+    },
+    {
+      "id": "a72385ae-7ae7-431b-955a-744e71ebe7ab",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 47,
+      "text": "1) TCMS 화면에 고장메세지 현시\n2) ADU 주 • 보조 ATC 고장 등 점등\n3) 비상제동체결(주 • 보조 ATC 모두 고장 시) 및 표시등 점등\n4) 공기압력계 비상제동압력 3.0 kg/㎠ 현시"
+    },
+    {
+      "id": "8cc91fbd-f158-4e95-93fd-5546a222dbe6",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 47,
+      "text": "1) ATC 자체고장 또는 TC와 ATC간 통신고장 시\n2) 타코메타 고장 시 : 역행시 실제속도 4~5Km/h 정도에서 비상제동 체결\n3) POR 계전기 고장 시 : 역행 시 비상제동 체결\n4) AP.CBATC1, 2 차단 시\n5) ATC 리셋 S/W1•2 차단 시"
+    },
+    {
+      "id": "3ee7cb3d-c733-4c7b-ac3c-1982326acc52",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 49,
+      "text": "현 상\n\n(1) 출입문표시등 소등\n(2) 비상제동 체결(BC 3.5Kg/cm²) - 비상제동등 확인\n(3) ADU(표시기 장치) 소등 및 관련 표시등 무현시\n - 6개 항목 : 주, 보조ATC, 출발전 시험, 무코드, 회복모드, TWC\n\n조 치 사 항\n\n(1) AP.CBATC2 차단 후 복귀\n(2) AP.CBDO4TC 차단(HCR소자) 확인 후 차단 시 복귀 \n(3) ADU(표시기 장치) 자체 고장 시 운전취급\n - 비상제동차단(EBCOS) S/W 취급\n - 전체차량출입문바이패스(ADBP) S/W 취급\n(4) 관제센터 보고 및 지시에 따라 운전모드 비상, 출입문모드 수/수 후 지령식(45Km/h이하) 시행\n ※ ADU 장치 고장으로 속도가 현시되지 않을 때\n - TCMS – 검수메뉴 – 인터페이스 신호검사 "
+    },
+    {
+      "id": "d1d95759-3305-4a3c-98a0-110c108a8a72",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 49,
+      "text": "(1) 출입문표시등 소등\n(2) 비상제동 체결(BC 3.5Kg/cm²) - 비상제동등 확인\n(3) ADU(표시기 장치) 소등 및 관련 표시등 무현시\n - 6개 항목 : 주, 보조ATC, 출발전 시험, 무코드, 회복모드, TWC"
+    },
+    {
+      "id": "ba40f03d-ad20-489b-8557-648c6b5f741b",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 49,
+      "text": "(1) AP.CBATC2 차단 후 복귀\n(2) AP.CBDO4TC 차단(HCR소자) 확인 후 차단 시 복귀 \n(3) ADU(표시기 장치) 자체 고장 시 운전취급\n - 비상제동차단(EBCOS) S/W 취급\n - 전체차량출입문바이패스(ADBP) S/W 취급\n(4) 관제센터 보고 및 지시에 따라 운전모드 비상, 출입문모드 수/수 후 지령식(45Km/h이하) 시행\n ※ ADU 장치 고장으로 속도가 현시되지 않을 때\n - TCMS – 검수메뉴 – 인터페이스 신호검사 – 차축속도확인"
+    },
+    {
+      "id": "c06e8573-28ee-4f3c-a59c-0ea03908383e",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 51,
+      "text": "번호 | 명 칭 | 고 장 현 상\n101 | AP.CBDO1CC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(631) : 출입문제어 NFB Trip ㅇ 출입문 대표등 소등 및 차측등 점등(CE.RLDIL소자)\n ※ 전 차량 출입문 제어 가능(인접차 제어 가능하나 역행불가),\n 해당차 회로차단기 복귀(불가 시 VC.SWADPB취급 후 관제센터 지시에 의함)\n102 | AP.CBDO2CC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(632) : 출입문제어 NFB Trip ㅇ 출입문 대표등 소등 및 차측등 점등(CE.RLDIR소자)\n ※ 전 차량 출입문 제어 가능(인접차 제어 가능하나 역행불가), \n 해당차 회로차단기 복귀(불가 시 VC.SWADPB취급 후 관제센터 지시에 의함"
+    },
+    {
+      "id": "2e61cfed-ee0a-402c-9b06-b9386ef2b878",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 51,
+      "text": "번호 | 명 칭 | 고 장 현 상\n101 | AP.CBDO1CC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(631) : 출입문제어 NFB Trip ㅇ 출입문 대표등 소등 및 차측등 점등(CE.RLDIL소자)\n ※ 전 차량 출입문 제어 가능(인접차 제어 가능하나 역행불가),\n 해당차 회로차단기 복귀(불가 시 VC.SWADPB취급 후 관제센터 지시에 의함)\n102 | AP.CBDO2CC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(632) : 출입문제어 NFB Trip ㅇ 출입문 대표등 소등 및 차측등 점등(CE.RLDIR소자)\n ※ 전 차량 출입문 제어 가능(인접차 제어 가능하나 역행불가), \n 해당차 회로차단기 복귀(불가 시 VC.SWADPB취급 후 관제센터 지시에 의함"
+    },
+    {
+      "id": "2438af0a-806c-4eec-9b77-dc58a00fa372",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 52,
+      "text": "번호 | 명 칭 | 고 장 현 상\n110 | AP.CBDSTCU | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(801) : 표시기 장치 통신 고장\n ※ 각종 표시기 장치(행선표시기, 열차번호, 승객안내표시기) 동작 불가\n111 | AP.CBSU1TC\n(전부 6100호대) | ㅇ TCMS 화면 제어 불능 ㅇ 각종 메타계 현시 불능(전차선 및 축전지 전압계, 전류계) ㅇ 주․보조 ATC 고장등 점등\nㅇ 출입문 대표등 소등 후 5초 후에 재 점등 ※ 비상모드 전환 시 열차 역행가능, 복귀 시 TCMS 초기화\n112 | AP.CBSU2TC\n(전부 6100호대) | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(002) : 1호차 TC-LIU2 통신고장 ㅇ 고장코드(019) : TCMS "
+    },
+    {
+      "id": "fa7b1311-e0b2-49f6-b110-e2bf8a465b81",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 52,
+      "text": "번호 | 명 칭 | 고 장 현 상\n110 | AP.CBDSTCU | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(801) : 표시기 장치 통신 고장\n ※ 각종 표시기 장치(행선표시기, 열차번호, 승객안내표시기) 동작 불가\n111 | AP.CBSU1TC\n(전부 6100호대) | ㅇ TCMS 화면 제어 불능 ㅇ 각종 메타계 현시 불능(전차선 및 축전지 전압계, 전류계) ㅇ 주․보조 ATC 고장등 점등\nㅇ 출입문 대표등 소등 후 5초 후에 재 점등 ※ 비상모드 전환 시 열차 역행가능, 복귀 시 TCMS 초기화\n112 | AP.CBSU2TC\n(전부 6100호대) | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(002) : 1호차 TC-LIU2 통신고장 ㅇ 고장코드(019) : TCMS "
+    },
+    {
+      "id": "f2adb769-ab62-40b5-b885-3ee912351223",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 53,
+      "text": "번호 | 명 칭 | 고 장 현 상\n119 | AP.CBDO4TC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 비상제동체결 및 출입문 대표등 소등 ㅇ HCR 및 TCR 소자\nㅇ 고장코드(132) : ATC 제어기능 상실 고장 ㅇ 고장코드(129) : ADU 고장\n120 | AP.CBDO5TC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 운전모드 LED 소등 ㅇ 고장 및 출발표시등 점등 불가\n121 | AP.CBDO6TC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(801 또는 802) : 표시기 장치 고장\n122 | AP.CBDIL | ㅇ 고장코드(551) : DC NFB Trip ※ 후부 운전실 AP.CBDIL 차단 시 : 출입문 대표등 소등, 역행 불가\n 전부 운전실 A"
+    },
+    {
+      "id": "43c1cf97-f101-4de8-bd58-e8b7fe593af6",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 53,
+      "text": "번호 | 명 칭 | 고 장 현 상\n119 | AP.CBDO4TC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 비상제동체결 및 출입문 대표등 소등 ㅇ HCR 및 TCR 소자\nㅇ 고장코드(132) : ATC 제어기능 상실 고장 ㅇ 고장코드(129) : ADU 고장\n120 | AP.CBDO5TC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 운전모드 LED 소등 ㅇ 고장 및 출발표시등 점등 불가\n121 | AP.CBDO6TC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(801 또는 802) : 표시기 장치 고장\n122 | AP.CBDIL | ㅇ 고장코드(551) : DC NFB Trip ※ 후부 운전실 AP.CBDIL 차단 시 : 출입문 대표등 소등, 역행 불가\n 전부 운전실 A"
+    },
+    {
+      "id": "c92ceba2-7088-4e82-819c-eed0156ecd12",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 55,
+      "text": "번호 | 명 칭 | 고 장 현 상\n1 | AP.CBDO1CC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(631) : 출입문제어 NFB Trip ㅇ 출입문 대표등 소등 및 차측등 점등(CE.RLDIL소자)\n ※ 전 차량 출입문 제어 가능(인접차 제어 가능하나 역행불가),\n 해당차 회로차단기 복귀(불가 시 VC.SWADPB취급 후 관제센터 지시에 의함)\n2 | AP.CBDO2CC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(632) : 출입문제어 NFB Trip ㅇ 출입문 대표등 소등 및 차측등 점등(CE.RLDIR소자)\n ※ 전 차량 출입문 제어 가능(인접차 제어 가능하나 역행불가), \n 해당차 회로차단기 복귀(불가 시 VC.SWADPB취급 후 관제센터 지시에 의함)\n3 "
+    },
+    {
+      "id": "fff60873-6026-4dee-b681-6d5f3d93e954",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 55,
+      "text": "번호 | 명 칭 | 고 장 현 상\n1 | AP.CBDO1CC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(631) : 출입문제어 NFB Trip ㅇ 출입문 대표등 소등 및 차측등 점등(CE.RLDIL소자)\n ※ 전 차량 출입문 제어 가능(인접차 제어 가능하나 역행불가),\n 해당차 회로차단기 복귀(불가 시 VC.SWADPB취급 후 관제센터 지시에 의함)\n2 | AP.CBDO2CC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(632) : 출입문제어 NFB Trip ㅇ 출입문 대표등 소등 및 차측등 점등(CE.RLDIR소자)\n ※ 전 차량 출입문 제어 가능(인접차 제어 가능하나 역행불가), \n 해당차 회로차단기 복귀(불가 시 VC.SWADPB취급 후 관제센터 지시에 의함)\n3 "
+    },
+    {
+      "id": "1bf3b56f-c105-41ee-b24c-412067f4f797",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 56,
+      "text": "번호 | 명 칭 | 고 장 현 상\n10 | AP.CBSUCC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(012) : TCMS 통신 고장ㅇ TCMS VVVF, 재동장치, 보조공기압축기, 승객경보『-』현시\n ※ TCMS 화면에 PAN 하강『◇』현시 되나 실제는 상승 되어있음, 해당차 역행/제동 작용 불가(비상제동 제외)\n11 | AP.CBPAPWAV | ㅇ 고장코드(551) : DC NFB Trip ※ 해당차 객실 방송 및 승객경보 안됨\n12 | AP.CBVVVFIC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(401) : VVVF 인버터 통신 고장 ㅇ TCMS VVVF『NG』또는『-』현시\n ※ 해당차 역행/제동 작용 불가(비상제동 제외)\n13 | AP.CBACO | ㅇ 고"
+    },
+    {
+      "id": "00151bec-2a8d-4cef-bc4b-a5cd83e76aef",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 56,
+      "text": "번호 | 명 칭 | 고 장 현 상\n10 | AP.CBSUCC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(012) : TCMS 통신 고장ㅇ TCMS VVVF, 재동장치, 보조공기압축기, 승객경보『-』현시\n ※ TCMS 화면에 PAN 하강『◇』현시 되나 실제는 상승 되어있음, 해당차 역행/제동 작용 불가(비상제동 제외)\n11 | AP.CBPAPWAV | ㅇ 고장코드(551) : DC NFB Trip ※ 해당차 객실 방송 및 승객경보 안됨\n12 | AP.CBVVVFIC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(401) : VVVF 인버터 통신 고장 ㅇ TCMS VVVF『NG』또는『-』현시\n ※ 해당차 역행/제동 작용 불가(비상제동 제외)\n13 | AP.CBACO | ㅇ 고"
+    },
+    {
+      "id": "69ab8b6d-2fcc-4c66-a357-80b216f74d62",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 57,
+      "text": "번호 | 명 칭 | 고 장 현 상\n1 | AP.CBDO1CC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(631) : 출입문제어 NFB Trip ㅇ 출입문 대표등 소등 및 차측등 점등(CE.RLDIL소자)\n ※ 전 차량 출입문 제어 가능(인접차 제어 가능하나 역행불가),\n 해당차 회로차단기 복귀(불가 시 VC.SWADPB취급 후 관제센터 지시에 의함)\n2 | AP.CBDO2CC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(632) : 출입문제어 NFB Trip ㅇ 출입문 대표등 소등 및 차측등 점등(CE.RLDIR소자)\n ※ 전 차량 출입문 제어 가능(인접차 제어 가능하나 역행불가), \n 해당차 회로차단기 복귀(불가 시 VC.SWADPB취급 후 관제센터 지시에 의함)\n3 "
+    },
+    {
+      "id": "d310aee9-945d-44bc-87b9-59b5c12f9d66",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 57,
+      "text": "번호 | 명 칭 | 고 장 현 상\n1 | AP.CBDO1CC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(631) : 출입문제어 NFB Trip ㅇ 출입문 대표등 소등 및 차측등 점등(CE.RLDIL소자)\n ※ 전 차량 출입문 제어 가능(인접차 제어 가능하나 역행불가),\n 해당차 회로차단기 복귀(불가 시 VC.SWADPB취급 후 관제센터 지시에 의함)\n2 | AP.CBDO2CC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(632) : 출입문제어 NFB Trip ㅇ 출입문 대표등 소등 및 차측등 점등(CE.RLDIR소자)\n ※ 전 차량 출입문 제어 가능(인접차 제어 가능하나 역행불가), \n 해당차 회로차단기 복귀(불가 시 VC.SWADPB취급 후 관제센터 지시에 의함)\n3 "
+    },
+    {
+      "id": "7f5df2e7-875c-4ecf-b8ed-d4334948e61a",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 58,
+      "text": "번호 | 명 칭 | 고 장 현 상\n10 | AP.CBSUCC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(012) : TCMS 통신 고장 ㅇ TCMS VVVF, 재동장치, 공기압축기, 승객경보『-』현시\nㅇ 해당차 역행/제동 작용 불가(비상제동 제외)\n11 | AP.CBPAPWAV | ㅇ 고장코드(551) : DC NFB Trip ※ 해당차 객실 방송 및 승객경보 안됨\n12 | AP.CB1～3IL | ㅇ 고장코드(552) : AC NFB Trip ※ 해당차 AC 객실등 일부 소등\n15 | AP.CBDSTSU | ㅇ 고장코드(552) : AC NFB Trip ※ 해당차 차측 행선표시기 동작 불가\n16 | AP.CBIDU | ㅇ 고장코드(552) : AC NFB Trip ※ 해당차 객실 안내표시"
+    },
+    {
+      "id": "9a143539-0e0a-424d-8245-61acc58e5656",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 58,
+      "text": "번호 | 명 칭 | 고 장 현 상\n10 | AP.CBSUCC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(012) : TCMS 통신 고장 ㅇ TCMS VVVF, 재동장치, 공기압축기, 승객경보『-』현시\nㅇ 해당차 역행/제동 작용 불가(비상제동 제외)\n11 | AP.CBPAPWAV | ㅇ 고장코드(551) : DC NFB Trip ※ 해당차 객실 방송 및 승객경보 안됨\n12 | AP.CB1～3IL | ㅇ 고장코드(552) : AC NFB Trip ※ 해당차 AC 객실등 일부 소등\n15 | AP.CBDSTSU | ㅇ 고장코드(552) : AC NFB Trip ※ 해당차 차측 행선표시기 동작 불가\n16 | AP.CBIDU | ㅇ 고장코드(552) : AC NFB Trip ※ 해당차 객실 안내표시"
+    },
+    {
+      "id": "a64619ac-b8d1-4672-8003-ec8d7204a2ec",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 59,
+      "text": "번호 | 명 칭 | 고 장 현 상\n1 | AP.CBDO1CC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(631) : 출입문제어 NFB Trip ㅇ 출입문 대표등 소등 및 차측등 점등(CE.RLDIL소자)\n ※ 전 차량 출입문 제어 가능(인접차 제어 가능하나 역행불가),\n 해당차 회로차단기 복귀(불가 시 VC.SWADPB취급 후 관제센터 지시에 의함)\n2 | AP.CBDO2CC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(632) : 출입문제어 NFB Trip ㅇ 출입문 대표등 소등 및 차측등 점등(CE.RLDIR소자)\n ※ 전 차량 출입문 제어 가능(인접차 제어 가능하나 역행불가), \n 해당차 회로차단기 복귀(불가 시 VC.SWADPB취급 후 관제센터 지시에 의함)\n3 "
+    },
+    {
+      "id": "b15e1a59-db17-4be2-9f5c-be2c1bc2d814",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 59,
+      "text": "번호 | 명 칭 | 고 장 현 상\n1 | AP.CBDO1CC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(631) : 출입문제어 NFB Trip ㅇ 출입문 대표등 소등 및 차측등 점등(CE.RLDIL소자)\n ※ 전 차량 출입문 제어 가능(인접차 제어 가능하나 역행불가),\n 해당차 회로차단기 복귀(불가 시 VC.SWADPB취급 후 관제센터 지시에 의함)\n2 | AP.CBDO2CC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(632) : 출입문제어 NFB Trip ㅇ 출입문 대표등 소등 및 차측등 점등(CE.RLDIR소자)\n ※ 전 차량 출입문 제어 가능(인접차 제어 가능하나 역행불가), \n 해당차 회로차단기 복귀(불가 시 VC.SWADPB취급 후 관제센터 지시에 의함)\n3 "
+    },
+    {
+      "id": "a133e852-86c5-4740-a0aa-3fd2292b7654",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 60,
+      "text": "번호 | 명 칭 | 고 장 현 상\n10 | AP.CBSUCC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(012) : TCMS 통신 고장 ㅇ 승객경보『-』현시\nㅇ 해당차 역행/제동 작용 불가(비상제동 제외)\n11 | AP.CBPAPWAV | ㅇ 고장코드(551) : DC NFB Trip ※ 해당차 객실 방송 및 승객경보 안됨\n12 | AP.CB1～3IL | ㅇ 고장코드(552) : AC NFB Trip ※ 해당차 AC 객실등 일부 소등\n15 | AP.CBDSTSU | ㅇ 고장코드(552) : AC NFB Trip ※ 해당차 차측 행선표시기 동작 불가\n16 | AP.CBIDU | ㅇ 고장코드(552) : AC NFB Trip ※ 해당차 객실 안내표시기 동작 불가\n18 | AP.CBBOU | "
+    },
+    {
+      "id": "91a4d24d-ce82-4a8a-85da-2c5b39a2fc20",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 60,
+      "text": "번호 | 명 칭 | 고 장 현 상\n10 | AP.CBSUCC | ㅇ 고장코드(551) : DC NFB Trip ㅇ 고장코드(012) : TCMS 통신 고장 ㅇ 승객경보『-』현시\nㅇ 해당차 역행/제동 작용 불가(비상제동 제외)\n11 | AP.CBPAPWAV | ㅇ 고장코드(551) : DC NFB Trip ※ 해당차 객실 방송 및 승객경보 안됨\n12 | AP.CB1～3IL | ㅇ 고장코드(552) : AC NFB Trip ※ 해당차 AC 객실등 일부 소등\n15 | AP.CBDSTSU | ㅇ 고장코드(552) : AC NFB Trip ※ 해당차 차측 행선표시기 동작 불가\n16 | AP.CBIDU | ㅇ 고장코드(552) : AC NFB Trip ※ 해당차 객실 안내표시기 동작 불가\n18 | AP.CBBOU | "
+    },
+    {
+      "id": "2e276fbb-5a3c-4690-a96a-c598ce70e676",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 63,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n31 | AP.CBDO1TC | TC DIGITAL OUTPUT 1 CIRCUIT BREAKER | 전차 컴퓨터 출력 1 회로 차단기 | 전차 컴퓨터 출력 1 전원 보호용\n32 | AP.CBDO2CC | CC DIGITAL OUTPUT 2 CIRCUIT BREAKER | CC 디지털 출력 2용 회로 차단기 | CC 디지털 출력 2 입력단 보호용\n33 | AP.CBDO2TC | TC DIGITAL OUTPUT 2 CIRCUIT BREAKER | 전차 컴퓨터 출력 2 회로 차단기 | 전차 컴퓨터 출력 2 전원 보호용\n34 | AP.CBDO3CC | CC DIGITAL OUTPUT 3 CIRCUIT BREAKER | CC 디지털 출력 3용 회로 차단기 | CC "
+    },
+    {
+      "id": "2075dbef-9d0e-4bdc-9add-4ab112001c41",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 63,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n31 | AP.CBDO1TC | TC DIGITAL OUTPUT 1 CIRCUIT BREAKER | 전차 컴퓨터 출력 1 회로 차단기 | 전차 컴퓨터 출력 1 전원 보호용\n32 | AP.CBDO2CC | CC DIGITAL OUTPUT 2 CIRCUIT BREAKER | CC 디지털 출력 2용 회로 차단기 | CC 디지털 출력 2 입력단 보호용\n33 | AP.CBDO2TC | TC DIGITAL OUTPUT 2 CIRCUIT BREAKER | 전차 컴퓨터 출력 2 회로 차단기 | 전차 컴퓨터 출력 2 전원 보호용\n34 | AP.CBDO3CC | CC DIGITAL OUTPUT 3 CIRCUIT BREAKER | CC 디지털 출력 3용 회로 차단기 | CC "
+    },
+    {
+      "id": "13a00439-3407-4327-982f-94b522e408bf",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 65,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n91 | AP.SWAPE | AUX. POWER EARTH SWITCH | 보조 전원 접지 스위치 | 보조 전원 접지\n92 | AP.SWBA100V | BATTERY SWITCH | 축전지 스위치 | 축전지 투입/차단\n93 | BC.ADRU | AIR DRYER UNIT | 공기건조기 장치 | 공기압 건조\n94 | BC.BOU | BRAKE OPERATING UNIT | 제동제어 장치 | 제동 제어\n95 | BC.CPECU | ELECTRONIC CONTROL UNIT | 전자제어 장치 | 제동 전자제어 장치\n96 | BC.CRACO | AUX.COMPRESSOR COONTACT | 보조공기압축기 접촉기 | \n97 | BC.HTAD | AIR DRYER H"
+    },
+    {
+      "id": "13207ef8-2629-4275-9e0e-324c3473059e",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 65,
+      "text": "| 제동 안전 루프\n115 | BC.PSPABR | PARKING BRAK PRESSURE SWITCH | 주차제동 압력 스위치 | 주차제동 압력 감시\n116 | BC.RLEMEB | EMEB RELAY RESISTOR | 비상모드 비상계전기용 저항기 | 계전기 입력 전압용 분압 저항기\n117 | BC.RLEB | EMERGENCY BRAKE RELAY | 비상제동 계전기 | 비상제동 제어\n118 | BC.RLMCEB | MAS-CON EMERGENCY BRAKE RELAY | 주간제어기 비상제동 계전기 | 주간제어기에 의한 비상제동\n119 | BC.RLMRPSBP | MRPS BY-PASS RELAY | MRPS 바이패스 계전기 | MR 공기압 바이패스\n120 | BC.RLMRPABRR | PARKING "
+    },
+    {
+      "id": "d6141d7b-a068-47de-83cb-2dc52531dc6b",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 65,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n91 | AP.SWAPE | AUX. POWER EARTH SWITCH | 보조 전원 접지 스위치 | 보조 전원 접지\n92 | AP.SWBA100V | BATTERY SWITCH | 축전지 스위치 | 축전지 투입/차단\n93 | BC.ADRU | AIR DRYER UNIT | 공기건조기 장치 | 공기압 건조\n94 | BC.BOU | BRAKE OPERATING UNIT | 제동제어 장치 | 제동 제어\n95 | BC.CPECU | ELECTRONIC CONTROL UNIT | 전자제어 장치 | 제동 전자제어 장치\n96 | BC.CRACO | AUX.COMPRESSOR COONTACT | 보조공기압축기 접촉기 | \n97 | BC.HTAD | AIR DRYER H"
+    },
+    {
+      "id": "6af52c7e-a38c-4c96-8397-032ff9a4d5fa",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 65,
+      "text": "| 제동 안전 루프\n115 | BC.PSPABR | PARKING BRAK PRESSURE SWITCH | 주차제동 압력 스위치 | 주차제동 압력 감시\n116 | BC.RLEMEB | EMEB RELAY RESISTOR | 비상모드 비상계전기용 저항기 | 계전기 입력 전압용 분압 저항기\n117 | BC.RLEB | EMERGENCY BRAKE RELAY | 비상제동 계전기 | 비상제동 제어\n118 | BC.RLMCEB | MAS-CON EMERGENCY BRAKE RELAY | 주간제어기 비상제동 계전기 | 주간제어기에 의한 비상제동\n119 | BC.RLMRPSBP | MRPS BY-PASS RELAY | MRPS 바이패스 계전기 | MR 공기압 바이패스\n120 | BC.RLMRPABRR | PARKING "
+    },
+    {
+      "id": "0ff4f11f-797f-4d86-8bf4-d8a6a33c4cb7",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 66,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n121 | BC.RLREO | RESCUE OPERATION RELAY | 구원운전 계전기 | 구원운전 신호 발생\n122 | BC.ST1,2,3,4 | SPEED SENSOR | 속도 감지기 | 전차 속도 감지\n123 | BC.SWAS1CO | AIR SPRIG CUT-OUT COCK BOGIC 1 | 공기스프링 차단 콕크 1 | 대차 1의 공기스프링압 차단\n124 | BC.SWAS2CO | AIR SPRIG CUT-OUT COCK BOGIC 2 | 공기스프링 차단 콕크 2 | 대차 2의 공기스프링압 차단\n125 | BC.SWBR1CO | BRAKE CUT-OUT COCK BOGIC 1 | 제동 차단 콕크 1 | 대차 1의 제동압 차단\n126 | BC.SW"
+    },
+    {
+      "id": "ef98ee4d-2f3a-498f-bf10-0f1a60de3dfa",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 66,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n121 | BC.RLREO | RESCUE OPERATION RELAY | 구원운전 계전기 | 구원운전 신호 발생\n122 | BC.ST1,2,3,4 | SPEED SENSOR | 속도 감지기 | 전차 속도 감지\n123 | BC.SWAS1CO | AIR SPRIG CUT-OUT COCK BOGIC 1 | 공기스프링 차단 콕크 1 | 대차 1의 공기스프링압 차단\n124 | BC.SWAS2CO | AIR SPRIG CUT-OUT COCK BOGIC 2 | 공기스프링 차단 콕크 2 | 대차 2의 공기스프링압 차단\n125 | BC.SWBR1CO | BRAKE CUT-OUT COCK BOGIC 1 | 제동 차단 콕크 1 | 대차 1의 제동압 차단\n126 | BC.SW"
+    },
+    {
+      "id": "4b796c84-f0e1-436b-88cc-f6be034e00c6",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 74,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n361 | LGD | LINE GROUND DETECTOR | 선로 접지 검지 | 가선 접지 검지\n362 | LVD | LINE VOLTAGE DETECTOR | 저전압 검지 | 가선 저전압 검지\n363 | MC | MAIN CONTACTOR | 주 접촉기 | 주공기 압축기 기동장치 입력 접촉기\n364 | MCR | MAIN CONTACTOR RELAY | 주 접촉기용 계전기 | CM 기동장치 주접촉기 제어용\n365 | MF 1 | MAIN FUSE 1 | 주퓨즈 1 | M1 VVVF INVERTER 입력 보호용\n366 | MF 2 | MAIN FUSE 2 | 주퓨즈 2 | M2 VVVF INVERTER 입력 보호용\n367 | MOCD | MOTOR OVE"
+    },
+    {
+      "id": "d79e3fc2-4ded-463c-9e6b-a6b1e249f333",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 74,
+      "text": "IC MODE INDICATION LAMP | 자동모드 표시램프 | 운전모드 스위치가 자동모드시 점등\n386 | VC.ILCR | COMPULSORY RELEASE INDICATION LAMP | 강제완해 표시 램프 | 강제완해시 점등(황색)\n387 | VC.ILEBA | EMERGENCY BRAKE APPLIED INDICATION LAMP | 비상제동 표시 램프 | 비상제동시 점등(적색)\n388 | VC.ILEBCO | EMERGENCY BRAKE CUT-OUT INDICATION LAMP | 비상제동 차단 표시 램프 | 비상제동 차단 적용시 점등(적색)\n389 | VC.ILEXT | EXTENSION INDICATION LAMP | 연장급전 표시 램프 | 연장급전시 점등\n390 | VC.ILFIT | "
+    },
+    {
+      "id": "c433cd2f-1328-440f-bedb-16d5f6e91655",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 74,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n361 | LGD | LINE GROUND DETECTOR | 선로 접지 검지 | 가선 접지 검지\n362 | LVD | LINE VOLTAGE DETECTOR | 저전압 검지 | 가선 저전압 검지\n363 | MC | MAIN CONTACTOR | 주 접촉기 | 주공기 압축기 기동장치 입력 접촉기\n364 | MCR | MAIN CONTACTOR RELAY | 주 접촉기용 계전기 | CM 기동장치 주접촉기 제어용\n365 | MF 1 | MAIN FUSE 1 | 주퓨즈 1 | M1 VVVF INVERTER 입력 보호용\n366 | MF 2 | MAIN FUSE 2 | 주퓨즈 2 | M2 VVVF INVERTER 입력 보호용\n367 | MOCD | MOTOR OVE"
+    },
+    {
+      "id": "02edc404-157a-4c54-8631-28e2cf86c44e",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 74,
+      "text": "IC MODE INDICATION LAMP | 자동모드 표시램프 | 운전모드 스위치가 자동모드시 점등\n386 | VC.ILCR | COMPULSORY RELEASE INDICATION LAMP | 강제완해 표시 램프 | 강제완해시 점등(황색)\n387 | VC.ILEBA | EMERGENCY BRAKE APPLIED INDICATION LAMP | 비상제동 표시 램프 | 비상제동시 점등(적색)\n388 | VC.ILEBCO | EMERGENCY BRAKE CUT-OUT INDICATION LAMP | 비상제동 차단 표시 램프 | 비상제동 차단 적용시 점등(적색)\n389 | VC.ILEXT | EXTENSION INDICATION LAMP | 연장급전 표시 램프 | 연장급전시 점등\n390 | VC.ILFIT | "
+    },
+    {
+      "id": "19f04511-8ef7-4868-9d79-8c4b843cafca",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 75,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n391 | VC.ILPBA | PARKING BRAKE APPLIED INDICATION LAMP | 주차제동 표시 램프 | 주차제동시 점등\n392 | VC.ILPDO | PANTO DOWN/LB INDICATION LAMP | 판토 하강/LB개방 표시 램프 | 판토 하강/LB개방시 점등\n393 | VC.ILSBA | SECURITY BRAKE APPLIED INDICATION LAMP | 보안제동 표시 램프 | 보안제동시 점등\n394 | VC.PB1DC | DOOR CLOSE PUSH BUTTON 1 | 출입문 닫힘 푸쉬버튼 1 | 출입문 닫힘용\n395 | VC.PB1DOL | DOOR OPEN LEFT PUSH BUTTON 1 | 출입문 열림 푸쉬버튼("
+    },
+    {
+      "id": "96aa61be-51ae-4731-9bb1-eb1c2de65781",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 75,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n391 | VC.ILPBA | PARKING BRAKE APPLIED INDICATION LAMP | 주차제동 표시 램프 | 주차제동시 점등\n392 | VC.ILPDO | PANTO DOWN/LB INDICATION LAMP | 판토 하강/LB개방 표시 램프 | 판토 하강/LB개방시 점등\n393 | VC.ILSBA | SECURITY BRAKE APPLIED INDICATION LAMP | 보안제동 표시 램프 | 보안제동시 점등\n394 | VC.PB1DC | DOOR CLOSE PUSH BUTTON 1 | 출입문 닫힘 푸쉬버튼 1 | 출입문 닫힘용\n395 | VC.PB1DOL | DOOR OPEN LEFT PUSH BUTTON 1 | 출입문 열림 푸쉬버튼("
+    },
+    {
+      "id": "45b67a6a-3b46-4a17-a82f-dc0460178406",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 76,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n421 | VC.SWACT | CAB ACTIVATION SWITCH | 운전실 선택/방향 선택 스위치 | 운전실 선택/방향 선택 스위치\n422 | VC.SWADBP | ALL DOOR BY-PASS SWITCH | 전 출입문 바이패스 스위치 | 전 출입문 바이패스용 스위치\n423 | VC.SWDRMODE | DOOR MODE SWITCH | 출입문 모드 스위치 | 출입문 모드용스위치\n424 | VC.SWEBCO | EMERGENCY BRAKE CUT-OUT SWITCH | 비상제동 차단 스위치 | 비상제동 완해\n425 | VC.SWHVAC | HVAC MODE SWITCH | 냉난방 모드 스위치 | 냉난방 모드용 스위치\n426 | VC.SWILDCOO |"
+    },
+    {
+      "id": "1dc891db-dc43-45dd-9e8b-8f737dfe6e3b",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 76,
+      "text": "번호 | 약어 | 원어 | 한글 표기 | 기능 설명\n421 | VC.SWACT | CAB ACTIVATION SWITCH | 운전실 선택/방향 선택 스위치 | 운전실 선택/방향 선택 스위치\n422 | VC.SWADBP | ALL DOOR BY-PASS SWITCH | 전 출입문 바이패스 스위치 | 전 출입문 바이패스용 스위치\n423 | VC.SWDRMODE | DOOR MODE SWITCH | 출입문 모드 스위치 | 출입문 모드용스위치\n424 | VC.SWEBCO | EMERGENCY BRAKE CUT-OUT SWITCH | 비상제동 차단 스위치 | 비상제동 완해\n425 | VC.SWHVAC | HVAC MODE SWITCH | 냉난방 모드 스위치 | 냉난방 모드용 스위치\n426 | VC.SWILDCOO |"
+    },
+    {
+      "id": "3dcabac6-7291-43b1-bfb8-59604947d376",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 79,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 043\n~ 048 | TC / LIU2 DI.00-07 불일치\n DI.40-47 불일치 등 | 정상운행 가능 | −\nF/N 049 | 정차제동 완해, 열차속도계산불가 | 역행 불가능(M차 AP.VVVFIC 4개 모두 차단 시) | 재기동 후 복귀불능 시 관제센터 보고 후 구원운전\nF/N 050 | LIU2로 열차 제어 절환 | 1. 열차정지, TCMS 모니터 현시불능\u000b2. 비상운전만 가능(추진력 정상) | 1.해당Tc차 AP.CBSU1TC 리셋\u000b2. 복귀불능시 비상운전\nF/N 051 | 주간제어기 입력#2로 절환 | 정상운행 가능 | \nF/N 052 | 인접차 출입문제어 왼쪽 | 정상운행 가능 | 필요시 해당차량 AP.CBSUCC 리셋\nF"
+    },
+    {
+      "id": "4e9efcd1-d6d4-4b4f-8fda-67cefa5c4042",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 79,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 043\n~ 048 | TC / LIU2 DI.00-07 불일치\n DI.40-47 불일치 등 | 정상운행 가능 | −\nF/N 049 | 정차제동 완해, 열차속도계산불가 | 역행 불가능(M차 AP.VVVFIC 4개 모두 차단 시) | 재기동 후 복귀불능 시 관제센터 보고 후 구원운전\nF/N 050 | LIU2로 열차 제어 절환 | 1. 열차정지, TCMS 모니터 현시불능\u000b2. 비상운전만 가능(추진력 정상) | 1.해당Tc차 AP.CBSU1TC 리셋\u000b2. 복귀불능시 비상운전\nF/N 051 | 주간제어기 입력#2로 절환 | 정상운행 가능 | \nF/N 052 | 인접차 출입문제어 왼쪽 | 정상운행 가능 | 필요시 해당차량 AP.CBSUCC 리셋\nF"
+    },
+    {
+      "id": "ba68b5ce-05bb-4a54-b30b-b7ae7d1ebd2a",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 80,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 101\u000b (132) | 제어 ATC 통신고장\u000b(비 제어 ATC 고장) | 1. ATC에 의한 FSB 체결 정차\u000b2. 보조ATC로 자동 절체 | 수동운전 전환, 정차 후 ATC1,2 Reset 후 복귀시 정상운행\nF/N 102 | ATC1, ATC2 고장 | 비상제동 체결 정차 | ATC1,2 고장으로 자동 및 수동운전 불가, 비상운전 가능\nF/N 103 | 지상 KEY-UP신호수신실패, 시간초과 | 무인모드 설정 안됨(자동 및 수동운전 가능 | 무인운전모드 설정 불가 (자동 및 수동운전 가능)\nF/N 104 | 후부차 비상운전모드에서 무인설정 | 무인모드 설정 안됨(자동 및 수동운전 가능 | 후부차 운전모드 스위치 비상위치 여부 확인 조치"
+    },
+    {
+      "id": "56b2c916-96a8-4c86-a5a9-b7348f91b306",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 80,
+      "text": "보조ATC로 자동절체 | 역전기를 재 취급 후 고장유지시 보조 ATC로 절체 수동운전\nF/N 132 | ATC-속도센서 입력 고장 | 101번 참고 | \nF/N 134\u000b (156) | ATC/ATO 통신고장\u000b(ATO/ATC1 통신고장) | 자동운전 해제, FSB 체결, 보조ATC로 자동절체 | 1. 주간제어기를 B7단 후 완해시는 수동운전\n2. 고장유지 시 보조 ATC로 절체하여 수동운전행\nF/N 135\u000b (175) | ATC/TWC 통신고장\u000b(TWC/ATC1 통신고장) | 1. 주ATC 고장으로 통신고장 발생 시 | 1. 주간제어기를 B7단 위치후 완해시는 수동운전\n2. 고장유지 시 보조 ATC로 절체하여 수동운전으로 운행\nF/N 136 | ATC/ADU 통신고장 | 1. 자동운전 해제, 비상제동 체결\u000b2"
+    },
+    {
+      "id": "eeec9bdb-df15-4957-b350-c6d33591a325",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 80,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 101\u000b (132) | 제어 ATC 통신고장\u000b(비 제어 ATC 고장) | 1. ATC에 의한 FSB 체결 정차\u000b2. 보조ATC로 자동 절체 | 수동운전 전환, 정차 후 ATC1,2 Reset 후 복귀시 정상운행\nF/N 102 | ATC1, ATC2 고장 | 비상제동 체결 정차 | ATC1,2 고장으로 자동 및 수동운전 불가, 비상운전 가능\nF/N 103 | 지상 KEY-UP신호수신실패, 시간초과 | 무인모드 설정 안됨(자동 및 수동운전 가능 | 무인운전모드 설정 불가 (자동 및 수동운전 가능)\nF/N 104 | 후부차 비상운전모드에서 무인설정 | 무인모드 설정 안됨(자동 및 수동운전 가능 | 후부차 운전모드 스위치 비상위치 여부 확인 조치"
+    },
+    {
+      "id": "719a599c-38e3-4c48-b896-345c76770915",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 80,
+      "text": "보조ATC로 자동절체 | 역전기를 재 취급 후 고장유지시 보조 ATC로 절체 수동운전\nF/N 132 | ATC-속도센서 입력 고장 | 101번 참고 | \nF/N 134\u000b (156) | ATC/ATO 통신고장\u000b(ATO/ATC1 통신고장) | 자동운전 해제, FSB 체결, 보조ATC로 자동절체 | 1. 주간제어기를 B7단 후 완해시는 수동운전\n2. 고장유지 시 보조 ATC로 절체하여 수동운전행\nF/N 135\u000b (175) | ATC/TWC 통신고장\u000b(TWC/ATC1 통신고장) | 1. 주ATC 고장으로 통신고장 발생 시 | 1. 주간제어기를 B7단 위치후 완해시는 수동운전\n2. 고장유지 시 보조 ATC로 절체하여 수동운전으로 운행\nF/N 136 | ATC/ADU 통신고장 | 1. 자동운전 해제, 비상제동 체결\u000b2"
+    },
+    {
+      "id": "6d64bf06-7597-4957-8e68-18f30401d7e5",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 81,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 145 | 열차정지, ATO고장 | 자동운전 해제, FSB 체결, 정차 | 수동모드 전환, 주간제어기 B7단 후 완해시 수동운전\nF/N 146 | 열차정지, NRBD 검지 | 〃 | 1. 수동모드 전환, 강제완해SW 취급 P4단 취급\u000b2. 고장유지시 AP.CBBECU, AP.CBBOU 차단 후 운행\nF/N 147\u000b (193) | 열차정지, ATO 운전중 주간제어기 취급 | 〃 | 수동모드 전환, 주간제어기 B7단 후 완해시 수동운전\nF/N 148\u000b (194) | 열차정지, ATO 운전중 역전기 취급 | 〃 | 수동모드 전환, 주간제어기 B7단 후 완해시 수동운전\nF/N 149 | 열차정지,ATO 운전중 운전모드 취소 | 〃 | 수동모드 전"
+    },
+    {
+      "id": "2f3d6401-4018-4ffb-a2cf-6aedcdb47327",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 81,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 145 | 열차정지, ATO고장 | 자동운전 해제, FSB 체결, 정차 | 수동모드 전환, 주간제어기 B7단 후 완해시 수동운전\nF/N 146 | 열차정지, NRBD 검지 | 〃 | 1. 수동모드 전환, 강제완해SW 취급 P4단 취급\u000b2. 고장유지시 AP.CBBECU, AP.CBBOU 차단 후 운행\nF/N 147\u000b (193) | 열차정지, ATO 운전중 주간제어기 취급 | 〃 | 수동모드 전환, 주간제어기 B7단 후 완해시 수동운전\nF/N 148\u000b (194) | 열차정지, ATO 운전중 역전기 취급 | 〃 | 수동모드 전환, 주간제어기 B7단 후 완해시 수동운전\nF/N 149 | 열차정지,ATO 운전중 운전모드 취소 | 〃 | 수동모드 전"
+    },
+    {
+      "id": "5eaec61c-82dd-4a5c-a75e-849372ffd94a",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 82,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 171 | TWC 통신고장 | 자동운전 해제, FSB 체결, 정차 | 1. 주간제어기 B7단 후 완해 시 수동운전\n2. ATC1,2 Reset 후 복귀 시 정상운행\nF/N 172 | TWC 하드웨어 고장 | 자동운전 해제, FSB 체결, 정차 | 1. 주간제어기 B7단 후 완해 시 수동운전\n2. ATC1,2 Reset 후 복귀 시 정상운행\nF/N 173 | 순간적인 TWC 리셋 고장 | 자동운전 해제, FSB 체결, 정차 | 1. 주간제어기 B7단 후 완해 시 수동운전\n2. ATC1,2 Reset 후 복귀 시 정상운행\nF/N 174 | TWC 반송파 검출 고장 | 자동모드 설정 불가, 실내안내표시기 현시 안됨 | 1. 수동운전, 출입문 수"
+    },
+    {
+      "id": "16d3bb4b-d1e7-4f0d-9fc1-59e0dbdd6428",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 82,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 171 | TWC 통신고장 | 자동운전 해제, FSB 체결, 정차 | 1. 주간제어기 B7단 후 완해 시 수동운전\n2. ATC1,2 Reset 후 복귀 시 정상운행\nF/N 172 | TWC 하드웨어 고장 | 자동운전 해제, FSB 체결, 정차 | 1. 주간제어기 B7단 후 완해 시 수동운전\n2. ATC1,2 Reset 후 복귀 시 정상운행\nF/N 173 | 순간적인 TWC 리셋 고장 | 자동운전 해제, FSB 체결, 정차 | 1. 주간제어기 B7단 후 완해 시 수동운전\n2. ATC1,2 Reset 후 복귀 시 정상운행\nF/N 174 | TWC 반송파 검출 고장 | 자동모드 설정 불가, 실내안내표시기 현시 안됨 | 1. 수동운전, 출입문 수"
+    },
+    {
+      "id": "f6cf8847-f249-4759-aee2-138135556f59",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 83,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 201 | ATC 비상제동 | 1. 비상제동 체결 및 등 점등\u000b2. 자동운전취소 및 역행 불가 | 1. 수동모드 전환, 주간제어기 B7단 비상제동 완해\u000b2. 주/보조 ATC 리셋\u000b3. 완해불능시 비상모드 전환, 지령식 시행\nF/N 202 | 비상운전모드시 비상제동 | 비상제동 체결 및 등 점등, 역행 불가 | 1 주간제어기 B7단, 운전모드 수회 변경 시도\u000b2. 비상완해계전기(BC.RLEMEB) 가볍게 두드림\u000b3. 조치불능 시 관제센터 협의 후 구원운전\nF/N 203 | 비상제동스위치 취급 | 비상제동 체결 및 등 점등, 역행 불가 | 비상제동스위치 복귀, 고장유지시 EBCOS 취급\nF/N 204 | 비상제동차단스위치 취급 | 비상제동 차"
+    },
+    {
+      "id": "82774d3d-6e4d-4e89-8ac7-8012bd21132c",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 83,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 201 | ATC 비상제동 | 1. 비상제동 체결 및 등 점등\u000b2. 자동운전취소 및 역행 불가 | 1. 수동모드 전환, 주간제어기 B7단 비상제동 완해\u000b2. 주/보조 ATC 리셋\u000b3. 완해불능시 비상모드 전환, 지령식 시행\nF/N 202 | 비상운전모드시 비상제동 | 비상제동 체결 및 등 점등, 역행 불가 | 1 주간제어기 B7단, 운전모드 수회 변경 시도\u000b2. 비상완해계전기(BC.RLEMEB) 가볍게 두드림\u000b3. 조치불능 시 관제센터 협의 후 구원운전\nF/N 203 | 비상제동스위치 취급 | 비상제동 체결 및 등 점등, 역행 불가 | 비상제동스위치 복귀, 고장유지시 EBCOS 취급\nF/N 204 | 비상제동차단스위치 취급 | 비상제동 차"
+    },
+    {
+      "id": "cf89ebb3-ab8a-4a74-bbe4-d24821fa93e1",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 87,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 425 | VVVF-보호동작, \n차륜슬립/슬라이드(WSD) | TCMS 현시, 매 번 자동 리셋 되며\u000b역행시 L/B 1,2 재투입으로 정상운행 가능 | 1. 운행에 지장 없음\u000b2. 수동운전모드 전환 수동운전\nF/N 426 | VVVF-보호동작, \n후진 속도 검지(BSD) | TCMS 현시, 매 번 자동 리셋 되며\u000b역행시 L/B 1,2 재투입으로 정상운행 가능 | \nF/N 427 | VVVF-중고장, HB 차단(HBD) | 1. TCMS 화면 VVVF 표시 \"CUT(적색)\"로 표시\u000b2. 출력감소 및 인버터 제어 차단 상태, 자동 리셋 불가능 | 1. TCMS 확인 및 출입문 닫힘 상태에서 \u000b2. 고장차 AP.CBSUCC 및 AP.CBVVVF"
+    },
+    {
+      "id": "2a86659e-3927-43af-ac25-54191b52b451",
+      "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+      "page": 87,
+      "text": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법\nF/N 425 | VVVF-보호동작, \n차륜슬립/슬라이드(WSD) | TCMS 현시, 매 번 자동 리셋 되며\u000b역행시 L/B 1,2 재투입으로 정상운행 가능 | 1. 운행에 지장 없음\u000b2. 수동운전모드 전환 수동운전\nF/N 426 | VVVF-보호동작, \n후진 속도 검지(BSD) | TCMS 현시, 매 번 자동 리셋 되며\u000b역행시 L/B 1,2 재투입으로 정상운행 가능 | \nF/N 427 | VVVF-중고장, HB 차단(HBD) | 1. TCMS 화면 VVVF 표시 \"CUT(적색)\"로 표시\u000b2. 출력감소 및 인버터 제어 차단 상태, 자동 리셋 불가능 | 1. TCMS 확인 및 출입문 닫힘 상태에서 \u000b2. 고장차 AP.CBSUCC 및 AP.CBVVVF"
+    }
+  ],
+  "열림불능": [
+    {
+      "id": "f640a579-d6a9-437d-b984-a71cec2279ba",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 29,
+      "text": "RESET\n\n램프시험\n\n열림\n\n닫힘\n\n재개방\n\nBY-PASS\n\n정상\n\n비상\n\n모드 S/W 비상 선택 (PSD 자동개방 됨)\n\nPSD ATO 열림불능\n\n모드 S/W 비상 선택 시 PSD 열림\n\n기관사조작반 열림 취급\n\n승강장안전문(PSD) ATO 열림불능으로 기관사조작반 수동열림 취급 했으나 전체 미개방 시\n\n28\n\n승강장안전문(PSD) 전체 미개방\n\n승강장안전문(PSD) 전체열림 완료\n\n5 ) 6호선 승강장안전문(PSD) 고장 시\n\n②승강장안전문 (PSD) ATO 열림불능 시 조치방법\n\nLine 6 신내"
+    },
+    {
+      "id": "b968e3ac-0985-4b35-8400-18b2684fad34",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 29,
+      "text": "PSD ATO 열림불능"
+    },
+    {
+      "id": "756f7d95-9216-4466-909f-cf05f1e08d09",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 29,
+      "text": "승강장안전문(PSD) ATO 열림불능으로 기관사조작반 수동열림 취급 했으나 전체 미개방 시"
+    },
+    {
+      "id": "72fb0661-460b-4054-a97a-c5d1b4edc0fb",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 29,
+      "text": "②승강장안전문 (PSD) ATO 열림불능 시 조치방법"
+    },
+    {
+      "id": "6b6e1b9a-3e12-44a2-850e-a68ff8dec509",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 46,
+      "text": "3\n\n신내승무사업소\n\n출입문 제어 고장 시 길라잡이\n\n1) 전체 출입문 열림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 46\n2) 1량 출입문 열림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 50\n3) 1개 출입문 열림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 52 \n4) 전체 출입문 닫힘불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 56 \n5) 1량 출입문 닫힘불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 58\n6) 1개 출입문 닫힘불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 60\n\n45"
+    },
+    {
+      "id": "c626074f-1048-4766-9e29-4f870d810931",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 46,
+      "text": "1) 전체 출입문 열림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 46\n2) 1량 출입문 열림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 50\n3) 1개 출입문 열림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 52 \n4) 전체 출입문 닫힘불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 56 \n5) 1량 출입문 닫힘불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 58\n6) 1개 출입문 닫힘불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 60"
+    },
+    {
+      "id": "5d44e70e-03e5-4485-ac21-68850d951954",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 47,
+      "text": "1 ) 전체 출입문 열림불능 시 ̶ 점검사항\n\nCE.RLDCT\n\n1064\n\n746\n\nTCR 1\n\n1061\n\n1063\n\nAP.CBDIL\n\nDIL\n\nDIR\n\nDIL\n\nDIR\n\nDIR\n\nDIL\n\nCE.RLDCT\n\nHCR 1\n\nHCR 1\n\n전체차량 출입문\n닫힘확인 계전기\n\n704\n\n746\n\n1061\n\n1063\n\nOV746\n\n전부Tc차\n\n후부Tc차\n\n중간차\n\nTCR 1\n\n704\n\nAP.CBDIL\n\n전체차량 출입문\n닫힘확인 계전기\n\n전부Tc차\n\nS\n\nHCR 여자\nTCR 여자\n\nAP.\nCBDO4TC\n\nAP.\nCB1KPHL(좌) CB1KPHR(우)\n\n(1Km/h계전기)\n\n출입문 열림지령\n\n출입문 열림지령\n\nCE.RLDIL/R\n\nAP.\nCBDO1CC(좌) CBDO2CC(우)\n\nCE.RLDEOL/R\n\n인접차 비상열림\n\n출입문"
+    },
+    {
+      "id": "3f02fe86-be6d-487f-841a-9be02883943d",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 47,
+      "text": "1 ) 전체 출입문 열림불능 시 ̶ 점검사항"
+    },
+    {
+      "id": "bda5cafb-944a-4135-b9d0-65e3a7354cca",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 48,
+      "text": "현 상\n\n(1) TCMS 화면에 차량 전체출입문 닫힘 현시\n\n조 치 사 항\n\n※ 미달, 진과정차 또는 지상신호(ODL / ODR) 미수신 시 관제센터 보고 후 지시에 따른다\n - 진과정차 시 운전모드 비상, 역전기 후진, 출입문모드 수/수로 정위치조정운전 후\n 운전모드 수동, 출입문모드 수/수 및 CCTV 확인 후 승강장쪽 측면 출입문열림버튼 취급\n(1) 전부Tc차 ① AP.CB1KPHL/R 확인 후 차단 시 복귀\n(2) 전부Tc차 ② 1Km/h계전기(CE.RL1KPHL/R)를 가볍게 두드려 본다\n(3) 전부Tc차 ③ AP.CBDO4TC 확인 후 차단 시 복귀\n(4) ATC 정상 : 운전모드 수동 및 출입문모드 수/수 전환 후 측면 출입문열림버튼 취급\n ※ ④ ATC 고장 시 : 운전모드 비상 및 출입문모드"
+    },
+    {
+      "id": "23508ffa-08fd-4060-a204-292639e58cb3",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 48,
+      "text": "1 ) 전체 출입문 열림불능 시 ̶ 길라잡이"
+    },
+    {
+      "id": "289bacbb-b23e-40a7-b367-00b535b83d41",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 49,
+      "text": "1 ) 전체 출입문 열림불능 시 ̶ 점검사항\n\n1054\n\nDS1\n\nCE.RLDIL\n\nAP.CBDO1CC\n\n차측등(좌측)\n\n전자변\n\nL1\n\nL2\n\nL3\n\nL4\n\n1033\n\nL1출입문 열림신호\n\n1034\n\n1035\n\n1036\n\nCE.RLDIL\n\nL1 열림\n\nL2 열림\n\nL3 열림\n\nL4 열림\n\n출입문바이패스 S/W\n\nDS1\n\nDS2\n\nDS3\n\nDS4\n\nDS2\n\nDS3\n\nDS4\n\n1091\n\n닫힘 시 접촉\n\n열림 시 접촉\n\nBS1\n\nBS2\n\nBS3\n\nBS4\n\n1401\n\n1402\n\n1403\n\n1404\n\n1037\n\n1038\n\n1039\n\n1040\n\n1083\n\n1084\n\nOV711\n\nOV24-3\n\n1Km/h계전기(좌)\n\nATC\n\nTWC\n\nATC\n\nTCMS\n\n신호기계실\n(지상 ATC)\n\nOpen Door 신호수신\n - 출입"
+    },
+    {
+      "id": "f3ade7a5-6925-4e0f-a92e-4e0446dab5aa",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 49,
+      "text": "1 ) 전체 출입문 열림불능 시 ̶ 점검사항"
+    },
+    {
+      "id": "2ce24b8c-b630-4a35-a236-d3134210f39c",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 50,
+      "text": "원 인\n\n(1) 전부Tc차 AP.CB1KPHL/R 차단 시(1Km/h계전기 전원 차단) \n - 출입문 전자변 여자 불능\n(2) 미달, 진과정차로 인해 출입문열림신호(ODL / ODR) 수신 불능 시\n - ATC의 출입문열림허용계전기(EDL, EDR) 여자 불능\n(3) ATC 장치 고장 시\n(4) 차상 TWC 통신고장 시\n(5) 지상신호장치 이상으로 정지표시등(Dwell Light) 미점등 또는 고장 시\n(6) 출입문닫힘버튼 고착 시, 수동열림 위치에서 열림버튼 불량 시\n(7) 반대편 출입문이 1개라도 열려 있을 때\n - 출입문이 1개라도 열림신호가 입력되면 반대편 열림신호 출력 안함\n ※ 단, 출입문바이패스(DSBS) S/W가 취급된 경우는 예외이며, \n 전체출입문바이패스(ADBP) S/W 취급시는 개방된 "
+    },
+    {
+      "id": "f644de58-6870-4141-b935-ab0b4e3f1bc2",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 50,
+      "text": "1 ) 전체 출입문 열림불능 시 ̶ 길라잡이"
+    },
+    {
+      "id": "213258f3-af55-41d5-81de-16a9d575cd33",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 51,
+      "text": "CE.RLDCT\n\n1064\n\n746\n\nVC.RL1TC\n\n1061\n\n1063\n\nCE.RLDCOC\n\n704\n\nTC\n\n출입문 열림 S/W\n출입문 닫힘 S/W\n\nATC\n\nAP.CBDIL\n\nAP.CBDIL\n\nVC.RL1TC\n\nCE.RLDIL\n\nCE.RLDIR\n\nDIL\n\nDIR\n\nCE.RLDIR\n\nCE.RLDIL\n\nCE.RLDCT\n\nVC.RL1HC\n\nVC.RL1HC\n\n전체차량 출입문\n닫힘확인 계전기\n\nATC\n\n비상운전모드\n\nEDL\n\nEDR\n\nVC.RL1HC\n\nCE.RL1KPHL\n\nCE.RL1KPHR\n\nAP.CB1KPHL\n\nAP.CBDCOC\n\nAP.\nCBDO1CC\n\nAP.CB1KPHR\n\n인접차\n\n인접차 출입문\n닫힘 계전기\n\nCE.RLDEOL\n\nAP.CBDO1CC\n\n1080\n\n1032\n\nCE.RLDIL\n\nTEST\n\n차측등"
+    },
+    {
+      "id": "88585ea8-c006-4164-917a-352e1f0b4dee",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 51,
+      "text": "2 ) 1량 출입문 열림불능 시 ̶ 점검사항"
+    },
+    {
+      "id": "e96af393-6148-4eca-9a22-3809987c10c3",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 52,
+      "text": "현 상\n\n(1) TCMS 화면의 해당차 출입문 닫힘 현시\n 및 모니터 하단에 관련고장 현시\n\n원 인\n\n(1) 해당차 1Km/h계전기(CE.RL1KPHL/R) 자체 불량 시 \n(2) 해당차 CC 고장상태에서 인접차 AP.CBDO1CC 또는 2CC 차단\n → 이 때는 2량(T+M차) 출입문 열림 불능 됨\n(3) 해당차 차내 출입문 대표콕크 개방 시\n\n조 치 사 항\n\n※ 현장확인 전 TCMS 화면 상 미개방출입문 차호 확인 및 메모(인포3 취급)\n(1) 해당차 ① 1Km/h계전기(CE.RL1KPHL/R) 자체를 가볍게 두드려 본다\n(2) 해당차 CC 고장 시 인접차 ② AP.CBDO1CC 또는 2CC 확인 후 차단 시 복귀\n - CC 고장으로 출입문 제어 불능 시 인접차 CC가 출입문 제어\n - 두 개의 차량이 "
+    },
+    {
+      "id": "3d8a26f4-fea2-4f1a-9a94-13981adef057",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 52,
+      "text": "2 ) 1량 출입문 열림불능 시 ̶ 길라잡이"
+    },
+    {
+      "id": "c8a10b87-5e39-484f-9a08-62831d3f0283",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 53,
+      "text": "3 ) 1개 출입문 열림불능 시 ̶ 점검사항\n\n1개 출입문 열림불능 시 현상 및 조치 해설도\n\n52\n\n√ 출입문벨트간섭 및 절손 확인\n√ 도어엔진 및 전자변 공기누설 확인\n√ 출입문전자변 수동레버 전환 확인\n√ 출입문바이패스(DSBS) S/W 확인\n 취급(동작) 시(TCMS화면 현시 됨)\n\n미개방출입문 위치(예: 2-3) 확인 및 메모 후 현장확인\n\n【TCMS모니터 화면 상태】\n\n1Km/h계전기\n(CE.RL1KPHL/R) 가볍게 두드려 본다\n\n【출입문 동작 및 상태】\n\nLine 6 신내"
+    },
+    {
+      "id": "3db8e6ee-5fb7-497d-940f-0b886b04e6ed",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 53,
+      "text": "3 ) 1개 출입문 열림불능 시 ̶ 점검사항"
+    },
+    {
+      "id": "f212bc2a-3eca-4edc-860b-28c25ff78f56",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 53,
+      "text": "1개 출입문 열림불능 시 현상 및 조치 해설도"
+    },
+    {
+      "id": "87571bd1-efc0-43c2-96fd-31cec43a1aad",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 54,
+      "text": "현 상\n\n(1) TCMS 화면의 해당차 출입문 닫힘상태( ) 유지\n(2) TCMS 화면 하단에 관련고장 현시\n - 6210호 F/N 623. 3번 출입문 열리지 않음, 왼쪽\n\n조 치 사 항\n\n※ 출입문 전체열림•닫힘 수회 시행 후 관제센터 보고 및 승객안내방송 시행 후 인포3 취급\n - TCMS화면 상 미개방출입문 위치(예: 2-3) 확인 및 메모 후 출입문안전막 휴대하여 현장확인\n(1) 미개방출입문 ① 출입문 개별콕크 공기누설 또는 개방 확인 후 개방 시 복귀\n ② 출입문 포켓내부(문틈) 이물질 확인\n ③ 출입문벨트 간섭 및 절손 확인, 도어엔진·전자변 공기누설 확인 \n - 출입문전자변 수동레버 및 바이패스(DSBS) S/W 동작상태 확인 \n ④ 1Km/h계전기(CE.RL1KPHL/R) 접점 불량 시 가볍"
+    },
+    {
+      "id": "1db54d92-fedf-49a3-a709-f5b36c27df3a",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 54,
+      "text": "※ 출입문 전체열림•닫힘 수회 시행 후 관제센터 보고 및 승객안내방송 시행 후 인포3 취급\n - TCMS화면 상 미개방출입문 위치(예: 2-3) 확인 및 메모 후 출입문안전막 휴대하여 현장확인\n(1) 미개방출입문 ① 출입문 개별콕크 공기누설 또는 개방 확인 후 개방 시 복귀\n ② 출입문 포켓내부(문틈) 이물질 확인\n ③ 출입문벨트 간섭 및 절손 확인, 도어엔진·전자변 공기누설 확인 \n - 출입문전자변 수동레버 및 바이패스(DSBS) S/W 동작상태 확인 \n ④ 1Km/h계전기(CE.RL1KPHL/R) 접점 불량 시 가볍게 두드려 본다\n(3) 개방불능 시 미개방출입문 잠금(운행 중 열림 방지) 및 출입문안전막 설치 후\n 출입문바이패스(DSBS) S/W 취급 및 감시자(역직원) 승차\n(4) 관제센터 보고(차량기"
+    },
+    {
+      "id": "301cfb65-9f9f-4133-aaa0-852ea95f544e",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 54,
+      "text": "3 ) 1개 출입문 열림불능 시 ̶ 길라잡이"
+    },
+    {
+      "id": "05376519-423e-45fb-b9df-7625a144f89f",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 55,
+      "text": "개별콕크 개방 및 공기누설 시\n\n출입문벨트 간섭 및 절손 시\n출입문 도어엔진 및 전자변 공기누설 시\n출입문전자변 수동레버 전환 시\n출입문바이패스(DSBS) S/W 취급 또는 동작 시\n\n3 ) 1개 출입문 열림불능 시 ̶ 점검사항\n\n1개 출입문 열림불능 시 관련 원인\n\n54\n\n1Km/h계전기(CE.RL1KPHL/R) 접점 불량 시\n\n포켓내부 이물질 끼임 시\n\nLine 6 신내"
+    },
+    {
+      "id": "f5f97ae5-d365-441e-b40a-b2266cf30038",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 55,
+      "text": "3 ) 1개 출입문 열림불능 시 ̶ 점검사항"
+    },
+    {
+      "id": "49a0a1c2-30aa-461e-8544-64aa3847689c",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 55,
+      "text": "1개 출입문 열림불능 시 관련 원인"
+    },
+    {
+      "id": "59bdb806-7d9c-410c-b8f1-e3112a25ac9f",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 56,
+      "text": "원 인\n\n(1) 해당출입문 개별콕크 개방 및 공기누설 시\n(2) 해당출입문 잠금(Key에 의한 잠금) 또는 포켓내부(문틈)에 이물질 끼임\n(3) 해당출입문\n - 출입문벨트 간섭 및 절손 시\n - 출입문도어엔진 및 전자변 공기누설 시\n - 출입문전자변 수동레버 전환 시\n - 출입문바이패스(DSBS) S/W 동작(TCMS화면 현시 됨) 시\n(4) 해당차 1Km/h계전기(CE.RL1KPHL/R) 접점 불량 시\n - 출입문 전자변 여자 불능\n\n3 ) 1개 출입문 열림불능 시 ̶ 길라잡이\n\n55\n\nLine 6 신내"
+    },
+    {
+      "id": "99329ebf-ba02-4a4a-b7ba-d65bc914973d",
+      "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+      "page": 56,
+      "text": "3 ) 1개 출입문 열림불능 시 ̶ 길라잡이"
+    }
+  ]
+}
