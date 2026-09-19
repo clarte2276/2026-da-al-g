@@ -7,6 +7,14 @@ RUN npm ci
 COPY front/link-generator/ ./
 RUN npm run build
 
+FROM ghcr.io/cirruslabs/flutter:stable AS user-build
+WORKDIR /workspace/front/user
+COPY front/user/pubspec.yaml front/user/pubspec.lock ./
+RUN flutter pub get
+COPY front/user/ ./
+ARG API_BASE_URL=https://2026-da-al-g-production.up.railway.app
+RUN flutter build web --release --dart-define=API_BASE_URL=${API_BASE_URL}
+
 FROM python:3.11-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -33,6 +41,7 @@ RUN cd back && uv sync --frozen --extra hwp --no-dev --no-install-project
 COPY back/ ./back/
 RUN cd back && uv sync --frozen --extra hwp --no-dev
 COPY --from=admin-build /workspace/front/link-generator/dist ./admin-dist
+COPY --from=user-build /workspace/front/user/build/web ./user-dist
 
 WORKDIR /app/back
 CMD ["sh", "-c", "exec /app/back/.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]

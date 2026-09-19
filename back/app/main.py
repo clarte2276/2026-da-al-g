@@ -84,6 +84,8 @@ admin_dist = Path(__file__).resolve().parents[2] / "admin-dist"
 if admin_dist.is_dir():
     app.mount("/admin", StaticFiles(directory=admin_dist, html=True), name="admin")
 
+user_dist = Path(__file__).resolve().parents[2] / "user-dist"
+
 
 def _fragment_out(fragment: Fragment) -> FragmentOut:
     return FragmentOut(
@@ -858,3 +860,7 @@ def chat(
         embedding_provider=embedding_provider.name,
         graph_expanded=any(item.hop > 0 for item in result.evidence),
     )
+
+
+if user_dist.is_dir():
+    app.mount("/", StaticFiles(directory=user_dist, html=True), name="user")
