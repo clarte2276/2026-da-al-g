@@ -7,7 +7,7 @@ RUN npm ci
 COPY front/link-generator/ ./
 RUN npm run build
 
-FROM ghcr.io/cirruslabs/flutter:3.47.5 AS user-build
+FROM ghcr.io/cirruslabs/flutter:3.44.0 AS user-build
 WORKDIR /workspace/front/user
 COPY front/user/pubspec.yaml front/user/pubspec.lock ./
 RUN flutter pub get
