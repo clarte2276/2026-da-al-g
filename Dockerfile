@@ -14,7 +14,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     UV_LINK_MODE=copy
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates curl fonts-noto-cjk libreoffice \
+    && apt-get install -y --no-install-recommends ca-certificates curl default-jre-headless fonts-noto-cjk libreoffice libreoffice-java-common \
     && rm -rf /var/lib/apt/lists/*
 
 # LibreOffice's own HWP filter garbles these documents; H2Orestart reads them correctly
