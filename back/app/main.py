@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import mimetypes
 import secrets
 from concurrent.futures import Future, ThreadPoolExecutor
@@ -10,7 +11,7 @@ from typing import Annotated
 
 from fastapi import Depends, FastAPI, File, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse, Response
+from fastapi.responses import FileResponse, JSONResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
@@ -22,8 +23,9 @@ from .config import get_settings
 from .db import SessionLocal, get_db, init_db
 from .links import get_version
 from .links import router as links_router
-from .models import AuditEvent, Document, DocumentVersion, Fragment, KnowledgeEdge
+from .models import AuditEvent, Document, DocumentVersion, Fragment, KnowledgeEdge, new_id
 from .schemas import (
+    ChatFeedbackRequest,
     ChatRequest,
     ChatResponse,
     DocumentOut,
@@ -44,7 +46,7 @@ from .schemas import (
     SelectionAnchor,
     VersionOut,
 )
-from .services.chat import ChatService
+from .services.chat import ChatResult, ChatService
 from .services.document_content import verified_source
 from .services.embedding import get_embedding_provider
 from .services.ingestion import IngestionService
@@ -845,11 +847,52 @@ def rag_query(
     )
 
 
+def _chat_response(result: ChatResult) -> ChatResponse:
+    return ChatResponse(
+        answer=result.answer,
+        mode=result.mode,
+        evidence=[_evidence_out(item) for item in result.evidence],
+        embedding_provider=embedding_provider.name,
+        graph_expanded=any(item.hop > 0 for item in result.evidence),
+    )
+
+
+def _log_answer(db: Session, user_id: str, question: str, result: ChatResult) -> None:
+    """사고 후 '그때 앱이 뭐라고 답했는지' 확인할 수 있도록 모든 답변을 감사 로그에 남긴다."""
+    db.add(
+        AuditEvent(
+            actor=user_id,
+            action="chat.answer",
+            entity_type="chat_answer",
+            entity_id=new_id(),
+            payload_json={
+                "question": question,
+                "answer": result.answer,
+                "mode": result.mode,
+                "evidence": [
+                    {
+                        "fragment_id": item.fragment.id,
+                        "link_id": item.link_id,
+                        "filename": item.filename,
+                        "location": item.location,
+                        "version_id": item.version_id,
+                        "page": item.page,
+                        "score": round(item.score, 4),
+                        "hop": item.hop,
+                    }
+                    for item in result.evidence
+                ],
+            },
+        )
+    )
+    db.commit()
+
+
 @app.post("/api/chat", response_model=ChatResponse)
 def chat(
     payload: ChatRequest,
     db: Annotated[Session, Depends(get_db)],
-    _user: CurrentUser,
+    user: CurrentUser,
 ) -> ChatResponse:
     result = chat_service.respond(
         db,
@@ -858,13 +901,51 @@ def chat(
         top_k=payload.top_k,
         max_hops=payload.max_hops,
     )
-    return ChatResponse(
-        answer=result.answer,
-        mode=result.mode,
-        evidence=[_evidence_out(item) for item in result.evidence],
-        embedding_provider=embedding_provider.name,
-        graph_expanded=any(item.hop > 0 for item in result.evidence),
+    _log_answer(db, user.id, payload.message, result)
+    return _chat_response(result)
+
+
+@app.post("/api/chat/stream")
+def chat_stream(payload: ChatRequest, user: CurrentUser) -> StreamingResponse:
+    """NDJSON: {"type":"status"|"delta","text"} 줄들 뒤에 {"type":"done", ...ChatResponse} 한 줄."""
+    history = [{"role": item.role, "content": item.content} for item in payload.history]
+    user_id = user.id
+
+    def lines():
+        # 응답이 끝날 때까지 쓰므로 요청 의존성이 아닌 자체 세션을 연다.
+        with SessionLocal() as db:
+            for event in chat_service.respond_stream(
+                db, payload.message, history, top_k=payload.top_k, max_hops=payload.max_hops
+            ):
+                if isinstance(event, tuple):
+                    kind, text = event
+                    yield json.dumps({"type": kind, "text": text}, ensure_ascii=False) + "\n"
+                    continue
+                _log_answer(db, user_id, payload.message, event)
+                done = _chat_response(event)
+                yield json.dumps({"type": "done", **done.model_dump(mode="json")}, ensure_ascii=False) + "\n"
+
+    # X-Accel-Buffering: 프록시가 모아서 보내지 않게 한다.
+    return StreamingResponse(lines(), media_type="application/x-ndjson; charset=utf-8", headers={"X-Accel-Buffering": "no"})
+
+
+@app.post("/api/chat/feedback", status_code=201)
+def chat_feedback(
+    payload: ChatFeedbackRequest,
+    db: Annotated[Session, Depends(get_db)],
+    user: CurrentUser,
+) -> dict[str, str]:
+    # 답변 평가는 감사 로그에 남겨 admin 사이트에서 질문·답변·근거와 함께 검토한다.
+    event = AuditEvent(
+        actor=user.id,
+        action="chat.feedback",
+        entity_type="chat_answer",
+        entity_id=new_id(),
+        payload_json=payload.model_dump(),
     )
+    db.add(event)
+    db.commit()
+    return {"id": event.entity_id}
 
 
 if user_dist.is_dir():

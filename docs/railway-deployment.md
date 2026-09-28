@@ -27,13 +27,13 @@ EMBEDDING_MODEL=text-embedding-3-small
 EMBEDDING_DIMENSIONS=1536
 OPENAI_API_KEY=실제_OpenAI_키
 LLM_MODEL=gpt-4o-mini
-ENABLE_REGISTRATION=true
+ENABLE_REGISTRATION=false
 ENABLE_TEST_ACCOUNT=true
 AUTH_SESSION_HOURS=24
 CORS_ORIGINS=*
 ```
 
-관리자 계정을 처음 만들 때만 아래 두 변수를 추가합니다. 첫 배포 후 관리자 로그인을 확인하면 `BOOTSTRAP_ADMIN_PASSWORD`는 삭제하는 편이 좋습니다. 이미 같은 아이디가 있으면 서버가 비밀번호를 덮어쓰지 않습니다.
+변수를 지정하지 않으면 관리자 계정 `admin/admin`이 서버 시작 시 없을 때 생성됩니다. 실제 운영 전에는 아래 변수로 바꿉니다. 첫 배포 후 관리자 로그인을 확인하면 `BOOTSTRAP_ADMIN_PASSWORD`는 삭제하는 편이 좋습니다. 이미 같은 아이디가 있으면 서버가 비밀번호를 덮어쓰지 않습니다.
 
 ```dotenv
 BOOTSTRAP_ADMIN_USERNAME=admin

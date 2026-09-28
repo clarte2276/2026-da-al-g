@@ -27,11 +27,12 @@ class Settings(BaseSettings):
     default_graph_hops: int = 2
     local_document_roots: str = ""
     local_scan_limit: int = 10_000
-    enable_registration: bool = True
+    enable_registration: bool = False
     enable_test_account: bool = True
     auth_session_hours: int = 24
-    bootstrap_admin_username: str | None = None
-    bootstrap_admin_password: str | None = None
+    # ponytail: admin/admin until the admin site issues real accounts; override in production.
+    bootstrap_admin_username: str | None = "admin"
+    bootstrap_admin_password: str | None = "admin"
     bootstrap_admin_display_name: str = "관리자"
     cors_origins: str = "*"
 

@@ -213,6 +213,11 @@ class AuthRegisterRequest(BaseModel):
     display_name: str | None = Field(default=None, max_length=100)
 
 
+class PasswordChangeRequest(BaseModel):
+    current_password: str = Field(min_length=1, max_length=128)
+    new_password: str = Field(min_length=8, max_length=128)
+
+
 class AuthResponse(BaseModel):
     access_token: str
     token_type: Literal["bearer"]
@@ -230,6 +235,14 @@ class ChatRequest(BaseModel):
     history: list[ChatHistoryMessage] = Field(default_factory=list, max_length=12)
     top_k: int = Field(default=5, ge=1, le=30)
     max_hops: int = Field(default=2, ge=0, le=4)
+
+
+class ChatFeedbackRequest(BaseModel):
+    rating: Literal["up", "down"]
+    reason: str | None = Field(default=None, max_length=2000)
+    question: str = Field(max_length=10000)
+    answer: str = Field(max_length=20000)
+    evidence: list[dict[str, Any]] = Field(default_factory=list, max_length=30)
 
 
 class ChatResponse(BaseModel):

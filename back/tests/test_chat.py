@@ -166,3 +166,44 @@ def test_linked_evidence_names_the_passage_it_came_from():
     assert items[0]["linked_from"] is None
     assert items[1]["linked_from"].startswith("근거 1의")
     assert items[1]["text"].startswith("[근거 2]")
+
+
+def test_stream_yields_progress_deltas_then_cleaned_result(tmp_path):
+    call = SimpleNamespace(
+        id="call-1",
+        function=SimpleNamespace(name="search_documents", arguments='{"query":"q"}'),
+    )
+    evidence = Evidence(
+        fragment=SimpleNamespace(id="f1", text="관제에 보고", title="규정", locator_json={}),
+        score=0.9,
+        hop=0,
+        path=["f1"],
+        filename="규정.hwp",
+    )
+
+    class _Rag:
+        def retrieve(self, *args, **kwargs):
+            return [evidence]
+
+    def chunk(text):
+        return SimpleNamespace(choices=[SimpleNamespace(delta=SimpleNamespace(content=text))])
+
+    client = _FakeClient(
+        [
+            SimpleNamespace(choices=[SimpleNamespace(message=_message(tool_calls=[call]))]),
+            iter([chunk("관제에 "), chunk(None), chunk("보고합니다. [근거 9]")]),
+        ]
+    )
+    service = ChatService(Settings(storage_root=tmp_path, openai_api_key="test"), _Rag(), client)
+
+    events = list(service.respond_stream(None, "차량 고장 시 어떻게 하나요?", []))
+
+    assert [e for e in events if isinstance(e, tuple) and e[0] == "delta"] == [
+        ("delta", "관제에 "),
+        ("delta", "보고합니다. [근거 9]"),
+    ]
+    assert ("status", "규정을 찾는 중") in events
+    result = events[-1]
+    assert result.mode == "rag"
+    assert "[근거 9]" not in result.answer  # 없는 근거 번호는 최종 답변에서 정리된다
+    assert client.chat.completions.calls[1]["stream"] is True

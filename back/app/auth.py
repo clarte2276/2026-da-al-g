@@ -16,7 +16,13 @@ from sqlalchemy.orm import Session
 from .config import get_settings
 from .db import get_db
 from .models import AuditEvent, AuthSession, User
-from .schemas import AuthLoginRequest, AuthRegisterRequest, AuthResponse, UserOut
+from .schemas import (
+    AuthLoginRequest,
+    AuthRegisterRequest,
+    AuthResponse,
+    PasswordChangeRequest,
+    UserOut,
+)
 
 USERNAME_RE = re.compile(r"^[a-z0-9._-]+$")
 TEST_USERNAME = "test"
@@ -179,6 +185,44 @@ def login(payload: AuthLoginRequest, db: DB) -> AuthResponse:
     if not user:
         raise _unauthorized()
     return _issue_session(db, user)
+
+
+@router.post("/password")
+def change_password(
+    payload: PasswordChangeRequest,
+    token: Annotated[str, Depends(get_bearer_token)],
+    user: CurrentUser,
+    db: DB,
+) -> dict[str, str]:
+    try:
+        valid = password_hash.verify(payload.current_password, user.password_hash)
+    except PwdlibError:
+        valid = False
+    if not valid:
+        raise HTTPException(status_code=400, detail="현재 비밀번호가 올바르지 않습니다.")
+    if payload.new_password == payload.current_password:
+        raise HTTPException(status_code=400, detail="새 비밀번호가 현재 비밀번호와 같습니다.")
+    user.password_hash = password_hash.hash(payload.new_password)
+    # 지금 기기만 남기고 다른 기기의 로그인은 끊는다.
+    db.execute(
+        update(AuthSession)
+        .where(
+            AuthSession.user_id == user.id,
+            AuthSession.token_hash != _token_hash(token),
+            AuthSession.revoked_at.is_(None),
+        )
+        .values(revoked_at=datetime.now(UTC))
+    )
+    db.add(
+        AuditEvent(
+            actor=user.id,
+            action="auth.password_change",
+            entity_type="user",
+            entity_id=user.id,
+        )
+    )
+    db.commit()
+    return {"status": "ok"}
 
 
 @router.get("/me", response_model=UserOut)

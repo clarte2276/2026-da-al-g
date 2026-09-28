@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import logging
 import re
+from collections.abc import Generator, Iterator
 from dataclasses import dataclass
 from typing import Any, ClassVar, Literal
 
@@ -25,6 +26,8 @@ logger = logging.getLogger(__name__)
 MAX_LINKED_EVIDENCE = 3
 
 ChatMode = Literal["general", "rag", "insufficient_evidence"]
+# ("status", 진행 문구) 또는 ("delta", 답변 조각)
+ChatProgress = tuple[Literal["status", "delta"], str]
 
 
 @dataclass(slots=True)
@@ -118,6 +121,38 @@ class ChatService:
         top_k: int = 5,
         max_hops: int = 2,
     ) -> ChatResult:
+        run = self._run(db, message, history, top_k=top_k, max_hops=max_hops, stream=False)
+        try:
+            while True:
+                next(run)
+        except StopIteration as done:
+            return done.value
+
+    def respond_stream(
+        self,
+        db: Session,
+        message: str,
+        history: list[dict[str, str]],
+        *,
+        top_k: int = 5,
+        max_hops: int = 2,
+    ) -> Iterator[ChatProgress | ChatResult]:
+        """진행 상황과 답변 조각을 내보내고, 마지막에 인용을 정리한 ChatResult를 내보낸다."""
+        result = yield from self._run(
+            db, message, history, top_k=top_k, max_hops=max_hops, stream=True
+        )
+        yield result
+
+    def _run(
+        self,
+        db: Session,
+        message: str,
+        history: list[dict[str, str]],
+        *,
+        top_k: int,
+        max_hops: int,
+        stream: bool,
+    ) -> Generator[ChatProgress, None, ChatResult]:
         message = message.strip()
         if self._greeting_re.fullmatch(message):
             return ChatResult("안녕하세요! 무엇을 도와드릴까요?", "general", [])
@@ -145,6 +180,7 @@ class ChatService:
             if not tool_calls:
                 return ChatResult(self._content(assistant) or "무엇을 도와드릴까요?", "general", [])
 
+            yield ("status", "규정을 찾는 중")
             retrieved_evidence: list[Evidence] = []
             tool_messages = [
                 *messages,
@@ -182,14 +218,27 @@ class ChatService:
                     }
                 )
 
+            yield ("status", "답변을 작성하는 중")
             try:
                 final = client.chat.completions.create(
                     model=model,
                     messages=[*tool_messages, {"role": "system", "content": ANSWER_FOCUS_REMINDER}],
                     **answer_options(self.settings, model),
+                    **({"stream": True} if stream else {}),
                 )
+                if stream:
+                    parts: list[str] = []
+                    for chunk in final:
+                        delta = chunk.choices[0].delta.content if chunk.choices else None
+                        if delta:
+                            parts.append(delta)
+                            yield ("delta", delta)
+                    raw = "".join(parts).strip()
+                else:
+                    raw = self._content(self._first_message(final))
+                # 인용 정리는 전체 답변이 필요해 스트리밍 뒤에 한 번 적용한다.
                 answer = fix_citations(
-                    drop_invalid_citations(self._content(self._first_message(final)), len(evidence)),
+                    drop_invalid_citations(raw, len(evidence)),
                     [item.fragment.text or "" for item in evidence],
                 )
             except Exception:
