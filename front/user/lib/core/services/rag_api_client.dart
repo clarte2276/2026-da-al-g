@@ -18,7 +18,10 @@ class RagApiException implements Exception {
 
 class RagApiClient {
   RagApiClient({String? baseUrl, String? token})
-    : baseUrl = (baseUrl ?? defaultApiBaseUrl()).replaceAll(RegExp(r'/+$'), '') {
+    : baseUrl = (baseUrl ?? defaultApiBaseUrl()).replaceAll(
+        RegExp(r'/+$'),
+        '',
+      ) {
     _token = token;
   }
 
@@ -114,6 +117,22 @@ class RagApiClient {
           }),
         )
         .timeout(const Duration(seconds: 90));
+    return ChatResponse.fromJson(_decode(response));
+  }
+
+  Future<ChatResponse> previewSources(String question) async {
+    final response = await http
+        .post(
+          _uri('/api/rag/query'),
+          headers: _headers({'Content-Type': 'application/json'}),
+          body: jsonEncode({
+            'question': question,
+            'top_k': 3,
+            'max_hops': 0,
+            'preview_only': true,
+          }),
+        )
+        .timeout(const Duration(seconds: 5));
     return ChatResponse.fromJson(_decode(response));
   }
 

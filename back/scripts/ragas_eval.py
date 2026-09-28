@@ -8,7 +8,9 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import math
 import re
+import time
 import uuid
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -175,6 +177,110 @@ GENERAL_CASES = [
         "RAG(Retrieval-Augmented Generation, 검색 증강 생성)는 대규모 언어 모델이 답변을 생성할 때 외부 지식 베이스나 문서에서 관련된 정보를 먼저 검색(Retrieval)한 후, 이를 바탕으로 정확하고 신뢰성 높은 답변을 생성(Generation)하는 인공지능 기술입니다.",
     ),
 ]
+
+# Questions the indexed documents do not answer (checked against DocumentContent text on 2026-09-19).
+# Pass = the chat declines instead of guessing.
+OUT_OF_DOC_CASES = [
+    ("fare", "6호선 지하철 기본 운임은 얼마인가요?"),
+    ("hiring_exam", "기관사 채용 시험 과목은 무엇인가요?"),
+    ("aircon_filter", "전동차 에어컨 필터 교체 주기는 어떻게 되나요?"),
+    ("ktx_booking", "KTX 열차 좌석을 예약하는 방법은 무엇인가요?"),
+    ("lost_item", "역에서 분실물을 접수하면 보관 기간은 며칠인가요?"),
+    ("manufacturer", "6호선 전동차의 제작사는 어디인가요?"),
+    ("bicycle", "지하철에 자전거를 휴대하고 탈 수 있는 시간은 언제인가요?"),
+    ("store_contract", "역사 내 편의점 입점 계약 절차는 어떻게 되나요?"),
+    ("psd_ad_revenue", "승강장안전문 광고 수익은 어떻게 배분하나요?"),
+    ("delay_certificate", "열차 지연 시 승객에게 지연증명서를 발급하는 절차는 무엇인가요?"),
+]
+ABSTAIN_RE = re.compile(
+    r"근거를 찾지 못|찾을 수 없|확인할 수 없|확인되지 않|나와 있지 않|포함되어 있지 않|명시되어 있지 않|규정되어 있지 않|(?:규정|기준|내용|절차|근거)[이가은는]? 없"
+)
+
+# docs/production-readiness-criteria.md 2.1–2.3 (automatable items only).
+PILOT_CRITERIA = {
+    "faithfulness_mean": 0.95,
+    "faithfulness_min": 0.80,
+    "context_recall_mean": 0.90,
+    "context_recall_min": 0.67,
+    "context_precision_mean": 0.85,
+    "answer_correctness_mean": 0.75,
+    "general_correctness_mean": 0.90,
+    "abstention_rate": 0.90,
+    "latency_p95_seconds": 20.0,
+    # Automated proxy for the human citation review (criteria 2.1, pilot ≥ 90%).
+    "citation_accuracy": 0.90,
+}
+
+
+CITATION_RE = re.compile(r"((?:\s*\[근거 \d+\])+)")
+CLAIM_STRIP = " \n-*#."
+
+
+def cited_claims(answer: str) -> list[tuple[str, list[int]]]:
+    """Split an answer into (claim text, cited evidence numbers); text after the last marker is uncited."""
+    claims: list[tuple[str, list[int]]] = []
+    position = 0
+    for match in CITATION_RE.finditer(answer):
+        text = answer[position:match.start()].strip(CLAIM_STRIP)
+        if text:
+            claims.append((text, [int(n) for n in re.findall(r"\d+", match.group(1))]))
+        position = match.end()
+    tail = answer[position:].strip(CLAIM_STRIP)
+    if tail:
+        claims.append((tail, []))
+    return claims
+
+
+async def citation_check(client: AsyncOpenAI, model: str, answer: str, evidence_texts: list[str]) -> dict[str, Any]:
+    """Automated proxy for the human citation review: is each claim in the evidence it cites?"""
+    claims = [(text, numbers) for text, numbers in cited_claims(answer) if numbers]
+    uncited = [text for text, numbers in cited_claims(answer) if not numbers]
+    if not claims:
+        return {"claims": 0, "supported": 0, "accuracy": None, "unsupported": [], "uncited": uncited}
+    payload = [
+        {
+            "id": index,
+            "claim": text,
+            "cited_evidence": "\n\n".join(
+                f"[근거 {n}]\n{evidence_texts[n - 1]}" for n in numbers if 1 <= n <= len(evidence_texts)
+            ),
+        }
+        for index, (text, numbers) in enumerate(claims)
+    ]
+    response = await client.chat.completions.create(
+        model=model,
+        response_format={"type": "json_object"},
+        messages=[
+            {"role": "system", "content": (
+                "철도 규정 검토자로서 각 claim의 모든 사실(주체, 조치, 조건, 순서, 수치, 명칭)이 "
+                "cited_evidence에 실제로 있는지 판정하라. 표현이 달라도 의미가 같으면 supported=true, "
+                "하나라도 없거나 다르면 false. {\"results\": [{\"id\": 0, \"supported\": true, "
+                "\"reason\": \"...\"}]} 형식의 JSON으로만 답하라."
+            )},
+            {"role": "user", "content": json.dumps(payload, ensure_ascii=False)},
+        ],
+    )
+    results = json.loads(response.choices[0].message.content or "{}").get("results", [])
+    verdicts = {int(r["id"]): r for r in results if "id" in r}
+    unsupported = [
+        {"claim": claims[i][0], "cited": claims[i][1], "reason": verdicts.get(i, {}).get("reason", "판정 없음")}
+        for i in range(len(claims))
+        if not verdicts.get(i, {}).get("supported")
+    ]
+    supported = len(claims) - len(unsupported)
+    return {
+        "claims": len(claims),
+        "supported": supported,
+        "accuracy": supported / len(claims),
+        "unsupported": unsupported,
+        "uncited": uncited,
+    }
+
+
+def _p95(values: list[float]) -> float:
+    ordered = sorted(values)
+    return ordered[min(len(ordered) - 1, math.ceil(0.95 * len(ordered)) - 1)] if ordered else 0.0
+
 
 REFERENCE_V2: dict[str, dict[str, str]] = {
     "vehicle_failure": {
@@ -542,7 +648,8 @@ async def _run() -> None:
         evaluator_llm.model_args.pop("max_tokens", None)
         evaluator_llm.model_args.pop("top_p", None)
         evaluator_llm.model_args["max_completion_tokens"] = 8192
-        evaluator_llm.model_args["temperature"] = 1
+        evaluator_llm.model_args["reasoning_effort"] = "none"
+        evaluator_llm.model_args["temperature"] = 0
     evaluator_embedding_model = "text-embedding-3-large"
     evaluator_embeddings = embedding_factory(
         provider="openai", model=evaluator_embedding_model, client=client
@@ -603,21 +710,25 @@ async def _run() -> None:
         # Filter cases if --cases is specified
         target_doc_cases = DOCUMENT_CASES
         target_gen_cases = GENERAL_CASES
+        target_ood_cases = OUT_OF_DOC_CASES
 
         if args.cases:
             requested = set(args.cases)
             if "all" in requested:
                 pass
             elif "doc" in requested:
-                target_gen_cases = []
+                target_gen_cases, target_ood_cases = [], []
             elif "general" in requested:
-                target_doc_cases = []
+                target_doc_cases, target_ood_cases = [], []
+            elif "ood" in requested:
+                target_doc_cases, target_gen_cases = [], []
             elif "graph" in requested:
                 target_doc_cases = [c for c in DOCUMENT_CASES if c.graph_required]
-                target_gen_cases = []
+                target_gen_cases, target_ood_cases = [], []
             else:
                 target_doc_cases = [c for c in DOCUMENT_CASES if c.name in requested]
                 target_gen_cases = [c for c in GENERAL_CASES if c.name in requested]
+                target_ood_cases = [c for c in OUT_OF_DOC_CASES if c[0] in requested]
 
         # Load existing checkpoint if resume is requested
         completed_doc_rows: dict[str, dict[str, Any]] = {}
@@ -657,7 +768,9 @@ async def _run() -> None:
                 reference = "\n\n".join(v1_references[number] for number in case.reference_articles)
                 ref_source = f"운전취급규정 {case.reference_articles}조"
 
+            started = time.perf_counter()
             result = chat_service.respond(db, case.question, [])
+            latency = time.perf_counter() - started
             evidence = result.evidence
             contexts = [
                 item.fragment.text or ""
@@ -731,6 +844,14 @@ async def _run() -> None:
                 "chat_link_count": sum(bool(item.link_id) for item in evidence),
                 "chat_hop_count": sum(item.hop > 0 for item in evidence),
                 "evidence_details": evidence_details,
+                "latency_seconds": round(latency, 2),
+                "citation_check": await citation_check(
+                    client,
+                    settings.llm_model,
+                    result.answer,
+                    # The model sees each passage's source name and location too, so the check does.
+                    [f"({item.filename} · {item.location})\n{item.fragment.text or ''}" for item in evidence],
+                ),
                 **scores,
             }
 
@@ -748,6 +869,10 @@ async def _run() -> None:
             document_rows.append(row)
             completed_doc_rows[case.name] = row
 
+            check = row["citation_check"]
+            print(f"       ↳ citations: {check['supported']}/{check['claims']} supported, uncited={len(check['uncited'])}")
+            for bad in check["unsupported"]:
+                print(f"         ✗ {bad['cited']} {bad['claim'][:80]} — {bad['reason'][:100]}")
             print(
                 f"[DONE] {case.name}: mode={result.mode}, contexts={len(contexts)} | "
                 + " | ".join(f"{k}={scores[k]:.4f}" for k in ("faithfulness", "answer_relevancy", "answer_correctness", "context_precision", "context_recall"))
@@ -823,6 +948,24 @@ async def _run() -> None:
             }
             checkpoint_file.write_text(json.dumps(checkpoint_data, ensure_ascii=False, indent=2), encoding="utf-8")
 
+        # Out-of-document questions: no RAGAS, only whether the chat declines instead of guessing.
+        ood_rows: list[dict[str, Any]] = []
+        for name, question in target_ood_cases:
+            started = time.perf_counter()
+            result = chat_service.respond(db, question, [])
+            latency = time.perf_counter() - started
+            abstained = result.mode == "insufficient_evidence" or bool(ABSTAIN_RE.search(result.answer))
+            ood_rows.append({
+                "case": name,
+                "question": question,
+                "response": result.answer,
+                "mode": result.mode,
+                "evidence_count": len(result.evidence),
+                "latency_seconds": round(latency, 2),
+                "abstained": abstained,
+            })
+            print(f"[DONE] ood:{name}: mode={result.mode}, abstained={abstained}, {latency:.1f}s")
+
         # Aggregations
         document_metric_names = (
             "faithfulness",
@@ -853,6 +996,27 @@ async def _run() -> None:
                 key: sum(float(r[key]) for r in graph_doc_rows) / len(graph_doc_rows)
                 for key in document_metric_names
             }
+        minimums = {
+            key: min(float(r[key]) for r in document_rows) for key in document_metric_names
+        } if document_rows else {}
+        latencies = [r["latency_seconds"] for r in document_rows if "latency_seconds" in r]
+        abstention_rate = (sum(r["abstained"] for r in ood_rows) / len(ood_rows)) if ood_rows else None
+        doc_avg = averages.get("document", {})
+        pilot = {
+            "faithfulness_mean": doc_avg.get("faithfulness"),
+            "faithfulness_min": minimums.get("faithfulness"),
+            "context_recall_mean": doc_avg.get("context_recall"),
+            "context_recall_min": minimums.get("context_recall"),
+            "context_precision_mean": doc_avg.get("context_precision"),
+            "answer_correctness_mean": doc_avg.get("answer_correctness"),
+            "general_correctness_mean": None,
+            "abstention_rate": abstention_rate,
+            "latency_p95_seconds": _p95(latencies) if latencies else None,
+            "citation_accuracy": (
+                sum(r["citation_check"]["supported"] for r in document_rows if "citation_check" in r)
+                / max(1, sum(r["citation_check"]["claims"] for r in document_rows if "citation_check" in r))
+            ) if any("citation_check" in r for r in document_rows) else None,
+        }
         if general_rows:
             averages["general"] = {
                 key: sum(float(r[key]) for r in general_rows) / len(general_rows)
@@ -863,6 +1027,15 @@ async def _run() -> None:
                 key: sum(float(r[key]) for r in knowledge_gen_rows) / len(knowledge_gen_rows)
                 for key in general_metric_names
             }
+
+        if "general_knowledge" in averages:
+            pilot["general_correctness_mean"] = averages["general_knowledge"]["answer_correctness"]
+        pilot_checks = {
+            key: None if value is None else (
+                value <= PILOT_CRITERIA[key] if key == "latency_p95_seconds" else value >= PILOT_CRITERIA[key]
+            )
+            for key, value in pilot.items()
+        }
 
         graph_passed = sum(bool(r.get("graph_check", {}).get("passed")) for r in graph_doc_rows)
         greeting_passed = any(r["case"] == "greeting" and r["routing_pass"] for r in general_rows)
@@ -877,7 +1050,14 @@ async def _run() -> None:
             and all(averages["general_knowledge"][m] >= 0.9 for m in general_metric_names)
         )
         all_targets_met = doc_targets_met and gen_targets_met and greeting_passed and (graph_passed == len(graph_doc_rows))
-        evaluation_complete = len(document_rows) == len(DOCUMENT_CASES) and len(general_rows) == len(GENERAL_CASES)
+        evaluation_complete = (
+            len(document_rows) == len(DOCUMENT_CASES)
+            and len(general_rows) == len(GENERAL_CASES)
+            and len(ood_rows) == len(OUT_OF_DOC_CASES)
+        )
+        pilot_met = evaluation_complete and all(pilot_checks.values()) and greeting_passed and (
+            graph_passed == len(graph_doc_rows)
+        )
 
         payload = {
             "run_id": run_id,
@@ -903,6 +1083,9 @@ async def _run() -> None:
                 "passed": greeting_passed,
             },
             "averages": averages,
+            "minimums": minimums,
+            "out_of_doc_cases": ood_rows,
+            "pilot": {"values": pilot, "thresholds": PILOT_CRITERIA, "checks": pilot_checks, "met": pilot_met},
         }
 
         output = Path("runtime/ragas_results.json")
@@ -925,6 +1108,11 @@ async def _run() -> None:
             for m in general_metric_names:
                 status = "PASS" if averages["general_knowledge"][m] >= 0.9 else "FAIL"
                 print(f"  - {m:20s}: {averages['general_knowledge'][m]:.4f} [{status}]")
+        print("Pilot criteria (docs/production-readiness-criteria.md):")
+        for key, value in pilot.items():
+            shown = "n/a" if value is None else f"{value:.4f}"
+            print(f"  - {key:26s}: {shown} (threshold {PILOT_CRITERIA[key]}) [{pilot_checks[key]}]")
+        print(f"Pilot met (automatable items): {pilot_met}")
         print(f"Graph check: {graph_passed}/{len(graph_doc_rows)} passed")
         print(f"Greeting check: {'PASS' if greeting_passed else 'FAIL'}")
         print(f"Targets met: {'YES (COMPLETED)' if all_targets_met else 'NO (INCOMPLETE)'}")

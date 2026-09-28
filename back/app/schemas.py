@@ -169,6 +169,7 @@ class RAGQuery(BaseModel):
     max_hops: int = Field(default=2, ge=0, le=4)
     relation_types: list[RelationType] | None = None
     model: str | None = None
+    preview_only: bool = False
 
 
 class EvidenceOut(BaseModel):

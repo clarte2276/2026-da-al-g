@@ -8,7 +8,14 @@ from app.db import Base
 from app.models import Document, DocumentContent, DocumentVersion, Fragment, KnowledgeEdge
 from app.services.document_content import overlaps, utf16_length
 from app.services.embedding import HashEmbeddingProvider
-from app.services.rag import GraphRAGService, _search_tokens
+from app.services.rag import (
+    Evidence,
+    GraphRAGService,
+    _search_tokens,
+    _slide_sections,
+    answer_options,
+    drop_invalid_citations,
+)
 
 
 def _fragment(version_id: str, stable_key: str, text: str, embedding: list[float]) -> Fragment:
@@ -195,6 +202,25 @@ def test_relevant_target_selections_keep_question_specific_ranges() -> None:
         "제144조 ATC 회송",
     ]
 
+    # A longer rewritten query must not squeeze out a passage that still matches well.
+    long_selection = {
+        **selection,
+        "ranges": [
+            {"start": index, "end": index + 1, "exact": text}
+            for index, text in enumerate((
+                "제34조 운전시각 기록",
+                "제66조 ATC 고장 보고",
+                "제67조 ATC 고장 지령식 운전 45km/h",
+                "제144조 ATC 고장 지령식 회송 승객 하차",
+            ))
+        ],
+    }
+    selected = GraphRAGService._relevant_target_selections(
+        long_selection, _search_tokens("ATC 고장 지령식 회송 승객 하차 운전")
+    )
+    exacts = [part["exact"] for item in selected for part in item["ranges"]]
+    assert "제67조 ATC 고장 지령식 운전 45km/h" in exacts and "제34조 운전시각 기록" not in exacts
+
 
 def test_rag_expands_synthetic_article_edges(tmp_path) -> None:
     engine = create_engine("sqlite:///:memory:")
@@ -249,8 +275,101 @@ def test_location_label_names_page_article_or_heading():
 
     assert _location_label(Fragment(locator_json={"page": 3}, text="본문")) == "페이지 3"
     assert _location_label(Fragment(locator_json={"slide": 2}, text="본문")) == "슬라이드 2"
+    assert _location_label(Fragment(locator_json={"slide": 80, "chunk": 1}, text="표")) == "슬라이드 80 (2부)"
     assert _location_label(Fragment(locator_json={"document": True}, text="제12조(조치)\n내용")) == "제12조"
+    assert _location_label(
+        Fragment(locator_json={"ranges": []}, text="제66조(고장)\n가.\n\n제67조(해제)\n①\n\n제144조(지령식)\n③")
+    ) == "제66조·제67조·제144조"
     assert _location_label(Fragment(locator_json={}, text="운전취급 절차\n내용")) == "「운전취급 절차」 부분"
     assert _location_label(
         Fragment(locator_json={}, text="x"), {"kind": "pages", "pages": [4, 5]}
     ) == "페이지 4-5"
+
+
+def test_last_article_stops_at_appendix(tmp_path) -> None:
+    service = GraphRAGService(
+        Settings(storage_root=tmp_path, embedding_dimensions=64),
+        HashEmbeddingProvider(dimensions=64),
+    )
+    fragment = _fragment("version", "chunk", "제364조(출입금지) 본문\n부 칙\n(시행일) 시행한다.", [0.0] * 64)
+    fragment.kind = "document"
+
+    units = service._article_units([fragment])
+
+    article = next(unit for unit in units if unit.locator_json.get("article") == "제364조")
+    assert article.text == "제364조(출입금지) 본문"
+    assert any("시행한다" in unit.text for unit in units)
+
+
+def test_link_passages_are_shown_once() -> None:
+    content = DocumentContent(version_id="v", kind="text", text="제46조 감시\n제328조 출입문\n제242조 전호")
+    shared = {"start": 0, "end": 7, "exact": "제46조 감시"}
+    evidence = {}
+    for key, score, extra in (("a", 0.9, {"start": 8, "end": 18, "exact": "제328조 출입문"}),
+                              ("b", 0.5, {"start": 19, "end": 28, "exact": "제242조 전호"})):
+        selection = {"kind": "text", "version_id": "v", "ranges": [shared, extra]}
+        evidence[key] = Evidence(fragment=Fragment(id=key, text=""), score=score, hop=1,
+                                 path=[], link_id=key, selection=selection)
+    evidence["c"] = Evidence(fragment=Fragment(id="c", text=""), score=0.4, hop=1, path=[],
+                             link_id="c", selection={"kind": "text", "version_id": "v", "ranges": [shared]})
+
+    GraphRAGService._dedupe_link_passages(evidence, {"v": content})
+
+    assert set(evidence) == {"a", "b"}
+    assert len(evidence["a"].selection["ranges"]) == 2
+    assert evidence["b"].fragment.text == "제242조 전호"
+
+
+def test_invalid_citations_are_dropped() -> None:
+    answer = "보고한다 [근거 2]. 정차한다 [근거 2, 근거 9]. 없음 [근거 7]."
+
+    assert drop_invalid_citations(answer, 5) == "보고한다 [근거 2]. 정차한다 [근거 2]. 없음 ."
+
+
+def test_guide_slides_inherit_their_section_heading() -> None:
+    def slide(number: int, text: str) -> Fragment:
+        return Fragment(id=str(number), version_id="deck", kind="slide", text=text,
+                        locator_json={"slide": number})
+
+    units = [slide(47, "10 ) ATC 장치 고장 시 ̶ 점검사항\n도형"), slide(48, "현 상\n고장메세지"),
+             slide(49, "원 인\n통신고장"), slide(50, "ADU 제어 해설도"), slide(51, "현 상\nADU")]
+
+    assert list(_slide_sections(units).values()) == ["ATC 장치 고장 시"] * 3 + ["", ""]
+
+    # A slide that names its own section keeps it even when its first line is not a heading.
+    tc_slide = slide(37, "전부 AP.CBSU1TC 차단 시\n조 치 사 항\n지령식 45Km/h 이하\n\n"
+                         "5 ) 전부 TC1 및 후부 TC1 • 2 동시 고장 시 ̶ 길라잡이\n101")
+    assert list(_slide_sections([tc_slide]).values()) == ["전부 TC1 및 후부 TC1 • 2 동시 고장 시"]
+
+
+def test_answer_options_stay_deterministic_unless_reasoning_is_configured(tmp_path) -> None:
+    settings = Settings(storage_root=tmp_path, answer_reasoning_effort="none")
+    assert answer_options(settings, "gpt-5.6-luna") == {"reasoning_effort": "none", "temperature": 0}
+
+    settings.answer_reasoning_effort = "low"
+    assert answer_options(settings, "gpt-5.6-luna") == {"reasoning_effort": "low"}
+    assert answer_options(settings, "gpt-4o") == {"temperature": 0}
+
+
+def test_renumbered_citations_point_back_at_their_passage() -> None:
+    from app.services.rag import fix_citations
+
+    passages = [
+        "제305조(열차방호를 하는 경우) ① 선로 고장으로 급히 열차를 정차시킬 때 제1종 방호를 하여야 한다.",
+        "제315조(구원열차를 요구한 경우의 조치) 고장열차는 구원열차 도착할 때까지 이동할 수 없다.",
+        (
+            "제321조(구원열차에 대한 정차열차의 방호) 정거장외에서 정차한 경우 구원열차를 요구하였을 때에는 "
+            "제2종 방호를 하여야 한다. 다만, 구원열차가 오지 않음이 확실한 방향은 이를 생략할 수 있다."
+        ),
+    ]
+    # The model numbered by first use: 제321조 came out as [근거 1].
+    answer = "정거장 외에서 구원열차를 요구하면 제2종 방호를 하여야 합니다. 구원열차가 오지 않음이 확실한 방향은 생략할 수 있습니다. [근거 1]"
+
+    assert fix_citations(answer, passages).endswith("[근거 3]")
+    # Run 20260919_staff_i: a paraphrase that only partly repeats the article (coverage ≈ 0.69).
+    loose = ("정거장 외에서 사고로 정차한 열차가 구원열차를 요구하거나 구원열차 운전 통보를 받으면 제2종 방호를 "
+             "하여야 합니다. 다만, 구원열차가 오지 않음이 확실한 방향은 생략할 수 있습니다. [근거 1]")
+    assert fix_citations(loose, passages).endswith("[근거 3]")
+    # A citation that already points at its passage, or shares a sentence with another, is left alone.
+    assert fix_citations(answer.replace("[근거 1]", "[근거 3]"), passages).endswith("[근거 3]")
+    assert fix_citations(answer.replace("[근거 1]", "[근거 1][근거 3]"), passages).endswith("[근거 1][근거 3]")

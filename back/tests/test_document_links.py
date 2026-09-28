@@ -295,3 +295,14 @@ def test_additive_tables_preserve_legacy_rows():
         assert len(list(db.scalars(select(DocumentLink)))) == 0
     assert {"document_links", "document_contents"} <= set(inspect(engine).get_table_names())
     engine.dispose()
+
+
+def test_long_text_chunks_start_at_a_line() -> None:
+    from app.parsers import ParsedFragment
+    from app.services.ingestion import _chunks
+
+    text = "\n".join(f"{index:03d} 생화학물질 발견시 안내방송" for index in range(200))
+    chunks = _chunks(ParsedFragment(stable_key="canonical", kind="document", ordinal=0, text=text))
+
+    assert len(chunks) > 1
+    assert all(text[chunk.metadata["chunk_start"] - 1] == "\n" for chunk in chunks[1:])

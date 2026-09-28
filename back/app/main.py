@@ -78,6 +78,8 @@ def startup() -> None:
     init_db()
     with SessionLocal() as db:
         ensure_bootstrap_accounts(db)
+        if db.get_bind().dialect.name == "sqlite":
+            rag_service._full_corpus(db)
 
 
 admin_dist = Path(__file__).resolve().parents[2] / "admin-dist"
@@ -823,14 +825,18 @@ def rag_query(
     db: Annotated[Session, Depends(get_db)],
     _user: CurrentUser,
 ) -> RAGResponse:
-    evidence = rag_service.retrieve(
-        db,
-        payload.question,
-        top_k=payload.top_k,
-        max_hops=payload.max_hops,
-        relation_types=payload.relation_types,
+    evidence = (
+        rag_service.retrieve(
+            db,
+            payload.question,
+            top_k=payload.top_k,
+            max_hops=payload.max_hops,
+            relation_types=payload.relation_types,
+        )
+        if not payload.preview_only or chat_service._looks_like_document_question(payload.question)
+        else []
     )
-    answer = rag_service.answer(payload.question, evidence, payload.model)
+    answer = "" if payload.preview_only else rag_service.answer(payload.question, evidence, payload.model)
     return RAGResponse(
         answer=answer,
         evidence=[_evidence_out(item) for item in evidence],

@@ -5,7 +5,7 @@
 - `back/`: FastAPI 문서 파싱·검색·연결 API
 - `front/link-generator/`: React/Vite 문서 연결·검토·검색 화면
 - `front/user/`: 일반 대화와 문서 RAG를 함께 지원하는 Flutter 채팅 앱
-- `data_raw/`: 원천 업무 문서
+- `data/data_raw/`: 원천 업무 문서
 - [현재 문서 선택 방식·API·데이터 전환·검증 안내](docs/document-link-workflow.md)
 - [Railway 배포·인증·데이터 이전 안내](docs/railway-deployment.md)
 
@@ -51,15 +51,30 @@ flutter pub get
 flutter run
 ```
 
-채팅 앱은 `POST /api/chat`을 사용하며, 일반 대화는 문서 검색 없이 답하고 문서 질문만 기존 Graph RAG로 처리합니다. API 주소는 `--dart-define=API_BASE_URL=http://호스트:8000`으로 바꿀 수 있습니다.
+채팅 앱은 기본적으로 Railway의 `POST /api/chat`을 사용하며, 일반 대화는 문서 검색 없이 답하고 문서 질문만 Graph RAG로 처리합니다. 개발 환경에서만 `--dart-define=API_BASE_URL=http://호스트:8000`으로 API 주소를 바꿀 수 있습니다.
 
 OpenAI 키가 없으면 로컬 해시 임베딩과 근거 발췌로 동작합니다. 키를 설정하면 OpenAI 임베딩과 답변 생성을 사용합니다. PDF/PPTX 페이지 선택은 텍스트 추출 여부와 무관하게 가능하지만 OCR·이미지 내용 분석은 포함하지 않습니다.
 
-사용자 앱은 일반 로그인·회원가입을 지원하며 개발 테스트 계정은 `test/test`입니다. Railway 배포 시 백엔드의 HTTPS 주소를 `API_BASE_URL`로 넣어 앱을 빌드합니다. 자세한 배포 절차는 [Railway 배포 안내](docs/railway-deployment.md)를 참고하세요.
+사용자 앱은 일반 로그인·회원가입을 지원하며 개발 테스트 계정은 `test/test`입니다. 모든 플랫폼의 기본 API 주소는 Railway HTTPS 서버입니다. 자세한 배포 절차는 [Railway 배포 안내](docs/railway-deployment.md)를 참고하세요.
 
 ## 데이터
 
 기본 DB는 SQLite이며 PostgreSQL + pgvector도 지원합니다. 새 연결용 테이블은 API 시작 시 추가 생성합니다. 기존 DB와 fragment 기반 링크는 보존하며 화면에서 이전 방식 연결로 구분합니다. 새 ingestion은 버전별 원본 복사본도 보존합니다.
+
+### 새 환경에서 문서 검색 준비
+
+`data/data_raw/`에 원본 파일을 복사하는 것만으로는 검색 인덱스가 만들어지지 않습니다. 백엔드는 시작할 때 DB 테이블만 만들고, 문서를 자동으로 일괄 ingestion하지 않습니다.
+
+`data/data_graph/daalgi.db`를 함께 이전하지 않은 새 컴퓨터에서는 다음 순서로 처리합니다.
+
+1. `back/.env`에 `DATABASE_URL=sqlite:///../data/data_graph/daalgi.db`, `STORAGE_ROOT=./runtime/storage`, `LOCAL_DOCUMENT_ROOTS=../data/data_raw`를 설정합니다.
+2. `back` 디렉터리에서 백엔드를 재시작합니다.
+3. 관리자 계정으로 `front/link-generator`에 로그인한 뒤 문서를 열어 ingestion합니다. 문서를 열면 파싱, `fragments` 생성, 벡터 임베딩 저장이 수행됩니다.
+4. `/api/documents`에서 `status=completed`, `fragment_count > 0`을 확인하고, `/api/chat` 응답의 `mode=rag`와 `evidence`가 비어 있지 않은지 확인합니다.
+
+기존 DB와 동일한 임베딩 provider·model·dimension을 그대로 이전하면 재임베딩하지 않아도 되지만, DB의 문서 경로가 이전 컴퓨터의 절대경로를 가리킬 수 있습니다. 새 환경에서는 원본 문서를 다시 ingestion하는 것이 안전합니다. `EMBEDDING_PROVIDER`, `EMBEDDING_MODEL`, `EMBEDDING_DIMENSIONS`를 바꾸면 기존 벡터와 새 질의 벡터가 호환되지 않을 수 있으므로 모든 문서를 다시 ingestion해야 합니다.
+
+`data/data_pdf/`는 기본 문서 루트가 아니며, 이미지 전용 문서는 OCR을 제공하지 않아 텍스트 fragment와 검색 임베딩이 생성되지 않을 수 있습니다.
 
 기존 PostgreSQL DB의 사전 마이그레이션 파일은 `back/migrations/`에 있습니다. 새 구절·페이지 연결용 파일은 `003_document_links.sql`입니다.
 

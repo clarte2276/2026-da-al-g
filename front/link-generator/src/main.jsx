@@ -5,7 +5,7 @@ import { PageThumbnail, SelectionViewer } from "./selection-viewer";
 import "./styles.css";
 import "./workspace.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? "" : "http://localhost:8000");
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://2026-da-al-g-production.up.railway.app";
 const TOKEN_KEY = "daalgi_admin_token";
 let authToken = "";
 

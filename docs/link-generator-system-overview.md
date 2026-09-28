@@ -262,7 +262,7 @@ PPTX는 이미지와 복잡한 도형이 많기 때문에 브라우저에서 PPT
 
 ## 10. 실행 환경과 주요 설정
 
-백엔드 기본 DB는 `sqlite:///./runtime/daalgi.db`이며, 운영에서는 PostgreSQL + pgvector를 사용할 수 있다. 주요 설정은 `backend/.env`에서 관리한다.
+백엔드 기본 DB는 `sqlite:///../data/data_graph/daalgi.db`이며, 운영에서는 PostgreSQL + pgvector를 사용할 수 있다. 주요 설정은 `back/.env`에서 관리한다.
 
 | 설정 | 의미 |
 | --- | --- |

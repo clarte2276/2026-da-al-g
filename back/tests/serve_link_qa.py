@@ -45,7 +45,7 @@ def main():
         slide = presentation.slides.add_slide(presentation.slide_layouts[6])
         slide.shapes.add_textbox(Inches(1), Inches(1), Inches(5), Inches(1)).text = f"Sample slide {number}"
     presentation.save(documents / "03-slides.pptx")
-    raw = Path(__file__).resolve().parents[2] / "data_raw"
+    raw = Path(__file__).resolve().parents[2] / "data" / "data_raw"
     hwpx = next(raw.rglob("*.hwpx"), None)
     hwp = next(raw.rglob("*.hwp"), None)
     for path in (hwpx, hwp):

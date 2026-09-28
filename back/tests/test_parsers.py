@@ -6,11 +6,11 @@ from pypdf import PdfWriter
 from app.parsers import ParserError, get_parser
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-RAW_ROOT = PROJECT_ROOT / "data_raw"
+RAW_ROOT = PROJECT_ROOT / "data" / "data_raw"
 
 
 def test_pptx_parser_preserves_text_tables_and_images() -> None:
-    path = RAW_ROOT / "길라잡이" / "6호선 전동차고장조치 길라잡이-1.pptx"
+    path = next((RAW_ROOT / "길라잡이").rglob("6호선 전동차고장조치 길라잡이-1.pptx"))
 
     parsed = get_parser(path).parse(path)
 

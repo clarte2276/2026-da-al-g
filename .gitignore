@@ -21,6 +21,21 @@ node_modules/
 dist/
 
 # Local-only data and tool state
-data_raw/
+data/data_raw/
 .omo/
-data_pdf/
+data/data_pdf/
+data/data_graph/
+
+# Transferable document artifacts; keep DBs, test output, and secrets local.
+!back/runtime/
+back/runtime/*
+!back/runtime/storage/
+back/runtime/storage/*
+!back/runtime/storage/assets/
+!back/runtime/storage/assets/**
+!back/runtime/storage/converted-pdf/
+!back/runtime/storage/converted-pdf/**
+!back/runtime/storage/originals/
+!back/runtime/storage/originals/**
+!back/runtime/storage/page-images/
+!back/runtime/storage/page-images/**

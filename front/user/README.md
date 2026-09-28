@@ -10,19 +10,19 @@ flutter pub get
 flutter run
 ```
 
-기본 API 주소는 웹·Windows·macOS에서 `http://localhost:8000`, Android 에뮬레이터에서 `http://10.0.2.2:8000`입니다. 다른 주소를 사용하려면 다음처럼 실행합니다.
+기본 API 주소는 모든 플랫폼에서 `https://2026-da-al-g-production.up.railway.app`입니다. 개발 환경에서만 다른 서버를 사용하려면 다음처럼 실행합니다.
 
 ```powershell
-flutter run --dart-define=API_BASE_URL=http://192.168.0.10:8000
+flutter run --dart-define=API_BASE_URL=http://localhost:8000
 ```
 
-Railway에 배포한 뒤에는 다음처럼 빌드합니다.
+Railway API를 사용하는 APK는 다음처럼 빌드합니다.
 
 ```powershell
-flutter build apk --release --dart-define=API_BASE_URL=https://<railway-domain>
+flutter build apk --release
 ```
 
-먼저 백엔드를 실행해야 합니다.
+로컬 백엔드 개발이 필요할 때만 백엔드를 실행합니다.
 
 ```powershell
 cd back

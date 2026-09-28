@@ -73,7 +73,8 @@ class AuthSession {
   factory AuthSession.fromJson(Map<String, dynamic> json) {
     return AuthSession(
       accessToken: json['access_token']?.toString() ?? '',
-      expiresAt: DateTime.tryParse(json['expires_at']?.toString() ?? '') ??
+      expiresAt:
+          DateTime.tryParse(json['expires_at']?.toString() ?? '') ??
           DateTime.now().toUtc(),
       user: AuthUser.fromJson(
         Map<String, dynamic>.from(json['user'] as Map? ?? const {}),
@@ -145,10 +146,10 @@ class RagEvidence {
     return hop == 0 ? '직접 검색 근거' : '그래프 $hop hop 연결 근거';
   }
 
-  bool get hasSource => documentId != null && (page != null || text.trim().isNotEmpty);
+  bool get hasSource =>
+      documentId != null && (page != null || text.trim().isNotEmpty);
 
-  String get originLabel =>
-      hop == 0 ? '직접 검색 근거' : '그래프 $hop hop 연결 근거';
+  String get originLabel => hop == 0 ? '직접 검색 근거' : '그래프 $hop hop 연결 근거';
 }
 
 class ChatMessage {
@@ -157,10 +158,12 @@ class ChatMessage {
     required this.isUser,
     this.response,
     this.isError = false,
+    this.isPreview = false,
   });
 
   final String text;
   final bool isUser;
   final ChatResponse? response;
   final bool isError;
+  final bool isPreview;
 }

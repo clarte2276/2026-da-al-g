@@ -113,7 +113,7 @@ class _ChatPageState extends State<ChatPage> {
     if (question.isEmpty) return;
 
     final history = _messages
-        .where((item) => !item.isError)
+        .where((item) => !item.isError && !item.isPreview)
         .toList()
         .reversed
         .take(8)
@@ -134,17 +134,53 @@ class _ChatPageState extends State<ChatPage> {
     });
     _scrollToEnd();
 
+    var completed = false;
+    int? previewIndex;
+    final answerFuture = _api.ask(question, history: history);
+    unawaited(() async {
+      try {
+        final preview = await _api.previewSources(question);
+        if (!mounted || completed || preview.evidence.isEmpty) return;
+        final first = preview.evidence.first;
+        setState(() {
+          previewIndex = _messages.length;
+          _messages.add(
+            ChatMessage(
+              isUser: false,
+              isPreview: true,
+              text: first.text.trim().isEmpty
+                  ? '관련 원문 후보를 찾았습니다.'
+                  : '${first.sourceLabel} · ${first.locationLabel}\n\n${first.text}',
+              response: preview,
+            ),
+          );
+        });
+        _scrollToEnd();
+      } catch (_) {
+        // The full answer still arrives if preview search fails or times out.
+      }
+    }());
+
     try {
-      final response = await _api.ask(question, history: history);
+      final response = await answerFuture;
+      completed = true;
       if (!mounted) return;
       setState(() {
-        _messages.add(
-          ChatMessage(isUser: false, text: response.answer, response: response),
+        final message = ChatMessage(
+          isUser: false,
+          text: response.answer,
+          response: response,
         );
+        if (previewIndex != null) {
+          _messages[previewIndex!] = message;
+        } else {
+          _messages.add(message);
+        }
         _embeddingProvider = response.embeddingProvider;
         _loading = false;
       });
     } catch (error) {
+      completed = true;
       if (!mounted) return;
       if (error is RagApiException && error.statusCode == 401) {
         widget.onSessionExpired?.call();
@@ -152,13 +188,12 @@ class _ChatPageState extends State<ChatPage> {
       }
       final message = _errorMessage(error);
       setState(() {
-        _messages.add(
-          ChatMessage(
-            isUser: false,
-            isError: true,
-            text: '채팅 API에 연결하지 못했습니다.\n$message',
-          ),
+        final errorMessage = ChatMessage(
+          isUser: false,
+          isError: true,
+          text: '채팅 API에 연결하지 못했습니다.\n$message',
         );
+        _messages.add(errorMessage);
         _loading = false;
         _connectionError = message;
       });

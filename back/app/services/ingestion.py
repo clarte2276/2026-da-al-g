@@ -76,6 +76,10 @@ def _chunks(fragment: ParsedFragment, max_chars: int = 1800, overlap: int = 220)
         if end >= len(text):
             break
         start = max(end - overlap, start + 1)
+        # Begin the overlap at a line start so a chunk never opens mid-word.
+        line_start = text.find("\n", start, end)
+        if line_start != -1:
+            start = line_start + 1
         chunk_number += 1
     return results
 

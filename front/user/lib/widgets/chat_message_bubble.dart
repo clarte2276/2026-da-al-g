@@ -63,13 +63,19 @@ class ChatMessageBubble extends StatelessWidget {
                     Icon(
                       message.isError
                           ? Icons.error_outline_rounded
+                          : message.isPreview
+                          ? Icons.source_rounded
                           : Icons.auto_awesome_rounded,
                       size: 16,
                       color: message.isError ? textColor : colorScheme.primary,
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      message.isError ? '오류' : 'Da-Al-G AI',
+                      message.isError
+                          ? '오류'
+                          : message.isPreview
+                          ? '관련 원문 후보'
+                          : 'Da-Al-G AI',
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
@@ -84,7 +90,11 @@ class ChatMessageBubble extends StatelessWidget {
               style: TextStyle(color: textColor, height: 1.5, fontSize: 15),
             ),
             if (message.response != null)
-              EvidenceList(response: message.response!, api: api),
+              EvidenceList(
+                response: message.response!,
+                api: api,
+                preview: message.isPreview,
+              ),
           ],
         ),
       ),

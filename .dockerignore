@@ -9,6 +9,8 @@
 **/build
 **/node_modules
 front/link-generator/dist
-data_raw
+data/data_raw
+data/data_pdf
+data/data_graph
 back/runtime
 back/.venv

@@ -5,10 +5,16 @@ import '../core/services/rag_api_client.dart';
 import 'source_page_view.dart';
 
 class EvidenceList extends StatelessWidget {
-  const EvidenceList({required this.response, this.api, super.key});
+  const EvidenceList({
+    required this.response,
+    this.api,
+    this.preview = false,
+    super.key,
+  });
 
   final ChatResponse response;
   final RagApiClient? api;
+  final bool preview;
 
   @override
   Widget build(BuildContext context) {
@@ -34,27 +40,42 @@ class EvidenceList extends StatelessWidget {
             _MetaChip(Icons.memory_rounded, response.embeddingProvider),
           ],
         ),
+        if (response.mode == 'rag')
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Text(
+              preview
+                  ? '먼저 찾은 원문 후보입니다. 완성 답변의 근거와 다를 수 있으므로 업무 적용 전 원문을 확인하십시오.'
+                  : '답변은 참고용입니다. 업무 적용 전 아래 근거의 규정 원문을 반드시 확인하십시오.',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ),
         if (response.evidence.isNotEmpty) ...[
           const SizedBox(height: 4),
           Theme(
             data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-            child: ExpansionTile(
-              tilePadding: EdgeInsets.zero,
-              childrenPadding: EdgeInsets.zero,
-              leading: Icon(Icons.source_rounded, color: colorScheme.primary),
-              title: const Text('검색 근거 보기'),
-              subtitle: const Text('답변에 사용된 문서 조각'),
-              children: response.evidence
-                  .asMap()
-                  .entries
-                  .map(
-                    (entry) => EvidenceCard(
-                      number: entry.key + 1,
-                      evidence: entry.value,
-                      api: api,
-                    ),
-                  )
-                  .toList(),
+            child: Material(
+              type: MaterialType.transparency,
+              child: ExpansionTile(
+                tilePadding: EdgeInsets.zero,
+                childrenPadding: EdgeInsets.zero,
+                leading: Icon(Icons.source_rounded, color: colorScheme.primary),
+                title: Text(preview ? '원문 후보 보기' : '검색 근거 보기'),
+                subtitle: Text(preview ? '완성 답변을 준비하는 중' : '답변에 사용된 문서 조각'),
+                children: response.evidence
+                    .asMap()
+                    .entries
+                    .map(
+                      (entry) => EvidenceCard(
+                        number: entry.key + 1,
+                        evidence: entry.value,
+                        api: api,
+                      ),
+                    )
+                    .toList(),
+              ),
             ),
           ),
         ],
