@@ -28,11 +28,10 @@ class Settings(BaseSettings):
     local_document_roots: str = ""
     local_scan_limit: int = 10_000
     enable_registration: bool = False
-    enable_test_account: bool = True
+    enable_test_account: bool = False
     auth_session_hours: int = 24
-    # ponytail: admin/admin until the admin site issues real accounts; override in production.
-    bootstrap_admin_username: str | None = "admin"
-    bootstrap_admin_password: str | None = "admin"
+    bootstrap_admin_username: str | None = None
+    bootstrap_admin_password: str | None = None
     bootstrap_admin_display_name: str = "관리자"
     cors_origins: str = "*"
 
@@ -41,6 +40,8 @@ class Settings(BaseSettings):
 
     def prepare_directories(self) -> None:
         self.storage_root.mkdir(parents=True, exist_ok=True)
+        for root in self.document_roots():
+            root.mkdir(parents=True, exist_ok=True)
         if self.database_url.startswith("sqlite:///"):
             database_path = Path(self.database_url.removeprefix("sqlite:///"))
             if database_path.name != ":memory:":

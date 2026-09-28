@@ -448,6 +448,13 @@ class PdfConversionService:
             loaded.get_pixmap(matrix=pymupdf.Matrix(zoom, zoom)).save(str(output))
         return output
 
+    def page_count(self, source: Path, cache_key: str) -> int:
+        pdf_path, _ = self.convert(source, cache_key)
+        import pymupdf
+
+        with pymupdf.open(str(pdf_path)) as document:
+            return document.page_count
+
     def find_page(self, source: Path, cache_key: str, quote: str) -> int | None:
         """Locate the page of the PDF rendition that holds a retrieved passage."""
         needle = "".join(quote.split())[:60]

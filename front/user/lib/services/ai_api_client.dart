@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'auth_session.dart';
 
@@ -17,7 +18,7 @@ class AiApiClient {
 
   static String get defaultBaseUrl => _configuredBaseUrl.trim().isNotEmpty
       ? _configuredBaseUrl.trim()
-      : 'https://2026-da-al-g-production.up.railway.app';
+      : (kIsWeb ? Uri.base.origin : 'https://2026-da-al-g-production.up.railway.app');
 
   final http.Client _httpClient;
   final bool _ownsClient;
@@ -124,6 +125,38 @@ class AiApiClient {
     return AuthUser.fromJson(decoded as Map<String, dynamic>);
   }
 
+  Future<void> importLocal(List<Map<String, dynamic>> conversations, List<Map<String, dynamic>> bookmarks) async {
+    await _send('POST', '/api/me/import', body: {'conversations': conversations, 'bookmarks': bookmarks});
+  }
+
+  Future<List<Map<String, dynamic>>> fetchConversations() async =>
+      (await _send('GET', '/api/me/conversations') as List).cast<Map<String, dynamic>>();
+
+  Future<void> saveConversation(Map<String, dynamic> conversation) async {
+    await _send('PUT', '/api/me/conversations/${Uri.encodeComponent(conversation['id'] as String)}', body: conversation);
+  }
+
+  Future<void> deleteConversation(String id) async {
+    await _send('DELETE', '/api/me/conversations/${Uri.encodeComponent(id)}');
+  }
+
+  Future<List<Map<String, dynamic>>> fetchBookmarks() async =>
+      (await _send('GET', '/api/me/bookmarks') as List).cast<Map<String, dynamic>>();
+
+  Future<void> saveBookmark(Map<String, dynamic> bookmark) async {
+    await _send('POST', '/api/me/bookmarks', body: bookmark);
+  }
+
+  Future<void> deleteBookmark(Map<String, dynamic> bookmark) async {
+    await _send('DELETE', '/api/me/bookmarks', body: bookmark);
+  }
+
+  Future<Map<String, dynamic>> fetchDutyMonth(String month) async =>
+      (await _send('GET', '/api/duty/$month')) as Map<String, dynamic>;
+
+  Future<List<String>> fetchDutyMonths() async =>
+      (await _send('GET', '/api/duty') as List).cast<String>();
+
   /// 규정 목록 = 서버에 적재된 문서 목록.
   Future<List<Map<String, dynamic>>> fetchRegulations() async {
     final decoded = await _send('GET', '/api/documents');
@@ -133,7 +166,8 @@ class AiApiClient {
       return {
         'id': doc['id'],
         'title': dot > 0 ? filename.substring(0, dot) : filename,
-        'category': dot > 0 ? filename.substring(dot + 1).toUpperCase() : '문서',
+        // 문서 루트 기준 폴더(예: 규정/관제업무/관제업무내규). 없으면 최상위.
+        'folder': doc['folder'] as String? ?? '',
       };
     }).toList();
   }
@@ -145,7 +179,7 @@ class AiApiClient {
         .whereType<Map<String, dynamic>>()
         .map((f) => (f['text'] as String? ?? '').trim())
         .where((t) => t.isNotEmpty);
-    return {'content': texts.join('\n\n'), 'annexes': const []};
+    return {'content': texts.join('\n\n')};
   }
 
   /// 원문 페이지 PNG. 첫 변환 중(202)이면 준비될 때까지 다시 요청한다.
@@ -158,11 +192,25 @@ class AiApiClient {
   }) async {
     final uri = Uri.parse('$baseUrl/api/documents/$documentId/page.png').replace(
       queryParameters: {
-        if (versionId != null) 'version_id': versionId,
+        'version_id': ?versionId,
         if (page != null) 'page': '$page',
         if (page == null && quote != null) 'quote': quote,
       },
     );
+    return (await _getWhenConverted(uri)).bodyBytes;
+  }
+
+  /// 원문 PDF 렌더의 쪽수. 첫 변환 중이면 끝날 때까지 기다린다.
+  Future<int> fetchPageCount(String documentId) async {
+    final response = await _getWhenConverted(
+      Uri.parse('$baseUrl/api/documents/$documentId/pages'),
+    );
+    final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+    return (decoded['page_count'] as num).toInt();
+  }
+
+  /// 서버가 원문을 변환하는 동안(202) 다시 요청한다. 한 번에 최대 10초씩 기다리므로 약 2분까지.
+  Future<http.Response> _getWhenConverted(Uri uri) async {
     final bearer = AuthSession.current?.accessToken;
     for (var attempt = 0; attempt < 12; attempt++) {
       final response = await _httpClient
@@ -178,7 +226,7 @@ class AiApiClient {
           statusCode: response.statusCode,
         );
       }
-      return response.bodyBytes;
+      return response;
     }
     throw const AiApiException('원문 변환이 아직 끝나지 않았습니다.');
   }

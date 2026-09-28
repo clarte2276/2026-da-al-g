@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
+import '../services/ai_api_client.dart';
+import '../services/auth_session.dart';
 
 /// 근무 유형. 엑셀 코드(비/휴/대/지정/숫자)를 파서가 분류한 결과와 1:1.
 enum DutyType { day, night, off, rest, standby, designated, unknown }
@@ -174,19 +176,38 @@ class DutyRepository {
   DutyRepository._();
   static final DutyRepository instance = DutyRepository._();
 
-  DutyMonth? _cache;
-  Future<DutyMonth>? _loading;
+  final Map<String, DutyMonth> _cache = {};
+  final Map<String, Future<DutyMonth>> _loading = {};
 
-  Future<DutyMonth> load() {
-    if (_cache != null) return Future.value(_cache);
-    return _loading ??= _read();
+  Future<List<String>> availableMonths() async {
+    if (AuthSession.current == null) return ['2026-06'];
+    final client = AiApiClient();
+    try {
+      return await client.fetchDutyMonths();
+    } finally {
+      client.close();
+    }
   }
 
-  Future<DutyMonth> _read() async {
-    final raw = await rootBundle.loadString('assets/data/duty_2026_06.json');
-    final json = jsonDecode(raw) as Map<String, dynamic>;
-    final parsed = DutyMonth.fromJson(json);
-    _cache = parsed;
-    return parsed;
+  Future<DutyMonth> load([String? month]) {
+    final now = DateTime.now();
+    final key = month ?? '${now.year}-${now.month.toString().padLeft(2, '0')}';
+    if (_cache.containsKey(key)) return Future.value(_cache[key]);
+    return _loading.putIfAbsent(key, () => _read(key));
+  }
+
+  Future<DutyMonth> _read(String month) async {
+    if (AuthSession.current == null) {
+      final raw = await rootBundle.loadString('assets/data/duty_2026_06.json');
+      return _cache[month] = DutyMonth.fromJson(jsonDecode(raw) as Map<String, dynamic>);
+    }
+    final client = AiApiClient();
+    try {
+      final json = await client.fetchDutyMonth(month);
+      return _cache[month] = DutyMonth.fromJson(json);
+    } finally {
+      _loading.remove(month);
+      client.close();
+    }
   }
 }

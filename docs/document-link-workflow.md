@@ -61,7 +61,7 @@ cd back
 uv sync --extra hwp --extra dev
 uv run pytest
 uv run ruff check app tests
-cd ../front/link-generator
+cd ../front/admin
 npm.cmd run build
 ```
 
@@ -72,4 +72,4 @@ uv --directory back run --extra dev python tests/serve_link_qa.py
 uv --directory back run --extra dev python tests/serve_link_qa.py --ui
 ```
 
-`http://127.0.0.1:15173`에서 직접 확인하거나, Playwright가 설치된 환경에서 `node front/link-generator/tests/link-workflow.cjs`를 실행한다. Playwright가 다른 경로에 있으면 `PLAYWRIGHT_PACKAGE`에 패키지 절대 경로를 지정한다. 스크린샷은 `back/runtime/link-qa/`에 저장된다. 검증 후 두 테스트 서버를 종료한다.
+`http://127.0.0.1:15173`에서 직접 확인하거나, Playwright가 설치된 환경에서 `node front/admin/tests/link-workflow.cjs`를 실행한다. Playwright가 다른 경로에 있으면 `PLAYWRIGHT_PACKAGE`에 패키지 절대 경로를 지정한다. 스크린샷은 `back/runtime/link-qa/`에 저장된다. 검증 후 두 테스트 서버를 종료한다.

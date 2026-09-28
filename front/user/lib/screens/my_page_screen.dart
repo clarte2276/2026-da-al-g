@@ -9,6 +9,23 @@ class MyPageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.canvas,
+      appBar: AppBar(title: const Text('마이페이지')),
+      body: const SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        child: MyPageSections(),
+      ),
+    );
+  }
+}
+
+/// 프로필·정보·계정 묶음. 마이페이지와 설정 탭이 함께 쓴다.
+class MyPageSections extends StatelessWidget {
+  const MyPageSections({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     final user = AuthSession.current?.user;
     final name = user?.name.isNotEmpty == true ? user!.name : '홍길동';
     final line = user?.line.isNotEmpty == true ? user!.line : '6호선';
@@ -17,112 +34,101 @@ class MyPageScreen extends StatelessWidget {
         : '20240001';
     final initial = name.isNotEmpty ? name.substring(0, 1) : '홍';
 
-    return Scaffold(
-      backgroundColor: AppColors.canvas,
-      appBar: AppBar(title: const Text('마이페이지')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        child: Column(
-          children: [
-            // Profile card
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: AppColors.dutyCardBg,
-                borderRadius: BorderRadius.circular(18),
+    return Column(
+      children: [
+        // Profile card
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: AppColors.dutyCardBg,
+            borderRadius: BorderRadius.circular(18),
+          ),
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 30,
+                backgroundColor: AppColors.line6Gold.withValues(alpha: 0.2),
+                child: Text(
+                  initial,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.line6Gold,
+                  ),
+                ),
               ),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: AppColors.line6Gold.withValues(alpha: 0.2),
-                    child: Text(
-                      initial,
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
                       style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.line6Gold,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          name,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w800,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          '서울메트로 $line',
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: AppColors.dutyMeta,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          '사번 $employeeId',
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: AppColors.ghostText,
-                          ),
-                        ),
-                      ],
+                    const SizedBox(height: 4),
+                    Text(
+                      '서울메트로 $line',
+                      style: TextStyle(fontSize: 13, color: AppColors.dutyMeta),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 2),
+                    Text(
+                      '사번 $employeeId',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: AppColors.ghostText,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
+            ],
+          ),
+        ),
+        const SizedBox(height: 20),
 
-            _MenuSection(
-              title: '정보',
-              items: [
-                _MenuItem(
-                  icon: Icons.train_rounded,
-                  label: '소속 노선',
-                  trailing: line,
-                ),
-                const _MenuItem(
-                  icon: Icons.info_outline_rounded,
-                  label: '앱 버전',
-                  trailing: 'v0.1.0',
-                ),
-              ],
+        _MenuSection(
+          title: '정보',
+          items: [
+            _MenuItem(
+              icon: Icons.train_rounded,
+              label: '소속 노선',
+              trailing: line,
             ),
-            const SizedBox(height: 12),
-
-            _MenuSection(
-              title: '계정',
-              items: [
-                _MenuItem(
-                  icon: Icons.lock_outline_rounded,
-                  label: '비밀번호 변경',
-                  onTap: () => showDialog<void>(
-                    context: context,
-                    builder: (_) => const _PasswordDialog(),
-                  ),
-                ),
-                _MenuItem(
-                  icon: Icons.logout_rounded,
-                  label: '로그아웃',
-                  labelColor: AppColors.evidence,
-                  onTap: () => _confirmLogout(context),
-                ),
-              ],
+            const _MenuItem(
+              icon: Icons.info_outline_rounded,
+              label: '앱 버전',
+              trailing: 'v0.1.0',
             ),
-            const SizedBox(height: 32),
           ],
         ),
-      ),
+        const SizedBox(height: 12),
+
+        _MenuSection(
+          title: '계정',
+          items: [
+            _MenuItem(
+              icon: Icons.lock_outline_rounded,
+              label: '비밀번호 변경',
+              onTap: () => showDialog<void>(
+                context: context,
+                builder: (_) => const _PasswordDialog(),
+              ),
+            ),
+            _MenuItem(
+              icon: Icons.logout_rounded,
+              label: '로그아웃',
+              labelColor: AppColors.evidence,
+              onTap: () => _confirmLogout(context),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -306,7 +312,9 @@ class _PasswordDialogState extends State<_PasswordDialog> {
       );
     } on AiApiException catch (e) {
       // 400은 서버가 사용자용 문구를 보낸다(현재 비밀번호 불일치 등).
-      setState(() => _error = e.statusCode == 400 ? e.message : '비밀번호를 바꾸지 못했습니다.');
+      setState(
+        () => _error = e.statusCode == 400 ? e.message : '비밀번호를 바꾸지 못했습니다.',
+      );
     } catch (_) {
       setState(() => _error = '서버에 연결하지 못했습니다.');
     } finally {
@@ -334,7 +342,10 @@ class _PasswordDialogState extends State<_PasswordDialog> {
             _field(_confirm, '새 비밀번호 확인'),
             if (_error != null) ...[
               const SizedBox(height: 12),
-              Text(_error!, style: TextStyle(color: Colors.red.shade400, fontSize: 13)),
+              Text(
+                _error!,
+                style: TextStyle(color: Colors.red.shade400, fontSize: 13),
+              ),
             ],
           ],
         ),

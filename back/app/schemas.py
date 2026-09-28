@@ -24,6 +24,8 @@ class DocumentOut(BaseModel):
     sha256: str
     status: str
     created_at: datetime
+    # 문서 루트 기준 폴더 경로(예: "규정/관제업무/관제업무내규"). 목록 조회에서만 채운다.
+    folder: str | None = None
 
 
 class VersionOut(BaseModel):
@@ -56,6 +58,17 @@ class LocalFileOut(BaseModel):
 class LocalOpenRequest(BaseModel):
     root_id: str
     relative_path: str
+
+
+class LocalFolderRequest(BaseModel):
+    root_id: str
+    relative_path: str
+
+
+class LocalMoveRequest(BaseModel):
+    root_id: str
+    source_path: str
+    destination_path: str
 
 
 class LocalOpenOut(BaseModel):

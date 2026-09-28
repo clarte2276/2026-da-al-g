@@ -3,7 +3,7 @@
 철도 업무 문서에서 사람이 선택한 **구절 또는 페이지 묶음**을 연결하고, 승인된 관계를 Graph RAG 검색에 활용하는 초기 구현입니다.
 
 - `back/`: FastAPI 문서 파싱·검색·연결 API
-- `front/link-generator/`: React/Vite 문서 연결·검토·검색 화면
+- `front/admin/`: React/Vite 관리자 사이트. 사용자 앱 관리와 RAG 링크 관리 모듈
 - `front/user/`: 일반 대화와 문서 RAG를 함께 지원하는 Flutter 채팅 앱
 - `data/data_raw/`: 원천 업무 문서
 - [현재 문서 선택 방식·API·데이터 전환·검증 안내](docs/document-link-workflow.md)
@@ -36,12 +36,12 @@ uv run uvicorn app.main:app --reload --port 8000
 프론트엔드 (별도 터미널):
 
 ```powershell
-cd front/link-generator
+cd front/admin
 npm.cmd install
 npm.cmd run dev
 ```
 
-백엔드 주소가 다르면 `front/link-generator/.env`의 `VITE_API_BASE_URL`을 설정합니다. 파일 탐색기는 백엔드 PC의 `LOCAL_DOCUMENT_ROOTS`를 탐색합니다.
+백엔드 주소가 다르면 `front/admin/.env`의 `VITE_API_BASE_URL`을 설정합니다. 파일 탐색기는 백엔드 PC의 `LOCAL_DOCUMENT_ROOTS`를 탐색합니다.
 
 사용자 채팅 앱:
 
@@ -55,7 +55,7 @@ flutter run
 
 OpenAI 키가 없으면 로컬 해시 임베딩과 근거 발췌로 동작합니다. 키를 설정하면 OpenAI 임베딩과 답변 생성을 사용합니다. PDF/PPTX 페이지 선택은 텍스트 추출 여부와 무관하게 가능하지만 OCR·이미지 내용 분석은 포함하지 않습니다.
 
-사용자 앱은 일반 로그인·회원가입을 지원하며 개발 테스트 계정은 `test/test`입니다. 모든 플랫폼의 기본 API 주소는 Railway HTTPS 서버입니다. 자세한 배포 절차는 [Railway 배포 안내](docs/railway-deployment.md)를 참고하세요.
+사용자 앱 계정은 `/admin/`에서 발급합니다. 개발 환경에서 `ENABLE_TEST_ACCOUNT=true`를 설정하면 `test/test`를 사용할 수 있습니다. 모든 플랫폼의 기본 API 주소는 Railway HTTPS 서버입니다. 자세한 배포 절차는 [Railway 배포 안내](docs/railway-deployment.md)를 참고하세요.
 
 ## 데이터
 
@@ -69,7 +69,7 @@ OpenAI 키가 없으면 로컬 해시 임베딩과 근거 발췌로 동작합니
 
 1. `back/.env`에 `DATABASE_URL=sqlite:///../data/data_graph/daalgi.db`, `STORAGE_ROOT=./runtime/storage`, `LOCAL_DOCUMENT_ROOTS=../data/data_raw`를 설정합니다.
 2. `back` 디렉터리에서 백엔드를 재시작합니다.
-3. 관리자 계정으로 `front/link-generator`에 로그인한 뒤 문서를 열어 ingestion합니다. 문서를 열면 파싱, `fragments` 생성, 벡터 임베딩 저장이 수행됩니다.
+3. 관리자 계정으로 `front/admin`에 로그인한 뒤 RAG 링크 관리에서 문서를 열어 ingestion합니다. 문서를 열면 파싱, `fragments` 생성, 벡터 임베딩 저장이 수행됩니다.
 4. `/api/documents`에서 `status=completed`, `fragment_count > 0`을 확인하고, `/api/chat` 응답의 `mode=rag`와 `evidence`가 비어 있지 않은지 확인합니다.
 
 기존 DB와 동일한 임베딩 provider·model·dimension을 그대로 이전하면 재임베딩하지 않아도 되지만, DB의 문서 경로가 이전 컴퓨터의 절대경로를 가리킬 수 있습니다. 새 환경에서는 원본 문서를 다시 ingestion하는 것이 안전합니다. `EMBEDDING_PROVIDER`, `EMBEDDING_MODEL`, `EMBEDDING_DIMENSIONS`를 바꾸면 기존 벡터와 새 질의 벡터가 호환되지 않을 수 있으므로 모든 문서를 다시 ingestion해야 합니다.
@@ -84,7 +84,7 @@ OpenAI 키가 없으면 로컬 해시 임베딩과 근거 발췌로 동작합니
 cd back
 uv run --extra hwp --extra dev pytest
 uv run --extra dev ruff check app tests
-cd ../front/link-generator
+cd ../front/admin
 npm.cmd run build
 ```
 

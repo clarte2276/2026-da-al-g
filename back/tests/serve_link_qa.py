@@ -14,7 +14,7 @@ from pathlib import Path
 def main():
     if "--ui" in sys.argv:
         os.environ["VITE_API_BASE_URL"] = "http://127.0.0.1:18080"
-        frontend = Path(__file__).resolve().parents[2] / "front" / "link-generator"
+        frontend = Path(__file__).resolve().parents[2] / "front" / "admin"
         subprocess.run(["npm.cmd" if os.name == "nt" else "npm", "run", "dev", "--",
                         "--host", "127.0.0.1", "--port", "15173", "--strictPort"],
                        cwd=frontend, check=True)

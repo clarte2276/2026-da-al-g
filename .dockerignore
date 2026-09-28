@@ -8,7 +8,7 @@
 **/.dart_tool
 **/build
 **/node_modules
-front/link-generator/dist
+front/admin/dist
 data/data_raw
 data/data_pdf
 data/data_graph

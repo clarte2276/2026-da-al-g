@@ -66,10 +66,6 @@ class RegulationViewerScreen extends StatelessWidget {
                 ? 'data 원문'
                 : sourcePath,
           ),
-          if (source?.documentId != null) ...[
-            _PageImage(source: source!, quote: content),
-            const SizedBox(height: 16),
-          ],
           AppCard(
             background: AppColors.softEvidence,
             child: Column(
@@ -106,6 +102,11 @@ class RegulationViewerScreen extends StatelessWidget {
               ],
             ),
           ),
+          // 원문 페이지(PDF 렌더)는 텍스트 아래에 둔다.
+          if (source?.documentId != null) ...[
+            const SizedBox(height: 16),
+            _PageImage(source: source!, quote: content),
+          ],
         ],
       ),
     );
@@ -157,7 +158,7 @@ class _PageImageState extends State<_PageImage> {
           child: Center(
             child: snapshot.hasError
                 ? Text(
-                    '원문 페이지를 불러오지 못했습니다.\n아래 본문으로 확인해 주세요.',
+                    '원문 페이지를 불러오지 못했습니다.\n위 본문으로 확인해 주세요.',
                     textAlign: TextAlign.center,
                     style: TextStyle(color: AppColors.secondaryInk, fontSize: 13),
                   )

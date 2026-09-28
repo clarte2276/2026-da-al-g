@@ -1,0 +1,11 @@
+# Dockerfile only copies front/ and back/; keep `railway up` under the upload limit.
+*.zip
+/data/
+back/runtime/
+back/.venv/
+.codegraph/
+.omo/
+/ai/
+**/node_modules/
+**/build/
+**/.dart_tool/

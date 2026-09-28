@@ -1,6 +1,6 @@
 # Railway 배포
 
-이 프로젝트는 Railway에서 FastAPI API와 관리자 React 화면을 하나의 서비스로 실행합니다. Dockerfile이 `back/`의 Python 앱과 `front/link-generator/`의 React 빌드를 함께 만들고, 배포된 API 주소의 `/admin/`에서 문서 연결 도구를 제공합니다.
+이 프로젝트는 Railway에서 FastAPI API, 사용자 Flutter 웹, 관리자 React 웹을 하나의 서비스로 실행합니다. Dockerfile이 각 화면을 빌드하며, 배포된 주소의 `/admin/`에서 관리자 사이트를 제공합니다.
 
 ## Railway 프로젝트 만들기
 
@@ -28,12 +28,12 @@ EMBEDDING_DIMENSIONS=1536
 OPENAI_API_KEY=실제_OpenAI_키
 LLM_MODEL=gpt-4o-mini
 ENABLE_REGISTRATION=false
-ENABLE_TEST_ACCOUNT=true
+ENABLE_TEST_ACCOUNT=false
 AUTH_SESSION_HOURS=24
 CORS_ORIGINS=*
 ```
 
-변수를 지정하지 않으면 관리자 계정 `admin/admin`이 서버 시작 시 없을 때 생성됩니다. 실제 운영 전에는 아래 변수로 바꿉니다. 첫 배포 후 관리자 로그인을 확인하면 `BOOTSTRAP_ADMIN_PASSWORD`는 삭제하는 편이 좋습니다. 이미 같은 아이디가 있으면 서버가 비밀번호를 덮어쓰지 않습니다.
+관리자 계정은 자동으로 생성되지 않습니다. 첫 배포에서 아래 변수를 설정해 생성하고, 로그인 확인 후 `BOOTSTRAP_ADMIN_PASSWORD`를 삭제합니다. 이미 같은 아이디가 있으면 서버가 비밀번호를 덮어쓰지 않습니다.
 
 ```dotenv
 BOOTSTRAP_ADMIN_USERNAME=admin
@@ -69,7 +69,7 @@ https://<railway-domain>/docs
 https://<railway-domain>/admin/
 ```
 
-`/admin/`에서는 관리자 계정으로 로그인합니다. 일반 사용자는 Flutter 앱에서 `test/test`로 로그인하고, 회원가입한 계정도 사용할 수 있습니다. 일반 사용자가 관리자 API를 호출하면 `403`이 반환되어야 합니다.
+`/admin/`에서는 관리자 계정으로 로그인합니다. 일반 사용자 계정은 관리자 화면에서 발급합니다. `ENABLE_TEST_ACCOUNT=true`를 명시한 개발 환경에서만 `test/test`를 사용할 수 있습니다. 일반 사용자가 관리자 API를 호출하면 `403`이 반환되어야 합니다.
 
 ## Flutter 빌드
 

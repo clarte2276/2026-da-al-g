@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../data/chat_models.dart';
 import '../services/auth_session.dart';
+import '../services/ai_api_client.dart';
 
 /// 보관함(북마크) 저장소 — 사용자별로 SharedPreferences 에 저장.
 class BookmarkStore extends ChangeNotifier {
@@ -13,6 +14,8 @@ class BookmarkStore extends ChangeNotifier {
   final List<ChatSource> _items = [];
   String? _loadedKey;
   bool _loading = false;
+  final Map<String, Map<String, dynamic>> _pending = {};
+  Future<void>? _syncing;
 
   List<ChatSource> get items => List.unmodifiable(_items);
 
@@ -33,6 +36,13 @@ class BookmarkStore extends ChangeNotifier {
     _loading = true;
     try {
       final prefs = await SharedPreferences.getInstance();
+      _pending.clear();
+      final pending = prefs.getString('${_storageKey}_pending');
+      if (pending != null) {
+        _pending.addAll((jsonDecode(pending) as Map<String, dynamic>).map(
+          (k, v) => MapEntry(k, v as Map<String, dynamic>),
+        ));
+      }
       final raw = prefs.getString(_storageKey);
       _items.clear();
       if (raw != null) {
@@ -56,11 +66,13 @@ class BookmarkStore extends ChangeNotifier {
     final exists = isBookmarked(s);
     if (exists) {
       _removeLocal(s);
+      _pending[_key(s)] = {'action': 'delete', 'data': s.toJson()};
       _save();
       notifyListeners();
       return false;
     }
     _items.insert(0, s);
+    _pending[_key(s)] = {'action': 'save', 'data': s.toJson()};
     _save();
     notifyListeners();
     return true;
@@ -68,6 +80,7 @@ class BookmarkStore extends ChangeNotifier {
 
   void remove(ChatSource s) {
     _removeLocal(s);
+    _pending[_key(s)] = {'action': 'delete', 'data': s.toJson()};
     _save();
     notifyListeners();
   }
@@ -76,12 +89,53 @@ class BookmarkStore extends ChangeNotifier {
     _items.removeWhere((e) => _key(e) == _key(s));
   }
 
-  // ponytail: 백엔드에 북마크 API가 없어 기기 로컬에만 저장. 서버 API가 생기면 여기서 동기화.
+  // Keep a local copy for offline use; pending writes retry on the next sign-in.
   Future<void> _save() async {
+    await _saveLocal();
+    sync().catchError((_) {});
+  }
+
+  Future<void> sync() => _syncing ??= _sync().whenComplete(() => _syncing = null);
+
+  Future<void> _sync() async {
+    final client = AiApiClient();
+    try {
+      while (true) {
+        for (final entry in _pending.entries.toList()) {
+          final item = entry.value['data'] as Map<String, dynamic>;
+          try {
+            if (entry.value['action'] == 'delete') {
+              await client.deleteBookmark(item);
+            } else {
+              await client.saveBookmark(item);
+            }
+            if (identical(_pending[entry.key], entry.value)) _pending.remove(entry.key);
+          } on AiApiException catch (e) {
+            if (e.statusCode != 410) rethrow;
+            _pending.remove(entry.key);
+            _items.removeWhere((s) => _key(s) == entry.key);
+          }
+        }
+        final remote = await client.fetchBookmarks();
+        if (_pending.isNotEmpty) continue;
+        _items
+          ..clear()
+          ..addAll(remote.map(ChatSource.fromJson));
+        await _saveLocal();
+        notifyListeners();
+        break;
+      }
+    } finally {
+      client.close();
+    }
+  }
+
+  Future<void> _saveLocal() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(
       _storageKey,
       jsonEncode(_items.map((e) => e.toJson()).toList()),
     );
+    await prefs.setString('${_storageKey}_pending', jsonEncode(_pending));
   }
 }

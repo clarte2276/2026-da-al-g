@@ -202,3 +202,32 @@ class DocumentLink(Base):
     approved_by: Mapped[str | None] = mapped_column(String(128), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
     approved_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+class ConversationRecord(Base):
+    __tablename__ = "conversation_records"
+
+    id: Mapped[str] = mapped_column(String(100), primary_key=True)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), primary_key=True, index=True)
+    data: Mapped[dict[str, Any]] = mapped_column(JSON)
+    deleted: Mapped[bool] = mapped_column(Boolean, default=False)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+
+
+class BookmarkRecord(Base):
+    __tablename__ = "bookmark_records"
+
+    id: Mapped[str] = mapped_column(String(255), primary_key=True)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), primary_key=True, index=True)
+    data: Mapped[dict[str, Any]] = mapped_column(JSON)
+    deleted: Mapped[bool] = mapped_column(Boolean, default=False)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+
+
+class DutySchedule(Base):
+    __tablename__ = "duty_schedules"
+
+    month: Mapped[str] = mapped_column(String(7), primary_key=True)
+    data: Mapped[dict[str, Any]] = mapped_column(JSON)
+    source_filename: Mapped[str] = mapped_column(String(512))
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)

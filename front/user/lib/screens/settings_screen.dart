@@ -4,6 +4,7 @@ import '../core/theme_controller.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_page.dart';
 import '../widgets/page_header.dart';
+import 'my_page_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -13,18 +14,8 @@ class SettingsScreen extends StatelessWidget {
     return AppPage(
       children: [
         const PageHeader(title: '설정'),
-        AppCard(
-          padding: EdgeInsets.zero,
-          child: const Column(
-            children: [
-              _SettingsTile(
-                title: '노선',
-                value: '서울메트로 6호선',
-                icon: Icons.train_rounded,
-              ),
-            ],
-          ),
-        ),
+        // 노선은 마이페이지 정보 칸의 소속 노선이 대신한다.
+        const MyPageSections(),
         AppCard(
           padding: EdgeInsets.zero,
           child: AnimatedBuilder(
@@ -51,12 +42,19 @@ class SettingsScreen extends StatelessWidget {
                     width: double.infinity,
                     child: SegmentedButton<ThemeMode>(
                       segments: const [
-                        ButtonSegment(value: ThemeMode.system, label: Text('시스템')),
-                        ButtonSegment(value: ThemeMode.light, label: Text('라이트')),
+                        ButtonSegment(
+                          value: ThemeMode.system,
+                          label: Text('시스템'),
+                        ),
+                        ButtonSegment(
+                          value: ThemeMode.light,
+                          label: Text('라이트'),
+                        ),
                         ButtonSegment(value: ThemeMode.dark, label: Text('다크')),
                       ],
                       selected: {ThemeController.instance.mode},
-                      onSelectionChanged: (s) => ThemeController.instance.setMode(s.single),
+                      onSelectionChanged: (s) =>
+                          ThemeController.instance.setMode(s.single),
                     ),
                   ),
                 ],
@@ -65,31 +63,6 @@ class SettingsScreen extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _SettingsTile extends StatelessWidget {
-  const _SettingsTile({
-    required this.title,
-    required this.value,
-    required this.icon,
-  });
-  final String title, value;
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(icon, color: AppColors.line6Gold),
-      title: Text(title),
-      trailing: Text(
-        value,
-        style: TextStyle(
-          fontWeight: FontWeight.w700,
-          color: AppColors.secondaryInk,
-        ),
-      ),
     );
   }
 }

@@ -52,6 +52,7 @@ def test_render_page_and_find_page_use_the_pdf_rendition(tmp_path: Path) -> None
     canvas.save()
 
     service = PdfConversionService(Settings(storage_root=tmp_path / "storage"))
+    assert service.page_count(source, "key") >= 2
     assert service.find_page(source, "key", "emergency brake") == 2
     assert service.find_page(source, "key", "없는 문장입니다") is None
 

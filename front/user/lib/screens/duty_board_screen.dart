@@ -17,10 +17,18 @@ class DutyBoardScreen extends StatefulWidget {
 enum _Mode { calendar, turns }
 
 class _DutyBoardScreenState extends State<DutyBoardScreen> {
-  final _future = DutyRepository.instance.load();
+  late Future<DutyMonth> _future;
+  late final Future<List<String>> _monthsFuture;
   _Mode _mode = _Mode.calendar;
   Driver? _driver;
   String? _selectedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = DutyRepository.instance.load();
+    _monthsFuture = DutyRepository.instance.availableMonths();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +36,20 @@ class _DutyBoardScreenState extends State<DutyBoardScreen> {
       backgroundColor: AppColors.canvas,
       appBar: AppBar(
         title: const Text('근무 · 교번', style: TextStyle(fontSize: 16)),
+        actions: [FutureBuilder<List<String>>(
+          future: _monthsFuture,
+          builder: (context, snapshot) => PopupMenuButton<String>(
+            tooltip: '월 선택',
+            icon: const Icon(Icons.date_range_outlined),
+            onSelected: (month) => setState(() {
+              _future = DutyRepository.instance.load(month);
+              _driver = null;
+              _selectedDate = null;
+            }),
+            itemBuilder: (_) => [for (final month in snapshot.data ?? <String>[])
+              PopupMenuItem(value: month, child: Text(month))],
+          ),
+        )],
       ),
       body: FutureBuilder<DutyMonth>(
         future: _future,
@@ -83,7 +105,12 @@ class _DutyBoardScreenState extends State<DutyBoardScreen> {
 
   void _showTurn(DutyMonth data, String turnId) {
     final turn = data.turns[turnId];
-    if (turn == null) return;
+    if (turn == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('$turnId 교번의 상세 운행 정보는 제공되지 않습니다.')),
+      );
+      return;
+    }
     showModalBottomSheet(
       context: context,
       backgroundColor: AppColors.card,

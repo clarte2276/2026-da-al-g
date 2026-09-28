@@ -1,9 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import '../core/colors.dart';
 import '../services/ai_api_client.dart';
 import '../widgets/skeleton.dart';
 
-/// dia5의 "규정 본문 열기"에 대응 — 규정 목록에서 원문(자료 그대로)을 본다.
+/// 규정 목록. 원본 자료(data_pdf)와 같은 폴더 구조로 탐색한다.
 class RegulationLibraryScreen extends StatefulWidget {
   const RegulationLibraryScreen({super.key});
 
@@ -23,130 +25,169 @@ class _RegulationLibraryScreenState extends State<RegulationLibraryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.canvas,
-      appBar: AppBar(title: const Text('규정 본문', style: TextStyle(fontSize: 16))),
-      body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: _future,
-        builder: (context, snap) {
-          if (snap.connectionState != ConnectionState.done) {
-            return ListView(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-              children: [
-                // 카테고리 헤더 라인
-                const SkeletonBox(width: 90, height: 13),
-                const SizedBox(height: 24),
-                // 카드 3개, 각 카드는 ListTile 형태 (52px 동그라미 + 텍스트 2줄 + chevron)
-                for (var c = 0; c < 3; c++) ...[
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.card,
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: AppColors.border),
-                    ),
-                    child: Column(
-                      children: [
-                        for (var i = 0; i < 3; i++) ...[
-                          if (i > 0) const Divider(height: 1, indent: 52),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                            child: Row(
-                              children: [
-                                SkeletonBox(width: 52, height: 52, borderRadius: 26),
-                                SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SkeletonBox(height: 14),
-                                      SizedBox(height: 8),
-                                      SkeletonBox(width: 140, height: 12),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(width: 16),
-                                SkeletonBox(width: 18, height: 18, borderRadius: 9),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                ],
-              ],
-            );
-          }
-          if (snap.hasError) {
-            return Center(
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: _future,
+      builder: (context, snap) {
+        if (snap.connectionState != ConnectionState.done) {
+          return const _FolderScaffold(title: '규정 본문', body: _ListSkeleton());
+        }
+        if (snap.hasError) {
+          return _FolderScaffold(
+            title: '규정 본문',
+            body: Center(
               child: Padding(
                 padding: const EdgeInsets.all(24),
-                child: Text('규정 목록을 불러오지 못했습니다.\n서버 연결을 확인해주세요.\n\n${snap.error}',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: AppColors.secondaryInk)),
+                child: Text('규정 목록을 불러오지 못했습니다.\n서버 연결을 확인해 주세요.',
+                    textAlign: TextAlign.center, style: TextStyle(color: AppColors.secondaryInk)),
               ),
-            );
-          }
-          final regs = snap.data ?? const [];
-          if (regs.isEmpty) {
-            return Center(child: Text('등록된 규정이 없습니다.', style: TextStyle(color: AppColors.secondaryInk)));
-          }
-          // 분류별 그룹화
-          final byCat = <String, List<Map<String, dynamic>>>{};
-          for (final r in regs) {
-            byCat.putIfAbsent(r['category'] as String? ?? '규정', () => []).add(r);
-          }
-          final cats = byCat.keys.toList()..sort();
-          return ListView(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-            children: [
-              for (final cat in cats) ...[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(4, 12, 4, 8),
-                  child: Text(cat,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w800, fontSize: 13, color: AppColors.secondaryInk)),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.card,
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: AppColors.border),
+            ),
+          );
+        }
+        return RegulationFolderView(docs: snap.data ?? const [], path: const []);
+      },
+    );
+  }
+}
+
+/// 한 폴더의 하위 폴더와 문서. 폴더를 누르면 한 단계 안으로 들어간다.
+class RegulationFolderView extends StatelessWidget {
+  const RegulationFolderView({super.key, required this.docs, required this.path});
+  final List<Map<String, dynamic>> docs;
+  final List<String> path;
+
+  List<String> _segments(Map<String, dynamic> doc) =>
+      (doc['folder'] as String? ?? '').split('/').where((s) => s.isNotEmpty).toList();
+
+  bool _under(List<String> segments) =>
+      segments.length >= path.length &&
+      Iterable.generate(path.length).every((i) => segments[i] == path[i]);
+
+  @override
+  Widget build(BuildContext context) {
+    final folders = <String>{};
+    final files = <Map<String, dynamic>>[];
+    for (final doc in docs) {
+      final segments = _segments(doc);
+      if (!_under(segments)) continue;
+      if (segments.length == path.length) {
+        files.add(doc);
+      } else {
+        folders.add(segments[path.length]);
+      }
+    }
+    final sortedFolders = folders.toList()..sort();
+    // 본 규정을 먼저, [별표]·[별지] 서식은 뒤에.
+    files.sort((x, y) {
+      final a = x['title'] as String? ?? '', b = y['title'] as String? ?? '';
+      final byAnnex = (a.startsWith('[') ? 1 : 0).compareTo(b.startsWith('[') ? 1 : 0);
+      return byAnnex != 0 ? byAnnex : a.compareTo(b);
+    });
+
+    final tiles = <Widget>[
+      for (final name in sortedFolders)
+        ListTile(
+          leading: Icon(Icons.folder_rounded, color: AppColors.line6Gold, size: 22),
+          title: Text(name, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+          trailing: Icon(Icons.chevron_right_rounded, color: AppColors.ghostText, size: 18),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => RegulationFolderView(docs: docs, path: [...path, name])),
+          ),
+        ),
+      for (final doc in files)
+        ListTile(
+          leading: Icon(Icons.description_outlined, color: AppColors.evidence, size: 22),
+          title: Text(doc['title'] as String? ?? '',
+              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
+          trailing: Icon(Icons.chevron_right_rounded, color: AppColors.ghostText, size: 18),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => RegulationDocumentScreen(
+                id: doc['id'] as String,
+                title: doc['title'] as String? ?? '규정',
+              ),
+            ),
+          ),
+        ),
+    ];
+
+    return _FolderScaffold(
+      title: path.isEmpty ? '규정 본문' : path.last,
+      body: tiles.isEmpty
+          ? Center(child: Text('등록된 규정이 없습니다.', style: TextStyle(color: AppColors.secondaryInk)))
+          : ListView(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+              children: [
+                if (path.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(4, 4, 4, 10),
+                    child: Text(path.join(' › '),
+                        style: TextStyle(fontSize: 13, color: AppColors.secondaryInk)),
                   ),
+                Material(
+                  color: AppColors.card,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    side: BorderSide(color: AppColors.border),
+                  ),
+                  clipBehavior: Clip.antiAlias,
                   child: Column(
                     children: [
-                      for (var i = 0; i < byCat[cat]!.length; i++) ...[
-                        if (i > 0) const Divider(height: 1, indent: 52),
-                        ListTile(
-                          leading: Icon(Icons.menu_book_rounded, color: AppColors.line6Gold, size: 22),
-                          title: Text(byCat[cat]![i]['title'] as String? ?? '',
-                              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                          trailing: Icon(Icons.chevron_right_rounded, color: AppColors.ghostText, size: 18),
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => RegulationDocumentScreen(
-                                id: byCat[cat]![i]['id'] as String,
-                                title: byCat[cat]![i]['title'] as String? ?? '규정',
-                              ),
-                            ),
-                          ),
-                        ),
+                      for (var i = 0; i < tiles.length; i++) ...[
+                        if (i > 0) const Divider(height: 1, indent: 56),
+                        tiles[i],
                       ],
                     ],
                   ),
                 ),
               ],
-            ],
-          );
-        },
-      ),
+            ),
     );
   }
 }
 
-/// 규정 원문 전체 뷰어 (자료 그대로).
+class _FolderScaffold extends StatelessWidget {
+  const _FolderScaffold({required this.title, required this.body});
+  final String title;
+  final Widget body;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.canvas,
+      appBar: AppBar(title: Text(title, style: const TextStyle(fontSize: 16))),
+      body: body,
+    );
+  }
+}
+
+class _ListSkeleton extends StatelessWidget {
+  const _ListSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+      children: [
+        for (var i = 0; i < 6; i++)
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: Row(
+              children: [
+                SkeletonBox(width: 24, height: 24, borderRadius: 6),
+                SizedBox(width: 16),
+                Expanded(child: SkeletonBox(height: 14)),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+/// 규정 원문 뷰어: 원본을 PDF로 렌더한 페이지를 위에서 아래로 보여준다.
+/// PDF 변환에 실패하면 추출 텍스트로 대신 보여준다.
 class RegulationDocumentScreen extends StatefulWidget {
   const RegulationDocumentScreen({super.key, required this.id, required this.title});
   final String id;
@@ -157,17 +198,13 @@ class RegulationDocumentScreen extends StatefulWidget {
 }
 
 class _RegulationDocumentScreenState extends State<RegulationDocumentScreen> {
-  late Future<Map<String, dynamic>> _future;
+  final _client = AiApiClient();
+  late final Future<int> _pageCount = _client.fetchPageCount(widget.id);
 
   @override
-  void initState() {
-    super.initState();
-    _future = _load(widget.id);
-  }
-
-  Future<Map<String, dynamic>> _load(String id) {
-    final client = AiApiClient();
-    return client.fetchRegulationDocument(id).whenComplete(client.close);
+  void dispose() {
+    _client.close();
+    super.dispose();
   }
 
   @override
@@ -179,72 +216,132 @@ class _RegulationDocumentScreenState extends State<RegulationDocumentScreen> {
         title: Text(widget.title, maxLines: 1, overflow: TextOverflow.ellipsis,
             style: const TextStyle(fontSize: 16)),
       ),
-      body: FutureBuilder<Map<String, dynamic>>(
-        future: _future,
+      body: FutureBuilder<int>(
+        future: _pageCount,
         builder: (context, snap) {
-          if (snap.connectionState != ConnectionState.done) {
-            // 본문 텍스트 형태 스켈레톤: 긴 라인 5개 + 중간 라인 2개
-            return ListView(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
-              children: [
-                for (var i = 0; i < 5; i++) ...[
-                  const SkeletonBox(height: 14),
-                  const SizedBox(height: 10),
-                ],
-                const SizedBox(height: 12),
-                const SkeletonBox(width: 200, height: 14),
-                const SizedBox(height: 10),
-                const SkeletonBox(width: 150, height: 14),
-              ],
-            );
-          }
-          if (snap.hasError) {
+          if (snap.hasError) return _TextFallback(client: _client, id: widget.id);
+          if (!snap.hasData) {
             return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Text('원문을 불러오지 못했습니다.\n\n${snap.error}',
-                    textAlign: TextAlign.center, style: TextStyle(color: AppColors.secondaryInk)),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const CircularProgressIndicator(),
+                  const SizedBox(height: 12),
+                  Text('원문을 여는 중… 처음 여는 문서는 1~2분 걸릴 수 있습니다.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: AppColors.secondaryInk)),
+                ],
               ),
             );
           }
-          final doc = snap.data!;
-          final content = (doc['content'] as String? ?? '').trim();
-          final annexes = (doc['annexes'] as List? ?? const [])
-              .whereType<Map<String, dynamic>>()
-              .toList();
-          return ListView(
-            padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
-            children: [
-              SelectableText(
-                content.isEmpty ? '본문이 없습니다.' : content,
-                style: TextStyle(color: AppColors.ink, fontSize: 14, height: 1.7),
-              ),
-              if (annexes.isNotEmpty) ...[
-                const SizedBox(height: 24),
-                Text('부속 서류 (별표·별지)',
-                    style: TextStyle(fontWeight: FontWeight.w800, fontSize: 13, color: AppColors.secondaryInk)),
-                const SizedBox(height: 8),
-                for (final a in annexes)
-                  ListTile(
-                    dense: true,
-                    contentPadding: EdgeInsets.zero,
-                    leading: Icon(Icons.attach_file_rounded, size: 18, color: AppColors.evidence),
-                    title: Text(a['title'] as String? ?? '', style: const TextStyle(fontSize: 13)),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => RegulationDocumentScreen(
-                          id: a['id'] as String,
-                          title: a['title'] as String? ?? '부속서류',
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            ],
+          final count = snap.data!;
+          // 보이는 쪽만 불러온다.
+          return ListView.builder(
+            padding: const EdgeInsets.fromLTRB(12, 12, 12, 32),
+            itemCount: count,
+            itemBuilder: (_, i) => Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: _PdfPage(client: _client, id: widget.id, page: i + 1, total: count),
+            ),
           );
         },
       ),
+    );
+  }
+}
+
+class _PdfPage extends StatefulWidget {
+  const _PdfPage({required this.client, required this.id, required this.page, required this.total});
+  final AiApiClient client;
+  final String id;
+  final int page;
+  final int total;
+
+  @override
+  State<_PdfPage> createState() => _PdfPageState();
+}
+
+class _PdfPageState extends State<_PdfPage> with AutomaticKeepAliveClientMixin {
+  late final Future<Uint8List> _image = widget.client.fetchPageImage(widget.id, page: widget.page);
+
+  // 스크롤로 벗어났다 돌아와도 다시 받지 않는다.
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return Column(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: ColoredBox(
+            color: Colors.white,
+            child: FutureBuilder<Uint8List>(
+              future: _image,
+              builder: (context, snap) {
+                if (snap.hasData) {
+                  return InteractiveViewer(
+                    maxScale: 5,
+                    child: Image.memory(snap.data!, fit: BoxFit.fitWidth, width: double.infinity),
+                  );
+                }
+                // A4 비율 자리를 잡아 스크롤이 튀지 않게 한다.
+                return AspectRatio(
+                  aspectRatio: 1 / 1.414,
+                  child: Center(
+                    child: snap.hasError
+                        ? Text('${widget.page}쪽을 불러오지 못했습니다.',
+                            style: TextStyle(color: AppColors.secondaryInk))
+                        : const CircularProgressIndicator(),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text('${widget.page} / ${widget.total}',
+            style: TextStyle(fontSize: 13, color: AppColors.secondaryInk)),
+      ],
+    );
+  }
+}
+
+class _TextFallback extends StatelessWidget {
+  const _TextFallback({required this.client, required this.id});
+  final AiApiClient client;
+  final String id;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<Map<String, dynamic>>(
+      future: client.fetchRegulationDocument(id),
+      builder: (context, snap) {
+        if (snap.hasError) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Text('원문을 불러오지 못했습니다.',
+                  textAlign: TextAlign.center, style: TextStyle(color: AppColors.secondaryInk)),
+            ),
+          );
+        }
+        if (!snap.hasData) return const Center(child: CircularProgressIndicator());
+        final content = (snap.data!['content'] as String? ?? '').trim();
+        return ListView(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
+          children: [
+            Text('원문 PDF를 만들지 못해 텍스트로 보여드립니다.',
+                style: TextStyle(fontSize: 13, color: AppColors.secondaryInk)),
+            const SizedBox(height: 12),
+            SelectableText(
+              content.isEmpty ? '본문이 없습니다.' : content,
+              style: TextStyle(color: AppColors.ink, fontSize: 14, height: 1.7),
+            ),
+          ],
+        );
+      },
     );
   }
 }

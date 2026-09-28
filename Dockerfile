@@ -1,10 +1,10 @@
 # syntax=docker/dockerfile:1
 
 FROM node:22-alpine AS admin-build
-WORKDIR /workspace/front/link-generator
-COPY front/link-generator/package.json front/link-generator/package-lock.json ./
+WORKDIR /workspace/front/admin
+COPY front/admin/package.json front/admin/package-lock.json ./
 RUN npm ci
-COPY front/link-generator/ ./
+COPY front/admin/ ./
 RUN npm run build
 
 FROM ghcr.io/cirruslabs/flutter:3.44.0 AS user-build
@@ -12,14 +12,17 @@ WORKDIR /workspace/front/user
 COPY front/user/pubspec.yaml front/user/pubspec.lock ./
 RUN flutter pub get
 COPY front/user/ ./
-ARG API_BASE_URL=https://2026-da-al-g-production.up.railway.app
+ARG API_BASE_URL=
 RUN flutter build web --release --dart-define=API_BASE_URL=${API_BASE_URL}
 
 FROM python:3.11-slim
 
+# rhwp's wheel bundles an old FreeType without FT_Palette_Data_Get, so every HWP fails to
+# parse unless the system FreeType (2.13+) is loaded first.
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    UV_LINK_MODE=copy
+    UV_LINK_MODE=copy \
+    LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libfreetype.so.6
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates curl default-jre-headless fonts-noto-cjk libreoffice libreoffice-java-common \
@@ -40,7 +43,7 @@ COPY back/pyproject.toml back/uv.lock ./back/
 RUN cd back && uv sync --frozen --extra hwp --no-dev --no-install-project
 COPY back/ ./back/
 RUN cd back && uv sync --frozen --extra hwp --no-dev
-COPY --from=admin-build /workspace/front/link-generator/dist ./admin-dist
+COPY --from=admin-build /workspace/front/admin/dist ./admin-dist
 COPY --from=user-build /workspace/front/user/build/web ./user-dist
 
 WORKDIR /app/back

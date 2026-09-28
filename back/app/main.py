@@ -9,7 +9,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Annotated
 
-from fastapi import Depends, FastAPI, File, HTTPException, Query, UploadFile
+from fastapi import Depends, FastAPI, File, Form, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
@@ -23,6 +23,7 @@ from .config import get_settings
 from .db import SessionLocal, get_db, init_db
 from .links import get_version
 from .links import router as links_router
+from .management import router as management_router
 from .models import AuditEvent, Document, DocumentVersion, Fragment, KnowledgeEdge, new_id
 from .schemas import (
     ChatFeedbackRequest,
@@ -37,6 +38,8 @@ from .schemas import (
     EvidenceOut,
     FragmentOut,
     LocalFileOut,
+    LocalFolderRequest,
+    LocalMoveRequest,
     LocalOpenOut,
     LocalOpenRequest,
     LocalRootOut,
@@ -65,6 +68,7 @@ pdf_conversion_service = PdfConversionService(settings)
 app = FastAPI(title=settings.app_name, version="0.1.0")
 app.include_router(auth_router)
 app.include_router(links_router)
+app.include_router(management_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[origin.strip() for origin in settings.cors_origins.split(",") if origin.strip()]
@@ -233,6 +237,78 @@ def list_local_files(
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
+@app.get("/api/local/folders", response_model=list[str])
+def list_local_folders(root_id: str, _admin: AdminUser) -> list[str]:
+    try:
+        return local_file_service.folders(root_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@app.post("/api/local/folders", status_code=201)
+def create_local_folder(payload: LocalFolderRequest, _admin: AdminUser) -> dict[str, str]:
+    try:
+        return {"relative_path": local_file_service.create_folder(payload.root_id, payload.relative_path)}
+    except FileExistsError as exc:
+        raise HTTPException(status_code=409, detail="Folder already exists") from exc
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=404, detail="Parent folder not found") from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@app.delete("/api/local/folders")
+def delete_local_folder(payload: LocalFolderRequest, _admin: AdminUser) -> dict[str, bool]:
+    try:
+        local_file_service.delete_empty_folder(payload.root_id, payload.relative_path)
+    except OSError as exc:
+        raise HTTPException(status_code=409, detail="Only empty folders can be deleted") from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    return {"deleted": True}
+
+
+@app.delete("/api/local/files")
+def delete_local_file(payload: LocalFolderRequest, _admin: AdminUser) -> dict[str, bool]:
+    try:
+        local_file_service.delete_file(payload.root_id, payload.relative_path)
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=404, detail="File not found") from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    return {"deleted": True}
+
+
+@app.post("/api/local/move")
+def move_local_entry(
+    payload: LocalMoveRequest,
+    db: Annotated[Session, Depends(get_db)],
+    _admin: AdminUser,
+) -> dict[str, str]:
+    try:
+        old, new = local_file_service.move(payload.root_id, payload.source_path, payload.destination_path)
+    except FileExistsError as exc:
+        raise HTTPException(status_code=409, detail="Destination already exists") from exc
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=404, detail="Source or destination folder not found") from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    try:
+        for document in db.scalars(select(Document).where(Document.source_path.is_not(None))):
+            source = Path(document.source_path).resolve()
+            if source == old or (new.is_dir() and source.is_relative_to(old)):
+                document.source_path = str(new / source.relative_to(old)) if new.is_dir() else str(new)
+                if source == old and new.is_file():
+                    document.filename = new.name
+                    document.mime_type = mimetypes.guess_type(new.name)[0]
+        db.commit()
+    except Exception:
+        db.rollback()
+        new.rename(old)
+        raise
+    return {"source_path": payload.source_path, "destination_path": payload.destination_path}
+
+
 @app.post("/api/local/open", response_model=LocalOpenOut)
 def open_local_document(
     payload: LocalOpenRequest,
@@ -271,12 +347,35 @@ def open_local_document(
     )
 
 
+# data_raw(원본)와 data_pdf(PDF본)는 같은 폴더 구조라서 이 이름은 빼고 보여준다.
+_SOURCE_SET_DIRS = {"data_raw", "data_pdf"}
+
+
+def _document_folder(document: Document) -> str | None:
+    if not document.source_path:
+        return None
+    parent = Path(document.source_path).parent
+    for root in settings.document_roots():
+        try:
+            parts = parent.relative_to(root).parts
+        except ValueError:
+            continue
+        if parts and parts[0] in _SOURCE_SET_DIRS:
+            parts = parts[1:]
+        return "/".join(parts)
+    return None
+
+
 @app.get("/api/documents", response_model=list[DocumentOut])
 def list_documents(
     db: Annotated[Session, Depends(get_db)],
     _user: CurrentUser,
-) -> list[Document]:
-    return list(db.scalars(select(Document).order_by(Document.created_at.desc())).all())
+) -> list[DocumentOut]:
+    documents = db.scalars(select(Document).order_by(Document.created_at.desc())).all()
+    return [
+        DocumentOut.model_validate(document).model_copy(update={"folder": _document_folder(document)})
+        for document in documents
+    ]
 
 
 @app.get("/api/documents/{document_id}", response_model=DocumentOut)
@@ -358,32 +457,60 @@ def upload_document(
     file: Annotated[UploadFile, File(...)],
     db: Annotated[Session, Depends(get_db)],
     _admin: AdminUser,
+    root_id: Annotated[str | None, Form()] = None,
+    folder_path: Annotated[str, Form()] = "",
 ) -> dict:
-    suffix = Path(file.filename or "").suffix.lower()
+    filename = file.filename or ""
+    suffix = Path(filename).suffix.lower()
     if suffix not in {".docx", ".hwp", ".hwpx", ".pptx", ".pdf"}:
         raise HTTPException(status_code=415, detail="Only .docx, .hwp, .hwpx, .pptx, and .pdf are supported")
-    upload_dir = settings.storage_root / "originals"
-    upload_dir.mkdir(parents=True, exist_ok=True)
-    safe_name = "".join(ch if ch.isalnum() or ch in ".-_" else "_" for ch in (file.filename or "document"))
-    path = upload_dir / f"{secrets.token_hex(8)}_{safe_name}"
+    if root_id:
+        if filename in {".", ".."} or Path(filename).name != filename or "\\" in filename:
+            raise HTTPException(status_code=400, detail="Invalid filename")
+        try:
+            upload_dir = local_file_service.path(root_id, folder_path)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        if not upload_dir.is_dir():
+            raise HTTPException(status_code=404, detail="Folder not found")
+        path = upload_dir / filename
+        if path.exists():
+            raise HTTPException(status_code=409, detail="File already exists")
+    else:
+        upload_dir = settings.storage_root / "originals"
+        upload_dir.mkdir(parents=True, exist_ok=True)
+        safe_name = "".join(ch if ch.isalnum() or ch in ".-_" else "_" for ch in filename)
+        path = upload_dir / f"{secrets.token_hex(8)}_{safe_name}"
     size = 0
-    with path.open("wb") as handle:
-        while chunk := file.file.read(1024 * 1024):
-            size += len(chunk)
-            if size > settings.max_upload_bytes:
-                path.unlink(missing_ok=True)
-                raise HTTPException(status_code=413, detail="Uploaded file is too large")
-            handle.write(chunk)
+    created = False
+    try:
+        with path.open("xb") as handle:
+            created = True
+            while chunk := file.file.read(1024 * 1024):
+                size += len(chunk)
+                if size > settings.max_upload_bytes:
+                    raise HTTPException(status_code=413, detail="Uploaded file is too large")
+                handle.write(chunk)
+    except FileExistsError as exc:
+        raise HTTPException(status_code=409, detail="File already exists") from exc
+    except Exception:
+        if created:
+            path.unlink(missing_ok=True)
+        raise
     try:
         document, version = ingestion_service.ingest_new_file(
             db,
             path,
-            file.filename or safe_name,
-            file.content_type or mimetypes.guess_type(file.filename or "")[0],
+            filename,
+            file.content_type or mimetypes.guess_type(filename)[0],
         )
+        if root_id:
+            document.source_path = str(path)
+            document.filename = filename
         db.commit()
     except Exception as exc:
         db.rollback()
+        path.unlink(missing_ok=True)
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     return {
         "document": DocumentOut.model_validate(document).model_dump(mode="json"),
@@ -441,6 +568,18 @@ def get_document_source(
     )
 
 
+def _pdf_twin(document: Document, version: DocumentVersion) -> tuple[Path, str]:
+    """data_raw 원본과 같은 경로에 data_pdf PDF본이 있으면 변환 없이 그 PDF를 보여준다."""
+    parts = Path(document.source_path or "").parts
+    if "data_raw" in parts:
+        i = len(parts) - 1 - parts[::-1].index("data_raw")
+        twin = Path(*parts[:i], "data_pdf", *parts[i + 1 :]).with_suffix(".pdf")
+        # ponytail: assumes the twin matches the latest version; re-export data_pdf when a regulation changes.
+        if twin.is_file():
+            return twin, f"{version.sha256}-pdf"
+    return verified_source(version), version.sha256
+
+
 @app.get("/api/documents/{document_id}/pdf")
 def get_document_pdf(
     document_id: str,
@@ -454,9 +593,9 @@ def get_document_pdf(
     if not document or not document.source_path:
         raise HTTPException(status_code=404, detail="Document source not found")
     version = get_version(db, document_id, version_id)
-    source_path = verified_source(version)
+    source_path, cache_key = _pdf_twin(document, version)
     try:
-        pdf_path, converter = pdf_conversion_service.convert(source_path, version.sha256)
+        pdf_path, converter = pdf_conversion_service.convert(source_path, cache_key)
     except PdfConversionError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     return FileResponse(
@@ -472,6 +611,29 @@ def get_document_pdf(
 _page_renders: dict[str, Future] = {}
 # One worker: the conversions share a single LibreOffice profile.
 _page_executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="page-render")
+
+
+def _in_background(job_key: str, fn, *args):
+    """변환 작업을 백그라운드에서 돌리고 10초 안에 끝나면 결과를, 아니면 None(→ 202)을 돌려준다."""
+    job = _page_renders.get(job_key)
+    if job is None:
+        job = _page_executor.submit(fn, *args)
+        _page_renders[job_key] = job
+    try:
+        result = job.result(timeout=10)
+    except FutureTimeoutError:
+        return None
+    except Exception as exc:
+        # Drop the failed job so the next request retries instead of replaying the error.
+        _page_renders.pop(job_key, None)
+        if isinstance(exc, PdfConversionError):
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+        raise
+    _page_renders.pop(job_key, None)
+    return result
+
+
+_CONVERTING = {"detail": "원문을 변환하는 중입니다. 잠시 후 다시 시도합니다."}
 
 
 def _render_page(source_path: Path, cache_key: str, page: int | None, quote: str, width: int) -> Path:
@@ -502,36 +664,42 @@ def get_document_page_image(
     if not document or not document.source_path:
         raise HTTPException(status_code=404, detail="Document source not found")
     version = get_version(db, document_id, version_id)
-    source_path = verified_source(version)
+    source_path, cache_key = _pdf_twin(document, version)
     width = max(200, min(width, 2000))
     quote = (quote or "")[:200]
 
-    job_key = f"{version.sha256}:{page}:{quote}:{width}"
-    render = _page_renders.get(job_key)
-    if render is None:
-        render = _page_executor.submit(
-            _render_page, source_path, version.sha256, page, quote, width
-        )
-        _page_renders[job_key] = render
-    try:
-        image_path = render.result(timeout=10)
-    except FutureTimeoutError:
-        return JSONResponse(
-            status_code=202,
-            content={"detail": "원문을 변환하는 중입니다. 잠시 후 다시 시도합니다."},
-        )
-    except Exception as exc:
-        # Drop the failed job so the next request retries instead of replaying the error.
-        _page_renders.pop(job_key, None)
-        if isinstance(exc, PdfConversionError):
-            raise HTTPException(status_code=422, detail=str(exc)) from exc
-        raise
-    _page_renders.pop(job_key, None)
+    image_path = _in_background(
+        f"{cache_key}:{page}:{quote}:{width}",
+        _render_page, source_path, cache_key, page, quote, width,
+    )
+    if image_path is None:
+        return JSONResponse(status_code=202, content=_CONVERTING)
     return FileResponse(
         image_path,
         media_type="image/png",
         headers={"Cache-Control": "public, max-age=86400"},
     )
+
+
+@app.get("/api/documents/{document_id}/pages")
+def get_document_page_count(
+    document_id: str,
+    db: Annotated[Session, Depends(get_db)],
+    _user: CurrentUser,
+    version_id: str | None = None,
+) -> Response:
+    """원문 PDF 렌더의 쪽수. 첫 변환 중이면 page.png처럼 202를 돌려준다."""
+    document = db.get(Document, document_id)
+    if not document or not document.source_path:
+        raise HTTPException(status_code=404, detail="Document source not found")
+    version = get_version(db, document_id, version_id)
+    source_path, cache_key = _pdf_twin(document, version)
+    count = _in_background(
+        f"{cache_key}:pages", pdf_conversion_service.page_count, source_path, cache_key
+    )
+    if count is None:
+        return JSONResponse(status_code=202, content=_CONVERTING)
+    return JSONResponse({"page_count": count, "version_id": version.id})
 
 
 @app.get("/api/fragments/{fragment_id}", response_model=FragmentOut)
