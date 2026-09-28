@@ -22,11 +22,6 @@ class SettingsScreen extends StatelessWidget {
                 value: '서울메트로 6호선',
                 icon: Icons.train_rounded,
               ),
-              _SettingsTile(
-                title: '규정 버전',
-                value: '2026.04',
-                icon: Icons.description_rounded,
-              ),
             ],
           ),
         ),
@@ -34,21 +29,38 @@ class SettingsScreen extends StatelessWidget {
           padding: EdgeInsets.zero,
           child: AnimatedBuilder(
             animation: ThemeController.instance,
-            builder: (context, _) => SwitchListTile(
-              secondary: Icon(
-                ThemeController.instance.isDark
-                    ? Icons.dark_mode_rounded
-                    : Icons.light_mode_rounded,
-                color: AppColors.line6Gold,
+            builder: (context, _) => Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        ThemeController.instance.isDark
+                            ? Icons.dark_mode_rounded
+                            : Icons.light_mode_rounded,
+                        color: AppColors.line6Gold,
+                      ),
+                      const SizedBox(width: 16),
+                      const Text('화면 모드', style: TextStyle(fontSize: 16)),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: double.infinity,
+                    child: SegmentedButton<ThemeMode>(
+                      segments: const [
+                        ButtonSegment(value: ThemeMode.system, label: Text('시스템')),
+                        ButtonSegment(value: ThemeMode.light, label: Text('라이트')),
+                        ButtonSegment(value: ThemeMode.dark, label: Text('다크')),
+                      ],
+                      selected: {ThemeController.instance.mode},
+                      onSelectionChanged: (s) => ThemeController.instance.setMode(s.single),
+                    ),
+                  ),
+                ],
               ),
-              title: const Text('다크 모드'),
-              subtitle: Text(
-                ThemeController.instance.isDark ? '어두운 화면' : '밝은 화면',
-                style: TextStyle(fontSize: 12, color: AppColors.secondaryInk),
-              ),
-              value: ThemeController.instance.isDark,
-              activeThumbColor: AppColors.line6Gold,
-              onChanged: (v) => ThemeController.instance.setDark(v),
             ),
           ),
         ),

@@ -1,7 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import '../core/bookmark_store.dart';
 import '../core/colors.dart';
-import '../data/mock_conversations.dart';
+import '../data/chat_models.dart';
+import '../services/ai_api_client.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_page.dart';
 import '../widgets/page_header.dart';
@@ -63,6 +66,10 @@ class RegulationViewerScreen extends StatelessWidget {
                 ? 'data 원문'
                 : sourcePath,
           ),
+          if (source?.documentId != null) ...[
+            _PageImage(source: source!, quote: content),
+            const SizedBox(height: 16),
+          ],
           AppCard(
             background: AppColors.softEvidence,
             child: Column(
@@ -75,16 +82,13 @@ class RegulationViewerScreen extends StatelessWidget {
                     fontSize: 16,
                   ),
                 ),
-                if (source?.retriever != null || source?.chunkId != null) ...[
+                if (source?.page != null) ...[
                   const SizedBox(height: 8),
                   Text(
-                    [
-                      if (source?.retriever != null) source!.retriever!,
-                      if (source?.chunkId != null) source!.chunkId!,
-                    ].join(' · '),
+                    '${source!.page}쪽',
                     style: TextStyle(
                       color: AppColors.secondaryInk,
-                      fontSize: 12,
+                      fontSize: 13,
                     ),
                   ),
                 ],
@@ -104,6 +108,63 @@ class RegulationViewerScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// 근거가 있는 원문 페이지 이미지. 실패하면 아래 텍스트만 남는다.
+class _PageImage extends StatefulWidget {
+  const _PageImage({required this.source, this.quote});
+
+  final ChatSource source;
+  final String? quote;
+
+  @override
+  State<_PageImage> createState() => _PageImageState();
+}
+
+class _PageImageState extends State<_PageImage> {
+  final _client = AiApiClient();
+  late final Future<Uint8List> _image = _client.fetchPageImage(
+    widget.source.documentId!,
+    versionId: widget.source.versionId,
+    page: widget.source.page,
+    quote: widget.quote,
+  );
+
+  @override
+  void dispose() {
+    _client.close();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<Uint8List>(
+      future: _image,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: InteractiveViewer(
+              maxScale: 5,
+              child: Image.memory(snapshot.data!, fit: BoxFit.fitWidth),
+            ),
+          );
+        }
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 24),
+          child: Center(
+            child: snapshot.hasError
+                ? Text(
+                    '원문 페이지를 불러오지 못했습니다.\n아래 본문으로 확인해 주세요.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: AppColors.secondaryInk, fontSize: 13),
+                  )
+                : const CircularProgressIndicator(),
+          ),
+        );
+      },
     );
   }
 }

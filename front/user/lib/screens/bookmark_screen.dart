@@ -46,12 +46,12 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                           leading: const Icon(Icons.bookmark_rounded, color: AppColors.line6Gold),
                           title: Text(items[i].regulation,
                               style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14)),
-                          subtitle: Text(items[i].chapter, style: const TextStyle(fontSize: 12)),
+                          subtitle: Text(items[i].chapter, style: const TextStyle(fontSize: 13)),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(items[i].version,
-                                  style: TextStyle(color: AppColors.ghostText, fontSize: 11)),
+                                  style: TextStyle(color: AppColors.ghostText, fontSize: 13)),
                               IconButton(
                                 tooltip: '삭제',
                                 icon: Icon(Icons.close_rounded, size: 18, color: AppColors.ghostText),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../core/colors.dart';
 import '../core/duty_data.dart';
+import '../services/auth_session.dart';
 import '../widgets/skeleton.dart';
 
 /// 근무계획 엑셀(파싱된 JSON) 기반의 dia5형 뷰어.
@@ -26,7 +27,6 @@ class _DutyBoardScreenState extends State<DutyBoardScreen> {
     return Scaffold(
       backgroundColor: AppColors.canvas,
       appBar: AppBar(
-        leading: const BackButton(),
         title: const Text('근무 · 교번', style: TextStyle(fontSize: 16)),
       ),
       body: FutureBuilder<DutyMonth>(
@@ -39,7 +39,8 @@ class _DutyBoardScreenState extends State<DutyBoardScreen> {
             return Center(child: Text('근무 데이터를 불러오지 못했습니다.\n${snap.error}'));
           }
           final data = snap.data!;
-          _driver ??= data.drivers.first;
+          _driver ??= data.driverNamed(AuthSession.current?.user.name) ??
+              data.drivers.first;
           _selectedDate ??= data.dates.first;
           return Column(
             children: [
@@ -107,19 +108,22 @@ class _Header extends StatelessWidget {
       width: double.infinity,
       color: AppColors.card,
       padding: const EdgeInsets.fromLTRB(20, 12, 16, 14),
-      child: Row(
+      child: Wrap(
+        alignment: WrapAlignment.spaceBetween,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: 8,
+        runSpacing: 8,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('${data.office} · ${data.line}',
-                  style: TextStyle(fontSize: 12, color: AppColors.secondaryInk)),
+                  style: TextStyle(fontSize: 13, color: AppColors.secondaryInk)),
               const SizedBox(height: 2),
               Text('${ym[0]}년 ${int.parse(ym[1])}월 근무계획',
                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
             ],
           ),
-          const Spacer(),
           OutlinedButton.icon(
             onPressed: onPickDriver,
             icon: const Icon(Icons.person_outline_rounded, size: 18),
@@ -150,7 +154,7 @@ class _ModeSwitch extends StatelessWidget {
               margin: const EdgeInsets.all(4),
               padding: const EdgeInsets.symmetric(vertical: 9),
               decoration: BoxDecoration(
-                color: mode == m ? AppColors.line6Gold : Colors.transparent,
+                color: mode == m ? AppColors.line6GoldDeep : Colors.transparent,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(label,
@@ -205,13 +209,16 @@ class _CalendarView extends StatelessWidget {
             border: Border.all(color: color.withValues(alpha: 0.4)),
           ),
           padding: const EdgeInsets.symmetric(vertical: 6),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('$day', style: TextStyle(fontSize: 12, color: AppColors.secondaryInk)),
-              const SizedBox(height: 2),
-              Text(duty?.code ?? '', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: color)),
-            ],
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('$day', style: TextStyle(fontSize: 13, color: AppColors.secondaryInk)),
+                const SizedBox(height: 2),
+                Text(duty?.code ?? '', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: color)),
+              ],
+            ),
           ),
         ),
       ));
@@ -227,7 +234,7 @@ class _CalendarView extends StatelessWidget {
           children: wd
               .map((w) => Expanded(
                   child: Center(
-                      child: Text(w, style: TextStyle(fontSize: 12, color: AppColors.secondaryInk)))))
+                      child: Text(w, style: TextStyle(fontSize: 13, color: AppColors.secondaryInk)))))
               .toList(),
         ),
         const SizedBox(height: 8),
@@ -254,7 +261,7 @@ class _CalendarView extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text('주간·야간·대기 셀을 누르면 교번 상세가 열립니다.',
-            style: TextStyle(fontSize: 12, color: AppColors.ghostText)),
+            style: TextStyle(fontSize: 13, color: AppColors.ghostText)),
       ],
     );
   }
@@ -276,7 +283,7 @@ class _Stat extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
-        Text(label, style: TextStyle(fontSize: 12, color: c, fontWeight: FontWeight.w700)),
+        Text(label, style: TextStyle(fontSize: 13, color: c, fontWeight: FontWeight.w700)),
         const SizedBox(width: 6),
         Text('$value', style: TextStyle(fontSize: 14, color: c, fontWeight: FontWeight.w900)),
       ]),
@@ -323,15 +330,15 @@ class _TurnsView extends StatelessWidget {
                 child: Container(
                   width: 46,
                   decoration: BoxDecoration(
-                    color: sel ? AppColors.line6Gold : AppColors.card,
+                    color: sel ? AppColors.line6GoldDeep : AppColors.card,
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: sel ? AppColors.line6Gold : AppColors.border),
+                    border: Border.all(color: sel ? AppColors.line6GoldDeep : AppColors.border),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(wd[dt.weekday - 1],
-                          style: TextStyle(fontSize: 11, color: sel ? Colors.white70 : AppColors.secondaryInk)),
+                          style: TextStyle(fontSize: 13, color: sel ? Colors.white70 : AppColors.secondaryInk)),
                       Text('${dt.day}',
                           style: TextStyle(
                               fontSize: 16,
@@ -395,12 +402,12 @@ class _TurnsView extends StatelessWidget {
                             Text(a.driver.name,
                                 style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
                             const SizedBox(height: 2),
-                            Text(turn == null ? a.duty.type.label : '${a.duty.type.label} · ${turn.route}',
-                                style: TextStyle(fontSize: 12, color: AppColors.secondaryInk)),
+                            Text(turn == null || data.turnDetailIsDummy ? a.duty.type.label : '${a.duty.type.label} · ${turn.route}',
+                                style: TextStyle(fontSize: 13, color: AppColors.secondaryInk)),
                           ],
                         ),
                       ),
-                      Text(turn == null ? '' : '${turn.depart}~${turn.arrive}',
+                      Text(turn == null || data.turnDetailIsDummy ? '' : '${turn.depart}~${turn.arrive}',
                           style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
                     ],
                   ),
@@ -426,7 +433,7 @@ class _Pill extends StatelessWidget {
         color: color.withValues(alpha: 0.10),
         borderRadius: BorderRadius.circular(99),
       ),
-      child: Text(text, style: TextStyle(fontSize: 12, color: color, fontWeight: FontWeight.w700)),
+      child: Text(text, style: TextStyle(fontSize: 13, color: color, fontWeight: FontWeight.w700)),
     );
   }
 }
@@ -466,13 +473,14 @@ class _TurnDetailSheet extends StatelessWidget {
               Text(turn.type.label, style: TextStyle(color: c, fontWeight: FontWeight.w700)),
             ]),
             const SizedBox(height: 14),
-            row(Icons.route_rounded, '구간', turn.route),
-            row(Icons.login_rounded, '출무', turn.depart),
-            row(Icons.train_rounded, '첫 출발', turn.firstRun),
-            row(Icons.logout_rounded, '근무 종료', turn.arrive),
-            row(Icons.coffee_rounded, '휴게', turn.brk),
-            if (turn.trainNo != null) row(Icons.confirmation_number_outlined, '열차번호', turn.trainNo!),
-            if (isDummy) ...[
+            if (!isDummy) ...[
+              row(Icons.route_rounded, '구간', turn.route),
+              row(Icons.login_rounded, '출무', turn.depart),
+              row(Icons.train_rounded, '첫 출발', turn.firstRun),
+              row(Icons.logout_rounded, '근무 종료', turn.arrive),
+              row(Icons.coffee_rounded, '휴게', turn.brk),
+              if (turn.trainNo != null) row(Icons.confirmation_number_outlined, '열차번호', turn.trainNo!),
+            ] else ...[
               const SizedBox(height: 12),
               Container(
                 padding: const EdgeInsets.all(10),
@@ -481,8 +489,8 @@ class _TurnDetailSheet extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
-                  '※ 시각·구간은 임시(더미) 데이터입니다. 실제 교번 다이아 연결 시 교체됩니다.',
-                  style: TextStyle(fontSize: 12, color: AppColors.secondaryInk),
+                  '교번별 출무 시각·구간은 아직 연결되지 않았습니다.',
+                  style: TextStyle(fontSize: 13, color: AppColors.secondaryInk),
                 ),
               ),
             ],
@@ -543,7 +551,7 @@ class _DriverPickerState extends State<_DriverPicker> {
                   return ListTile(
                     leading: CircleAvatar(
                       backgroundColor: AppColors.softEvidence,
-                      child: Text('${d.no}', style: TextStyle(fontSize: 12, color: AppColors.evidence)),
+                      child: Text('${d.no}', style: TextStyle(fontSize: 13, color: AppColors.evidence)),
                     ),
                     title: Text(d.name),
                     trailing: sel ? const Icon(Icons.check_rounded, color: AppColors.line6Gold) : null,
@@ -587,13 +595,12 @@ class _CalendarSkeleton extends StatelessWidget {
           children: List.generate(35, (_) => const SkeletonBox(borderRadius: 10)),
         ),
         const SizedBox(height: 16),
-        Row(
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
           children: List.generate(
             5,
-            (_) => const Padding(
-              padding: EdgeInsets.only(right: 8),
-              child: SkeletonBox(width: 64, height: 34, borderRadius: 10),
-            ),
+            (_) => const SkeletonBox(width: 64, height: 34, borderRadius: 10),
           ),
         ),
       ],

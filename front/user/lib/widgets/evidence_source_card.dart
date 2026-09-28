@@ -7,30 +7,38 @@ class EvidenceSourceCard extends StatelessWidget {
     super.key,
     required this.regulation,
     required this.chapter,
-    required this.version,
     required this.onOpenSource,
     this.excerpt,
+    this.related = false,
   });
-  final String regulation, chapter, version;
+  final String regulation, chapter;
   final String? excerpt;
+
+  /// 그래프로 간접 연결된 근거면 '관련 조항'으로 약하게 표시한다.
+  final bool related;
   final VoidCallback onOpenSource;
 
   @override
   Widget build(BuildContext context) {
+    final accent = related ? AppColors.secondaryInk : AppColors.evidence;
     return AppCard(
       background: AppColors.softEvidence,
-      borderColor: AppColors.evidence,
+      borderColor: related ? AppColors.border : AppColors.evidence,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(Icons.verified_rounded, color: AppColors.evidence, size: 18),
-              SizedBox(width: 8),
+              Icon(
+                related ? Icons.link_rounded : Icons.description_outlined,
+                color: accent,
+                size: 18,
+              ),
+              const SizedBox(width: 8),
               Text(
-                '근거 확인됨',
+                related ? '관련 조항' : '근거',
                 style: TextStyle(
-                  color: AppColors.evidence,
+                  color: accent,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -43,7 +51,7 @@ class EvidenceSourceCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            '$chapter · $version',
+            chapter,
             style: TextStyle(color: AppColors.secondaryInk, fontSize: 13),
           ),
           if (excerpt != null && excerpt!.trim().isNotEmpty) ...[
@@ -52,7 +60,7 @@ class EvidenceSourceCard extends StatelessWidget {
               excerpt!,
               style: TextStyle(
                 color: AppColors.secondaryInk,
-                fontSize: 12,
+                fontSize: 13,
                 height: 1.45,
               ),
               maxLines: 3,
@@ -65,8 +73,8 @@ class EvidenceSourceCard extends StatelessWidget {
             child: OutlinedButton(
               onPressed: onOpenSource,
               style: OutlinedButton.styleFrom(
-                foregroundColor: AppColors.evidence,
-                side: BorderSide(color: AppColors.evidence),
+                foregroundColor: accent,
+                side: BorderSide(color: accent),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),

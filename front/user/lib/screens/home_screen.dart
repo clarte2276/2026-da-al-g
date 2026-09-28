@@ -12,20 +12,16 @@ import '../widgets/weekly_duty_strip.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
     super.key,
-    required this.onAskRegulation,
     required this.onAskWithText,
     required this.onOpenSchedule,
     required this.onOpenBookmarks,
     required this.onOpenRegulations,
-    required this.onOpenNotifications,
     required this.onOpenProfile,
   });
-  final VoidCallback onAskRegulation;
   final ValueChanged<String> onAskWithText;
   final VoidCallback onOpenSchedule;
   final VoidCallback onOpenBookmarks;
   final VoidCallback onOpenRegulations;
-  final VoidCallback onOpenNotifications;
   final VoidCallback onOpenProfile;
 
   @override
@@ -36,12 +32,11 @@ class HomeScreen extends StatelessWidget {
           child: AppPage(
             horizontalPadding: 20,
             children: [
-              CampusHeader(onOpenNotifications: onOpenNotifications, onOpenProfile: onOpenProfile),
+              CampusHeader(onOpenProfile: onOpenProfile),
               Text(_greeting(), style: TextStyle(color: AppColors.secondaryInk, fontSize: 15)),
               const PageHeader(title: '오늘의 승무 지원'),
               TodayDutyCard(onTap: onOpenSchedule),
               QuickActionGrid(
-                onAskRegulation: onAskRegulation,
                 onOpenSchedule: onOpenSchedule,
                 onOpenBookmarks: onOpenBookmarks,
                 onOpenRegulations: onOpenRegulations,

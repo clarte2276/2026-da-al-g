@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../core/colors.dart';
+import '../services/ai_api_client.dart';
 import '../services/auth_session.dart';
 import 'login_screen.dart';
 
@@ -46,43 +47,36 @@ class MyPageScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          name,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '서울메트로 $line',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: AppColors.dutyMeta,
+                        const SizedBox(height: 4),
+                        Text(
+                          '서울메트로 $line',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: AppColors.dutyMeta,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        '사번 $employeeId',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: AppColors.ghostText,
+                        const SizedBox(height: 2),
+                        Text(
+                          '사번 $employeeId',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: AppColors.ghostText,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.edit_outlined,
-                      color: Colors.white54,
-                      size: 20,
+                      ],
                     ),
-                    onPressed: () => _showComingSoon(context),
                   ),
                 ],
               ),
@@ -90,64 +84,17 @@ class MyPageScreen extends StatelessWidget {
             const SizedBox(height: 20),
 
             _MenuSection(
-              title: '내 정보',
-              items: [
-                _MenuItem(
-                  icon: Icons.person_outline_rounded,
-                  label: '프로필 수정',
-                  onTap: () => _showComingSoon(context),
-                ),
-                _MenuItem(
-                  icon: Icons.lock_outline_rounded,
-                  label: '비밀번호 변경',
-                  onTap: () => _showComingSoon(context),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-
-            _MenuSection(
-              title: '앱 설정',
+              title: '정보',
               items: [
                 _MenuItem(
                   icon: Icons.train_rounded,
                   label: '소속 노선',
-                  trailing: '6호선',
-                  onTap: () => _showComingSoon(context),
+                  trailing: line,
                 ),
-                _MenuItem(
-                  icon: Icons.notifications_outlined,
-                  label: '알림 설정',
-                  onTap: () => _showComingSoon(context),
-                ),
-                _MenuItem(
-                  icon: Icons.description_outlined,
-                  label: '규정 버전',
-                  trailing: '2026.04',
-                  onTap: () => _showComingSoon(context),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-
-            _MenuSection(
-              title: '기타',
-              items: [
-                _MenuItem(
-                  icon: Icons.campaign_outlined,
-                  label: '공지사항',
-                  onTap: () => _showComingSoon(context),
-                ),
-                _MenuItem(
-                  icon: Icons.help_outline_rounded,
-                  label: '이용 문의',
-                  onTap: () => _showComingSoon(context),
-                ),
-                _MenuItem(
+                const _MenuItem(
                   icon: Icons.info_outline_rounded,
                   label: '앱 버전',
                   trailing: 'v0.1.0',
-                  onTap: () => _showComingSoon(context),
                 ),
               ],
             ),
@@ -157,16 +104,18 @@ class MyPageScreen extends StatelessWidget {
               title: '계정',
               items: [
                 _MenuItem(
+                  icon: Icons.lock_outline_rounded,
+                  label: '비밀번호 변경',
+                  onTap: () => showDialog<void>(
+                    context: context,
+                    builder: (_) => const _PasswordDialog(),
+                  ),
+                ),
+                _MenuItem(
                   icon: Icons.logout_rounded,
                   label: '로그아웃',
                   labelColor: AppColors.evidence,
                   onTap: () => _confirmLogout(context),
-                ),
-                _MenuItem(
-                  icon: Icons.person_remove_outlined,
-                  label: '회원탈퇴',
-                  labelColor: Colors.red.shade400,
-                  onTap: () => _showComingSoon(context),
                 ),
               ],
             ),
@@ -174,12 +123,6 @@ class MyPageScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  void _showComingSoon(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('준비 중입니다.')),
     );
   }
 
@@ -196,10 +139,7 @@ class MyPageScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
-              '취소',
-              style: TextStyle(color: AppColors.secondaryInk),
-            ),
+            child: Text('취소', style: TextStyle(color: AppColors.secondaryInk)),
           ),
           TextButton(
             onPressed: () {
@@ -239,7 +179,7 @@ class _MenuSection extends StatelessWidget {
           child: Text(
             title,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: 13,
               fontWeight: FontWeight.w700,
               color: AppColors.secondaryInk,
             ),
@@ -274,38 +214,141 @@ class _MenuItem extends StatelessWidget {
     required this.label,
     this.trailing,
     this.labelColor,
-    required this.onTap,
+    this.onTap,
   });
   final IconData icon;
   final String label;
   final String? trailing;
   final Color? labelColor;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(icon, color: labelColor ?? AppColors.line6Gold, size: 22),
-      title: Text(
-        label,
-        style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-          color: labelColor ?? AppColors.ink,
+    // 카드 배경 위에서도 탭 물결이 보이도록 자체 Material을 둔다.
+    return Material(
+      type: MaterialType.transparency,
+      child: ListTile(
+        leading: Icon(icon, color: labelColor ?? AppColors.line6Gold, size: 22),
+        title: Text(
+          label,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: labelColor ?? AppColors.ink,
+          ),
+        ),
+        trailing: trailing != null
+            ? Text(
+                trailing!,
+                style: TextStyle(fontSize: 13, color: AppColors.ghostText),
+              )
+            : Icon(
+                Icons.chevron_right_rounded,
+                color: AppColors.ghostText,
+                size: 18,
+              ),
+        onTap: onTap,
+        dense: true,
+      ),
+    );
+  }
+}
+
+class _PasswordDialog extends StatefulWidget {
+  const _PasswordDialog();
+
+  @override
+  State<_PasswordDialog> createState() => _PasswordDialogState();
+}
+
+class _PasswordDialogState extends State<_PasswordDialog> {
+  final _current = TextEditingController();
+  final _next = TextEditingController();
+  final _confirm = TextEditingController();
+  final _client = AiApiClient();
+  bool _saving = false;
+  String? _error;
+
+  @override
+  void dispose() {
+    _current.dispose();
+    _next.dispose();
+    _confirm.dispose();
+    _client.close();
+    super.dispose();
+  }
+
+  Future<void> _submit() async {
+    final error = switch ((_current.text, _next.text, _confirm.text)) {
+      ('', _, _) => '현재 비밀번호를 입력해 주세요.',
+      (_, final n, _) when n.length < 8 => '새 비밀번호는 8자 이상이어야 합니다.',
+      (_, final n, final c) when n != c => '새 비밀번호가 서로 다릅니다.',
+      _ => null,
+    };
+    if (error != null) {
+      setState(() => _error = error);
+      return;
+    }
+    setState(() {
+      _saving = true;
+      _error = null;
+    });
+    try {
+      await _client.changePassword(
+        currentPassword: _current.text,
+        newPassword: _next.text,
+      );
+      if (!mounted) return;
+      final messenger = ScaffoldMessenger.of(context);
+      Navigator.pop(context);
+      messenger.showSnackBar(
+        const SnackBar(content: Text('비밀번호를 바꿨습니다. 다른 기기는 로그아웃됩니다.')),
+      );
+    } on AiApiException catch (e) {
+      // 400은 서버가 사용자용 문구를 보낸다(현재 비밀번호 불일치 등).
+      setState(() => _error = e.statusCode == 400 ? e.message : '비밀번호를 바꾸지 못했습니다.');
+    } catch (_) {
+      setState(() => _error = '서버에 연결하지 못했습니다.');
+    } finally {
+      if (mounted) setState(() => _saving = false);
+    }
+  }
+
+  Widget _field(TextEditingController c, String label) => TextField(
+    controller: c,
+    obscureText: true,
+    enabled: !_saving,
+    decoration: InputDecoration(labelText: label),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('비밀번호 변경'),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _field(_current, '현재 비밀번호'),
+            _field(_next, '새 비밀번호 (8자 이상)'),
+            _field(_confirm, '새 비밀번호 확인'),
+            if (_error != null) ...[
+              const SizedBox(height: 12),
+              Text(_error!, style: TextStyle(color: Colors.red.shade400, fontSize: 13)),
+            ],
+          ],
         ),
       ),
-      trailing: trailing != null
-          ? Text(
-              trailing!,
-              style: TextStyle(fontSize: 13, color: AppColors.ghostText),
-            )
-          : Icon(
-              Icons.chevron_right_rounded,
-              color: AppColors.ghostText,
-              size: 18,
-            ),
-      onTap: onTap,
-      dense: true,
+      actions: [
+        TextButton(
+          onPressed: _saving ? null : () => Navigator.pop(context),
+          child: const Text('취소'),
+        ),
+        TextButton(
+          onPressed: _saving ? null : _submit,
+          child: const Text('변경'),
+        ),
+      ],
     );
   }
 }

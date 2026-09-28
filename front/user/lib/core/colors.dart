@@ -10,6 +10,9 @@ class AppColors {
   // 브랜드 색(공통)
   static const line6Gold = Color(0xffb7922f);
 
+  /// 흰 글씨·아이콘이 올라가는 배경용. 흰색 대비 약 4.9:1 (line6Gold는 2.9:1로 미달).
+  static const line6GoldDeep = Color(0xff8a6d1f);
+
   static Color get ink => _dark ? const Color(0xffece9e2) : const Color(0xff242424);
   static Color get secondaryInk => _dark ? const Color(0xffadadad) : const Color(0xff5c5c5c);
   static Color get canvas => _dark ? const Color(0xff121212) : const Color(0xfff5f4f0);

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'core/colors.dart';
 import 'core/theme_controller.dart';
-import 'data/conversation_store.dart';
 import 'screens/app_shell_wrapper.dart';
 import 'screens/login_screen.dart';
 import 'services/auth_session.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await ConversationStore.instance.init();
+  await ThemeController.instance.init();
   try {
     await AuthSession.restore();
   } catch (_) {
@@ -39,11 +38,11 @@ class DaAlGApp extends StatelessWidget {
           seedColor: AppColors.line6Gold,
           brightness: dark ? Brightness.dark : Brightness.light,
           surface: AppColors.card,
-          primary: AppColors.line6Gold,
+          primary: AppColors.line6GoldDeep,
           onSurface: AppColors.ink,
         ),
         scaffoldBackgroundColor: AppColors.canvas,
-        fontFamily: 'Inter',
+        fontFamily: 'Pretendard',
         appBarTheme: AppBarTheme(
           backgroundColor: AppColors.card,
           foregroundColor: AppColors.ink,
@@ -62,7 +61,7 @@ class DaAlGApp extends StatelessWidget {
           labelTextStyle: WidgetStateProperty.resolveWith(
             (states) => TextStyle(
               color: states.contains(WidgetState.selected) ? AppColors.line6Gold : AppColors.secondaryInk,
-              fontSize: 11,
+              fontSize: 13,
               fontWeight: FontWeight.w500,
             ),
           ),

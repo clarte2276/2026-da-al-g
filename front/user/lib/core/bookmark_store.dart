@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../data/mock_conversations.dart';
+import '../data/chat_models.dart';
 import '../services/auth_session.dart';
 
 /// 보관함(북마크) 저장소 — 사용자별로 SharedPreferences 에 저장.

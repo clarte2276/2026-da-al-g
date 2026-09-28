@@ -77,15 +77,16 @@ class _ChatInputBarState extends State<ChatInputBar> {
             const SizedBox(width: 8),
             GestureDetector(
               onTap: _submit,
+              behavior: HitTestBehavior.opaque,
               child: Container(
-                margin: const EdgeInsets.all(6),
-                width: 34,
-                height: 34,
+                margin: const EdgeInsets.all(4),
+                width: 40,
+                height: 40,
                 decoration: const BoxDecoration(
-                  color: AppColors.line6Gold,
+                  color: AppColors.line6GoldDeep,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.arrow_upward_rounded, color: Colors.white, size: 18),
+                child: const Icon(Icons.arrow_upward_rounded, color: Colors.white, size: 20, semanticLabel: '보내기'),
               ),
             ),
           ],

@@ -143,6 +143,10 @@ class DutyMonth {
         turnDetailIsDummy: j['turnDetailIsDummy'] as bool? ?? false,
       );
 
+  /// 로그인한 사용자의 이름과 같은 기관사. 없으면 null.
+  Driver? driverNamed(String? name) =>
+      drivers.where((d) => d.name == name).firstOrNull;
+
   /// 특정 날짜에 근무하는 기관사 목록(교번표용). turn이 있는 항목만.
   List<({Driver driver, DayDuty duty})> assignmentsOn(String date) {
     final out = <({Driver driver, DayDuty duty})>[];
@@ -160,6 +164,10 @@ class DutyMonth {
     return out;
   }
 }
+
+/// 근무표 JSON의 날짜 키(yyyy-MM-dd).
+String dutyDateKey(DateTime d) =>
+    '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
 
 /// 자산 JSON을 한 번만 읽어 캐싱한다.
 class DutyRepository {

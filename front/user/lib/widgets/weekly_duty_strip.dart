@@ -1,34 +1,23 @@
 import 'package:flutter/material.dart';
 import '../core/colors.dart';
 import '../core/duty_data.dart';
+import '../services/auth_session.dart';
 
-/// dia5의 "주간 일정" 가로 스트립을 차용한 위젯.
-/// 이번 주 7일을 요일·날짜·근무유형(주간/야간/비번/휴무) 칩으로 보여준다.
+/// 이번 주 7일의 내 근무 유형을 근무표 JSON에서 읽어 보여준다. 없는 날은 '-'.
 class WeeklyDutyStrip extends StatelessWidget {
   const WeeklyDutyStrip({super.key, this.onTapDay});
   final VoidCallback? onTapDay;
 
-  static const _labels = ['주간', '야간', '비번', '휴무', '주간', '대기', '휴무'];
-
-  DutyType _typeOf(String label) {
-    switch (label) {
-      case '주간':
-        return DutyType.day;
-      case '야간':
-        return DutyType.night;
-      case '대기':
-        return DutyType.standby;
-      case '비번':
-        return DutyType.off;
-      case '휴무':
-        return DutyType.rest;
-      default:
-        return DutyType.unknown;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder<DutyMonth>(
+      future: DutyRepository.instance.load(),
+      builder: (context, snap) =>
+          _strip(snap.data?.driverNamed(AuthSession.current?.user.name)),
+    );
+  }
+
+  Widget _strip(Driver? me) {
     final now = DateTime.now();
     final sunday = now.subtract(Duration(days: now.weekday % 7));
     const wd = ['일', '월', '화', '수', '목', '금', '토'];
@@ -45,8 +34,8 @@ class WeeklyDutyStrip extends StatelessWidget {
           final isToday = date.year == now.year &&
               date.month == now.month &&
               date.day == now.day;
-          final label = _labels[i];
-          final c = dutyTypeColor(_typeOf(label));
+          final type = me?.days[dutyDateKey(date)]?.type ?? DutyType.unknown;
+          final c = dutyTypeColor(type);
           return GestureDetector(
             onTap: onTapDay,
             child: Container(
@@ -65,7 +54,7 @@ class WeeklyDutyStrip extends StatelessWidget {
                 children: [
                   Text(wd[i],
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 13,
                         color: i == 0
                             ? Colors.red.shade400
                             : (i == 6 ? Colors.blue.shade400 : AppColors.secondaryInk),
@@ -80,8 +69,8 @@ class WeeklyDutyStrip extends StatelessWidget {
                       color: c.withValues(alpha: 0.14),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Text(label,
-                        style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: c)),
+                    child: Text(type.label,
+                        style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: c)),
                   ),
                 ],
               ),

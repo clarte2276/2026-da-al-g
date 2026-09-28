@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../core/colors.dart';
 import '../data/conversation_store.dart';
-import '../data/mock_conversations.dart';
+import '../data/chat_models.dart';
 import '../widgets/chat_input_bar.dart';
 import 'chat_room_screen.dart';
 import 'regulation_library_screen.dart';
@@ -67,7 +67,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                       Text(
                         '운전취급·복무·안전관리 규정 검색',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 13,
                           color: AppColors.secondaryInk,
                         ),
                       ),
@@ -155,7 +155,7 @@ class _EmptyChatList extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               '예: "출입문 고장 시 승객 하차 절차"',
-              style: TextStyle(fontSize: 12, color: AppColors.secondaryInk),
+              style: TextStyle(fontSize: 13, color: AppColors.secondaryInk),
             ),
           ],
         ),
@@ -213,7 +213,7 @@ class _ConversationTile extends StatelessWidget {
                       Text(
                         conversation.timeAgo,
                         style: TextStyle(
-                          fontSize: 11,
+                          fontSize: 13,
                           color: AppColors.ghostText,
                         ),
                       ),
@@ -223,7 +223,7 @@ class _ConversationTile extends StatelessWidget {
                   Text(
                     conversation.preview,
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 13,
                       color: AppColors.secondaryInk,
                       height: 1.3,
                     ),

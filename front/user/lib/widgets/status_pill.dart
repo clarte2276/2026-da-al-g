@@ -14,7 +14,7 @@ class StatusPill extends StatelessWidget {
         color: bgColor ?? color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(99),
       ),
-      child: Text(label, style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.w700)),
+      child: Text(label, style: TextStyle(color: color, fontSize: 13, fontWeight: FontWeight.w700)),
     );
   }
 }

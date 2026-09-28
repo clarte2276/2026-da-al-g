@@ -3,7 +3,6 @@ import '../core/colors.dart';
 import '../services/ai_api_client.dart';
 import '../services/auth_session.dart';
 import 'app_shell_wrapper.dart';
-import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -46,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
         identifier: identifier,
         password: password,
       );
-      AuthSession.signIn(response);
+      await AuthSession.signIn(response);
       if (!mounted) {
         return;
       }
@@ -71,14 +70,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  // MVP: '비밀번호 찾기'를 누르면 인증 없이 바로 앱으로 진입한다.
-  void _skipLogin() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const AppShellWrapper()),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: 44,
                     height: 44,
                     decoration: BoxDecoration(
-                      color: AppColors.line6Gold,
+                      color: AppColors.line6GoldDeep,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Icon(
@@ -107,12 +98,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  const Text(
-                    'Da-Al-G',
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w900,
-                      color: AppColors.line6Gold,
+                  const Flexible(
+                    child: Text(
+                      'Da-Al-G',
+                      style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w900,
+                        color: AppColors.line6Gold,
+                      ),
                     ),
                   ),
                 ],
@@ -156,17 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () => setState(() => _obscure = !_obscure),
                 ),
               ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: _isSubmitting ? null : _skipLogin,
-                  child: Text(
-                    '비밀번호 찾기',
-                    style: TextStyle(color: AppColors.ghostText, fontSize: 13),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 20),
               if (_errorText != null) ...[
                 Text(
                   _errorText!,
@@ -186,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: ElevatedButton(
                   onPressed: _isSubmitting ? null : _login,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.line6Gold,
+                    backgroundColor: AppColors.line6GoldDeep,
                     foregroundColor: Colors.white,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
@@ -213,32 +196,14 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 24),
 
-              // Sign up link
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '계정이 없으신가요?',
-                    style: TextStyle(
-                      color: AppColors.secondaryInk,
-                      fontSize: 14,
-                    ),
+              Center(
+                child: Text(
+                  '계정은 소속 관리자에게 발급받으세요.',
+                  style: TextStyle(
+                    color: AppColors.secondaryInk,
+                    fontSize: 14,
                   ),
-                  TextButton(
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const SignUpScreen()),
-                    ),
-                    child: const Text(
-                      '회원가입',
-                      style: TextStyle(
-                        color: AppColors.line6Gold,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
               const SizedBox(height: 32),
             ],

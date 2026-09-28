@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
 
@@ -22,39 +23,69 @@ class AiApiClient {
   final bool _ownsClient;
   final String baseUrl;
 
-  Future<AiChatResponse> ask(
+  /// 답변 스트림(NDJSON): status·delta 이벤트가 오고, 마지막 done에 인용을 정리한 최종 답변과 근거가 온다.
+  Stream<AiChatEvent> askStream(
     String question, {
     List<Map<String, String>> history = const [],
-  }) async {
-    final decoded = await _send(
-      'POST',
-      '/api/chat',
-      body: {'message': question, 'history': history},
-      timeout: const Duration(seconds: 90),
-    );
-    return AiChatResponse.fromJson(decoded as Map<String, dynamic>);
+  }) async* {
+    final request = http.Request('POST', Uri.parse('$baseUrl/api/chat/stream'));
+    final bearer = AuthSession.current?.accessToken;
+    if (bearer != null && bearer.isNotEmpty) {
+      request.headers['Authorization'] = 'Bearer $bearer';
+    }
+    request.headers['Content-Type'] = 'application/json';
+    request.body = jsonEncode({'message': question, 'history': history});
+
+    final response = await _httpClient
+        .send(request)
+        .timeout(const Duration(seconds: 30));
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw AiApiException(
+        _errorMessage(await http.Response.fromStream(response)),
+        statusCode: response.statusCode,
+      );
+    }
+    // 조각 사이가 60초 넘게 비면 끊긴 것으로 본다(TimeoutException).
+    final lines = response.stream
+        .timeout(const Duration(seconds: 60))
+        .transform(utf8.decoder)
+        .transform(const LineSplitter());
+    await for (final line in lines) {
+      if (line.trim().isEmpty) continue;
+      final json = jsonDecode(line) as Map<String, dynamic>;
+      final text = json['text'] as String? ?? '';
+      switch (json['type']) {
+        case 'status':
+          yield AiChatEvent.status(text);
+        case 'delta':
+          yield AiChatEvent.delta(text);
+        case 'done':
+          yield AiChatEvent.done(AiChatResponse.fromJson(json));
+          return;
+      }
+    }
+    throw const AiApiException('답변이 중간에 끊겼습니다.');
   }
 
-  /// 백엔드 계정은 username 기반이므로 사번을 username, 이름을 display_name 으로 보낸다.
-  /// 이메일·노선은 서버에 저장되지 않아 로컬 세션에만 남긴다.
-  Future<AuthResponse> signUp({
-    required String name,
-    required String employeeId,
-    required String email,
-    required String password,
-    required String line,
+  /// 답변 평가(👍/👎)를 서버 감사 로그에 남긴다.
+  Future<void> sendFeedback({
+    required String rating,
+    required String question,
+    required String answer,
+    required List<Map<String, dynamic>> evidence,
+    String? reason,
   }) async {
-    final decoded = await _send(
+    await _send(
       'POST',
-      '/api/auth/register',
+      '/api/chat/feedback',
       body: {
-        'username': employeeId,
-        'password': password,
-        'display_name': name,
+        'rating': rating,
+        'question': question,
+        'answer': answer,
+        'evidence': evidence,
+        'reason': ?reason,
       },
     );
-    final response = AuthResponse.fromJson(decoded as Map<String, dynamic>);
-    return response.withUser(response.user.copyWith(email: email, line: line));
   }
 
   Future<AuthResponse> login({
@@ -67,6 +98,21 @@ class AiApiClient {
       body: {'username': identifier, 'password': password},
     );
     return AuthResponse.fromJson(decoded as Map<String, dynamic>);
+  }
+
+  /// 비밀번호 변경. 성공하면 서버가 다른 기기의 로그인을 끊는다.
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    await _send(
+      'POST',
+      '/api/auth/password',
+      body: {
+        'current_password': currentPassword,
+        'new_password': newPassword,
+      },
+    );
   }
 
   Future<void> logout(String accessToken) async {
@@ -100,6 +146,41 @@ class AiApiClient {
         .map((f) => (f['text'] as String? ?? '').trim())
         .where((t) => t.isNotEmpty);
     return {'content': texts.join('\n\n'), 'annexes': const []};
+  }
+
+  /// 원문 페이지 PNG. 첫 변환 중(202)이면 준비될 때까지 다시 요청한다.
+  /// page 가 없으면 서버가 quote 로 페이지를 찾는다.
+  Future<Uint8List> fetchPageImage(
+    String documentId, {
+    String? versionId,
+    int? page,
+    String? quote,
+  }) async {
+    final uri = Uri.parse('$baseUrl/api/documents/$documentId/page.png').replace(
+      queryParameters: {
+        if (versionId != null) 'version_id': versionId,
+        if (page != null) 'page': '$page',
+        if (page == null && quote != null) 'quote': quote,
+      },
+    );
+    final bearer = AuthSession.current?.accessToken;
+    for (var attempt = 0; attempt < 12; attempt++) {
+      final response = await _httpClient
+          .get(uri, headers: {
+            if (bearer != null && bearer.isNotEmpty)
+              'Authorization': 'Bearer $bearer',
+          })
+          .timeout(const Duration(seconds: 30));
+      if (response.statusCode == 202) continue;
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        throw AiApiException(
+          _errorMessage(response),
+          statusCode: response.statusCode,
+        );
+      }
+      return response.bodyBytes;
+    }
+    throw const AiApiException('원문 변환이 아직 끝나지 않았습니다.');
   }
 
   void close() {
@@ -175,13 +256,6 @@ class AuthResponse {
   bool get isExpired =>
       expiresAt != null && !expiresAt!.isAfter(DateTime.now().toUtc());
 
-  AuthResponse withUser(AuthUser user) => AuthResponse(
-    accessToken: accessToken,
-    tokenType: tokenType,
-    user: user,
-    expiresAt: expiresAt,
-  );
-
   factory AuthResponse.fromJson(Map<String, dynamic> json) {
     final rawUser = json['user'];
     if (rawUser is! Map<String, dynamic>) {
@@ -218,14 +292,6 @@ class AuthUser {
   final String email;
   final String line;
 
-  AuthUser copyWith({String? email, String? line}) => AuthUser(
-    id: id,
-    name: name,
-    employeeId: employeeId,
-    email: email ?? this.email,
-    line: line ?? this.line,
-  );
-
   // 서버 응답(username/display_name)과 로컬 저장 형식(name/employee_id) 모두 읽는다.
   factory AuthUser.fromJson(Map<String, dynamic> json) {
     return AuthUser(
@@ -245,6 +311,26 @@ class AuthUser {
     'email': email,
     'line': line,
   };
+}
+
+enum AiChatEventType { status, delta, done }
+
+class AiChatEvent {
+  const AiChatEvent.status(this.text)
+    : type = AiChatEventType.status,
+      response = null;
+  const AiChatEvent.delta(this.text)
+    : type = AiChatEventType.delta,
+      response = null;
+  const AiChatEvent.done(AiChatResponse this.response)
+    : type = AiChatEventType.done,
+      text = '';
+
+  final AiChatEventType type;
+  final String text;
+
+  /// done 이벤트에만 있다.
+  final AiChatResponse? response;
 }
 
 class AiChatResponse {
@@ -283,6 +369,9 @@ class AiEvidenceSource {
     this.sourcePath,
     this.chunkId,
     this.retriever,
+    this.documentId,
+    this.versionId,
+    this.page,
   });
 
   final double score;
@@ -293,6 +382,9 @@ class AiEvidenceSource {
   final String? sourcePath;
   final String? chunkId;
   final String? retriever;
+  final String? documentId;
+  final String? versionId;
+  final int? page;
 
   /// 백엔드 `EvidenceOut` → 레거시 화면이 쓰는 근거 형태.
   factory AiEvidenceSource.fromJson(Map<String, dynamic> json) {
@@ -310,6 +402,11 @@ class AiEvidenceSource {
       sourcePath: json['filename'] as String?,
       chunkId: fragment?['id'] as String? ?? json['link_id'] as String?,
       retriever: hop == 0 ? '직접 검색' : '그래프 $hop hop',
+      documentId:
+          json['document_id'] as String? ?? fragment?['document_id'] as String?,
+      versionId:
+          json['version_id'] as String? ?? fragment?['version_id'] as String?,
+      page: (json['page'] as num?)?.toInt(),
     );
   }
 }
