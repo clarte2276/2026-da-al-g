@@ -168,7 +168,6 @@ class RAGQuery(BaseModel):
     top_k: int = Field(default=5, ge=1, le=30)
     max_hops: int = Field(default=2, ge=0, le=4)
     relation_types: list[RelationType] | None = None
-    model: str | None = None
     preview_only: bool = False
 
 
@@ -231,7 +230,6 @@ class ChatRequest(BaseModel):
     history: list[ChatHistoryMessage] = Field(default_factory=list, max_length=12)
     top_k: int = Field(default=5, ge=1, le=30)
     max_hops: int = Field(default=2, ge=0, le=4)
-    model: str | None = Field(default=None, max_length=100)
 
 
 class ChatResponse(BaseModel):

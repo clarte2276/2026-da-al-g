@@ -836,7 +836,7 @@ def rag_query(
         if not payload.preview_only or chat_service._looks_like_document_question(payload.question)
         else []
     )
-    answer = "" if payload.preview_only else rag_service.answer(payload.question, evidence, payload.model)
+    answer = "" if payload.preview_only else rag_service.answer(payload.question, evidence)
     return RAGResponse(
         answer=answer,
         evidence=[_evidence_out(item) for item in evidence],
@@ -857,7 +857,6 @@ def chat(
         [{"role": item.role, "content": item.content} for item in payload.history],
         top_k=payload.top_k,
         max_hops=payload.max_hops,
-        model=payload.model,
     )
     return ChatResponse(
         answer=result.answer,

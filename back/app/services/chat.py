@@ -117,14 +117,13 @@ class ChatService:
         *,
         top_k: int = 5,
         max_hops: int = 2,
-        model: str | None = None,
     ) -> ChatResult:
         message = message.strip()
         if self._greeting_re.fullmatch(message):
             return ChatResult("안녕하세요! 무엇을 도와드릴까요?", "general", [])
 
         if not self.settings.openai_api_key:
-            return self._offline_response(db, message, top_k, max_hops, model)
+            return self._offline_response(db, message, top_k, max_hops)
 
         try:
             client = self._get_client()
@@ -133,11 +132,11 @@ class ChatService:
                 *history[-12:],
                 {"role": "user", "content": message},
             ]
-            first_model = model or self.settings.llm_model
+            model = self.settings.llm_model
             first = client.chat.completions.create(
-                model=first_model,
+                model=model,
                 messages=messages,
-                **deterministic_options(first_model),
+                **deterministic_options(model),
                 tools=[self._search_tool],
                 tool_choice="auto",
             )
@@ -185,9 +184,9 @@ class ChatService:
 
             try:
                 final = client.chat.completions.create(
-                    model=model or self.settings.llm_model,
+                    model=model,
                     messages=[*tool_messages, {"role": "system", "content": ANSWER_FOCUS_REMINDER}],
-                    **answer_options(self.settings, model or self.settings.llm_model),
+                    **answer_options(self.settings, model),
                 )
                 answer = fix_citations(
                     drop_invalid_citations(self._content(self._first_message(final)), len(evidence)),
@@ -195,11 +194,11 @@ class ChatService:
                 )
             except Exception:
                 logger.debug("Grounded chat answer generation failed", exc_info=True)
-                answer = self.rag_service.answer(message, evidence, model)
+                answer = self.rag_service.answer(message, evidence)
             return ChatResult(answer or "문서 근거를 바탕으로 답변을 생성하지 못했습니다.", "rag", evidence)
         except Exception:
             logger.debug("Hybrid chat request failed", exc_info=True)
-            return self._offline_response(db, message, top_k, max_hops, model)
+            return self._offline_response(db, message, top_k, max_hops)
 
     def _get_client(self) -> Any:
         if self._client is None:
@@ -306,7 +305,6 @@ class ChatService:
         message: str,
         top_k: int,
         max_hops: int,
-        model: str | None,
     ) -> ChatResult:
         if not self._looks_like_document_question(message):
             return ChatResult(
@@ -318,7 +316,7 @@ class ChatService:
         if not evidence:
             return ChatResult("문서에서 질문과 관련된 근거를 찾지 못했습니다.", "insufficient_evidence", [])
         evidence = self._limit_evidence(evidence, top_k)
-        return ChatResult(self.rag_service.answer(message, evidence, model), "rag", evidence)
+        return ChatResult(self.rag_service.answer(message, evidence), "rag", evidence)
 
     @classmethod
     def _looks_like_document_question(cls, message: str) -> bool:

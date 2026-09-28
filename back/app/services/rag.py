@@ -894,7 +894,7 @@ class GraphRAGService:
             return []
         return list(db.scalars(select(Fragment).where(Fragment.id.in_(ids))).all())
 
-    def answer(self, question: str, evidence: list[Evidence], model: str | None = None) -> str:
+    def answer(self, question: str, evidence: list[Evidence]) -> str:
         if not evidence:
             return "관련된 문서 근거를 찾지 못했습니다."
         context_parts = []
@@ -918,8 +918,8 @@ class GraphRAGService:
 
                 client = OpenAI(api_key=self.settings.openai_api_key)
                 response = client.chat.completions.create(
-                    model=model or self.settings.llm_model,
-                    **answer_options(self.settings, model or self.settings.llm_model),
+                    model=self.settings.llm_model,
+                    **answer_options(self.settings, self.settings.llm_model),
                     messages=[
                         {
                             "role": "system",

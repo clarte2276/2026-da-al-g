@@ -31,7 +31,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  cupertino_icons: ^1.0.8
   http: ^1.5.0
+  shared_preferences: ^2.3.3
 
 dev_dependencies:
   flutter_test:
@@ -56,7 +58,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/data/suggested_questions.json
+    - assets/data/duty_2026_06.json
 
   # To add assets to your application, add an assets section, like this:
   # assets:
