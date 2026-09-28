@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'auth_session.dart';
 
@@ -18,7 +17,7 @@ class AiApiClient {
 
   static String get defaultBaseUrl => _configuredBaseUrl.trim().isNotEmpty
       ? _configuredBaseUrl.trim()
-      : (kIsWeb ? Uri.base.origin : 'https://2026-da-al-g-production.up.railway.app');
+      : 'https://2026-da-al-g-production.up.railway.app';
 
   final http.Client _httpClient;
   final bool _ownsClient;
