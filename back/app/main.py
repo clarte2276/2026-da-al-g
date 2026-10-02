@@ -1040,6 +1040,8 @@ def _log_answer(db: Session, user_id: str, question: str, result: ChatResult) ->
                 "evidence": [
                     {
                         "fragment_id": item.fragment.id,
+                        "title": getattr(item.fragment, "title", None),
+                        "text": (getattr(item.fragment, "text", None) or "")[:2000],
                         "link_id": item.link_id,
                         "filename": item.filename,
                         "location": item.location,

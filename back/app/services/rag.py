@@ -35,6 +35,18 @@ RELATION_WEIGHTS = {
 TOKEN_SUFFIXES = ("하다고", "으로서", "으로", "에서", "에게", "에는", "하면", "해야", "하고",
                   "할", "했", "한", "인", "은", "는", "이", "가", "을", "를", "에", "의", "도",
                   "과", "와")
+SEARCH_SYNONYMS = {
+    "급정거": ("급정차", "정차"),
+    "급제동": ("급정차", "정차"),
+    "갑자기 멈추": ("급정차", "정차"),
+    "섰다": ("급정차", "정차"),
+    "자동문": ("출입문",),
+    "문": ("출입문",),
+    "긴급상황": ("이례상황", "사고", "비상"),
+    "비상상황": ("이례상황", "사고", "비상"),
+    "불": ("화재",),
+    "브레이크": ("제동",),
+}
 ARTICLE_HEADING_RE = re.compile(r"(?m)^[ \t]*(제\d+조)(?=\(|[ \t]|$)")
 # 부칙·별표·별지 end the last article; otherwise it swallows the whole appendix.
 APPENDIX_HEADING_RE = re.compile(r"(?m)^[ \t]*(?:부[ \t]*칙|\[별[표지])")
@@ -132,16 +144,21 @@ def fix_citations(answer: str, evidence_texts: list[str]) -> str:
     position = 0
     for match in CITED_CLAIM_RE.finditer(answer):
         claim = answer[position:match.start()]
-        claim_grams = bigrams(claim)
+        # 이전 문장·항목이 현재 인용의 점수나 '근거 없음' 판단에 섞이지 않게 한다.
+        sentence = re.split(r"(?<=[.!?])\s+|\n", claim.rstrip(" \t\r\n.!?"))[-1]
+        claim_grams = bigrams(sentence)
         numbers = [int(n) for n in re.findall(r"\d+", match.group(1))]
-        # Several citations on one sentence each hold part of it; only a lone citation is checked.
-        if claim_grams and passages and len(numbers) == 1 and 1 <= numbers[0] <= len(passages):
+        if re.search(r"확인되지\s*않|찾을\s*수\s*없|명시되어\s*있지\s*않", sentence):
+            numbers = []
+        elif claim_grams and passages and numbers and all(1 <= n <= len(passages) for n in numbers):
             best = max(range(1, len(passages) + 1), key=lambda n: coverage(claim_grams, n))
             best_coverage = coverage(claim_grams, best)
-            numbers = [
-                best if best_coverage >= 0.6 and best_coverage - coverage(claim_grams, n) >= 0.25 else n
-                for n in numbers
-            ]
+            # 가장 잘 맞는 근거가 이미 있으면 다른 근거가 문장의 일부를 뒷받침할 수 있다.
+            if best not in numbers:
+                numbers = [
+                    best if best_coverage >= 0.3 and best_coverage - coverage(claim_grams, n) >= 0.15 else n
+                    for n in numbers
+                ]
         leading = match.group(1)[: len(match.group(1)) - len(match.group(1).lstrip())]
         parts.append(claim + leading + "".join(f"[근거 {n}]" for n in dict.fromkeys(numbers)))
         position = match.end()
@@ -176,7 +193,13 @@ def _token_counts(value: str) -> Counter[str]:
 
 
 def _search_tokens(value: str) -> set[str]:
-    return set(_token_counts(value))
+    tokens = set(_token_counts(value))
+    # 질문만 확장한다. 한 글자 단어는 조사만 허용해 '문서', '불이익'을 구분한다.
+    for term, synonyms in SEARCH_SYNONYMS.items():
+        ending = "" if len(term) > 1 else rf"(?:{'|'.join(TOKEN_SUFFIXES)})?(?![가-힣A-Za-z0-9_])"
+        if re.search(rf"(?<![가-힣A-Za-z0-9_]){re.escape(term)}{ending}", value.lower()):
+            tokens.update(synonyms)
+    return tokens
 
 
 # A guide deck opens each section with a heading slide ("10 ) ATC 장치 고장 시 ̶ 점검사항",
@@ -755,9 +778,9 @@ class GraphRAGService:
                         if not matches:
                             continue
                         if hop == 1 and current.fragment.title:
-                            title_tokens = _search_tokens(current.fragment.title)
+                            title_tokens = set(_token_counts(current.fragment.title))
                             if not title_tokens & question_tokens:
-                                source_tokens = _search_tokens(selection_text(content, source))
+                                source_tokens = set(_token_counts(selection_text(content, source)))
                                 specific_matches = {
                                     token
                                     for token in question_tokens & source_tokens
@@ -842,7 +865,7 @@ class GraphRAGService:
             return [selection]
         ranked = sorted(
             (
-                len(question_tokens & _search_tokens(part.get("exact", ""))),
+                len(question_tokens & set(_token_counts(part.get("exact", "")))),
                 index,
                 part,
             )

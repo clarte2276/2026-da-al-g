@@ -1,9 +1,13 @@
 import json
 from types import SimpleNamespace
 
+import pytest
+from sqlalchemy import create_engine, select
+from sqlalchemy.orm import Session
+
 from app.config import Settings
-from app.models import Fragment
-from app.services.chat import ChatService
+from app.models import AuditEvent, Base, Fragment
+from app.services.chat import ChatResult, ChatService
 from app.services.rag import ANSWER_FOCUS_REMINDER, Evidence
 
 
@@ -131,11 +135,106 @@ def test_document_tool_result_is_grounded(tmp_path):
     assert result.mode == "rag"
     assert result.evidence == [evidence]
     assert len(client.chat.completions.calls) == 2
-    # The focus rule comes after the evidence so the answer sticks to the governing article.
-    assert client.chat.completions.calls[1]["messages"][-1] == {
+    # 근거 뒤에 답변 초점과 노선·상황별 특칙을 함께 지시한다.
+    final_messages = client.chat.completions.calls[1]["messages"]
+    assert final_messages[-2] == {
         "role": "system",
         "content": ANSWER_FOCUS_REMINDER,
     }
+    assert final_messages[-1]["role"] == "system"
+    assert "5~8호선 특칙" in final_messages[-1]["content"]
+    assert "반드시 답변에 포함" in final_messages[-1]["content"]
+
+
+def test_answer_log_preserves_synthetic_article_evidence():
+    from app.main import _log_answer
+
+    engine = create_engine("sqlite://")
+    Base.metadata.create_all(engine)
+    text = "제25조(휴가) 가족돌봄휴가를 사용할 수 있다. " * 100
+    evidence = Evidence(
+        fragment=Fragment(id="v1:article:25:0", title="취업규칙 제25조", text=text),
+        score=0.91234,
+        hop=0,
+        path=["v1:article:25:0"],
+        filename="취업규칙.hwp",
+        location="제25조",
+        version_id="v1",
+        page=3,
+    )
+
+    with Session(engine) as db:
+        _log_answer(db, "u1", "휴가 질문", ChatResult("휴가 답변", "rag", [evidence]))
+        assert db.get(Fragment, evidence.fragment.id) is None
+        event = db.scalar(select(AuditEvent).where(AuditEvent.action == "chat.answer"))
+        assert event.payload_json["evidence"] == [{
+            "fragment_id": "v1:article:25:0",
+            "title": "취업규칙 제25조",
+            "text": text[:2000],
+            "link_id": None,
+            "filename": "취업규칙.hwp",
+            "location": "제25조",
+            "version_id": "v1",
+            "page": 3,
+            "score": 0.9123,
+            "hop": 0,
+        }]
+
+
+@pytest.mark.parametrize("question", [
+    "한 달에 휴가는 몇 번 쓸 수 있어",
+    "휴직", "연차", "수당", "급여", "근무", "복무", "징계", "승진", "교육", "출장",
+])
+def test_hr_questions_search_documents_offline(tmp_path, question):
+    evidence = Evidence(fragment=Fragment(id="leave", text="휴가 규정"), score=1.0, hop=0, path=[])
+
+    class _Rag:
+        def retrieve(self, db, query, **kwargs):
+            assert query == question
+            return [evidence]
+
+        def answer(self, query, found):
+            assert query == question
+            assert found == [evidence]
+            return "휴가 규정 답변"
+
+    service = ChatService(Settings(storage_root=tmp_path, openai_api_key=None), _Rag())
+
+    assert service._looks_like_document_question(question)
+    result = service.respond(None, question, [])
+    assert result.mode == "rag"
+    assert result.evidence == [evidence]
+    assert result.answer == "휴가 규정 답변"
+
+
+def test_hr_questions_require_search_tool_online(tmp_path):
+    question = "한 달에 휴가는 몇 번 쓸 수 있어"
+    call = SimpleNamespace(
+        id="leave-call",
+        function=SimpleNamespace(name="search_documents", arguments='{"query":"취업규칙 휴가 사용 횟수"}'),
+    )
+
+    class _Rag:
+        def retrieve(self, db, query, **kwargs):
+            assert question in query
+            assert "취업규칙 휴가 사용 횟수" in query
+            return []
+
+    client = _FakeClient([SimpleNamespace(choices=[SimpleNamespace(message=_message(tool_calls=[call]))])])
+    service = ChatService(Settings(storage_root=tmp_path, openai_api_key="test"), _Rag(), client)
+
+    result = service.respond(None, question, [])
+
+    assert result.mode == "insufficient_evidence"
+    request = client.chat.completions.calls[0]
+    assert request["tool_choice"] == {"type": "function", "function": {"name": "search_documents"}}
+    prompt = request["messages"][0]["content"]
+    description = request["tools"][0]["function"]["description"]
+    for rewrite in ("급정거→급정차·정차 시 조치", "긴급상황→이례상황·사고 발생 시 조치", "자동문→출입문 고장"):
+        assert rewrite in prompt
+        assert rewrite in description
+    assert "꼭 필요하면 유지" in prompt
+    assert "only when it is not essential" in description
 
 
 def test_linked_evidence_does_not_displace_search_hits():

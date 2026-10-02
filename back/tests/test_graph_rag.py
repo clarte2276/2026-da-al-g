@@ -15,6 +15,7 @@ from app.services.rag import (
     _slide_sections,
     answer_options,
     drop_invalid_citations,
+    fix_citations,
 )
 
 
@@ -324,6 +325,47 @@ def test_invalid_citations_are_dropped() -> None:
     answer = "보고한다 [근거 2]. 정차한다 [근거 2, 근거 9]. 없음 [근거 7]."
 
     assert drop_invalid_citations(answer, 5) == "보고한다 [근거 2]. 정차한다 [근거 2]. 없음 ."
+
+
+def test_search_tokens_expand_colloquial_queries_only() -> None:
+    from app.services.rag import _token_counts
+
+    for question, expected in (
+        ("6호선 급정거", {"급정차", "정차"}),
+        ("급제동했다", {"급정차", "정차"}),
+        ("열차가 갑자기 멈추면", {"급정차", "정차"}),
+        ("열차가 섰다", {"급정차", "정차"}),
+        ("자동문이 고장났다", {"출입문"}),
+        ("문을 열어", {"출입문"}),
+        ("긴급상황에서", {"이례상황", "사고", "비상"}),
+        ("비상상황", {"이례상황", "사고", "비상"}),
+        ("불이 났다", {"화재"}),
+        ("브레이크 고장", {"제동"}),
+    ):
+        assert expected <= _search_tokens(question)
+    assert "급정차" not in _token_counts("6호선 급정거")
+    assert "출입문" not in _search_tokens("문서 확인")
+    assert "화재" not in _search_tokens("불이익")
+
+
+def test_citations_follow_each_sentence_and_bullet() -> None:
+    passages = ["복직은 휴직 사유가 소멸하면 신청한다.", "ATC 장치 고장 시 관제사에게 보고한다."]
+    answer = "복직은 휴직 사유가 소멸하면 신청한다. ATC 장치 고장 시 관제사에게 보고한다. [근거 1]"
+    assert fix_citations(answer, passages) == answer.replace("[근거 1]", "[근거 2]")
+    bullets = "- 복직은 휴직 사유가 소멸하면 신청한다.\n- ATC 장치 고장 시 관제사에게 보고한다. [근거 1]"
+    assert fix_citations(bullets, passages) == bullets.replace("[근거 1]", "[근거 2]")
+    cited = "복직은 휴직 사유가 소멸하면 신청한다 [근거 1]. ATC 장치 고장 시 관제사에게 보고한다 [근거 1]."
+    assert fix_citations(cited, passages) == cited.replace("보고한다 [근거 1]", "보고한다 [근거 2]")
+
+
+def test_citations_are_removed_from_unsupported_sentences() -> None:
+    passages = ["휴가를 신청한다.", "출입문을 확인한다."]
+    for claim in ("문서에서 확인되지 않습니다", "문서에서 찾을 수 없습니다", "문서에 명시되어 있지 않습니다"):
+        answer = f"휴가를 신청한다 [근거 1]. {claim} [근거 1][근거 2]."
+        fixed = fix_citations(answer, passages)
+        assert fixed == f"휴가를 신청한다 [근거 1]. {claim} ."
+    answer = "문서에서 확인되지 않습니다. 출입문을 확인한다 [근거 2]."
+    assert fix_citations(answer, passages) == answer
 
 
 def test_guide_slides_inherit_their_section_heading() -> None:
