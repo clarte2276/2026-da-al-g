@@ -208,20 +208,59 @@ class RAGResponse(BaseModel):
 
 
 class UserOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: str
     username: str
     display_name: str
     role: Literal["user", "admin"]
     is_active: bool
+    must_change_password: bool = False
+
+
+class UserCredentialsOut(BaseModel):
+    user: UserOut
+    initial_password: str | None = None
+
+
+class InquiryReplyOut(BaseModel):
+    id: str
+    from_admin: bool
+    body: str
+    created_at: datetime
+
+
+class InquiryOut(BaseModel):
+    id: str
+    user_id: str
+    kind: Literal["inquiry", "feedback"]
+    title: str
+    body: str
+    rating: Literal["up", "down"] | None
+    question: str
+    answer: str
+    evidence: list[dict[str, Any]]
+    created_at: datetime
+    replies: list[InquiryReplyOut]
+
+
+class InquiryUserOut(BaseModel):
+    id: str
+    username: str
+    display_name: str
+
+
+class AdminInquiryOut(InquiryOut):
+    user: InquiryUserOut
 
 
 class AuthLoginRequest(BaseModel):
-    username: str = Field(min_length=1, max_length=64)
+    username: str = Field(min_length=1)
     password: str = Field(min_length=1, max_length=128)
 
 
 class AuthRegisterRequest(BaseModel):
-    username: str = Field(min_length=3, max_length=64)
+    username: str = Field(min_length=1)
     password: str = Field(min_length=8, max_length=128)
     display_name: str | None = Field(default=None, max_length=100)
 

@@ -88,7 +88,8 @@ def write_link(db: Session, link: DocumentLink, payload: LinkWrite, actor: str |
     link.target_version_id = target["version_id"]
     link.source_selection, link.target_selection = source, target
     link.note, link.relation_type = payload.note, payload.relation_type
-    link.status, link.approved_by, link.approved_at = "draft", None, None
+    # Saving is the admin's approval: the link reaches Graph RAG on the next query.
+    link.status, link.approved_by, link.approved_at = "approved", actor, datetime.now(UTC)
     action = "link.updated" if link.id else "link.created"
     db.add(link)
     db.flush()

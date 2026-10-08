@@ -8,6 +8,7 @@ import 'screens/home_screen.dart';
 import 'screens/my_page_screen.dart';
 import 'screens/regulation_library_screen.dart';
 import 'screens/settings_screen.dart';
+import 'screens/more_screen.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
@@ -36,6 +37,7 @@ class _AppShellState extends State<AppShell> {
         onOpenRegulations: () => _push(const RegulationLibraryScreen()),
         onOpenBookmarks: () => _push(const BookmarkScreen()),
         onOpenProfile: () => _push(const MyPageScreen()),
+        onOpenMore: () => _push(const MoreScreen()),
       ),
       1 => const DutyBoardScreen(),
       2 => const ChatListScreen(),

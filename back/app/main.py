@@ -22,9 +22,10 @@ from .auth import router as auth_router
 from .config import get_settings
 from .db import SessionLocal, get_db, init_db
 from .links import get_version
+from .crew import router as crew_router
 from .links import router as links_router
-from .management import router as management_router
-from .models import AuditEvent, Document, DocumentVersion, Fragment, KnowledgeEdge, new_id
+from .management import backfill_feedback_inquiries, router as management_router
+from .models import AuditEvent, Document, DocumentVersion, Fragment, Inquiry, KnowledgeEdge, new_id
 from .schemas import (
     ChatFeedbackRequest,
     ChatRequest,
@@ -69,6 +70,7 @@ app = FastAPI(title=settings.app_name, version="0.1.0")
 app.include_router(auth_router)
 app.include_router(links_router)
 app.include_router(management_router)
+app.include_router(crew_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[origin.strip() for origin in settings.cors_origins.split(",") if origin.strip()]
@@ -84,6 +86,7 @@ def startup() -> None:
     init_db()
     with SessionLocal() as db:
         ensure_bootstrap_accounts(db)
+        backfill_feedback_inquiries(db)
         if db.get_bind().dialect.name == "sqlite":
             rag_service._full_corpus(db)
 
@@ -1114,6 +1117,18 @@ def chat_feedback(
         payload_json=payload.model_dump(),
     )
     db.add(event)
+    db.flush()
+    db.add(Inquiry(
+        user_id=user.id,
+        kind="feedback",
+        title="답변 피드백",
+        body=payload.reason or "",
+        rating=payload.rating,
+        question=payload.question,
+        answer=payload.answer,
+        evidence=payload.evidence,
+        source_audit_id=event.id,
+    ))
     db.commit()
     return {"id": event.entity_id}
 

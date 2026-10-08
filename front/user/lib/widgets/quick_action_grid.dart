@@ -7,8 +7,9 @@ class QuickActionGrid extends StatelessWidget {
     required this.onOpenSchedule,
     required this.onOpenBookmarks,
     required this.onOpenRegulations,
+    required this.onOpenMore,
   });
-  final VoidCallback onOpenSchedule, onOpenBookmarks, onOpenRegulations;
+  final VoidCallback onOpenSchedule, onOpenBookmarks, onOpenRegulations, onOpenMore;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +20,8 @@ class QuickActionGrid extends StatelessWidget {
         _QuickTile(icon: Icons.bookmark_border, label: '보관함', onTap: onOpenBookmarks),
         const SizedBox(width: 8),
         _QuickTile(icon: Icons.menu_book_rounded, label: '규정 본문', onTap: onOpenRegulations),
+        const SizedBox(width: 8),
+        _QuickTile(icon: Icons.more_horiz, label: '더보기', onTap: onOpenMore),
       ],
     );
   }
@@ -37,7 +40,7 @@ class _QuickTile extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(18),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
           decoration: BoxDecoration(
             border: Border.all(color: AppColors.border),
             borderRadius: BorderRadius.circular(18),
@@ -51,7 +54,7 @@ class _QuickTile extends StatelessWidget {
                 label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13, color: AppColors.ink),
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.ink),
               ),
             ],
           ),

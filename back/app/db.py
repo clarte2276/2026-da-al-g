@@ -41,6 +41,12 @@ def init_db() -> None:
                 "Run migrations/001_pgvector.sql with a database administrator."
             ) from exc
     Base.metadata.create_all(bind=engine)
+    if engine.dialect.name == "postgresql":
+        with engine.begin() as connection:
+            connection.exec_driver_sql(
+                "ALTER TABLE users ADD COLUMN IF NOT EXISTS must_change_password BOOLEAN NOT NULL DEFAULT FALSE"
+            )
+            connection.exec_driver_sql("ALTER TABLE users ALTER COLUMN username TYPE TEXT")
     _ensure_sqlite_compat_columns()
 
 
@@ -49,6 +55,7 @@ def _ensure_sqlite_compat_columns() -> None:
     if engine.dialect.name != "sqlite":
         return
     additions = {
+        "users": {"must_change_password": "BOOLEAN NOT NULL DEFAULT 0"},
         "fragments": {"embedding_vector": "JSON"},
         "knowledge_edges": {
             "source_anchor_json": "JSON",

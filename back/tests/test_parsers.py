@@ -10,7 +10,7 @@ RAW_ROOT = PROJECT_ROOT / "data" / "data_raw"
 
 
 def test_pptx_parser_preserves_text_tables_and_images() -> None:
-    path = next((RAW_ROOT / "길라잡이").rglob("6호선 전동차고장조치 길라잡이-1.pptx"))
+    path = next((RAW_ROOT / "6호선 매뉴얼").rglob("6호선 전동차고장조치 길라잡이-1.pptx"))
 
     parsed = get_parser(path).parse(path)
 
@@ -22,7 +22,7 @@ def test_pptx_parser_preserves_text_tables_and_images() -> None:
 
 
 def test_hwpx_parser_preserves_paragraphs_and_tables() -> None:
-    path = RAW_ROOT / "규정" / "관제업무" / "관제운영규정" / "관제운영규정.hwpx"
+    path = RAW_ROOT / "서울교통공사 사규" / "관제업무" / "관제운영규정" / "관제운영규정.hwpx"
 
     parsed = get_parser(path).parse(path)
 

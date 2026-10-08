@@ -127,14 +127,14 @@ def test_text_selection_is_complete_exact_and_independent_of_chunks(workspace, m
     assert saved["source_selection"]["ranges"][0]["exact"] == source["exact"]
     assert saved["target_selection"]["ranges"][0]["start"] == target["start"]
     response = client.put(f"/api/links/{link['id']}", json={**payload, "note": "수정"})
-    assert response.json()["status"] == "draft"
-    assert response.json()["approved_at"] is None
+    assert response.json()["status"] == "approved"
+    assert response.json()["approved_at"] is not None
     # Original source mutation cannot alter the version's preserved bytes.
     path.write_bytes(b"changed")
     assert client.get(f"/api/documents/{document.id}/content").json()["text"] == text
 
 
-def test_page_groups_include_empty_pages_and_expand_only_after_approval(workspace):
+def test_page_groups_include_empty_pages_and_expand_until_rejected(workspace):
     db, client, service, rag, tmp = workspace
     path = tmp / "sample.docx"
     sample_word(path)
@@ -156,8 +156,7 @@ def test_page_groups_include_empty_pages_and_expand_only_after_approval(workspac
         assert response.status_code == 422
     link = client.post("/api/links", json={"source_selection": source, "target_selection": target}).json()
     assert link["target_selection"]["pages"] == [1, 3]
-    assert not any(e.link_id == link["id"] for e in rag.retrieve(db, "ATC 고장 조치", top_k=1))
-    client.post(f"/api/links/{link['id']}/approve", json={"actor": "tester"})
+    assert link["status"] == "approved"
     expanded = rag.retrieve(db, "ATC 고장 조치", top_k=1)
     evidence = next(e for e in expanded if e.link_id == link["id"])
     assert evidence.selection["pages"] == [1, 3]

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine, select
+from sqlalchemy import create_engine, inspect, select
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
@@ -57,20 +57,25 @@ def test_register_login_me_logout_and_role_guard(tmp_path, monkeypatch):
             assert client.get(
                 "/admin", headers={"Authorization": f"Bearer {test_token}"}
             ).status_code == 403
+            assert client.post(
+                "/api/auth/register",
+                json={"username": "new.user", "password": "password-123"},
+            ).status_code == 422
 
             registered = client.post(
                 "/api/auth/register",
                 json={
-                    "username": "New.User",
+                    "username": "21700001",
                     "password": "password-123",
                     "display_name": "새 사용자",
                 },
             )
             assert registered.status_code == 201
-            assert registered.json()["user"]["username"] == "new.user"
+            assert registered.json()["user"]["username"] == "21700001"
+            assert registered.json()["user"]["must_change_password"] is False
             assert client.post(
                 "/api/auth/register",
-                json={"username": "new.user", "password": "password-456"},
+                json={"username": "21700001", "password": "password-456"},
             ).status_code == 409
 
             admin_login = client.post(
@@ -90,16 +95,37 @@ def test_register_login_me_logout_and_role_guard(tmp_path, monkeypatch):
                 "/protected", headers={"Authorization": f"Bearer {test_token}"}
             ).status_code == 401
 
-        registered_user = db.scalar(select(User).where(User.username == "new.user"))
+        registered_user = db.scalar(select(User).where(User.username == "21700001"))
         assert registered_user.password_hash != "password-123"
         assert db.scalar(select(AuthSession).where(AuthSession.user_id.is_not(None)))
 
     engine.dispose()
 
 
+def test_sqlite_adds_must_change_password_to_existing_users(monkeypatch):
+    from app import db as db_module
+
+    engine = create_engine("sqlite://")
+    with engine.begin() as connection:
+        connection.exec_driver_sql("CREATE TABLE users (id TEXT PRIMARY KEY)")
+        connection.exec_driver_sql("CREATE TABLE fragments (id TEXT)")
+        connection.exec_driver_sql("CREATE TABLE knowledge_edges (id TEXT)")
+    monkeypatch.setattr(db_module, "engine", engine)
+
+    db_module._ensure_sqlite_compat_columns()
+    columns = {column["name"] for column in inspect(engine).get_columns("users")}
+    assert "must_change_password" in columns
+    with engine.begin() as connection:
+        connection.exec_driver_sql("INSERT INTO users (id) VALUES ('u1')")
+        assert connection.exec_driver_sql(
+            "SELECT must_change_password FROM users WHERE id = 'u1'"
+        ).scalar() == 0
+    engine.dispose()
+
+
 def test_chat_feedback_is_stored_in_audit_log():
     from app.main import chat_feedback
-    from app.models import AuditEvent
+    from app.models import AuditEvent, Inquiry
     from app.schemas import ChatFeedbackRequest
 
     engine = create_engine("sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool)
@@ -115,6 +141,10 @@ def test_chat_feedback_is_stored_in_audit_log():
         assert event.entity_id == out["id"]
         assert event.actor == user.id
         assert event.payload_json["reason"] == "조항 번호 틀림"
+        inquiry = db.scalar(select(Inquiry).where(Inquiry.source_audit_id == event.id))
+        assert inquiry.kind == "feedback" and inquiry.user_id == user.id
+        assert inquiry.body == payload.reason
+        assert inquiry.question == "q" and inquiry.answer == "a"
 
 
 def test_change_password_keeps_current_session_and_revokes_others(tmp_path, monkeypatch):

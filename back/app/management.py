@@ -1,14 +1,15 @@
 from __future__ import annotations
 
 import hashlib
-import io
 import re
-from calendar import monthrange
-from datetime import UTC, date, datetime
-from typing import Annotated, Any
+import secrets
+from datetime import UTC, datetime
+from io import BytesIO
+from typing import Annotated, Any, Literal
 
 from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
-from openpyxl import load_workbook
+from fastapi.responses import Response
+from openpyxl import Workbook, load_workbook
 from pydantic import BaseModel, Field
 from sqlalchemy import select, update
 from sqlalchemy.exc import IntegrityError
@@ -17,13 +18,26 @@ from sqlalchemy.orm import Session
 from .auth import AdminUser, CurrentUser, normalize_username, password_hash
 from .config import get_settings
 from .db import get_db
-from .models import AuditEvent, AuthSession, BookmarkRecord, ConversationRecord, DutySchedule, User
-from .schemas import UserOut
+from .duty import merge_routes, parse_duty_xlsx, parse_route_xlsx
+from .models import (
+    AuditEvent,
+    AuthSession,
+    BookmarkRecord,
+    ConversationRecord,
+    DutyRoute,
+    DutySchedule,
+    Inquiry,
+    InquiryReply,
+    User,
+)
+from .schemas import AdminInquiryOut, InquiryOut, UserCredentialsOut, UserOut
 
 router = APIRouter(prefix="/api")
 DB = Annotated[Session, Depends(get_db)]
 MONTH_RE = re.compile(r"^\d{4}-(0[1-9]|1[0-2])$")
-USERNAME_RE = re.compile(r"^[a-z0-9._-]{3,64}$")
+MEMBER_ID_RE = re.compile(r"^\d+$")
+PASSWORD_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789"
+XLSX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 
 
 class ConversationWrite(BaseModel):
@@ -53,15 +67,33 @@ class ImportWrite(BaseModel):
 
 
 class UserCreate(BaseModel):
-    username: str = Field(min_length=3, max_length=64)
+    username: str = Field(min_length=1)
     display_name: str = Field(min_length=1, max_length=100)
-    password: str = Field(min_length=8, max_length=128)
 
 
 class UserUpdate(BaseModel):
     display_name: str | None = Field(default=None, min_length=1, max_length=100)
-    password: str | None = Field(default=None, min_length=8, max_length=128)
     is_active: bool | None = None
+    reset_password: bool = False
+
+
+class CredentialRow(BaseModel):
+    username: str
+    display_name: str
+    initial_password: str
+
+
+class CredentialsRequest(BaseModel):
+    rows: list[CredentialRow]
+
+
+class InquiryCreate(BaseModel):
+    title: str = Field(min_length=1, max_length=200)
+    body: str = Field(min_length=1, max_length=4000)
+
+
+class InquiryReplyCreate(BaseModel):
+    body: str = Field(min_length=1, max_length=4000)
 
 
 def _audit(db: Session, actor: str, action: str, entity_type: str, entity_id: str,
@@ -172,7 +204,8 @@ def get_duty(month: str, db: DB, _user: CurrentUser) -> dict:
     row = db.get(DutySchedule, month)
     if not row:
         raise HTTPException(404, "No duty schedule for this month")
-    return row.data
+    route = db.scalars(select(DutyRoute).order_by(DutyRoute.effective_date.desc()).limit(1)).first()
+    return merge_routes(row.data, route.data if route else None)
 
 
 @router.get("/duty")
@@ -185,47 +218,6 @@ def list_duty(db: DB, _admin: AdminUser) -> list[dict]:
     rows = db.scalars(select(DutySchedule).order_by(DutySchedule.month.desc())).all()
     return [{"month": x.month, "source_filename": x.source_filename, "updated_at": x.updated_at,
              "driver_count": len(x.data["drivers"])} for x in rows]
-
-
-def parse_duty_xlsx(data: bytes, month: str, filename: str) -> dict:
-    try:
-        workbook = load_workbook(io.BytesIO(data), read_only=True, data_only=True)
-        sheet = workbook["교번기관사 근무계획"]
-    except Exception as exc:
-        raise ValueError("근무계획 엑셀 양식이 올바르지 않습니다") from exc
-    try:
-        header = next(sheet.iter_rows(min_row=2, max_row=2, values_only=True))
-        dates = {i: v.date() if isinstance(v, datetime) else v for i, v in enumerate(header)
-                 if isinstance(v, (date, datetime)) and v.strftime("%Y-%m") == month}
-        if len(dates) != monthrange(int(month[:4]), int(month[-2:]))[1]:
-            raise ValueError("선택한 월의 날짜 열을 찾을 수 없습니다")
-        drivers = []
-        for row in sheet.iter_rows(min_row=7, values_only=True):
-            no, name = row[:2]
-            if not isinstance(no, int) or not isinstance(name, str) or not name.strip():
-                continue
-            days = {}
-            for col, day in dates.items():
-                code = str(row[col]).strip() if row[col] is not None else ""
-                if not code:
-                    raise ValueError(f"{name}: {day} 근무 코드가 비어 있습니다")
-                if code == "비": kind = "off"
-                elif code.startswith(("휴", "운휴")): kind = "rest"
-                elif code.startswith("대"): kind = "standby"
-                elif code.startswith("지정"): kind = "designated"
-                elif code.isdigit() and int(code) < 60: kind = "day"
-                elif code.isdigit(): kind = "night"
-                else: kind = "unknown"
-                days[day.isoformat()] = {"code": code, "type": kind,
-                                         "turn": code if kind in {"day", "night", "standby"} else None}
-            drivers.append({"no": no, "name": name.strip(), "days": days})
-        if not drivers or len({x["no"] for x in drivers}) != len(drivers):
-            raise ValueError("기관사 행이 없거나 연번이 중복되었습니다")
-        return {"month": month, "line": "6호선", "office": "승무사업소", "source": filename,
-                "dates": [day.isoformat() for day in dates.values()], "drivers": drivers,
-                "turns": {}, "turnDetailIsDummy": True}
-    finally:
-        workbook.close()
 
 
 @router.post("/admin/duty/{month}")
@@ -252,35 +244,102 @@ def upload_duty(month: str, file: Annotated[UploadFile, File(...)], db: DB, admi
     return {"month": month, "driver_count": len(parsed["drivers"])}
 
 
+@router.get("/admin/duty-routes")
+def list_duty_routes(db: DB, _admin: AdminUser) -> list[dict]:
+    rows = db.scalars(select(DutyRoute).order_by(DutyRoute.effective_date.desc())).all()
+    return [{"id": x.id, "effective_date": x.effective_date, "source_filename": x.source_filename,
+             "updated_at": x.updated_at, "turn_count": len(x.data["turns"])} for x in rows]
+
+
+def save_duty_route(db: Session, parsed: dict, filename: str) -> DutyRoute:
+    row = db.scalar(select(DutyRoute).where(DutyRoute.effective_date == parsed["effective"]))
+    if not row:
+        row = DutyRoute(effective_date=parsed["effective"], data=parsed, source_filename=filename)
+        db.add(row)
+    row.data, row.source_filename, row.updated_at = parsed, filename, datetime.now(UTC)
+    return row
+
+
+@router.post("/admin/duty-routes")
+def upload_duty_route(file: Annotated[UploadFile, File(...)], db: DB, admin: AdminUser) -> dict:
+    if not (file.filename or "").lower().endswith(".xlsx"):
+        raise HTTPException(422, ".xlsx file required")
+    data = file.file.read(get_settings().max_upload_bytes + 1)
+    if len(data) > get_settings().max_upload_bytes:
+        raise HTTPException(413, "File too large")
+    try:
+        parsed = parse_route_xlsx(data, file.filename or "routes.xlsx")
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc
+    save_duty_route(db, parsed, file.filename or "routes.xlsx")
+    _audit(db, admin.id, "duty_route.upload", "duty_route", parsed["effective"])
+    db.commit()
+    return {"effective_date": parsed["effective"], "turn_count": len(parsed["turns"])}
+
+
 @router.get("/admin/users", response_model=list[UserOut])
 def list_users(db: DB, _admin: AdminUser) -> list[User]:
     return list(db.scalars(select(User).where(User.role == "user").order_by(User.created_at.desc())).all())
 
 
-@router.post("/admin/users", response_model=UserOut, status_code=201)
-def create_user(payload: UserCreate, db: DB, admin: AdminUser) -> User:
+def _temporary_password() -> str:
+    return "".join(secrets.choice(PASSWORD_ALPHABET) for _ in range(14))
+
+
+def _make_user(username: str, display_name: str) -> tuple[User, str]:
+    initial_password = _temporary_password()
+    return User(
+        username=username,
+        display_name=display_name,
+        password_hash=password_hash.hash(initial_password),
+        role="user",
+        is_active=True,
+        must_change_password=True,
+    ), initial_password
+
+
+def _xlsx_response(workbook: Workbook, filename: str) -> Response:
+    output = BytesIO()
+    workbook.save(output)
+    workbook.close()
+    return Response(
+        output.getvalue(),
+        media_type=XLSX_MIME_TYPE,
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
+
+
+@router.get("/admin/users/template.xlsx")
+def user_template(_admin: AdminUser) -> Response:
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.append(["사번", "이름"])
+    return _xlsx_response(workbook, "users-template.xlsx")
+
+
+@router.post("/admin/users", response_model=UserCredentialsOut, response_model_exclude_none=True, status_code=201)
+def create_user(payload: UserCreate, db: DB, admin: AdminUser) -> dict:
     username = normalize_username(payload.username)
-    if not USERNAME_RE.fullmatch(username) or username == "test":
-        raise HTTPException(422, "Invalid username")
+    if not MEMBER_ID_RE.fullmatch(username):
+        raise HTTPException(422, "사번은 숫자만 입력해야 합니다.")
     if db.scalar(select(User).where(User.username == username)):
-        raise HTTPException(409, "Username already exists")
+        raise HTTPException(409, "이미 존재하는 사번입니다.")
     if not payload.display_name.strip():
-        raise HTTPException(422, "Display name is required")
-    user = User(username=username, display_name=payload.display_name.strip(),
-                password_hash=password_hash.hash(payload.password), role="user", is_active=True)
+        raise HTTPException(422, "이름을 입력해야 합니다.")
+    user, initial_password = _make_user(username, payload.display_name.strip())
     db.add(user)
     try:
         db.flush()
     except IntegrityError as exc:
         db.rollback()
-        raise HTTPException(409, "Username already exists") from exc
+        raise HTTPException(409, "이미 존재하는 사번입니다.") from exc
     _audit(db, admin.id, "user.created", "user", user.id)
     db.commit()
-    return user
+    return {"user": user, "initial_password": initial_password}
 
 
-@router.patch("/admin/users/{user_id}", response_model=UserOut)
-def update_user(user_id: str, payload: UserUpdate, db: DB, admin: AdminUser) -> User:
+@router.patch("/admin/users/{user_id}", response_model=UserCredentialsOut, response_model_exclude_none=True)
+def update_user(user_id: str, payload: UserUpdate, db: DB, admin: AdminUser) -> dict:
     user = db.get(User, user_id)
     if not user or user.role != "user":
         raise HTTPException(404, "User not found")
@@ -288,59 +347,185 @@ def update_user(user_id: str, payload: UserUpdate, db: DB, admin: AdminUser) -> 
         if not payload.display_name.strip():
             raise HTTPException(422, "Display name is required")
         user.display_name = payload.display_name.strip()
-    if payload.password is not None:
-        user.password_hash = password_hash.hash(payload.password)
     if payload.is_active is not None:
         user.is_active = payload.is_active
-    if payload.password is not None or payload.is_active is False:
+    initial_password = None
+    if payload.reset_password:
+        initial_password = _temporary_password()
+        user.password_hash = password_hash.hash(initial_password)
+        user.must_change_password = True
+    if payload.reset_password or payload.is_active is False:
         db.execute(update(AuthSession).where(AuthSession.user_id == user.id,
                    AuthSession.revoked_at.is_(None)).values(revoked_at=datetime.now(UTC)))
     _audit(db, admin.id, "user.updated", "user", user.id)
     db.commit()
-    return user
+    return {"user": user, "initial_password": initial_password}
 
 
-@router.get("/admin/users/{user_id}/conversations")
-def admin_conversations(user_id: str, db: DB, _admin: AdminUser) -> list[dict]:
-    rows = db.scalars(select(ConversationRecord).where(ConversationRecord.user_id == user_id,
-                            ConversationRecord.deleted.is_(False)).order_by(ConversationRecord.updated_at.desc())).all()
-    return [row.data for row in rows]
+@router.post("/admin/users/import")
+def import_users(file: Annotated[UploadFile, File(...)], db: DB, admin: AdminUser) -> dict:
+    if not (file.filename or "").lower().endswith(".xlsx"):
+        raise HTTPException(422, ".xlsx 파일이 필요합니다.")
+    data = file.file.read(get_settings().max_upload_bytes + 1)
+    if len(data) > get_settings().max_upload_bytes:
+        raise HTTPException(413, "파일이 너무 큽니다.")
+    try:
+        workbook = load_workbook(BytesIO(data), read_only=True, data_only=True)
+    except Exception as exc:
+        raise HTTPException(422, "올바른 .xlsx 파일이 아닙니다.") from exc
 
+    created, skipped = [], []
+    try:
+        sheet = workbook.active
+        header = next(sheet.iter_rows(min_row=1, max_row=1, values_only=True), ())
+        if tuple(header[:2]) != ("사번", "이름"):
+            raise HTTPException(422, "첫 행에 사번과 이름 열이 필요합니다.")
+        seen: set[str] = set()
+        for values in sheet.iter_rows(min_row=2, values_only=True):
+            raw_username = values[0] if values else None
+            raw_name = values[1] if len(values) > 1 else None
+            if raw_username is None and raw_name is None:
+                continue
+            if isinstance(raw_username, float) and raw_username.is_integer():
+                raw_username = int(raw_username)
+            username = str(raw_username).strip() if raw_username is not None else ""
+            display_name = str(raw_name).strip() if raw_name is not None else ""
+            if not MEMBER_ID_RE.fullmatch(username):
+                skipped.append({"username": username, "reason": "사번은 숫자만 입력해야 합니다."})
+                continue
+            if not display_name:
+                skipped.append({"username": username, "reason": "이름을 입력해야 합니다."})
+                continue
+            if len(display_name) > 100:
+                skipped.append({"username": username, "reason": "이름은 100자 이하여야 합니다."})
+                continue
+            if username in seen or db.scalar(select(User.id).where(User.username == username)):
+                skipped.append({"username": username, "reason": "이미 존재하는 사번입니다."})
+                continue
 
-@router.delete("/admin/users/{user_id}/conversations/{conversation_id}")
-def admin_delete_conversation(user_id: str, conversation_id: str, db: DB, admin: AdminUser) -> dict:
-    row = db.get(ConversationRecord, (conversation_id, user_id))
-    if not row or row.deleted:
-        raise HTTPException(404, "Conversation not found")
-    row.deleted, row.data = True, {}
-    _audit(db, admin.id, "conversation.deleted", "conversation", conversation_id,
-           {"user_id": user_id})
+            user, initial_password = _make_user(username, display_name)
+            try:
+                with db.begin_nested():
+                    db.add(user)
+                    db.flush()
+            except IntegrityError:
+                skipped.append({"username": username, "reason": "이미 존재하는 사번입니다."})
+                continue
+            _audit(db, admin.id, "user.created", "user", user.id)
+            seen.add(username)
+            created.append({"username": username, "display_name": display_name,
+                            "initial_password": initial_password})
+    finally:
+        workbook.close()
     db.commit()
-    return {"status": "ok"}
+    return {"created": created, "skipped": skipped}
 
 
-@router.get("/admin/users/{user_id}/bookmarks")
-def admin_bookmarks(user_id: str, db: DB, _admin: AdminUser) -> list[dict]:
-    rows = db.scalars(select(BookmarkRecord).where(BookmarkRecord.user_id == user_id,
-                            BookmarkRecord.deleted.is_(False)).order_by(BookmarkRecord.updated_at.desc())).all()
-    return [{"id": row.id, **row.data} for row in rows]
+@router.post("/admin/users/credentials.xlsx")
+def export_credentials(payload: CredentialsRequest, _admin: AdminUser) -> Response:
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.append(["사번", "이름", "초기 비밀번호"])
+    for item in payload.rows:
+        sheet.append([item.username, item.display_name, item.initial_password])
+        sheet.cell(sheet.max_row, 1).number_format = "@"
+    return _xlsx_response(workbook, "user-credentials.xlsx")
 
 
-@router.delete("/admin/users/{user_id}/bookmarks/{bookmark_id}")
-def admin_delete_bookmark(user_id: str, bookmark_id: str, db: DB, admin: AdminUser) -> dict:
-    row = db.get(BookmarkRecord, (bookmark_id, user_id))
-    if not row or row.deleted:
-        raise HTTPException(404, "Bookmark not found")
-    row.deleted, row.data = True, {}
-    _audit(db, admin.id, "bookmark.deleted", "bookmark", bookmark_id,
-           {"user_id": user_id})
+def _inquiry_data(db: Session, inquiry: Inquiry, user: User | None = None) -> dict:
+    replies = db.scalars(select(InquiryReply).where(InquiryReply.inquiry_id == inquiry.id)
+                         .order_by(InquiryReply.created_at, InquiryReply.id)).all()
+    result = {
+        "id": inquiry.id,
+        "user_id": inquiry.user_id,
+        "kind": inquiry.kind,
+        "title": inquiry.title,
+        "body": inquiry.body,
+        "rating": inquiry.rating,
+        "question": inquiry.question,
+        "answer": inquiry.answer,
+        "evidence": inquiry.evidence,
+        "created_at": inquiry.created_at,
+        "replies": [{"id": reply.id, "from_admin": reply.from_admin, "body": reply.body,
+                     "created_at": reply.created_at} for reply in replies],
+    }
+    if user:
+        result["user"] = {"id": user.id, "username": user.username, "display_name": user.display_name}
+    return result
+
+
+@router.get("/me/inquiries", response_model=list[InquiryOut])
+def my_inquiries(db: DB, user: CurrentUser) -> list[dict]:
+    rows = db.scalars(select(Inquiry).where(Inquiry.user_id == user.id)
+                      .order_by(Inquiry.created_at.desc())).all()
+    return [_inquiry_data(db, inquiry) for inquiry in rows]
+
+
+@router.post("/me/inquiries", response_model=InquiryOut, status_code=201)
+def create_inquiry(payload: InquiryCreate, db: DB, user: CurrentUser) -> dict:
+    inquiry = Inquiry(user_id=user.id, kind="inquiry", title=payload.title,
+                      body=payload.body, evidence=[])
+    db.add(inquiry)
     db.commit()
-    return {"status": "ok"}
+    return _inquiry_data(db, inquiry)
 
 
-@router.get("/admin/feedback")
-def list_feedback(db: DB, _admin: AdminUser, limit: int = Query(100, ge=1, le=500)) -> list[dict]:
-    rows = db.scalars(select(AuditEvent).where(AuditEvent.action == "chat.feedback")
-                      .order_by(AuditEvent.created_at.desc()).limit(limit)).all()
-    return [{"id": x.id, "user_id": x.actor, "created_at": x.created_at,
-             **x.payload_json} for x in rows]
+def _add_reply(db: Session, inquiry: Inquiry, body: str, from_admin: bool) -> dict:
+    db.add(InquiryReply(inquiry_id=inquiry.id, from_admin=from_admin, body=body))
+    db.commit()
+    return _inquiry_data(db, inquiry)
+
+
+@router.post("/me/inquiries/{inquiry_id}/replies", response_model=InquiryOut)
+def reply_to_own_inquiry(inquiry_id: str, payload: InquiryReplyCreate, db: DB, user: CurrentUser) -> dict:
+    inquiry = db.get(Inquiry, inquiry_id)
+    if not inquiry or inquiry.user_id != user.id:
+        raise HTTPException(404, "Inquiry not found")
+    return _add_reply(db, inquiry, payload.body, from_admin=False)
+
+
+@router.get("/admin/inquiries", response_model=list[AdminInquiryOut])
+def admin_inquiries(
+    db: DB,
+    _admin: AdminUser,
+    kind: Literal["inquiry", "feedback"] | None = Query(default=None),
+) -> list[dict]:
+    query = select(Inquiry, User).join(User, User.id == Inquiry.user_id)
+    if kind:
+        query = query.where(Inquiry.kind == kind)
+    rows = db.execute(query.order_by(Inquiry.created_at.desc())).all()
+    return [_inquiry_data(db, inquiry, user) for inquiry, user in rows]
+
+
+@router.post("/admin/inquiries/{inquiry_id}/replies", response_model=InquiryOut)
+def reply_to_inquiry(inquiry_id: str, payload: InquiryReplyCreate, db: DB, _admin: AdminUser) -> dict:
+    inquiry = db.get(Inquiry, inquiry_id)
+    if not inquiry:
+        raise HTTPException(404, "Inquiry not found")
+    return _add_reply(db, inquiry, payload.body, from_admin=True)
+
+
+def backfill_feedback_inquiries(db: Session) -> None:
+    rows = db.execute(
+        select(AuditEvent, User)
+        .join(User, User.id == AuditEvent.actor)
+        .outerjoin(Inquiry, Inquiry.source_audit_id == AuditEvent.id)
+        .where(AuditEvent.action == "chat.feedback", Inquiry.id.is_(None))
+    ).all()
+    for event, user in rows:
+        payload = event.payload_json or {}
+        rating = payload.get("rating")
+        db.add(Inquiry(
+            user_id=user.id,
+            kind="feedback",
+            title="답변 피드백",
+            body=payload.get("reason") or "",
+            rating=rating if rating in {"up", "down"} else None,
+            question=payload.get("question") or "",
+            answer=payload.get("answer") or "",
+            evidence=payload.get("evidence") if isinstance(payload.get("evidence"), list) else [],
+            source_audit_id=event.id,
+            created_at=event.created_at,
+        ))
+    if rows:
+        db.commit()

@@ -7,7 +7,7 @@ from app.services.local_files import LocalFileService
 
 
 def test_local_file_service_lists_supported_files_and_blocks_escape(tmp_path) -> None:
-    document_dir = tmp_path / "규정"
+    document_dir = tmp_path / "서울교통공사 사규"
     document_dir.mkdir()
     hwp_path = document_dir / "운전규정.hwp"
     hwp_path.write_bytes(b"sample")
@@ -17,7 +17,7 @@ def test_local_file_service_lists_supported_files_and_blocks_escape(tmp_path) ->
     files = service.list_files()
 
     assert len(files) == 1
-    assert files[0].relative_path == "규정/운전규정.hwp"
+    assert files[0].relative_path == "서울교통공사 사규/운전규정.hwp"
     assert service.resolve("root-0", files[0].relative_path).path == hwp_path.resolve()
     with pytest.raises(ValueError):
         service.resolve("root-0", "../outside.hwp")
@@ -83,9 +83,9 @@ def test_document_folder_mirrors_data_pdf_tree(tmp_path, monkeypatch):
 
     monkeypatch.setattr(main, "settings", Settings(_env_file=None, storage_root=tmp_path,
                                                    local_document_roots=str(tmp_path)))
-    source = tmp_path / "data_raw" / "규정" / "관제업무" / "관제업무내규" / "관제업무내규.hwp"
+    source = tmp_path / "data_raw" / "서울교통공사 사규" / "관제업무" / "관제업무내규" / "관제업무내규.hwp"
 
-    assert main._document_folder(SimpleNamespace(source_path=str(source))) == "규정/관제업무/관제업무내규"
+    assert main._document_folder(SimpleNamespace(source_path=str(source))) == "서울교통공사 사규/관제업무/관제업무내규"
     assert main._document_folder(SimpleNamespace(source_path=str(tmp_path / "a.pdf"))) == ""
     assert main._document_folder(SimpleNamespace(source_path="/elsewhere/a.pdf")) is None
     assert main._document_folder(SimpleNamespace(source_path=None)) is None
@@ -96,8 +96,8 @@ def test_pdf_twin_prefers_data_pdf_copy(tmp_path, monkeypatch):
 
     from app import main
 
-    source = tmp_path / "data_raw" / "규정" / "운전취급규정.hwp"
-    twin = tmp_path / "data_pdf" / "규정" / "운전취급규정.pdf"
+    source = tmp_path / "data_raw" / "서울교통공사 사규" / "운전취급규정.hwp"
+    twin = tmp_path / "data_pdf" / "서울교통공사 사규" / "운전취급규정.pdf"
     twin.parent.mkdir(parents=True)
     twin.write_bytes(b"%PDF-1.4")
     version = SimpleNamespace(sha256="abc")

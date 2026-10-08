@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../core/colors.dart';
 import '../services/ai_api_client.dart';
 import '../services/auth_session.dart';
-import 'app_shell_wrapper.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -46,13 +45,6 @@ class _LoginScreenState extends State<LoginScreen> {
         password: password,
       );
       await AuthSession.signIn(response);
-      if (!mounted) {
-        return;
-      }
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const AppShellWrapper()),
-      );
     } on AiApiException catch (error) {
       if (!mounted) {
         return;
@@ -199,10 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Center(
                 child: Text(
                   '계정은 소속 관리자에게 발급받으세요.',
-                  style: TextStyle(
-                    color: AppColors.secondaryInk,
-                    fontSize: 14,
-                  ),
+                  style: TextStyle(color: AppColors.secondaryInk, fontSize: 14),
                 ),
               ),
               const SizedBox(height: 32),

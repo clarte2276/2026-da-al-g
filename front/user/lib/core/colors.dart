@@ -13,6 +13,9 @@ class AppColors {
   /// 흰 글씨·아이콘이 올라가는 배경용. 흰색 대비 약 4.9:1 (line6Gold는 2.9:1로 미달).
   static const line6GoldDeep = Color(0xff8a6d1f);
 
+  /// 서울 6호선 노선색. 행로표·근무 카드의 강조선·아이콘용(흰 글씨 배경으로는 쓰지 않는다).
+  static const line6 = Color(0xffcd7c2f);
+
   static Color get ink => _dark ? const Color(0xffece9e2) : const Color(0xff242424);
   static Color get secondaryInk => _dark ? const Color(0xffadadad) : const Color(0xff5c5c5c);
   static Color get canvas => _dark ? const Color(0xff121212) : const Color(0xfff5f4f0);

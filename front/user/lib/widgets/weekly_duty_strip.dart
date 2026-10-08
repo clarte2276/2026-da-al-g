@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../core/colors.dart';
 import '../core/duty_data.dart';
+import '../core/personal_store.dart';
 import '../services/auth_session.dart';
 
 /// 이번 주 7일의 내 근무 유형을 근무표 JSON에서 읽어 보여준다. 없는 날은 '-'.
@@ -10,14 +11,17 @@ class WeeklyDutyStrip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<DutyMonth>(
-      future: DutyRepository.instance.load(),
-      builder: (context, snap) =>
-          _strip(snap.data?.driverNamed(AuthSession.current?.user.name)),
+    return ListenableBuilder(
+      listenable: PersonalStore.instance, // 교번 변경 반영
+      builder: (context, _) => FutureBuilder<DutyMonth>(
+        future: DutyRepository.instance.load(),
+        builder: (context, snap) =>
+            _strip(snap.data, snap.data?.driverNamed(AuthSession.current?.user.name)),
+      ),
     );
   }
 
-  Widget _strip(Driver? me) {
+  Widget _strip(DutyMonth? data, Driver? me) {
     final now = DateTime.now();
     final sunday = now.subtract(Duration(days: now.weekday % 7));
     const wd = ['일', '월', '화', '수', '목', '금', '토'];
@@ -34,7 +38,8 @@ class WeeklyDutyStrip extends StatelessWidget {
           final isToday = date.year == now.year &&
               date.month == now.month &&
               date.day == now.day;
-          final type = me?.days[dutyDateKey(date)]?.type ?? DutyType.unknown;
+          final duty = me == null ? null : data!.dutyOn(me, dutyDateKey(date));
+          final type = duty?.type ?? DutyType.unknown;
           final c = dutyTypeColor(type);
           return GestureDetector(
             onTap: onTapDay,
@@ -44,7 +49,7 @@ class WeeklyDutyStrip extends StatelessWidget {
                 color: AppColors.card,
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                  color: isToday ? AppColors.line6Gold : AppColors.border,
+                  color: isToday ? AppColors.line6 : AppColors.border,
                   width: isToday ? 2 : 1,
                 ),
               ),
@@ -69,7 +74,7 @@ class WeeklyDutyStrip extends StatelessWidget {
                       color: c.withValues(alpha: 0.14),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Text(type.label,
+                    child: Text(duty?.turn ?? type.label,
                         style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: c)),
                   ),
                 ],

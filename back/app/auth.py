@@ -6,7 +6,7 @@ import secrets
 from datetime import UTC, datetime, timedelta
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Header, HTTPException, status
+from fastapi import APIRouter, Depends, Header, HTTPException, Request, status
 from pwdlib import PasswordHash
 from pwdlib.exceptions import PwdlibError
 from sqlalchemy import select, update
@@ -24,7 +24,7 @@ from .schemas import (
     UserOut,
 )
 
-USERNAME_RE = re.compile(r"^[a-z0-9._-]+$")
+USERNAME_RE = re.compile(r"^\d+$")
 TEST_USERNAME = "test"
 TEST_PASSWORD = "test"
 password_hash = PasswordHash.recommended()
@@ -53,6 +53,7 @@ def _user_out(user: User) -> UserOut:
         display_name=user.display_name,
         role=user.role,
         is_active=user.is_active,
+        must_change_password=user.must_change_password,
     )
 
 
@@ -103,7 +104,7 @@ def get_bearer_token(
     return token.strip()
 
 
-def get_current_user(token: Annotated[str, Depends(get_bearer_token)], db: DB) -> User:
+def get_current_user(request: Request, token: Annotated[str, Depends(get_bearer_token)], db: DB) -> User:
     session = db.scalar(
         select(AuthSession).where(
             AuthSession.token_hash == _token_hash(token),
@@ -115,6 +116,12 @@ def get_current_user(token: Annotated[str, Depends(get_bearer_token)], db: DB) -
     user = db.get(User, session.user_id)
     if not user or not user.is_active:
         raise _unauthorized()
+    if user.must_change_password and (request.method, request.url.path) not in {
+        ("POST", "/api/auth/password"),
+        ("GET", "/api/auth/me"),
+        ("POST", "/api/auth/logout"),
+    }:
+        raise HTTPException(status_code=403, detail="password_change_required")
     return user
 
 
@@ -149,7 +156,7 @@ def register(payload: AuthRegisterRequest, db: DB) -> AuthResponse:
         raise HTTPException(status_code=403, detail="회원가입이 비활성화되어 있습니다.")
     username = normalize_username(payload.username)
     if not USERNAME_RE.fullmatch(username):
-        raise HTTPException(status_code=422, detail="아이디는 영문, 숫자, 마침표, 밑줄, 하이픈만 사용할 수 있습니다.")
+        raise HTTPException(status_code=422, detail="사번은 숫자만 입력해야 합니다.")
     if db.scalar(select(User).where(User.username == username)):
         raise HTTPException(status_code=409, detail="이미 사용 중인 아이디입니다.")
     if username == TEST_USERNAME:
@@ -203,6 +210,7 @@ def change_password(
     if payload.new_password == payload.current_password:
         raise HTTPException(status_code=400, detail="새 비밀번호가 현재 비밀번호와 같습니다.")
     user.password_hash = password_hash.hash(payload.new_password)
+    user.must_change_password = False
     # 지금 기기만 남기고 다른 기기의 로그인은 끊는다.
     db.execute(
         update(AuthSession)

@@ -64,7 +64,7 @@ class AiApiClient {
           return;
       }
     }
-    throw const AiApiException('답변이 중간에 끊겼습니다.');
+    throw AiApiException('답변이 중간에 끊겼습니다.');
   }
 
   /// 답변 평가(👍/👎)를 서버 감사 로그에 남긴다.
@@ -108,12 +108,32 @@ class AiApiClient {
     await _send(
       'POST',
       '/api/auth/password',
-      body: {
-        'current_password': currentPassword,
-        'new_password': newPassword,
-      },
+      body: {'current_password': currentPassword, 'new_password': newPassword},
     );
   }
+
+  Future<List<Map<String, dynamic>>> fetchInquiries() async =>
+      (await _send('GET', '/api/me/inquiries') as List)
+          .cast<Map<String, dynamic>>();
+
+  Future<Map<String, dynamic>> createInquiry({
+    required String title,
+    required String body,
+  }) async =>
+      (await _send(
+            'POST',
+            '/api/me/inquiries',
+            body: {'title': title, 'body': body},
+          ))
+          as Map<String, dynamic>;
+
+  Future<Map<String, dynamic>> replyToInquiry(String id, String body) async =>
+      (await _send(
+            'POST',
+            '/api/me/inquiries/${Uri.encodeComponent(id)}/replies',
+            body: {'body': body},
+          ))
+          as Map<String, dynamic>;
 
   Future<void> logout(String accessToken) async {
     await _send('POST', '/api/auth/logout', token: accessToken);
@@ -124,15 +144,27 @@ class AiApiClient {
     return AuthUser.fromJson(decoded as Map<String, dynamic>);
   }
 
-  Future<void> importLocal(List<Map<String, dynamic>> conversations, List<Map<String, dynamic>> bookmarks) async {
-    await _send('POST', '/api/me/import', body: {'conversations': conversations, 'bookmarks': bookmarks});
+  Future<void> importLocal(
+    List<Map<String, dynamic>> conversations,
+    List<Map<String, dynamic>> bookmarks,
+  ) async {
+    await _send(
+      'POST',
+      '/api/me/import',
+      body: {'conversations': conversations, 'bookmarks': bookmarks},
+    );
   }
 
   Future<List<Map<String, dynamic>>> fetchConversations() async =>
-      (await _send('GET', '/api/me/conversations') as List).cast<Map<String, dynamic>>();
+      (await _send('GET', '/api/me/conversations') as List)
+          .cast<Map<String, dynamic>>();
 
   Future<void> saveConversation(Map<String, dynamic> conversation) async {
-    await _send('PUT', '/api/me/conversations/${Uri.encodeComponent(conversation['id'] as String)}', body: conversation);
+    await _send(
+      'PUT',
+      '/api/me/conversations/${Uri.encodeComponent(conversation['id'] as String)}',
+      body: conversation,
+    );
   }
 
   Future<void> deleteConversation(String id) async {
@@ -140,7 +172,8 @@ class AiApiClient {
   }
 
   Future<List<Map<String, dynamic>>> fetchBookmarks() async =>
-      (await _send('GET', '/api/me/bookmarks') as List).cast<Map<String, dynamic>>();
+      (await _send('GET', '/api/me/bookmarks') as List)
+          .cast<Map<String, dynamic>>();
 
   Future<void> saveBookmark(Map<String, dynamic> bookmark) async {
     await _send('POST', '/api/me/bookmarks', body: bookmark);
@@ -189,13 +222,14 @@ class AiApiClient {
     int? page,
     String? quote,
   }) async {
-    final uri = Uri.parse('$baseUrl/api/documents/$documentId/page.png').replace(
-      queryParameters: {
-        'version_id': ?versionId,
-        if (page != null) 'page': '$page',
-        if (page == null && quote != null) 'quote': quote,
-      },
-    );
+    final uri = Uri.parse('$baseUrl/api/documents/$documentId/page.png')
+        .replace(
+          queryParameters: {
+            'version_id': ?versionId,
+            if (page != null) 'page': '$page',
+            if (page == null && quote != null) 'quote': quote,
+          },
+        );
     return (await _getWhenConverted(uri)).bodyBytes;
   }
 
@@ -213,10 +247,13 @@ class AiApiClient {
     final bearer = AuthSession.current?.accessToken;
     for (var attempt = 0; attempt < 12; attempt++) {
       final response = await _httpClient
-          .get(uri, headers: {
-            if (bearer != null && bearer.isNotEmpty)
-              'Authorization': 'Bearer $bearer',
-          })
+          .get(
+            uri,
+            headers: {
+              if (bearer != null && bearer.isNotEmpty)
+                'Authorization': 'Bearer $bearer',
+            },
+          )
           .timeout(const Duration(seconds: 30));
       if (response.statusCode == 202) continue;
       if (response.statusCode < 200 || response.statusCode >= 300) {
@@ -227,7 +264,7 @@ class AiApiClient {
       }
       return response;
     }
-    throw const AiApiException('원문 변환이 아직 끝나지 않았습니다.');
+    throw AiApiException('원문 변환이 아직 끝나지 않았습니다.');
   }
 
   void close() {
@@ -263,7 +300,7 @@ class AiApiClient {
     }
     final decoded = jsonDecode(utf8.decode(response.bodyBytes));
     if (decoded is! Map<String, dynamic> && decoded is! List) {
-      throw const AiApiException('Invalid API response shape.');
+      throw AiApiException('Invalid API response shape.');
     }
     return decoded;
   }
@@ -303,10 +340,17 @@ class AuthResponse {
   bool get isExpired =>
       expiresAt != null && !expiresAt!.isAfter(DateTime.now().toUtc());
 
+  AuthResponse copyWith({AuthUser? user}) => AuthResponse(
+    accessToken: accessToken,
+    tokenType: tokenType,
+    user: user ?? this.user,
+    expiresAt: expiresAt,
+  );
+
   factory AuthResponse.fromJson(Map<String, dynamic> json) {
     final rawUser = json['user'];
     if (rawUser is! Map<String, dynamic>) {
-      throw const AiApiException('Invalid auth user response shape.');
+      throw AiApiException('Invalid auth user response shape.');
     }
     return AuthResponse(
       accessToken: json['access_token'] as String? ?? '',
@@ -331,6 +375,8 @@ class AuthUser {
     required this.employeeId,
     required this.email,
     required this.line,
+    this.role = 'user',
+    this.mustChangePassword = false,
   });
 
   final String id;
@@ -338,6 +384,10 @@ class AuthUser {
   final String employeeId;
   final String email;
   final String line;
+  final String role;
+  final bool mustChangePassword;
+
+  bool get isAdmin => role == 'admin';
 
   // 서버 응답(username/display_name)과 로컬 저장 형식(name/employee_id) 모두 읽는다.
   factory AuthUser.fromJson(Map<String, dynamic> json) {
@@ -348,8 +398,20 @@ class AuthUser {
           json['username'] as String? ?? json['employee_id'] as String? ?? '',
       email: json['email'] as String? ?? '',
       line: json['line'] as String? ?? '6호선',
+      role: json['role'] as String? ?? 'user',
+      mustChangePassword: json['must_change_password'] as bool? ?? false,
     );
   }
+
+  AuthUser copyWith({bool? mustChangePassword}) => AuthUser(
+    id: id,
+    name: name,
+    employeeId: employeeId,
+    email: email,
+    line: line,
+    role: role,
+    mustChangePassword: mustChangePassword ?? this.mustChangePassword,
+  );
 
   Map<String, dynamic> toJson() => {
     'id': id,
@@ -357,6 +419,8 @@ class AuthUser {
     'employee_id': employeeId,
     'email': email,
     'line': line,
+    'role': role,
+    'must_change_password': mustChangePassword,
   };
 }
 
@@ -459,7 +523,11 @@ class AiEvidenceSource {
 }
 
 class AiApiException implements Exception {
-  const AiApiException(this.message, {this.statusCode});
+  AiApiException(this.message, {this.statusCode}) {
+    if (statusCode == 403 && message == 'password_change_required') {
+      AuthSession.requirePasswordChange();
+    }
+  }
 
   final String message;
   final int? statusCode;

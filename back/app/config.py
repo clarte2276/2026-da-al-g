@@ -33,6 +33,7 @@ class Settings(BaseSettings):
     bootstrap_admin_username: str | None = None
     bootstrap_admin_password: str | None = None
     bootstrap_admin_display_name: str = "관리자"
+    seoul_subway_api_key: str | None = None
     cors_origins: str = "*"
 
     # Always `back/.env`, regardless of the working directory.

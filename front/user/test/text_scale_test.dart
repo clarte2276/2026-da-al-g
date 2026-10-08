@@ -6,6 +6,7 @@ import 'package:user/core/duty_data.dart';
 import 'package:user/data/chat_models.dart';
 import 'package:user/data/conversation_store.dart';
 import 'package:user/screens/chat_room_screen.dart';
+import 'package:user/screens/duty_board_screen.dart';
 import 'package:user/screens/login_screen.dart';
 import 'package:user/screens/my_page_screen.dart';
 
@@ -45,6 +46,18 @@ void main() {
       await tester.tap(find.byIcon(icon));
       await tester.pumpAndSettle();
     }
+  });
+
+  testWidgets('duty calendar and 행로표 sheet survive 2x text', (tester) async {
+    await tester.runAsync(() => DutyRepository.instance.load());
+    await pumpScaled(tester, const DutyBoardScreen());
+    expect(find.text('근무 요약'), findsOneWidget);
+
+    await tester.tap(find.text('63').first); // 6/1 야간 63
+    await tester.pumpAndSettle();
+    expect(find.text('교번 63'), findsOneWidget);
+    expect(find.text('평평'), findsOneWidget);
+    expect(find.text('출근'), findsOneWidget);
   });
 
   testWidgets('chat room with sources survives 2x text', (tester) async {

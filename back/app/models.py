@@ -39,11 +39,12 @@ class User(Base):
     __tablename__ = "users"
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
-    username: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    username: Mapped[str] = mapped_column(Text, unique=True, index=True)
     password_hash: Mapped[str] = mapped_column(String(255))
     display_name: Mapped[str] = mapped_column(String(100))
     role: Mapped[str] = mapped_column(String(16), default="user", index=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, index=True)
+    must_change_password: Mapped[bool] = mapped_column(Boolean, default=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utcnow, onupdate=utcnow
@@ -178,6 +179,34 @@ class AuditEvent(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
 
+class Inquiry(Base):
+    __tablename__ = "inquiries"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    kind: Mapped[str] = mapped_column(String(16), default="inquiry", index=True)
+    title: Mapped[str] = mapped_column(String(200))
+    body: Mapped[str] = mapped_column(Text)
+    rating: Mapped[str | None] = mapped_column(String(8), nullable=True)
+    question: Mapped[str] = mapped_column(Text, default="")
+    answer: Mapped[str] = mapped_column(Text, default="")
+    evidence: Mapped[list[dict[str, Any]]] = mapped_column(JSON, default=list)
+    source_audit_id: Mapped[str | None] = mapped_column(
+        ForeignKey("audit_events.id", ondelete="SET NULL"), unique=True, nullable=True
+    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class InquiryReply(Base):
+    __tablename__ = "inquiry_replies"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    inquiry_id: Mapped[str] = mapped_column(ForeignKey("inquiries.id", ondelete="CASCADE"), index=True)
+    from_admin: Mapped[bool] = mapped_column(Boolean, default=False)
+    body: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
 class DocumentContent(Base):
     __tablename__ = "document_contents"
 
@@ -231,3 +260,157 @@ class DutySchedule(Base):
     data: Mapped[dict[str, Any]] = mapped_column(JSON)
     source_filename: Mapped[str] = mapped_column(String(512))
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+
+
+class DutyRoute(Base):
+    __tablename__ = "duty_routes"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    effective_date: Mapped[str] = mapped_column(String(10), unique=True, index=True)
+    data: Mapped[dict[str, Any]] = mapped_column(JSON)
+    source_filename: Mapped[str] = mapped_column(String(512))
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+
+
+class ExchangePost(Base):
+    __tablename__ = "exchange_posts"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    type: Mapped[str] = mapped_column(String(16))  # direct | open
+    status: Mapped[str] = mapped_column(String(16), default="open", index=True)
+    requester_name: Mapped[str] = mapped_column(String(100))
+    target_name: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    dates: Mapped[list] = mapped_column(JSON, default=list)
+    requester_dias: Mapped[list] = mapped_column(JSON, default=list)
+    target_dias: Mapped[list] = mapped_column(JSON, default=list)
+    memo: Mapped[str | None] = mapped_column(Text, nullable=True)
+    decline_reason: Mapped[str | None] = mapped_column(Text, nullable=True)
+    accepted_volunteer_id: Mapped[str | None] = mapped_column(String(36), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class ExchangeVolunteer(Base):
+    __tablename__ = "exchange_volunteers"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    post_id: Mapped[str] = mapped_column(String(36), index=True)
+    person_name: Mapped[str] = mapped_column(String(100))
+    status: Mapped[str] = mapped_column(String(16), default="pending")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class StandbyCoverage(Base):
+    __tablename__ = "standby_coverage"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    date: Mapped[str] = mapped_column(String(10), index=True)
+    uploader_name: Mapped[str] = mapped_column(String(100))
+    uploader_id: Mapped[str] = mapped_column(String(36))
+    file_path: Mapped[str] = mapped_column(String(2000))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+class SafetyAlert(Base):
+    __tablename__ = "safety_alerts"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    station_from: Mapped[str] = mapped_column(String(100))
+    station_to: Mapped[str] = mapped_column(String(100))
+    direction: Mapped[str | None] = mapped_column(String(8), nullable=True)
+    message: Mapped[str] = mapped_column(Text)
+    severity: Mapped[str] = mapped_column(String(16), default="info")
+    created_by: Mapped[str] = mapped_column(String(100))
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+class HazardReport(Base):
+    __tablename__ = "hazard_reports"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    category: Mapped[str] = mapped_column(String(16), index=True)
+    title: Mapped[str] = mapped_column(String(200))
+    description: Mapped[str] = mapped_column(Text)
+    location: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    status: Mapped[str] = mapped_column(String(16), default="open")
+    author_name: Mapped[str] = mapped_column(String(100))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class HazardComment(Base):
+    __tablename__ = "hazard_comments"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    hazard_id: Mapped[str] = mapped_column(String(36), index=True)
+    author_name: Mapped[str] = mapped_column(String(100))
+    content: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class SafetyTip(Base):
+    __tablename__ = "safety_tips"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    title: Mapped[str] = mapped_column(String(200))
+    description: Mapped[str] = mapped_column(Text)
+    media_url: Mapped[str | None] = mapped_column(String(2000), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class VoiceThread(Base):
+    __tablename__ = "voice_threads"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    owner_hash: Mapped[str] = mapped_column(String(64), index=True)
+    content: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class VoiceReply(Base):
+    __tablename__ = "voice_replies"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    thread_id: Mapped[str] = mapped_column(String(36), index=True)
+    content: Mapped[str] = mapped_column(Text)
+    from_admin: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class LifeMenu(Base):
+    __tablename__ = "life_menus"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    week: Mapped[str] = mapped_column(String(10), index=True)
+    filename: Mapped[str] = mapped_column(String(512))
+    file_path: Mapped[str] = mapped_column(String(2000))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class EmergencyContact(Base):
+    __tablename__ = "emergency_contacts"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    data: Mapped[list] = mapped_column(JSON, default=list)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+
+
+class EduVideo(Base):
+    __tablename__ = "edu_videos"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    category: Mapped[str] = mapped_column(String(100))
+    title: Mapped[str] = mapped_column(String(200))
+    url: Mapped[str] = mapped_column(String(2000))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class GameScore(Base):
+    __tablename__ = "game_scores"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    game: Mapped[str] = mapped_column(String(32), index=True)
+    player_name: Mapped[str] = mapped_column(String(100))
+    score: Mapped[int] = mapped_column(Integer)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../core/colors.dart';
 import '../services/ai_api_client.dart';
 import '../services/auth_session.dart';
-import 'login_screen.dart';
+import 'inquiry_screen.dart';
 
 class MyPageScreen extends StatelessWidget {
   const MyPageScreen({super.key});
@@ -110,6 +110,21 @@ class MyPageSections extends StatelessWidget {
         const SizedBox(height: 12),
 
         _MenuSection(
+          title: '지원',
+          items: [
+            _MenuItem(
+              icon: Icons.support_agent_rounded,
+              label: '고객문의',
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const InquiryScreen()),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+
+        _MenuSection(
           title: '계정',
           items: [
             _MenuItem(
@@ -149,12 +164,8 @@ class MyPageSections extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
+              Navigator.pop(context);
               AuthSession.signOut();
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => const LoginScreen()),
-                (_) => false,
-              );
             },
             child: const Text(
               '로그아웃',
@@ -285,12 +296,11 @@ class _PasswordDialogState extends State<_PasswordDialog> {
   }
 
   Future<void> _submit() async {
-    final error = switch ((_current.text, _next.text, _confirm.text)) {
-      ('', _, _) => '현재 비밀번호를 입력해 주세요.',
-      (_, final n, _) when n.length < 8 => '새 비밀번호는 8자 이상이어야 합니다.',
-      (_, final n, final c) when n != c => '새 비밀번호가 서로 다릅니다.',
-      _ => null,
-    };
+    final error = validatePasswordChange(
+      _current.text,
+      _next.text,
+      _confirm.text,
+    );
     if (error != null) {
       setState(() => _error = error);
       return;
@@ -304,6 +314,7 @@ class _PasswordDialogState extends State<_PasswordDialog> {
         currentPassword: _current.text,
         newPassword: _next.text,
       );
+      await AuthSession.passwordChanged();
       if (!mounted) return;
       final messenger = ScaffoldMessenger.of(context);
       Navigator.pop(context);

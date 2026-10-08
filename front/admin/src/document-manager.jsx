@@ -82,7 +82,6 @@ export function DocumentManager({ api }) {
   </select>;
 
   return <section className="management-panel document-manager">
-    <h2>문서 관리</h2>
     {error && <p className="notice error" role="alert">{error}</p>}
     {message && <p className="notice success" role="status">{message}</p>}
     {!roots.length ? <p>관리할 문서 폴더가 서버에 설정되어 있지 않습니다.</p> : <>

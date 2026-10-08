@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { FileExplorer } from "./file-explorer";
 import { PageThumbnail, SelectionViewer } from "./selection-viewer";
+import { LinkGraph } from "./link-graph";
+import { ChatPreview } from "./chat-preview";
 const write = (method, body) => ({ method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
 const textRanges = selection => selection?.ranges || (selection?.exact ? [selection] : []);
 const selectionLabel = selection => selection?.kind === "text"
@@ -32,8 +34,19 @@ function SelectionSummary({ content, selection, resource, onSelect, label }) {
   </section>;
 }
 
-export function LinkGenerator({ api, apiBase, token, user, onUnauthorized }) {
-  const [tab, setTab] = useState("edit");
+function ReviewCards({ links, busy, onReopen, onDecide }) {
+  return links.map(link => <article className="review-link" key={link.id}>
+    <strong>{link.source_filename} ↔ {link.target_filename}</strong><span className={`status status-${link.status}`}>{({ draft: "승인 대기", approved: "승인됨", rejected: "반려됨" })[link.status]}</span>
+    <div className="selection-pair">{[link.source_selection, link.target_selection].map((selection, index) =>
+      <details key={index}><summary>{selectionLabel(selection).slice(0, 110)}</summary><blockquote>{selectionLabel(selection)}</blockquote></details>)}</div>
+    {link.note && <p>{link.note}</p>}<div className="pane-toolbar">
+      <button disabled={busy} onClick={() => onReopen(link)}>선택 확인·수정</button>
+      <button disabled={busy || link.status === "approved"} onClick={() => onDecide(link.id, "approve")}>승인</button>
+      <button disabled={busy || link.status === "rejected"} onClick={() => onDecide(link.id, "reject")}>반려</button></div>
+  </article>);
+}
+
+export function LinkGenerator({ tab, onTab: setTab, api, apiBase, token, user, onUnauthorized }) {
   const [roots, setRoots] = useState([]), [rootId, setRootId] = useState("");
   const [query, setQuery] = useState(""), [files, setFiles] = useState([]);
   const [source, setSource] = useState(null), [target, setTarget] = useState(null);
@@ -41,9 +54,9 @@ export function LinkGenerator({ api, apiBase, token, user, onUnauthorized }) {
   const [sourceResource, setSourceResource] = useState(null), [targetResource, setTargetResource] = useState(null);
   const [note, setNote] = useState(""), [editing, setEditing] = useState(null);
   const [relation, setRelation] = useState("RELATED");
-  const [links, setLinks] = useState([]), [legacy, setLegacy] = useState([]);
-  const [filter, setFilter] = useState("draft"), [question, setQuestion] = useState("");
-  const [result, setResult] = useState(null), [busy, setBusy] = useState(false);
+  const [links, setLinks] = useState([]), [filter, setFilter] = useState("approved");
+  const [reviewMode, setReviewMode] = useState("graph"), [graphSelection, setGraphSelection] = useState(null);
+  const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState(""), [error, setError] = useState("");
   const openRequests = useRef({ source: 0, target: 0 });
   const [explorerOpen, setExplorerOpen] = useState(true);
@@ -79,8 +92,7 @@ export function LinkGenerator({ api, apiBase, token, user, onUnauthorized }) {
     return () => { gone = true; };
   }, [user, rootId, query]);
   async function refresh() {
-    const [current, previous] = await Promise.all([api("/api/links"), api("/api/edges?limit=1000")]);
-    setLinks(current); setLegacy(previous);
+    setLinks(await api("/api/links"));
   }
   useEffect(() => { if (tab === "review") task(refresh); }, [tab]);
 
@@ -105,7 +117,7 @@ export function LinkGenerator({ api, apiBase, token, user, onUnauthorized }) {
         source_selection: sourceSelection, target_selection: targetSelection, note: note || null, relation_type: relation,
       }));
       setEditing(link.id);
-      setMessage("연결 1건을 초안으로 저장했습니다. 연결 검토에서 승인할 수 있습니다.");
+      setMessage("연결 1건을 저장했습니다. 바로 검색에 반영됩니다.");
       await refresh();
     });
   }
@@ -120,36 +132,37 @@ export function LinkGenerator({ api, apiBase, token, user, onUnauthorized }) {
       ]);
       setSource(left); setTarget(right); setSourceSelection(link.source_selection); setTargetSelection(link.target_selection);
       setNote(link.note || ""); setRelation(link.relation_type); setEditing(link.id); setTab("edit"); setExplorerOpen(false);
-      setMessage("저장된 선택을 열었습니다. 수정하여 저장하면 다시 초안이 됩니다.");
+      setMessage("저장된 선택을 열었습니다. 수정해 저장하면 바로 검색에 반영됩니다.");
   }
   function reopen(link) {
     task(() => loadLink(link));
   }
-  function decide(id, decision, old = false) {
+  function decide(id, decision) {
     task(async () => {
-      await api(`/api/${old ? "edges" : "links"}/${id}/${decision}`, write("POST", {}));
+      await api(`/api/links/${id}/${decision}`, write("POST", {}));
       await refresh(); setMessage(decision === "approve" ? "연결을 승인했습니다." : "연결을 반려했습니다.");
     });
   }
   function openEvidence(item) {
     task(async () => {
       if (item.link_id) { await loadLink(await api(`/api/links/${item.link_id}`)); return; }
-      const version = await api(`/api/documents/${item.document_id}/content?version_id=${item.selection.version_id}`);
-      setSource(version); setSourceSelection(item.selection); setTab("edit");
+      const documentId = item.document_id || item.fragment?.document_id;
+      const versionId = item.version_id || item.fragment?.version_id || item.selection?.version_id;
+      if (!documentId || !versionId) throw new Error("원문 정보를 찾을 수 없습니다.");
+      const version = await api(`/api/documents/${documentId}/content?${new URLSearchParams({ version_id: versionId })}`);
+      setSource(version); setSourceSelection(item.selection || null); setTab("edit");
     });
   }
 
+  const filteredLinks = links.filter(link => !filter || link.status === filter);
+  const selectedLinks = graphSelection ? filteredLinks.filter(link => graphSelection.ids.includes(link.id)) : [];
+
   return <section className="link-generator-module" aria-label="RAG 링크 관리">
-    <div className="module-heading"><div><h2>RAG 링크 관리</h2><p>문서 구절과 페이지를 연결하고 검색 근거를 검토합니다.</p></div>
-      <span role="status">{busy ? "처리 중…" : user.display_name}</span></div>
-    <nav className="workspace-tabs" aria-label="RAG 링크 관리 메뉴">
-      {[["edit", "문서 연결"], ["review", "연결 검토"], ["search", "검색 검증"]].map(([value, label]) =>
-        <button key={value} aria-current={tab === value ? "page" : undefined} onClick={() => setTab(value)}>{label}</button>)}
-    </nav>
+    <p className="busy-line" role="status">{busy ? "처리 중…" : ""}</p>
     {(error || message) && <div className={`notice ${error ? "error" : "success"}`} role={error ? "alert" : "status"}>{error || message}</div>}
     <div hidden={tab !== "edit"}>
       <details className="explorer-section" open={explorerOpen} onToggle={event => setExplorerOpen(event.currentTarget.open)}>
-        <summary>문서 탐색 · 왼쪽 또는 오른쪽에 열기</summary>
+        <summary>문서 탐색 <span>왼쪽이나 오른쪽 창에 열 문서를 고릅니다</span></summary>
         <div className="pane-toolbar"><select aria-label="문서 폴더" value={rootId} onChange={event => setRootId(event.target.value)}>
           {roots.map(root => <option value={root.id} key={root.id}>{root.label}</option>)}</select>
           <input aria-label="파일명·폴더명 검색" placeholder="파일명·폴더명 검색" value={query} onChange={event => setQuery(event.target.value)} /></div>
@@ -167,40 +180,29 @@ export function LinkGenerator({ api, apiBase, token, user, onUnauthorized }) {
         </div>
         <label>메모 <textarea value={note} onChange={event => setNote(event.target.value)} maxLength={5000} placeholder="이 연결의 의미 (선택)" /></label>
         <div className="pane-toolbar"><button className="primary-button" disabled={busy || !sourceSelection || !targetSelection} onClick={save}>
-          {editing ? "수정 저장 · 초안" : "연결 저장"}</button><button disabled={busy} onClick={newLink}>새 연결</button>
-          <span>연결 하나로 저장되며, 승인 후 검색에 반영됩니다.</span></div>
+          {editing ? "수정 저장" : "연결 저장"}</button><button disabled={busy} onClick={newLink}>새 연결</button>
+          <span>저장하면 바로 검색에 반영됩니다.</span></div>
       </section>
     </div>
     {tab === "review" && <section className="edges-section">
-      <h2>연결 검토</h2><select aria-label="연결 상태" value={filter} onChange={event => setFilter(event.target.value)}>
-        <option value="draft">승인 대기</option><option value="approved">승인됨</option><option value="rejected">반려됨</option><option value="">전체</option></select>
-      {links.filter(link => !filter || link.status === filter).map(link => <article className="review-link" key={link.id}>
-        <strong>{link.source_filename} ↔ {link.target_filename}</strong><span>{({ draft: "승인 대기", approved: "승인됨", rejected: "반려됨" })[link.status]}</span>
-        <div className="selection-pair">{[link.source_selection, link.target_selection].map((selection, index) =>
-          <details key={index}><summary>{selectionLabel(selection).slice(0, 110)}</summary><blockquote>{selectionLabel(selection)}</blockquote></details>)}</div>
-        {link.note && <p>{link.note}</p>}<div className="pane-toolbar">
-          <button disabled={busy} onClick={() => reopen(link)}>선택 확인·수정</button>
-          <button disabled={busy || link.status === "approved"} onClick={() => decide(link.id, "approve")}>승인</button>
-          <button disabled={busy || link.status === "rejected"} onClick={() => decide(link.id, "reject")}>반려</button></div>
-      </article>)}
-      {!links.some(link => !filter || link.status === filter) && <p className="empty-state">해당 상태의 연결이 없습니다.</p>}
-      <details><summary>이전 방식 연결 ({legacy.length})</summary>{legacy.map(edge => <article className="review-link" key={edge.id}>
-        <p>{edge.source_anchor?.selected_text || "이전 원문 영역"} ↔ {edge.target_anchor?.selected_text || "이전 원문 영역"}</p>
-        <span>{edge.status}</span>{edge.note && <p>{edge.note}</p>}
-        <button disabled={busy} onClick={() => decide(edge.id, "approve", true)}>승인</button>
-        <button disabled={busy} onClick={() => decide(edge.id, "reject", true)}>반려</button>
-      </article>)}</details>
+      <div className="review-toolbar">
+        <select aria-label="연결 상태" value={filter} onChange={event => { setFilter(event.target.value); setGraphSelection(null); }}>
+          <option value="approved">승인됨</option><option value="draft">승인 대기</option><option value="rejected">반려됨</option><option value="">전체</option></select>
+        <div className="review-mode" role="group" aria-label="연결 검토 보기">
+          <button aria-pressed={reviewMode === "graph"} onClick={() => setReviewMode("graph")}>그래프</button>
+          <button aria-pressed={reviewMode === "list"} onClick={() => setReviewMode("list")}>목록</button>
+        </div>
+      </div>
+      {reviewMode === "graph" ? <div className="review-graph-layout">
+        <div className="review-graph-canvas"><LinkGraph links={filteredLinks} onSelect={setGraphSelection} /></div>
+        <aside className="review-graph-detail" aria-label="선택한 연결">
+          {graphSelection ? <>
+            <div className="review-detail-heading"><h3>{graphSelection.label}</h3><button aria-label="선택 닫기" onClick={() => setGraphSelection(null)}>닫기</button></div>
+            {selectedLinks.length ? <ReviewCards links={selectedLinks} busy={busy} onReopen={reopen} onDecide={decide} /> : <p className="empty-state">해당 상태의 연결이 없습니다.</p>}
+          </> : <p className="empty-state">그래프의 문서나 연결을 선택하면 목록이 표시됩니다.</p>}
+        </aside>
+      </div> : filteredLinks.length ? <ReviewCards links={filteredLinks} busy={busy} onReopen={reopen} onDecide={decide} /> : <p className="empty-state">해당 상태의 연결이 없습니다.</p>}
     </section>}
-    {tab === "search" && <section className="rag-section"><h2>검색 검증</h2>
-      <form className="query-form" onSubmit={event => { event.preventDefault(); if (question.trim()) task(async () => {
-        setResult(await api("/api/rag/query", write("POST", { question, top_k: 5, max_hops: 2 })));
-      }); }}><input aria-label="질문" value={question} onChange={event => setQuestion(event.target.value)} placeholder="문서에 대해 질문하세요." />
-        <button disabled={busy || !question.trim()}>검색</button></form>
-      {result && <><p className="answer">{result.answer}</p><h3>검색 근거</h3>{result.evidence.map(item => <article className="review-link" key={item.link_id ? `${item.link_id}:${JSON.stringify(item.selection)}` : item.fragment.id}>
-        <strong>{item.filename || item.fragment?.title || "문서 근거"}</strong><p>{item.text ?? item.fragment?.text}</p>
-        {item.selection && <><p>{item.selection.kind === "pages" ? selectionLabel(item.selection) : "연결된 인용문"}</p>
-          <button onClick={() => openEvidence(item)}>연결된 원문 확인</button></>}
-      </article>)}</>}
-    </section>}
+    {tab === "search" && <section className="rag-section"><ChatPreview apiBase={apiBase} token={token} onUnauthorized={onUnauthorized} onOpenSource={openEvidence} /></section>}
   </section>;
 }
