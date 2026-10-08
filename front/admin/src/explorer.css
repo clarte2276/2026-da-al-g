@@ -1,0 +1,437 @@
+.explorer-page {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 570px;
+  padding: 16px !important;
+  color: #1f1f1f;
+  background: #fff;
+  font-family: "Segoe UI Variable", "Segoe UI", Arial, sans-serif;
+  font-size: 13px;
+}
+
+.explorer-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.explorer-heading h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.explorer-heading span {
+  color: #666;
+}
+
+.explorer-empty {
+  margin: 0;
+  padding: 16px;
+}
+
+.explorer-commandbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  padding: 4px 8px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  background: #f3f3f3;
+}
+
+.explorer-commandbar button,
+.explorer-view-toggle button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.explorer-commandbar button:hover:not(:disabled),
+.explorer-view-toggle button:hover {
+  border-color: #c8e2f6;
+  background: #e5f3ff;
+}
+
+.explorer-commandbar button:active:not(:disabled),
+.explorer-view-toggle button[aria-pressed="true"] {
+  border-color: #99d1ff;
+  background: #cce8ff;
+}
+
+.explorer-commandbar button:disabled {
+  color: #999;
+  cursor: default;
+}
+
+.explorer-nav-buttons {
+  display: flex;
+  gap: 1px;
+  margin-right: 4px;
+}
+
+.explorer-nav-buttons button {
+  width: 32px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.explorer-root select,
+.explorer-sort select {
+  max-width: 180px;
+  border: 1px solid #d2d2d2;
+  border-radius: 5px;
+  padding: 5px 26px 5px 8px;
+  color: #1f1f1f;
+  background: #fff;
+  font: inherit;
+}
+
+.explorer-command-separator {
+  width: 1px;
+  height: 24px;
+  margin: 0 5px;
+  background: #d5d5d5;
+}
+
+.explorer-icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+}
+
+.explorer-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 4px;
+  white-space: nowrap;
+}
+
+.explorer-view-toggle {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  padding: 2px;
+  border: 1px solid #d8d8d8;
+  border-radius: 7px;
+  background: #fff;
+}
+
+.explorer-view-toggle button {
+  min-height: 30px;
+  padding: 0 7px;
+}
+
+.explorer-upload {
+  margin-left: 4px;
+  border-color: #0067c0 !important;
+  color: white !important;
+  background: #0067c0 !important;
+}
+
+.explorer-upload:hover:not(:disabled) {
+  background: #005a9e !important;
+}
+
+.explorer-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 286px;
+  flex: 1 1 auto;
+  height: min(68vh, 760px);
+  min-height: 430px;
+  overflow: hidden;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  background: #f3f3f3;
+}
+
+.explorer-filemanager,
+.explorer-filemanager > div,
+.explorer-filemanager .wx-filemanager,
+.explorer-filemanager .wx-willow-theme {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.explorer-filemanager {
+  overflow: hidden;
+  border-right: 1px solid #e5e5e5;
+}
+
+.explorer-page .wx-willow-theme {
+  --wx-font-family: "Segoe UI Variable", "Segoe UI", Arial, sans-serif;
+  --wx-font-size: 13px;
+  --wx-line-height: 1.35;
+  --wx-color-primary: #0067c0;
+  --wx-color-primary-selected: #cce8ff;
+  --wx-background: #fff;
+  --wx-background-alt: #f3f3f3;
+  --wx-background-hover: #e5f3ff;
+  --wx-fm-background: #f3f3f3;
+  --wx-fm-box-shadow: none;
+  --wx-fm-select-background: #cce8ff;
+  --wx-fm-grid-border: 1px solid #e5e5e5;
+  --wx-fm-grid-header-color: #f3f3f3;
+  --wx-fm-button-font-color: #333;
+  --wx-fm-toolbar-height: 44px;
+  --wx-table-select-background: #cce8ff;
+  --wx-table-select-focus-background: #cce8ff;
+}
+
+.explorer-filemanager .wx-filemanager {
+  border-radius: 0;
+  color: #1f1f1f;
+  font-family: "Segoe UI Variable", "Segoe UI", Arial, sans-serif;
+}
+
+.explorer-filemanager .wx-sidebar,
+.explorer-filemanager .wx-content-wrapper,
+.explorer-filemanager .wx-toolbar,
+.explorer-filemanager .wx-wrapper,
+.explorer-filemanager .wx-breadcrumbs {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.explorer-filemanager .wx-sidebar {
+  width: 210px;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.explorer-filemanager .wx-content-item-fit,
+.explorer-filemanager .wx-content-item {
+  padding: 0 6px 6px;
+}
+
+.explorer-filemanager .wx-toolbar {
+  height: 44px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.explorer-filemanager .wx-breadcrumbs {
+  height: 40px;
+  flex-basis: 40px;
+  border-bottom: 1px solid #e5e5e5;
+  font-size: 13px;
+}
+
+.explorer-filemanager .wx-item:hover,
+.explorer-filemanager .wx-folder:hover,
+.explorer-filemanager .wx-row:hover {
+  background-color: #e5f3ff;
+}
+
+.explorer-filemanager .wx-selected {
+  background-color: #cce8ff !important;
+  outline: 1px solid #99d1ff;
+}
+
+.explorer-filemanager .wx-row {
+  height: 32px !important;
+  min-height: 32px !important;
+}
+
+.explorer-filemanager .wx-header {
+  height: 32px !important;
+  min-height: 32px !important;
+  background: #f3f3f3;
+}
+
+.explorer-filemanager .wx-cards {
+  gap: 2px;
+  padding: 12px;
+  background: #fff;
+}
+
+.explorer-filemanager .wx-cards .wx-item {
+  margin: 4px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  box-shadow: none;
+  background: transparent;
+}
+
+.explorer-filemanager .wx-cards .wx-item:hover {
+  border-color: #c8e2f6;
+}
+
+.explorer-filemanager .wx-list .wx-table,
+.explorer-filemanager .wx-cards {
+  border-radius: 0;
+}
+
+.explorer-details {
+  min-width: 0;
+  padding: 14px;
+  overflow: auto;
+  background: #fff;
+}
+
+.explorer-details > header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.explorer-details h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.explorer-detail-empty {
+  margin: 16px 0;
+  color: #666;
+}
+
+.explorer-detail-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+  min-width: 0;
+}
+
+.explorer-detail-title img {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+}
+
+.explorer-detail-title div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 4px;
+}
+
+.explorer-detail-title strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.explorer-detail-title span,
+.explorer-details dd {
+  color: #666;
+}
+
+.explorer-details dl {
+  display: grid;
+  grid-template-columns: 95px minmax(0, 1fr);
+  gap: 8px 10px;
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.explorer-details dt,
+.explorer-details dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.explorer-details dt {
+  color: #555;
+}
+
+.explorer-detail-path {
+  word-break: break-all;
+}
+
+.explorer-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.explorer-detail-actions button {
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid #c8c8c8;
+  border-radius: 5px;
+  color: #1f1f1f;
+  background: #fafafa;
+  font: inherit;
+  cursor: pointer;
+}
+
+.explorer-detail-actions button:hover:not(:disabled) {
+  border-color: #99d1ff;
+  background: #e5f3ff;
+}
+
+.explorer-detail-actions button:disabled {
+  color: #999;
+  cursor: default;
+}
+
+.explorer-statusbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 28px;
+  padding: 5px 10px;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  color: #555;
+  background: #f8f8f8;
+  font-size: 12px;
+}
+
+.explorer-page .notice {
+  margin: 0;
+}
+
+.explorer-page .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+@media (max-width: 1000px) {
+  .explorer-commandbar {
+    flex-wrap: wrap;
+  }
+
+  .explorer-workspace {
+    grid-template-columns: minmax(0, 1fr) 245px;
+  }
+}
+
+@media (max-width: 760px) {
+  .explorer-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .explorer-details {
+    display: none;
+  }
+
+  .explorer-view-toggle {
+    margin-left: 0;
+  }
+}
