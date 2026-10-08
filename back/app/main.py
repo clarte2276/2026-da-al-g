@@ -38,6 +38,8 @@ from .schemas import (
     EdgeOut,
     EvidenceOut,
     FragmentOut,
+    LocalCopyRequest,
+    LocalEntryOut,
     LocalFileOut,
     LocalFolderRequest,
     LocalMoveRequest,
@@ -240,6 +242,29 @@ def list_local_files(
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
+@app.get("/api/local/entries", response_model=list[LocalEntryOut])
+def list_local_entries(
+    root_id: str,
+    _admin: AdminUser,
+    path: str = Query(default=""),
+) -> list[LocalEntryOut]:
+    try:
+        return [
+            LocalEntryOut(
+                path=entry.path,
+                name=entry.name,
+                type=entry.type,
+                size_bytes=entry.size_bytes,
+                modified_at=entry.modified_at,
+            )
+            for entry in local_file_service.entries(root_id, path)
+        ]
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=404, detail="Folder not found") from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
 @app.get("/api/local/folders", response_model=list[str])
 def list_local_folders(root_id: str, _admin: AdminUser) -> list[str]:
     try:
@@ -263,12 +288,28 @@ def create_local_folder(payload: LocalFolderRequest, _admin: AdminUser) -> dict[
 @app.delete("/api/local/folders")
 def delete_local_folder(payload: LocalFolderRequest, _admin: AdminUser) -> dict[str, bool]:
     try:
-        local_file_service.delete_empty_folder(payload.root_id, payload.relative_path)
+        local_file_service.delete_empty_folder(payload.root_id, payload.relative_path, payload.recursive)
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=404, detail="Folder not found") from exc
     except OSError as exc:
         raise HTTPException(status_code=409, detail="Only empty folders can be deleted") from exc
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     return {"deleted": True}
+
+
+@app.post("/api/local/copy")
+def copy_local_entry(payload: LocalCopyRequest, _admin: AdminUser) -> dict[str, str]:
+    try:
+        return {"destination_path": local_file_service.copy(
+            payload.root_id, payload.source_path, payload.destination_path
+        )}
+    except FileExistsError as exc:
+        raise HTTPException(status_code=409, detail="Destination already exists") from exc
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=404, detail="Source or destination folder not found") from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
 @app.delete("/api/local/files")

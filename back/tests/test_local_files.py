@@ -6,6 +6,116 @@ from app.config import Settings
 from app.services.local_files import LocalFileService
 
 
+def test_entries_lists_direct_children_folders_first_and_hides_unsupported_files(
+    tmp_path, monkeypatch
+) -> None:
+    from app import main
+
+    (tmp_path / "Zoo").mkdir()
+    (tmp_path / "Alpha").mkdir()
+    (tmp_path / "document.pdf").write_bytes(b"pdf")
+    (tmp_path / "notes.txt").write_text("ignore", encoding="utf-8")
+    service = LocalFileService(Settings(_env_file=None, local_document_roots=str(tmp_path)))
+    monkeypatch.setattr(main, "local_file_service", service)
+
+    entries = main.list_local_entries("root-0", None, "")
+
+    assert [(entry.type, entry.name) for entry in entries] == [
+        ("folder", "Alpha"),
+        ("folder", "Zoo"),
+        ("file", "document.pdf"),
+    ]
+    assert entries[-1].path == "document.pdf"
+    assert entries[-1].size_bytes == 3
+
+
+def test_copy_copies_files_and_whole_folders(tmp_path) -> None:
+    (tmp_path / "source").mkdir()
+    (tmp_path / "source" / "nested").mkdir()
+    (tmp_path / "source" / "file.pdf").write_bytes(b"pdf")
+    (tmp_path / "source" / "nested" / "notes.txt").write_text("keep", encoding="utf-8")
+    (tmp_path / "copies").mkdir()
+    service = LocalFileService(Settings(_env_file=None, local_document_roots=str(tmp_path)))
+
+    assert service.copy("root-0", "source/file.pdf", "copies/file.pdf") == "copies/file.pdf"
+    assert (tmp_path / "copies" / "file.pdf").read_bytes() == b"pdf"
+    assert service.copy("root-0", "source", "copies/source") == "copies/source"
+    assert (tmp_path / "copies" / "source" / "nested" / "notes.txt").read_text(
+        encoding="utf-8"
+    ) == "keep"
+
+
+def test_copy_conflict_maps_to_http_409(tmp_path, monkeypatch) -> None:
+    from fastapi import HTTPException
+
+    from app import main
+    from app.schemas import LocalCopyRequest
+
+    (tmp_path / "source.pdf").write_bytes(b"source")
+    (tmp_path / "destination.pdf").write_bytes(b"existing")
+    service = LocalFileService(Settings(_env_file=None, local_document_roots=str(tmp_path)))
+    monkeypatch.setattr(main, "local_file_service", service)
+
+    with pytest.raises(HTTPException) as exc_info:
+        main.copy_local_entry(
+            LocalCopyRequest(
+                root_id="root-0", source_path="source.pdf", destination_path="destination.pdf"
+            ),
+            None,
+        )
+
+    assert exc_info.value.status_code == 409
+    assert (tmp_path / "destination.pdf").read_bytes() == b"existing"
+
+
+def test_recursive_folder_delete_is_opt_in_and_maps_nonempty_conflict_to_409(
+    tmp_path, monkeypatch
+) -> None:
+    from fastapi import HTTPException
+
+    from app import main
+    from app.schemas import LocalFolderRequest
+
+    folder = tmp_path / "folder"
+    folder.mkdir()
+    (folder / "document.pdf").write_bytes(b"pdf")
+    monkeypatch.setattr(
+        main,
+        "local_file_service",
+        LocalFileService(Settings(_env_file=None, local_document_roots=str(tmp_path))),
+    )
+
+    with pytest.raises(HTTPException) as exc_info:
+        main.delete_local_folder(LocalFolderRequest(root_id="root-0", relative_path="folder"), None)
+    assert exc_info.value.status_code == 409
+    assert (folder / "document.pdf").is_file()
+
+    assert main.delete_local_folder(
+        LocalFolderRequest(root_id="root-0", relative_path="folder", recursive=True), None
+    ) == {"deleted": True}
+    assert not folder.exists()
+
+
+def test_entries_rejects_path_escape_with_http_400(tmp_path, monkeypatch) -> None:
+    from fastapi import HTTPException
+
+    from app import main
+
+    root = tmp_path / "root"
+    root.mkdir()
+    (tmp_path / "outside").mkdir()
+    monkeypatch.setattr(
+        main,
+        "local_file_service",
+        LocalFileService(Settings(_env_file=None, local_document_roots=str(root))),
+    )
+
+    with pytest.raises(HTTPException) as exc_info:
+        main.list_local_entries("root-0", None, "../outside")
+
+    assert exc_info.value.status_code == 400
+
+
 def test_local_file_service_lists_supported_files_and_blocks_escape(tmp_path) -> None:
     document_dir = tmp_path / "서울교통공사 사규"
     document_dir.mkdir()

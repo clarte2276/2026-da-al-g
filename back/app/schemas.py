@@ -55,6 +55,14 @@ class LocalFileOut(BaseModel):
     modified_at: datetime
 
 
+class LocalEntryOut(BaseModel):
+    path: str
+    name: str
+    type: Literal["folder", "file"]
+    size_bytes: int
+    modified_at: datetime
+
+
 class LocalOpenRequest(BaseModel):
     root_id: str
     relative_path: str
@@ -63,6 +71,13 @@ class LocalOpenRequest(BaseModel):
 class LocalFolderRequest(BaseModel):
     root_id: str
     relative_path: str
+    recursive: bool = False
+
+
+class LocalCopyRequest(BaseModel):
+    root_id: str
+    source_path: str
+    destination_path: str
 
 
 class LocalMoveRequest(BaseModel):

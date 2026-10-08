@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import shutil
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Literal
 
 from ..config import Settings
 
@@ -31,6 +33,15 @@ class LocalFile:
     @property
     def modified_at(self) -> datetime:
         return datetime.fromtimestamp(self.path.stat().st_mtime, tz=UTC)
+
+
+@dataclass(frozen=True, slots=True)
+class LocalEntry:
+    path: str
+    name: str
+    type: Literal["folder", "file"]
+    size_bytes: int
+    modified_at: datetime
 
 
 class LocalFileService:
@@ -78,6 +89,34 @@ class LocalFileService:
             if path.is_dir() and not path.is_symlink() and path.resolve().is_relative_to(root)
         )
 
+    def entries(self, root_id: str, relative_path: str = "") -> list[LocalEntry]:
+        root = self.root(root_id).path
+        folder = self.path(root_id, relative_path)
+        if not folder.is_dir():
+            raise FileNotFoundError(folder)
+
+        entries = []
+        for path in folder.iterdir():
+            if path.is_symlink():
+                continue
+            if path.is_dir():
+                entry_type = "folder"
+                size_bytes = 0
+            elif path.is_file() and path.suffix.lower() in SUPPORTED_SUFFIXES:
+                entry_type = "file"
+                size_bytes = path.stat().st_size
+            else:
+                continue
+            stat = path.stat()
+            entries.append(LocalEntry(
+                path=path.relative_to(root).as_posix(),
+                name=path.name,
+                type=entry_type,
+                size_bytes=size_bytes,
+                modified_at=datetime.fromtimestamp(stat.st_mtime, tz=UTC),
+            ))
+        return sorted(entries, key=lambda entry: (entry.type != "folder", entry.name.casefold()))
+
     def create_folder(self, root_id: str, relative_path: str) -> str:
         path = self.path(root_id, relative_path)
         if path == self.root(root_id).path or path.exists():
@@ -87,11 +126,14 @@ class LocalFileService:
         path.mkdir()
         return relative_path
 
-    def delete_empty_folder(self, root_id: str, relative_path: str) -> None:
+    def delete_empty_folder(self, root_id: str, relative_path: str, recursive: bool = False) -> None:
         path = self.path(root_id, relative_path)
         if path == self.root(root_id).path:
             raise ValueError("The document root cannot be deleted")
-        path.rmdir()
+        if recursive:
+            shutil.rmtree(path)
+        else:
+            path.rmdir()
 
     def delete_file(self, root_id: str, relative_path: str) -> None:
         self.resolve(root_id, relative_path).path.unlink()
@@ -114,6 +156,33 @@ class LocalFileService:
             raise FileNotFoundError(new.parent)
         old.rename(new)
         return old, new
+
+    def copy(self, root_id: str, source: str, destination: str) -> str:
+        old = self.path(root_id, source)
+        new = self.path(root_id, destination)
+        root = self.root(root_id).path
+        if old == root or new == root:
+            raise ValueError("A document or folder must be selected")
+        if not old.exists():
+            raise FileNotFoundError(old)
+        if old.is_file() and old.suffix.lower() not in SUPPORTED_SUFFIXES:
+            raise ValueError("Unsupported document path")
+        if old.is_dir() and new.is_relative_to(old):
+            raise ValueError("A folder cannot be copied into itself")
+        if not old.is_file() and not old.is_dir():
+            raise ValueError("Unsupported document path")
+        if new.exists():
+            raise FileExistsError(new)
+        if not new.parent.is_dir():
+            raise FileNotFoundError(new.parent)
+
+        if old.is_dir():
+            if any(path.is_symlink() for path in old.rglob("*")):
+                raise ValueError("Symbolic links cannot be copied")
+            shutil.copytree(old, new)
+        else:
+            shutil.copy2(old, new)
+        return new.relative_to(root).as_posix()
 
     def list_files(
         self,
