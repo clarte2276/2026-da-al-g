@@ -53,6 +53,11 @@ export function Management({ section, api }) {
     await run(() => api(`/api/admin/users/${user.id}`, json("PATCH", { [field]: value })));
   }
 
+  function deleteUser(user) {
+    if (!window.confirm(`${user.display_name}(${user.username}) 계정을 삭제할까요?\n삭제하면 계정과 대화 기록·북마크·고객문의가 영구 삭제되며 되돌릴 수 없습니다.`)) return;
+    run(() => api(`/api/admin/users/${user.id}`, { method: "DELETE" }), "회원을 삭제했습니다.");
+  }
+
   function createUser(event) {
     event.preventDefault();
     const form = event.currentTarget;
@@ -131,7 +136,7 @@ export function Management({ section, api }) {
         {!!result.skipped.length && <div className="skipped-list"><h3>건너뛴 행</h3><ul>{result.skipped.map((row, index) => <li key={`${row.username}-${index}`}><strong>{row.username}</strong> {row.reason}</li>)}</ul></div>}
       </section>}
       <div className="table-scroll"><table className="management-table">
-        <thead><tr><th>사번</th><th>이름</th><th>상태</th><th>비밀번호 상태</th><th>생성일</th><th>작업</th></tr></thead>
+        <thead><tr><th>사번</th><th>이름</th><th>비밀번호 상태</th><th>생성일</th><th>작업</th></tr></thead>
         <tbody>{users.map(user => <tr key={user.id}>
           <td>{user.username}</td>
           <td><input aria-label={`${user.username} 이름`} defaultValue={user.display_name} onBlur={event => {
@@ -142,10 +147,9 @@ export function Management({ section, api }) {
             if (event.key === "Enter") { event.preventDefault(); event.currentTarget.blur(); }
             if (event.key === "Escape") { event.currentTarget.value = user.display_name; event.currentTarget.blur(); }
           }} /></td>
-          <td><button className="status-toggle" aria-pressed={user.is_active} disabled={busy} onClick={() => updateUser(user, "is_active", !user.is_active)}>{user.is_active ? "활성" : "비활성"}</button></td>
           <td>{user.must_change_password ? "초기 비밀번호 변경 대기" : "변경 완료"}</td>
           <td>{when(user.created_at)}</td>
-          <td><button disabled={busy} onClick={() => resetPassword(user)}>비밀번호 재설정</button></td>
+          <td><button disabled={busy} onClick={() => resetPassword(user)}>비밀번호 재설정</button> <button className="danger-button" disabled={busy} onClick={() => deleteUser(user)}>삭제</button></td>
         </tr>)}</tbody>
       </table></div>
     </>}

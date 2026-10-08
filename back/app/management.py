@@ -11,7 +11,7 @@ from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
 from fastapi.responses import Response
 from openpyxl import Workbook, load_workbook
 from pydantic import BaseModel, Field
-from sqlalchemy import select, update
+from sqlalchemy import delete, select, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -360,6 +360,24 @@ def update_user(user_id: str, payload: UserUpdate, db: DB, admin: AdminUser) -> 
     _audit(db, admin.id, "user.updated", "user", user.id)
     db.commit()
     return {"user": user, "initial_password": initial_password}
+
+
+@router.delete("/admin/users/{user_id}")
+def delete_user(user_id: str, db: DB, admin: AdminUser) -> dict:
+    user = db.get(User, user_id)
+    if not user:
+        raise HTTPException(404, "User not found")
+    if user.role != "user" or user.id == admin.id:
+        raise HTTPException(403, "Cannot delete administrators or yourself")
+    inquiry_ids = select(Inquiry.id).where(Inquiry.user_id == user.id)
+    for model in (AuthSession, ConversationRecord, BookmarkRecord):
+        db.execute(delete(model).where(model.user_id == user.id))
+    db.execute(delete(InquiryReply).where(InquiryReply.inquiry_id.in_(inquiry_ids)))
+    db.execute(delete(Inquiry).where(Inquiry.user_id == user.id))
+    _audit(db, admin.id, "user.deleted", "user", user.id)
+    db.delete(user)
+    db.commit()
+    return {"deleted": True}
 
 
 @router.post("/admin/users/import")

@@ -7,13 +7,14 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from openpyxl import Workbook
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
 from app import auth, duty, management
 from app.config import Settings
 from app.db import Base, get_db
+from app.models import AuthSession, AuditEvent, BookmarkRecord, ConversationRecord, Inquiry, InquiryReply, User
 
 
 def test_admin_account_and_personal_data_lifecycle(tmp_path, monkeypatch):
@@ -54,6 +55,59 @@ def test_admin_account_and_personal_data_lifecycle(tmp_path, monkeypatch):
             assert client.get("/api/admin/feedback", headers=admin).status_code == 404
             assert client.patch(f"/api/admin/users/{user_id}", headers=admin, json={"is_active": False}).status_code == 200
             assert client.get("/api/me/bookmarks", headers=user).status_code == 401
+
+
+def test_admin_deletes_member_and_personal_data(tmp_path, monkeypatch):
+    engine = create_engine("sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool)
+    Base.metadata.create_all(engine)
+    settings = Settings(_env_file=None, storage_root=tmp_path, bootstrap_admin_username="admin",
+                        bootstrap_admin_password="safe-password", enable_test_account=False)
+    monkeypatch.setattr(auth, "get_settings", lambda: settings)
+    with Session(engine, expire_on_commit=False) as db:
+        auth.ensure_bootstrap_accounts(db)
+        app = FastAPI()
+        app.include_router(auth.router)
+        app.include_router(management.router)
+        app.dependency_overrides[get_db] = lambda: db
+        with TestClient(app) as client:
+            login = lambda username, password: client.post("/api/auth/login", json={"username": username, "password": password})
+            admin_login = login("admin", "safe-password")
+            admin = {"Authorization": f"Bearer {admin_login.json()['access_token']}"}
+            admin_id = db.scalar(select(User.id).where(User.role == "admin"))
+            assert client.delete(f"/api/admin/users/{admin_id}", headers=admin).status_code == 403
+            assert client.delete("/api/admin/users/missing", headers=admin).status_code == 404
+
+            created = client.post("/api/admin/users", headers=admin,
+                                  json={"username": "21714093", "display_name": "Driver"}).json()
+            user_id = created["user"]["id"]
+            member_login = login("21714093", created["initial_password"])
+            user = {"Authorization": f"Bearer {member_login.json()['access_token']}"}
+            assert client.delete(f"/api/admin/users/{user_id}", headers=user).status_code == 403
+            assert client.post("/api/auth/password", headers=user,
+                               json={"current_password": created["initial_password"],
+                                     "new_password": "password-123"}).status_code == 200
+            assert client.post("/api/me/import", headers=user, json={
+                "conversations": [{"id": "old-1", "title": "Question", "createdAt": "2026-06-01T00:00:00Z",
+                                   "messages": [{"isUser": True, "text": "Hello"}]}],
+                "bookmarks": [{"regulation": "Rule", "chapter": "1", "version": ""}],
+            }).status_code == 200
+            inquiry = client.post("/api/me/inquiries", headers=user,
+                                  json={"title": "Inquiry", "body": "Please check."})
+            assert inquiry.status_code == 201
+            assert client.post(f"/api/me/inquiries/{inquiry.json()['id']}/replies", headers=user,
+                               json={"body": "More details."}).status_code == 200
+
+            response = client.delete(f"/api/admin/users/{user_id}", headers=admin)
+            assert response.status_code == 200 and response.json() == {"deleted": True}
+            assert db.scalar(select(User).where(User.id == user_id)) is None
+            assert db.scalar(select(AuthSession).where(AuthSession.user_id == user_id)) is None
+            assert db.scalar(select(ConversationRecord).where(ConversationRecord.user_id == user_id)) is None
+            assert db.scalar(select(BookmarkRecord).where(BookmarkRecord.user_id == user_id)) is None
+            assert db.scalar(select(Inquiry).where(Inquiry.user_id == user_id)) is None
+            assert db.scalar(select(InquiryReply).where(InquiryReply.inquiry_id == inquiry.json()["id"])) is None
+            assert db.scalar(select(AuditEvent).where(AuditEvent.action == "user.deleted",
+                                                     AuditEvent.entity_id == user_id)) is not None
+            assert login("21714093", "password-123").status_code == 401
 
 
 def test_duty_parser_reads_selected_month_only():

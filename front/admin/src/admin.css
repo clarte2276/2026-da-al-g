@@ -208,8 +208,8 @@ summary { cursor: pointer; }
 .management-table th { color: var(--muted); font-weight: 600; white-space: nowrap; }
 .management-table td:first-child { color: var(--line6-ink); font-variant-numeric: tabular-nums; }
 .management-table td input { min-width: 140px; }
-.status-toggle[aria-pressed="true"] { border-color: var(--ok); color: var(--ok); }
-.status-toggle[aria-pressed="false"] { border-color: var(--bad); color: var(--bad); }
+.danger-button { border-color: var(--bad); color: var(--bad); }
+.danger-button:hover:not(:disabled) { background: var(--bad-wash); color: var(--bad); }
 .credential-results { margin-top: 18px; border: 1px solid var(--line6); border-radius: 8px; background: var(--line6-wash); padding: 16px; }
 .credential-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
 .credential-heading h2, .skipped-list h3, .reply-thread h3 { font-size: 15px; font-weight: 600; }
