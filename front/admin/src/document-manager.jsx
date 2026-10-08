@@ -6,6 +6,7 @@ import "@svar-ui/react-filemanager/all.css";
 import "./explorer.css";
 
 const SUPPORTED = new Set([".docx", ".hwp", ".hwpx", ".pptx", ".pdf"]);
+const ROOT_PANELS = [{ path: "/" }];
 const koWords = {
   ...filemanagerEn,
   filemanager: {
@@ -77,7 +78,12 @@ const formatSize = bytes => {
   do { size /= 1024; unit += 1; } while (size >= 1024 && unit < units.length - 1);
   return `${new Intl.NumberFormat("ko-KR", { maximumFractionDigits: 1 }).format(size)} ${units[unit]}`;
 };
-const dateText = date => date ? new Date(date).toLocaleString("ko-KR") : "—";
+const dateText = date => {
+  const value = new Date(date);
+  if (!date || Number.isNaN(value.getTime())) return "—";
+  const pad = part => String(part).padStart(2, "0");
+  return `${value.getFullYear()}-${pad(value.getMonth() + 1)}-${pad(value.getDate())} ${value.toLocaleTimeString("ko-KR", { hour: "numeric", minute: "2-digit", hour12: true })}`;
+};
 
 function getDocument(documents, path) {
   const name = nameOf(path);
@@ -91,7 +97,7 @@ function toFilemanagerData(entries, documents) {
     return {
       id: svarPath(entry.path),
       type: entry.type,
-      size: entry.size_bytes,
+      ...(entry.type === "file" ? { size: entry.size_bytes } : {}),
       date: entry.modified_at ? new Date(entry.modified_at) : undefined,
       lazy: entry.type === "folder",
       ragStatus: document?.status || "미등록",
@@ -547,7 +553,7 @@ export function DocumentManager({ api }) {
     fmRef.current = apiInstance;
     apiInstance.on("request-data", ({ id }) => {
       const path = localPath(id);
-      fetchEntries(api, rootIdRef.current, path)
+      return fetchEntries(api, rootIdRef.current, path)
         .then(entries => apiInstance.exec("provide-data", { id, data: toFilemanagerData(entries, docsRef.current) }))
         .then(() => updateFromApi(apiInstance))
         .catch(reason => setError(reason.message));
@@ -579,10 +585,67 @@ export function DocumentManager({ api }) {
       const id = node.getAttribute("data-id");
       if (id && fmRef.current?.getFile(id)?.type) node.setAttribute("draggable", "true");
     });
-    markDraggable();
-    const observer = new MutationObserver(markDraggable);
-    observer.observe(host, { childList: true, subtree: true });
-    return () => observer.disconnect();
+    const markTreeToggles = () => host.querySelectorAll(".wx-tree .wx-folder[data-id]").forEach(node => {
+      const id = node.getAttribute("data-id")?.replace(/^:/, "");
+      const item = id && fmRef.current?.getFile(id);
+      const toggle = node.querySelector(".wx-toggle-placeholder");
+      if (!toggle) return;
+      if (item?.lazy) {
+        toggle.classList.add("explorer-tree-toggle");
+        toggle.setAttribute("role", "button");
+        toggle.setAttribute("tabindex", "0");
+        toggle.setAttribute("aria-expanded", String(Boolean(item.open)));
+        toggle.setAttribute("aria-label", `${item.name} 하위 폴더 ${item.open ? "접기" : "펼치기"}`);
+      } else {
+        toggle.classList.remove("explorer-tree-toggle");
+        toggle.removeAttribute("role");
+        toggle.removeAttribute("tabindex");
+        toggle.removeAttribute("aria-expanded");
+        toggle.removeAttribute("aria-label");
+      }
+    });
+    // ponytail: SVAR 2.6 has no date-cell formatter prop; remove this when it exposes one.
+    const formatDates = () => host.querySelectorAll(".wx-list .wx-row[data-id]").forEach(row => {
+      const id = row.getAttribute("data-id")?.replace(/^:/, "");
+      const date = id && fmRef.current?.getFile(id)?.date;
+      const cell = row.querySelector('[data-col-id=":date"]');
+      const formatted = dateText(date);
+      if (date && cell && cell.textContent !== formatted) cell.textContent = formatted;
+    });
+    const syncView = () => {
+      markDraggable();
+      markTreeToggles();
+      formatDates();
+    };
+    // ponytail: SVAR 2.6 has no lazy-tree expansion hook; remove this when it adds one.
+    const toggleLazyFolder = event => {
+      if (!(event.target instanceof Element)) return;
+      const toggle = event.target.closest(".explorer-tree-toggle");
+      if (!toggle || (event.type === "keydown" && !["Enter", " "].includes(event.key))) return;
+      const id = toggle.closest(".wx-folder[data-id]")?.getAttribute("data-id")?.replace(/^:/, "");
+      const item = id && fmRef.current?.getFile(id);
+      if (!item?.lazy) return;
+      event.preventDefault();
+      event.stopPropagation();
+      const mode = !item.open;
+      toggle.setAttribute("aria-expanded", String(mode));
+      toggle.setAttribute("aria-label", `${item.name} 하위 폴더 ${mode ? "접기" : "펼치기"}`);
+      void fmRef.current.exec("open-tree-folder", { id, mode });
+      if (mode) void fmRef.current.exec("request-data", { id }).then(() => {
+        const folder = fmRef.current?.getFile(id);
+        if (!folder?.data?.some(child => child.type === "folder")) return fmRef.current.exec("open-tree-folder", { id, mode: false });
+      }).then(syncView);
+    };
+    host.addEventListener("click", toggleLazyFolder, true);
+    host.addEventListener("keydown", toggleLazyFolder, true);
+    syncView();
+    const observer = new MutationObserver(syncView);
+    observer.observe(host, { childList: true, subtree: true, characterData: true });
+    return () => {
+      observer.disconnect();
+      host.removeEventListener("click", toggleLazyFolder, true);
+      host.removeEventListener("keydown", toggleLazyFolder, true);
+    };
   }, [initialData, view]);
 
   async function dropMove(event) {
@@ -680,8 +743,8 @@ export function DocumentManager({ api }) {
       <div className="explorer-workspace" ref={hostRef} onDragStart={onDragStart} onDragOver={onDragOver} onDrop={event => void dropMove(event)}>
         <div className="explorer-filemanager">
           <Locale words={koWords}>
-            <Willow fonts={false}>
-              <Filemanager key={rootId} ref={fmRef} init={init} data={initialData} mode={view} panels={[{ path: "/" }]} activePanel={0} preview={false} menuOptions={menuOptions} icons={entryIcon} />
+            <Willow>
+              <Filemanager key={rootId} ref={fmRef} init={init} data={initialData} mode={view} panels={ROOT_PANELS} activePanel={0} preview={false} menuOptions={menuOptions} icons={entryIcon} />
             </Willow>
           </Locale>
         </div>
@@ -707,7 +770,7 @@ export function DocumentManager({ api }) {
       </div>
       <footer className="explorer-statusbar">
         <span>항목 {realItems.length}개</span>
-        {selectedItems.length > 0 && <span>{selectedItems.length}개 항목 선택함 · {formatSize(selectedSize)}</span>}
+        {selectedItems.length > 0 && <span>{selectedItems.length}개 항목 선택함{selectedItems.some(item => item.type === "file") && ` · ${formatSize(selectedSize)}`}</span>}
       </footer>
     </>}
   </section>;

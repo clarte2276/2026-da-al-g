@@ -33,6 +33,7 @@
 
 .explorer-commandbar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 4px;
   min-height: 44px;
@@ -214,6 +215,58 @@
   padding-right: 6px;
 }
 
+.explorer-filemanager .wx-sidebar-narrow {
+  position: static !important;
+  left: auto !important;
+  z-index: auto;
+  transition: none;
+}
+
+.explorer-filemanager .wx-toolbar .wx-sidebar-icon,
+.explorer-filemanager .wx-toolbar .wx-preview-icon,
+.explorer-filemanager .wx-toolbar .wx-modes {
+  display: none;
+}
+
+.explorer-filemanager .wx-toolbar .wx-left {
+  width: 100%;
+}
+
+.explorer-filemanager .wx-search-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.explorer-filemanager .wx-folder .explorer-tree-toggle {
+  position: relative;
+  flex: 0 0 23px;
+  width: 23px;
+  height: 24px;
+  margin-right: -2px;
+  cursor: pointer;
+}
+
+.explorer-filemanager .wx-folder .explorer-tree-toggle::after {
+  position: absolute;
+  top: 8px;
+  left: 7px;
+  width: 6px;
+  height: 6px;
+  border-top: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+  content: "";
+  transform: rotate(45deg);
+}
+
+.explorer-filemanager .wx-folder .explorer-tree-toggle[aria-expanded="true"]::after {
+  transform: rotate(135deg);
+}
+
+.explorer-filemanager .wx-folder .explorer-tree-toggle:focus-visible {
+  outline: 2px solid var(--wx-color-primary);
+  border-radius: 3px;
+}
+
 .explorer-filemanager .wx-content-item-fit,
 .explorer-filemanager .wx-content-item {
   padding: 0 6px 6px;
@@ -243,14 +296,18 @@
 }
 
 .explorer-filemanager .wx-row {
-  height: 32px !important;
-  min-height: 32px !important;
+  height: 42px !important;
+  min-height: 42px !important;
 }
 
 .explorer-filemanager .wx-header {
-  height: 32px !important;
-  min-height: 32px !important;
+  height: 42px !important;
+  min-height: 42px !important;
   background: #f3f3f3;
+}
+
+.explorer-filemanager .wx-cell[data-col-id=":date"] {
+  font-size: 11px;
 }
 
 .explorer-filemanager .wx-cards {
@@ -413,10 +470,6 @@
 }
 
 @media (max-width: 1000px) {
-  .explorer-commandbar {
-    flex-wrap: wrap;
-  }
-
   .explorer-workspace {
     grid-template-columns: minmax(0, 1fr) 245px;
   }
