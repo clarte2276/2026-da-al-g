@@ -138,10 +138,10 @@ def test_document_tool_result_is_grounded(tmp_path):
     # 근거 뒤에 답변 초점과 노선·상황별 특칙을 함께 지시한다.
     final_messages = client.chat.completions.calls[1]["messages"]
     assert final_messages[-2] == {"role": "system", "content": ANSWER_FOCUS_REMINDER}
-    assert "모든 점검·조치·보고 단계" in ANSWER_FOCUS_REMINDER
-    assert "모든 조건과 일치하는 주 근거" in ANSWER_FOCUS_REMINDER
-    assert "5~8호선 특칙" in final_messages[-1]["content"]
-    assert "반드시 답변에 포함" in final_messages[-1]["content"]
+    assert "모든 점검·조치·보고와" in ANSWER_FOCUS_REMINDER
+    assert "질문한 상황에 해당하는 주 근거" in ANSWER_FOCUS_REMINDER
+    assert "직접 적용되는 특칙" in final_messages[-1]["content"]
+    assert "다른 절차는 덧붙이지 마라" in final_messages[-1]["content"]
 
 
 def test_answer_log_preserves_synthetic_article_evidence():

@@ -252,8 +252,8 @@ class ChatService:
                         {"role": "system", "content": ANSWER_FOCUS_REMINDER},
                         {
                             "role": "system",
-                            "content": "질문의 노선·상황에 해당하는 특칙 조항(예: 5~8호선 특칙)이 근거에 있으면 "
-                            "그래프 링크로 연결된 근거라도 반드시 답변에 포함하라. 적용 조건과 추가 조치를 생략하지 마라.",
+                            "content": "질문한 노선·상황에 직접 적용되는 특칙이 근거에 있으면 질문에 필요한 조건과 조치만 "
+                            "그 범위 그대로 답하라. 관련만 있는 연결 근거의 다른 절차는 덧붙이지 마라.",
                         },
                     ],
                     **answer_options(self.settings, model),
