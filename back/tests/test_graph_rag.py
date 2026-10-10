@@ -5,7 +5,14 @@ from sqlalchemy.orm import Session
 
 from app.config import Settings
 from app.db import Base
-from app.models import Document, DocumentContent, DocumentVersion, Fragment, KnowledgeEdge
+from app.models import (
+    Document,
+    DocumentContent,
+    DocumentLink,
+    DocumentVersion,
+    Fragment,
+    KnowledgeEdge,
+)
 from app.services.document_content import overlaps, utf16_length
 from app.services.embedding import HashEmbeddingProvider
 from app.services.rag import (
@@ -221,6 +228,96 @@ def test_relevant_target_selections_keep_question_specific_ranges() -> None:
     )
     exacts = [part["exact"] for item in selected for part in item["ranges"]]
     assert "제67조 ATC 고장 지령식 운전 45km/h" in exacts and "제34조 운전시각 기록" not in exacts
+
+
+def test_irrelevant_link_ranges_are_not_added() -> None:
+    selection = {
+        "kind": "text",
+        "version_id": "version",
+        "ranges": [{"start": 0, "end": 10, "exact": "제12조 급여 지급"}],
+    }
+
+    assert GraphRAGService._relevant_target_selections(
+        selection, _search_tokens("안개 신호 확인거리 운전")
+    ) == []
+
+
+def test_slide_links_follow_exact_content_across_duplicate_versions(tmp_path) -> None:
+    engine = create_engine("sqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    provider = HashEmbeddingProvider(dimensions=64)
+    service = GraphRAGService(Settings(storage_root=tmp_path, embedding_dimensions=64), provider)
+    slide_text = "ATC 고장 시 리셋 스위치를 취급한다."
+    unrelated_text = "승강장 출발신호 취급 방법"
+    regulation_text = "제144조 ATC 고장 시 회송 절차를 따른다."
+
+    with Session(engine) as db:
+        old_doc = Document(filename="guide.pptx", sha256="d" * 64, status="ready")
+        new_doc = Document(filename="guide.pptx", sha256="e" * 64, status="ready")
+        unrelated_doc = Document(filename="guide.pptx", sha256="f" * 64, status="ready")
+        rule_doc = Document(filename="rules.hwp", sha256="1" * 64, status="ready")
+        db.add_all([old_doc, new_doc, unrelated_doc, rule_doc])
+        db.flush()
+        old_version = DocumentVersion(
+            document_id=old_doc.id, version_number=1, sha256="d" * 64,
+            storage_path="/tmp/old.pptx", status="completed",
+        )
+        new_version = DocumentVersion(
+            document_id=new_doc.id, version_number=1, sha256="e" * 64,
+            storage_path="/tmp/new.pptx", status="completed",
+        )
+        unrelated_version = DocumentVersion(
+            document_id=unrelated_doc.id, version_number=1, sha256="f" * 64,
+            storage_path="/tmp/unrelated.pptx", status="completed",
+        )
+        rule_version = DocumentVersion(
+            document_id=rule_doc.id, version_number=1, sha256="1" * 64,
+            storage_path="/tmp/rules.hwp", status="completed",
+        )
+        db.add_all([old_version, new_version, unrelated_version, rule_version])
+        db.flush()
+        old_slide = _fragment(old_version.id, "old-slide", slide_text, provider.embed([slide_text])[0])
+        old_slide.kind = "slide"
+        old_slide.locator_json = {"slide": 1}
+        current_slide = _fragment(new_version.id, "current-slide", slide_text, provider.embed([slide_text])[0])
+        current_slide.kind = "slide"
+        current_slide.locator_json = {"slide": 7}
+        unrelated_slide = _fragment(
+            unrelated_version.id, "unrelated-slide", unrelated_text, provider.embed([unrelated_text])[0]
+        )
+        unrelated_slide.kind = "slide"
+        unrelated_slide.locator_json = {"slide": 1}
+        db.add_all([old_slide, current_slide, unrelated_slide])
+        db.add_all([
+            DocumentContent(
+                version_id=old_version.id, kind="pages", text="", pages=[{"text": slide_text}]
+            ),
+            DocumentContent(version_id=rule_version.id, kind="text", text=regulation_text, pages=[]),
+            DocumentLink(
+                source_version_id=old_version.id,
+                target_version_id=rule_version.id,
+                source_selection={"kind": "pages", "version_id": old_version.id, "pages": [1]},
+                target_selection={
+                    "kind": "text",
+                    "version_id": rule_version.id,
+                    "ranges": [{"start": 0, "end": utf16_length(regulation_text), "exact": regulation_text}],
+                },
+                relation_type="REFERENCES",
+                status="approved",
+            ),
+        ])
+        db.flush()
+
+        evidence = {
+            current_slide.id: Evidence(current_slide, 1.0, 0, [current_slide.id]),
+            unrelated_slide.id: Evidence(unrelated_slide, 1.0, 0, [unrelated_slide.id]),
+        }
+        service._expand_links(db, evidence, 1, set(), _search_tokens("ATC 회송"))
+
+    linked = [item for item in evidence.values() if item.link_id]
+    assert len(linked) == 1
+    assert linked[0].path[0] == current_slide.id
+    assert "제144조" in linked[0].fragment.text
 
 
 def test_rag_expands_synthetic_article_edges(tmp_path) -> None:
