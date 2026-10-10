@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     default_graph_hops: int = 2
     local_document_roots: str = ""
     local_scan_limit: int = 10_000
+    raw_sync_interval_seconds: int = 60
     enable_registration: bool = False
     enable_test_account: bool = False
     auth_session_hours: int = 24

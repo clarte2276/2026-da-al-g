@@ -1,10 +1,11 @@
 import hashlib
+from collections.abc import Callable
 from pathlib import Path
 
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from ..models import DocumentContent, DocumentVersion, Fragment
+from ..models import Document, DocumentContent, DocumentVersion, Fragment
 from ..parsers import ParsedDocument, ParserError, get_parser
 
 
@@ -31,6 +32,22 @@ def verified_source(version: DocumentVersion) -> Path:
     if digest != version.sha256:
         raise HTTPException(409, "원본 파일이 변경되었습니다. 새 문서 버전으로 열어 주세요.")
     return path
+
+
+def pdf_twin(
+    document: Document,
+    version: DocumentVersion,
+    source_resolver: Callable[[DocumentVersion], Path] = verified_source,
+) -> tuple[Path, str]:
+    """Use the matching data_pdf file when present; otherwise use the preserved original."""
+    parts = Path(document.source_path or "").parts
+    if "data_raw" in parts:
+        i = len(parts) - 1 - parts[::-1].index("data_raw")
+        twin = Path(*parts[:i], "data_pdf", *parts[i + 1 :]).with_suffix(".pdf")
+        # ponytail: assumes the twin matches the latest version; re-export data_pdf when a regulation changes.
+        if twin.is_file():
+            return twin, f"{version.sha256}-pdf"
+    return source_resolver(version), version.sha256
 
 
 def build_content(version: DocumentVersion, parsed: ParsedDocument) -> DocumentContent:
