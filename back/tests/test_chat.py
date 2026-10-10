@@ -139,7 +139,7 @@ def test_document_tool_result_is_grounded(tmp_path):
     final_messages = client.chat.completions.calls[1]["messages"]
     assert final_messages[-2] == {"role": "system", "content": ANSWER_FOCUS_REMINDER}
     assert "모든 점검·조치·보고 단계" in ANSWER_FOCUS_REMINDER
-    assert "조건이 맞는 주 근거" in ANSWER_FOCUS_REMINDER
+    assert "모든 조건과 일치하는 주 근거" in ANSWER_FOCUS_REMINDER
     assert "5~8호선 특칙" in final_messages[-1]["content"]
     assert "반드시 답변에 포함" in final_messages[-1]["content"]
 
