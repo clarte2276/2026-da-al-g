@@ -12,7 +12,6 @@ from sqlalchemy.orm import Session
 from ..config import Settings
 from .rag import (
     ANSWER_FOCUS_REMINDER,
-    ANSWER_STYLE_RULES,
     GROUNDED_ANSWER_RULES,
     Evidence,
     GraphRAGService,
@@ -140,7 +139,7 @@ class ChatService:
         message: str,
         history: list[dict[str, str]],
         *,
-        top_k: int = 3,
+        top_k: int = 5,
         max_hops: int = 2,
     ) -> ChatResult:
         run = self._run(db, message, history, top_k=top_k, max_hops=max_hops, stream=False)
@@ -156,7 +155,7 @@ class ChatService:
         message: str,
         history: list[dict[str, str]],
         *,
-        top_k: int = 3,
+        top_k: int = 5,
         max_hops: int = 2,
     ) -> Iterator[ChatProgress | ChatResult]:
         """진행 상황과 답변 조각을 내보내고, 마지막에 인용을 정리한 ChatResult를 내보낸다."""
@@ -256,7 +255,6 @@ class ChatService:
                             "content": "질문의 노선·상황에 해당하는 특칙 조항(예: 5~8호선 특칙)이 근거에 있으면 "
                             "그래프 링크로 연결된 근거라도 반드시 답변에 포함하라. 적용 조건과 추가 조치를 생략하지 마라.",
                         },
-                        {"role": "system", "content": ANSWER_STYLE_RULES},
                     ],
                     **answer_options(self.settings, model),
                     **({"stream": True} if stream else {}),
