@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import os
 import shutil
 import subprocess
@@ -19,6 +20,8 @@ from reportlab.pdfbase.ttfonts import TTFError, TTFont
 from reportlab.pdfgen.canvas import Canvas
 
 from ..config import Settings
+
+logger = logging.getLogger(__name__)
 
 EMU_PER_INCH = 914400
 POINTS_PER_INCH = 72
@@ -402,6 +405,22 @@ class PdfConversionService:
             return source, "source-pdf"
         if source.suffix.lower() not in OFFICE_SUFFIXES:
             raise PdfConversionError(f"PDF 변환을 지원하지 않는 형식입니다: {source.suffix}")
+
+        if source.suffix.lower() in {".hwp", ".hwpx"}:
+            output = self._cache_path(source, cache_key, "rhwp-v1")
+            if output.is_file() and output.stat().st_size > 0:
+                return output, "cached-rhwp"
+            try:
+                import rhwp
+
+                pdf_bytes = rhwp.parse(str(source)).render_pdf()
+                with tempfile.TemporaryDirectory(prefix="rhwp-pdf-", dir=output.parent) as temporary:
+                    temporary_output = Path(temporary) / output.name
+                    temporary_output.write_bytes(pdf_bytes)
+                    os.replace(temporary_output, output)
+                return output, "rhwp"
+            except Exception as exc:
+                logger.warning("rhwp PDF rendering failed for %s; falling back to LibreOffice: %s", source, exc)
 
         converter = self._find_converter()
         if converter:
