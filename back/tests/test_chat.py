@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from app.config import Settings
 from app.models import AuditEvent, Base, Fragment
 from app.services.chat import ChatResult, ChatService
-from app.services.rag import ANSWER_FOCUS_REMINDER, ANSWER_STYLE_RULES, Evidence
+from app.services.rag import ANSWER_FOCUS_REMINDER, Evidence
 
 
 class _FailingRag:
@@ -114,8 +114,11 @@ def test_document_tool_result_is_grounded(tmp_path):
         filename="운전 규정.hwp",
     )
 
+    retrieval_calls = []
+
     class _Rag:
         def retrieve(self, *args, **kwargs):
+            retrieval_calls.append((args[1], kwargs))
             return [evidence]
 
     client = _FakeClient(
@@ -132,19 +135,21 @@ def test_document_tool_result_is_grounded(tmp_path):
 
     result = service.respond(None, "차량 고장 시 어떻게 하나요?", [])
 
+    assert retrieval_calls[0][0] == "차량 고장 시 어떻게 하나요?\n차량 고장 조치"
+    assert retrieval_calls[0][1]["rerank_question"] == "차량 고장 시 어떻게 하나요?"
     assert result.mode == "rag"
     assert result.evidence == [evidence]
     assert len(client.chat.completions.calls) == 2
     # 근거 뒤에 답변 초점과 노선·상황별 특칙을 함께 지시한다.
     final_messages = client.chat.completions.calls[1]["messages"]
-    assert {"role": "system", "content": ANSWER_FOCUS_REMINDER} in final_messages
-    assert final_messages[-1] == {
+    assert final_messages[-2] == {
         "role": "system",
-        "content": ANSWER_STYLE_RULES,
+        "content": ANSWER_FOCUS_REMINDER,
     }
+    assert "절차 답변은 번호를 붙여 단계별로 작성" in final_messages[-2]["content"]
     assert final_messages[-1]["role"] == "system"
-    assert "5~8호선 특칙" in final_messages[-2]["content"]
-    assert "반드시 답변에 포함" in final_messages[-2]["content"]
+    assert "5~8호선 특칙" in final_messages[-1]["content"]
+    assert "반드시 답변에 포함" in final_messages[-1]["content"]
 
 
 def test_answer_log_preserves_synthetic_article_evidence():
@@ -244,7 +249,7 @@ def test_linked_evidence_does_not_displace_search_hits():
 
     limited = ChatService._limit_evidence([item(1), item(1), *[item(0) for _ in range(6)]], 5)
 
-    assert [e.hop for e in limited] == [0, 0, 0, 0, 0, 1, 1]
+    assert [e.hop for e in limited] == [0, 0, 0, 0, 0, 1]
 
 
 def test_linked_evidence_is_capped():
@@ -253,7 +258,16 @@ def test_linked_evidence_is_capped():
 
     limited = ChatService._limit_evidence([item(0), *[item(1) for _ in range(5)]], 5)
 
-    assert [e.hop for e in limited] == [0, 1, 1, 1]
+    assert [e.hop for e in limited] == [0, 1]
+
+
+def test_linked_evidence_is_ranked_with_direct_hits():
+    direct = Evidence(fragment=Fragment(id="direct"), score=0.5, hop=0, path=[])
+    linked = Evidence(fragment=Fragment(id="linked"), score=0.7, hop=1, path=["direct"])
+
+    limited = ChatService._limit_evidence([direct, linked], 5)
+
+    assert [item.fragment.id for item in limited] == ["linked", "direct"]
 
 
 def test_linked_evidence_names_the_passage_it_came_from():
