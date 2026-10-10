@@ -10,6 +10,8 @@ import asyncio
 import json
 import math
 import re
+import sys
+from statistics import mean, stdev
 import time
 import uuid
 from dataclasses import dataclass
@@ -17,28 +19,144 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, ClassVar, Literal
 
-from openai import AsyncOpenAI
-from ragas.embeddings.base import embedding_factory
-from ragas.llms import llm_factory
-from ragas.metrics.collections import (
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="RAGAS Evaluation Runner")
+    parser.add_argument(
+        "--compare",
+        nargs="+",
+        type=Path,
+        help="Compare existing result JSON files without running an evaluation",
+    )
+    parser.add_argument(
+        "--cases",
+        nargs="*",
+        default=None,
+        help="Specific case names to run (or 'doc', 'general', 'graph', 'all')",
+    )
+    parser.add_argument(
+        "--reference-version",
+        choices=["v1", "v2"],
+        default="v2",
+        help="Reference version to use: v2 (ground-truth fixed) or v1 (legacy articles)",
+    )
+    parser.add_argument(
+        "--run-id",
+        default=None,
+        help="Identifier for this evaluation run (defaults to timestamp-uuid)",
+    )
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="Resume from existing checkpoint for the run-id",
+    )
+    return parser.parse_args()
+
+
+def _is_number(value: Any) -> bool:
+    return isinstance(value, (int, float)) and not isinstance(value, bool)
+
+
+def _case_scores(row: dict[str, Any], metric_names: set[str]) -> dict[str, float]:
+    scores = row.get("scores")
+    if isinstance(scores, dict):
+        return {key: float(value) for key, value in scores.items() if _is_number(value)}
+    return {key: float(row[key]) for key in metric_names if _is_number(row.get(key))}
+
+
+def compare_results(paths: list[Path]) -> None:
+    results = []
+    for path in paths:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(payload, dict) or not all(
+            isinstance(payload.get(key), expected)
+            for key, expected in (
+                ("averages", dict),
+                ("document_cases", list),
+                ("graph_check", dict),
+            )
+        ):
+            raise ValueError(f"Invalid RAGAS results file: {path}")
+        results.append(payload)
+
+    metric_keys = sorted({
+        (group, metric)
+        for result in results
+        for group, metrics in result["averages"].items()
+        if isinstance(metrics, dict)
+        for metric, value in metrics.items()
+        if isinstance(group, str) and isinstance(metric, str) and _is_number(value)
+    })
+    metric_names = {metric for _, metric in metric_keys}
+
+    print("Metric averages:")
+    for group, metric in metric_keys:
+        values = [result["averages"].get(group, {}).get(metric) for result in results]
+        columns = [
+            f"{path.name}={value:.4f}" if _is_number(value) else f"{path.name}=n/a"
+            for path, value in zip(paths, values)
+        ]
+        if len(paths) > 1:
+            present = [value for value in values if _is_number(value)]
+            average = f"{mean(present):.4f}" if present else "n/a"
+            deviation = f"{stdev(present):.4f}" if len(present) > 1 else "n/a"
+            columns.extend((f"mean={average}", f"stdev={deviation}"))
+        print(f"  {group}.{metric}: " + " | ".join(columns))
+
+    print("Graph checks:")
+    for key in sorted({key for result in results for key in result["graph_check"]}):
+        columns = [
+            f"{path.name}={result['graph_check'].get(key, 'n/a')}"
+            for path, result in zip(paths, results)
+        ]
+        print(f"  {key}: " + " | ".join(columns))
+
+    if len(results) > 1:
+        first_cases = {row["case"]: row for row in results[0]["document_cases"]}
+        second_cases = {row["case"]: row for row in results[1]["document_cases"]}
+        print(f"Per-case score deltas ({paths[1].name} - {paths[0].name}):")
+        for case in sorted(first_cases.keys() | second_cases.keys()):
+            if case not in first_cases:
+                print(f"  {case}: only in {paths[1].name}")
+                continue
+            if case not in second_cases:
+                print(f"  {case}: only in {paths[0].name}")
+                continue
+            first_scores = _case_scores(first_cases[case], metric_names)
+            second_scores = _case_scores(second_cases[case], metric_names)
+            for metric in sorted(first_scores.keys() & second_scores.keys()):
+                delta = second_scores[metric] - first_scores[metric]
+                print(f"  {case}.{metric}: {delta:+.4f}")
+
+
+if __name__ == "__main__" and "--compare" in sys.argv:
+    compare_results(parse_args().compare)
+    raise SystemExit(0)
+
+
+# Comparison exits before these evaluation-only imports so it needs no eval extra.
+from openai import AsyncOpenAI  # noqa: E402
+from ragas.embeddings.base import embedding_factory  # noqa: E402
+from ragas.llms import llm_factory  # noqa: E402
+from ragas.metrics.collections import (  # noqa: E402
     AnswerCorrectness,
     AnswerRelevancy,
     ContextPrecision,
     ContextRecall,
     Faithfulness,
 )
-from ragas.metrics.collections.answer_relevancy.util import (
+from ragas.metrics.collections.answer_relevancy.util import (  # noqa: E402
     AnswerRelevanceInput,
     AnswerRelevanceOutput,
     AnswerRelevancePrompt,
 )
-from ragas.metrics.collections.context_recall.util import (
+from ragas.metrics.collections.context_recall.util import (  # noqa: E402
     ContextRecallClassification,
     ContextRecallInput,
     ContextRecallOutput,
     ContextRecallPrompt,
 )
-from ragas.metrics.collections.faithfulness.util import (
+from ragas.metrics.collections.faithfulness.util import (  # noqa: E402
     NLIStatementInput,
     NLIStatementOutput,
     NLIStatementPrompt,
@@ -47,15 +165,16 @@ from ragas.metrics.collections.faithfulness.util import (
     StatementGeneratorOutput,
     StatementGeneratorPrompt,
 )
-from sqlalchemy import select
+from sqlalchemy import select  # noqa: E402
 
-from app.config import get_settings
-from app.db import SessionLocal
-from app.main import chat_service, rag_service
-from app.models import DocumentContent, DocumentLink
+from app.config import get_settings  # noqa: E402
+from app.db import SessionLocal  # noqa: E402
+from app.main import chat_service, rag_service  # noqa: E402
+from app.models import DocumentContent, DocumentLink  # noqa: E402
 
 RULE_VERSION = "35315ef6-c82f-44fd-904c-62b78bdc474a"
 DATASET_VERSION = "2026.09.16-v2"
+PROBE_TOP_K = 3
 
 
 @dataclass(frozen=True, slots=True)
@@ -602,33 +721,6 @@ def _article(text: str, number: int) -> str:
     return text[start:end].strip()
 
 
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="RAGAS Evaluation Runner")
-    parser.add_argument(
-        "--cases",
-        nargs="*",
-        default=None,
-        help="Specific case names to run (or 'doc', 'general', 'graph', 'all')",
-    )
-    parser.add_argument(
-        "--reference-version",
-        choices=["v1", "v2"],
-        default="v2",
-        help="Reference version to use: v2 (ground-truth fixed) or v1 (legacy articles)",
-    )
-    parser.add_argument(
-        "--run-id",
-        default=None,
-        help="Identifier for this evaluation run (defaults to timestamp-uuid)",
-    )
-    parser.add_argument(
-        "--resume",
-        action="store_true",
-        help="Resume from existing checkpoint for the run-id",
-    )
-    return parser.parse_args()
-
-
 async def _run() -> None:
     args = parse_args()
     settings = get_settings()
@@ -676,8 +768,8 @@ async def _run() -> None:
     }
 
     def graph_probe(db, question: str) -> dict[str, Any]:
-        base = rag_service.retrieve(db, question, top_k=5, max_hops=0)
-        expanded = rag_service.retrieve(db, question, top_k=5, max_hops=2)
+        base = rag_service.retrieve(db, question, top_k=PROBE_TOP_K, max_hops=0)
+        expanded = rag_service.retrieve(db, question, top_k=PROBE_TOP_K, max_hops=2)
         approved_ids = set(
             db.scalars(select(DocumentLink.id).where(DocumentLink.status == "approved")).all()
         )
