@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from app.config import Settings
 from app.models import AuditEvent, Base, Fragment
 from app.services.chat import ChatResult, ChatService
-from app.services.rag import ANSWER_FOCUS_REMINDER, ANSWER_STYLE_RULES, Evidence
+from app.services.rag import ANSWER_FOCUS_REMINDER, Evidence
 
 
 class _FailingRag:
@@ -138,13 +138,9 @@ def test_document_tool_result_is_grounded(tmp_path):
     # 근거 뒤에 답변 초점과 노선·상황별 특칙을 함께 지시한다.
     final_messages = client.chat.completions.calls[1]["messages"]
     assert {"role": "system", "content": ANSWER_FOCUS_REMINDER} in final_messages
-    assert final_messages[-1] == {
-        "role": "system",
-        "content": ANSWER_STYLE_RULES,
-    }
     assert final_messages[-1]["role"] == "system"
-    assert "5~8호선 특칙" in final_messages[-2]["content"]
-    assert "반드시 답변에 포함" in final_messages[-2]["content"]
+    assert "5~8호선 특칙" in final_messages[-1]["content"]
+    assert "반드시 답변에 포함" in final_messages[-1]["content"]
 
 
 def test_answer_log_preserves_synthetic_article_evidence():

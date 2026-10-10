@@ -1,4 +1,6 @@
 import hashlib
+import sys
+from types import SimpleNamespace
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
@@ -126,11 +128,16 @@ def test_rag_reconstructs_cross_chunk_article_with_unicode_offsets(tmp_path) -> 
     assert any(unit.locator_json.get("article") == "제2조" for unit in units)
 
 
-def test_rag_expands_only_approved_edges(tmp_path) -> None:
+def test_rag_expands_only_approved_edges(tmp_path, monkeypatch) -> None:
     engine = create_engine("sqlite:///:memory:")
     Base.metadata.create_all(engine)
     provider = HashEmbeddingProvider(dimensions=64)
-    settings = Settings(storage_root=tmp_path, embedding_dimensions=64, default_graph_hops=2)
+    settings = Settings(
+        storage_root=tmp_path,
+        embedding_dimensions=64,
+        default_graph_hops=2,
+        openai_api_key=None,
+    )
     service = GraphRAGService(settings, provider)
 
     with Session(engine) as db:
@@ -187,6 +194,53 @@ def test_rag_expands_only_approved_edges(tmp_path) -> None:
     assert approved_target.id in evidence_ids
     assert draft_target.id not in evidence_ids
     assert any(item.fragment.id == approved_target.id and item.hop == 1 for item in evidence)
+
+    settings.openai_api_key = "test"
+    seen = []
+
+    def select_linked(question, scored, top_k, sections, linked_ids=None):
+        seen.extend(fragment.id for fragment, _ in scored)
+        if linked_ids is None:
+            return [item for item in scored if item[0].id == seed.id]
+        assert approved_target.id in linked_ids
+        return [item for item in scored if item[0].id == approved_target.id]
+
+    monkeypatch.setattr(service, "_rerank", select_linked)
+    with Session(engine) as db:
+        selected = service.retrieve(db, "ATC 고장 조치", top_k=1, max_hops=1)
+
+    assert seed.id in seen
+    assert approved_target.id in seen
+    assert [item.fragment.id for item in selected] == [seed.id, approved_target.id]
+
+    def select_none(question, scored, top_k, sections, linked_ids=None):
+        if linked_ids is None:
+            return [item for item in scored if item[0].id == seed.id]
+        return []
+
+    monkeypatch.setattr(service, "_rerank", select_none)
+    with Session(engine) as db:
+        selected = service.retrieve(db, "ATC 고장 조치", top_k=1, max_hops=1)
+    assert [item.fragment.id for item in selected] == [seed.id]
+
+
+def test_rerank_keeps_evidence_when_model_selects_none(tmp_path, monkeypatch) -> None:
+    settings = Settings(storage_root=tmp_path, openai_api_key="test")
+    service = GraphRAGService(settings, HashEmbeddingProvider(dimensions=64))
+    first = Fragment(id="first", text="first passage")
+    second = Fragment(id="second", text="second passage")
+    client = SimpleNamespace(
+        chat=SimpleNamespace(
+            completions=SimpleNamespace(
+                create=lambda **kwargs: SimpleNamespace(
+                    choices=[SimpleNamespace(message=SimpleNamespace(content="[]"))]
+                )
+            )
+        )
+    )
+    monkeypatch.setitem(sys.modules, "openai", SimpleNamespace(OpenAI=lambda **kwargs: client))
+
+    assert service._rerank("question", [(first, 0.9), (second, 0.8)], 1, {}) == [(first, 0.9)]
 
 
 def test_relevant_target_selections_keep_question_specific_ranges() -> None:
