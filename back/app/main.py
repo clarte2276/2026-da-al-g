@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import json
+import logging
 import mimetypes
 import secrets
+import sys
 from concurrent.futures import Future, ThreadPoolExecutor
 from concurrent.futures import TimeoutError as FutureTimeoutError
 from datetime import UTC, datetime
@@ -50,12 +52,13 @@ from .schemas import (
     VersionOut,
 )
 from .services.chat import ChatResult, ChatService
-from .services.document_content import verified_source
+from .services.document_content import pdf_twin, verified_source
 from .services.embedding import get_embedding_provider
 from .services.ingestion import IngestionService
 from .services.local_files import LocalFile, LocalFileService
 from .services.pdf_conversion import PdfConversionError, PdfConversionService
 from .services.rag import Evidence, GraphRAGService
+from .services.raw_sync import RawSync
 
 settings = get_settings()
 embedding_provider = get_embedding_provider(settings)
@@ -64,6 +67,12 @@ local_file_service = LocalFileService(settings)
 rag_service = GraphRAGService(settings, embedding_provider)
 chat_service = ChatService(settings, rag_service)
 pdf_conversion_service = PdfConversionService(settings)
+raw_sync_service = RawSync(settings, ingestion_service, pdf_conversion_service, SessionLocal)
+logger = logging.getLogger(__name__)
+
+
+def _pdf_twin(document: Document, version: DocumentVersion) -> tuple[Path, str]:
+    return pdf_twin(document, version, verified_source)
 
 app = FastAPI(title=settings.app_name, version="0.1.0")
 app.include_router(auth_router)
@@ -86,6 +95,8 @@ def startup() -> None:
         ensure_bootstrap_accounts(db)
         if db.get_bind().dialect.name == "sqlite":
             rag_service._full_corpus(db)
+    if settings.raw_sync_interval_seconds > 0 and "pytest" not in sys.modules:
+        raw_sync_service.start()
 
 
 admin_dist = Path(__file__).resolve().parents[2] / "admin-dist"
@@ -336,6 +347,7 @@ def open_local_document(
         document.filename = local_file.path.name
         document.mime_type = mimetypes.guess_type(local_file.path.name)[0]
         db.commit()
+        _queue_pdf(document, version)
     except Exception as exc:
         db.rollback()
         raise HTTPException(status_code=422, detail=str(exc)) from exc
@@ -508,6 +520,8 @@ def upload_document(
             document.source_path = str(path)
             document.filename = filename
         db.commit()
+        if root_id:
+            _queue_pdf(document, version)
     except Exception as exc:
         db.rollback()
         path.unlink(missing_ok=True)
@@ -568,18 +582,6 @@ def get_document_source(
     )
 
 
-def _pdf_twin(document: Document, version: DocumentVersion) -> tuple[Path, str]:
-    """data_raw 원본과 같은 경로에 data_pdf PDF본이 있으면 변환 없이 그 PDF를 보여준다."""
-    parts = Path(document.source_path or "").parts
-    if "data_raw" in parts:
-        i = len(parts) - 1 - parts[::-1].index("data_raw")
-        twin = Path(*parts[:i], "data_pdf", *parts[i + 1 :]).with_suffix(".pdf")
-        # ponytail: assumes the twin matches the latest version; re-export data_pdf when a regulation changes.
-        if twin.is_file():
-            return twin, f"{version.sha256}-pdf"
-    return verified_source(version), version.sha256
-
-
 @app.get("/api/documents/{document_id}/pdf")
 def get_document_pdf(
     document_id: str,
@@ -611,6 +613,18 @@ def get_document_pdf(
 _page_renders: dict[str, Future] = {}
 # One worker: the conversions share a single LibreOffice profile.
 _page_executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="page-render")
+
+
+def _prewarm_document_pdf(document: Document, version: DocumentVersion) -> None:
+    try:
+        source_path, cache_key = _pdf_twin(document, version)
+        pdf_conversion_service.convert(source_path, cache_key)
+    except Exception:
+        logger.exception("Could not pre-generate PDF for %s", document.filename)
+
+
+def _queue_pdf(document: Document, version: DocumentVersion) -> None:
+    _page_executor.submit(_prewarm_document_pdf, document, version)
 
 
 def _in_background(job_key: str, fn, *args):

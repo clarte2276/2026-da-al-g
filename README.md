@@ -63,13 +63,13 @@ OpenAI 키가 없으면 로컬 해시 임베딩과 근거 발췌로 동작합니
 
 ### 새 환경에서 문서 검색 준비
 
-`data/data_raw/`에 원본 파일을 복사하는 것만으로는 검색 인덱스가 만들어지지 않습니다. 백엔드는 시작할 때 DB 테이블만 만들고, 문서를 자동으로 일괄 ingestion하지 않습니다.
+`data/data_raw/`에 `.hwp`, `.hwpx`, `.docx`, `.pptx`, `.pdf` 원본을 복사하면 백엔드가 최대 60초 안에 파싱·임베딩하고 표시용 PDF를 준비합니다. 복사 중인 파일은 크기와 수정 시각이 안정된 뒤 처리합니다. `LOCAL_DOCUMENT_ROOTS`는 `data_raw` 폴더 자체 또는 그 상위 문서 루트를 가리킬 수 있습니다.
 
 `data/data_graph/daalgi.db`를 함께 이전하지 않은 새 컴퓨터에서는 다음 순서로 처리합니다.
 
 1. `back/.env`에 `DATABASE_URL=sqlite:///../data/data_graph/daalgi.db`, `STORAGE_ROOT=./runtime/storage`, `LOCAL_DOCUMENT_ROOTS=../data/data_raw`를 설정합니다.
-2. `back` 디렉터리에서 백엔드를 재시작합니다.
-3. 관리자 계정으로 `front/admin`에 로그인한 뒤 RAG 링크 관리에서 문서를 열어 ingestion합니다. 문서를 열면 파싱, `fragments` 생성, 벡터 임베딩 저장이 수행됩니다.
+2. `back` 디렉터리에서 백엔드를 시작하고 원본 파일을 `data_raw`에 복사합니다. `RAW_SYNC_INTERVAL_SECONDS`로 검사 주기를 바꿀 수 있으며 `0`이면 자동 검사를 끕니다.
+3. 별도 실행이 필요하면 `uv run --extra hwp python -m scripts.ingest_all`로 한 번 검사하고, `uv run --extra hwp python -m scripts.prewarm_pages`로 PDF를 미리 준비합니다.
 4. `/api/documents`에서 `status=completed`, `fragment_count > 0`을 확인하고, `/api/chat` 응답의 `mode=rag`와 `evidence`가 비어 있지 않은지 확인합니다.
 
 기존 DB와 동일한 임베딩 provider·model·dimension을 그대로 이전하면 재임베딩하지 않아도 되지만, DB의 문서 경로가 이전 컴퓨터의 절대경로를 가리킬 수 있습니다. 새 환경에서는 원본 문서를 다시 ingestion하는 것이 안전합니다. `EMBEDDING_PROVIDER`, `EMBEDDING_MODEL`, `EMBEDDING_DIMENSIONS`를 바꾸면 기존 벡터와 새 질의 벡터가 호환되지 않을 수 있으므로 모든 문서를 다시 ingestion해야 합니다.
