@@ -20,8 +20,8 @@ class Settings(BaseSettings):
     embedding_batch_size: int = 64
     openai_api_key: str | None = None
     llm_model: str = "gpt-5.6-luna"
-    # Low keeps grounded answers responsive while retaining some reasoning.
-    answer_reasoning_effort: str = "low"
+    # Medium improved completeness in the September 2026 grounding review.
+    answer_reasoning_effort: str = "medium"
     max_upload_bytes: int = 524_288_000
     default_graph_hops: int = 2
     local_document_roots: str = ""
