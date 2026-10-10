@@ -91,15 +91,6 @@ ANSWER_FOCUS_REMINDER = (
     "근거에 없는 주체·수식어·순서를 만들지 않았는가? 다른 고장·다른 업무의 근거를 쓰지 않았는가? "
     "답할 근거가 없으면 문서에서 확인되지 않는다고만 답하라."
 )
-ANSWER_STYLE_RULES = (
-    "질문에 직접 답하고, 질문하지 않은 인접 규정이나 배경 설명은 덧붙이지 마라. "
-    "여러 항목을 물으면 각 항목을 빠짐없이 짧게 답하라. 모든 사실 문장 끝에 그 내용을 직접 뒷받침하는 [근거 n]을 붙여라. "
-    "특정 직무·노선·상황을 물으면 근거에 명시된 대상에만 적용하라. 일반 규정만 있으면 그 범위로 한정하고, "
-    "대상별 적용 여부는 문서에서 확인되지 않는다고 밝혀라. "
-    "근거가 없는 사실은 추측하지 말고 문서에서 확인되지 않는다고 밝혀라."
-)
-
-
 def deterministic_options(model: str) -> dict:
     """Same question, same answer: GPT-5 models accept temperature 0 only with reasoning off."""
     if model.lower().startswith("gpt-5"):
@@ -1006,7 +997,6 @@ class GraphRAGService:
                                 + " 질문의 핵심 조건을 첫 문장에 재진술하라. 검색 결과의 짧은 도형 라벨이나 "
                                 "코드만으로 내용을 추측하지 마라. 그래프 hop이 0보다 큰 근거는 연결된 관련 자료임을 명시하라. "
                                 + ANSWER_FOCUS_REMINDER
-                                + ANSWER_STYLE_RULES
                             ),
                         },
                         {"role": "user", "content": f"질문: {question}\n\n문서 근거:\n{context}"},
