@@ -1,4 +1,7 @@
+from concurrent.futures import ThreadPoolExecutor
 import sys
+import threading
+import time
 from pathlib import Path
 from types import ModuleType
 
@@ -73,3 +76,41 @@ def test_rhwp_failure_falls_back_to_libreoffice(tmp_path: Path, monkeypatch: pyt
     assert used_converter == "libreoffice"
     assert attempted == [source]
     assert output.read_bytes().startswith(b"%PDF")
+
+
+def test_libreoffice_conversions_are_serialized_and_reuse_cache(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source = tmp_path / "sample.docx"
+    source.touch()
+    service = PdfConversionService(Settings(storage_root=tmp_path / "storage"))
+    converter = tmp_path / "soffice"
+    start = threading.Barrier(2)
+    counters = {"active": 0, "maximum": 0, "calls": 0}
+    counters_lock = threading.Lock()
+
+    def find_converter() -> Path:
+        start.wait(timeout=5)
+        return converter
+
+    def fake_convert(source_path: Path, output: Path, converter_path: Path) -> None:
+        assert source_path == source
+        assert converter_path == converter
+        with counters_lock:
+            counters["calls"] += 1
+            counters["active"] += 1
+            counters["maximum"] = max(counters["maximum"], counters["active"])
+        time.sleep(0.1)
+        output.write_bytes(b"%PDF-1.7\n")
+        with counters_lock:
+            counters["active"] -= 1
+
+    monkeypatch.setattr(service, "_find_converter", find_converter)
+    monkeypatch.setattr(service, "_convert_with_libreoffice", fake_convert)
+
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        results = list(executor.map(lambda _: service.convert(source, "same-docx"), range(2)))
+
+    assert counters["maximum"] == 1
+    assert counters["calls"] == 1
+    assert {converter for _, converter in results} == {"libreoffice", "cached-libreoffice"}

@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 from io import BytesIO
 from pathlib import Path
 
@@ -29,6 +30,7 @@ FONT_NAME = "DaalgiFallbackFont"
 PDF_CACHE_VERSION = "libreoffice-v2-fonts"
 # LibreOffice carries import filters for every format the ingestion parsers accept.
 OFFICE_SUFFIXES = {".pptx", ".ppt", ".docx", ".doc", ".hwp", ".hwpx", ".odt", ".odp", ".xlsx"}
+_LIBREOFFICE_LOCK = threading.Lock()
 
 
 def _hwp5odt() -> Path | None:
@@ -427,7 +429,10 @@ class PdfConversionService:
             output = self._cache_path(source, cache_key)
             if output.is_file() and output.stat().st_size > 0:
                 return output, "cached-libreoffice"
-            self._convert_with_libreoffice(source, output, converter)
+            with _LIBREOFFICE_LOCK:
+                if output.is_file() and output.stat().st_size > 0:
+                    return output, "cached-libreoffice"
+                self._convert_with_libreoffice(source, output, converter)
             return output, "libreoffice"
 
         if source.suffix.lower() != ".pptx" or not self.settings.allow_approximate_pdf_fallback:
