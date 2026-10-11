@@ -315,7 +315,7 @@ ABSTAIN_RE = re.compile(
     r"근거를 찾지 못|찾을 수 없|확인할 수 없|확인되지 않|나와 있지 않|포함되어 있지 않|명시되어 있지 않|규정되어 있지 않|(?:규정|기준|내용|절차|근거)[이가은는]? 없"
 )
 
-# docs/production-readiness-criteria.md 2.1–2.3 (automatable items only).
+# docs/rag-pipeline.md section 4 (automatable items only).
 PILOT_CRITERIA = {
     "faithfulness_mean": 0.95,
     "faithfulness_min": 0.80,
@@ -1200,7 +1200,7 @@ async def _run() -> None:
             for m in general_metric_names:
                 status = "PASS" if averages["general_knowledge"][m] >= 0.9 else "FAIL"
                 print(f"  - {m:20s}: {averages['general_knowledge'][m]:.4f} [{status}]")
-        print("Pilot criteria (docs/production-readiness-criteria.md):")
+        print("Pilot criteria (docs/rag-pipeline.md):")
         for key, value in pilot.items():
             shown = "n/a" if value is None else f"{value:.4f}"
             print(f"  - {key:26s}: {shown} (threshold {PILOT_CRITERIA[key]}) [{pilot_checks[key]}]")
