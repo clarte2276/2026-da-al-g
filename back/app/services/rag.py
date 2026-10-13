@@ -259,10 +259,11 @@ class _Corpus:
         for row, vector in enumerate(raw):
             if len(vector) == dim:
                 vectors[row] = vector
+        del raw
         norms = np.linalg.norm(vectors, axis=1, keepdims=True)
         vectors = np.divide(vectors, norms, out=np.zeros_like(vectors), where=norms > 0)
         by_id = {units[i].id: heading for i, heading in sections.items() if heading}
-        return cls(list(units), term_counts, lengths, idf, vectors, by_id)
+        return cls([_detached(unit) for unit in units], term_counts, lengths, idf, vectors, by_id)
 
     def scores(self, query_vector: list[float], question_tokens: set[str]) -> list[float]:
         query = np.asarray(query_vector, dtype=np.float32)
@@ -290,8 +291,12 @@ class _Corpus:
 
 
 def _detached(fragment: Fragment) -> Fragment:
-    """A session-free copy that stays readable after the request's session closes."""
-    return Fragment(**{column.key: getattr(fragment, column.key) for column in Fragment.__table__.columns})
+    """Make a session-free search unit; its vectors live in the corpus matrix."""
+    return Fragment(**{
+        column.key: getattr(fragment, column.key)
+        for column in Fragment.__table__.columns
+        if column.key not in {"embedding_json", "embedding_vector"}
+    })
 
 
 def _utf16_index(value: str, offset: int) -> int:
@@ -597,7 +602,7 @@ class GraphRAGService:
             return cached[1]
         fragments = list(db.scalars(select(Fragment).where(Fragment.embedding_json.is_not(None))))
         units = self._article_units(self._search_units(db, fragments), db)
-        corpus = _Corpus.build([_detached(unit) for unit in units])
+        corpus = _Corpus.build(units)
         self._corpus_cache = (signature, corpus)
         return corpus
 

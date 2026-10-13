@@ -5,11 +5,10 @@ import re
 import secrets
 from datetime import UTC, datetime
 from io import BytesIO
-from typing import Annotated, Any, Literal
+from typing import TYPE_CHECKING, Annotated, Any, Literal
 
 from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
 from fastapi.responses import Response
-from openpyxl import Workbook, load_workbook
 from pydantic import BaseModel, Field
 from sqlalchemy import delete, select, update
 from sqlalchemy.exc import IntegrityError
@@ -38,6 +37,9 @@ MONTH_RE = re.compile(r"^\d{4}-(0[1-9]|1[0-2])$")
 MEMBER_ID_RE = re.compile(r"^\d+$")
 PASSWORD_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789"
 XLSX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+
+if TYPE_CHECKING:
+    from openpyxl import Workbook
 
 
 class ConversationWrite(BaseModel):
@@ -311,6 +313,8 @@ def _xlsx_response(workbook: Workbook, filename: str) -> Response:
 
 @router.get("/admin/users/template.xlsx")
 def user_template(_admin: AdminUser) -> Response:
+    from openpyxl import Workbook
+
     workbook = Workbook()
     sheet = workbook.active
     sheet.append(["사번", "이름"])
@@ -382,6 +386,8 @@ def delete_user(user_id: str, db: DB, admin: AdminUser) -> dict:
 
 @router.post("/admin/users/import")
 def import_users(file: Annotated[UploadFile, File(...)], db: DB, admin: AdminUser) -> dict:
+    from openpyxl import load_workbook
+
     if not (file.filename or "").lower().endswith(".xlsx"):
         raise HTTPException(422, ".xlsx 파일이 필요합니다.")
     data = file.file.read(get_settings().max_upload_bytes + 1)
@@ -441,6 +447,8 @@ def import_users(file: Annotated[UploadFile, File(...)], db: DB, admin: AdminUse
 
 @router.post("/admin/users/credentials.xlsx")
 def export_credentials(payload: CredentialsRequest, _admin: AdminUser) -> Response:
+    from openpyxl import Workbook
+
     workbook = Workbook()
     sheet = workbook.active
     sheet.append(["사번", "이름", "초기 비밀번호"])

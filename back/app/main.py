@@ -22,11 +22,12 @@ from sqlalchemy.orm import Session
 from .auth import AdminUser, CurrentUser, ensure_bootstrap_accounts
 from .auth import router as auth_router
 from .config import get_settings
+from .crew import router as crew_router
 from .db import SessionLocal, get_db, init_db
 from .links import get_version
-from .crew import router as crew_router
 from .links import router as links_router
-from .management import backfill_feedback_inquiries, router as management_router
+from .management import backfill_feedback_inquiries
+from .management import router as management_router
 from .models import AuditEvent, Document, DocumentVersion, Fragment, Inquiry, KnowledgeEdge, new_id
 from .schemas import (
     ChatFeedbackRequest,
@@ -98,8 +99,6 @@ def startup() -> None:
     with SessionLocal() as db:
         ensure_bootstrap_accounts(db)
         backfill_feedback_inquiries(db)
-        if db.get_bind().dialect.name == "sqlite":
-            rag_service._full_corpus(db)
     if settings.raw_sync_interval_seconds > 0 and "pytest" not in sys.modules:
         raw_sync_service.start()
 

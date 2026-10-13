@@ -9,16 +9,11 @@ import tempfile
 import threading
 from io import BytesIO
 from pathlib import Path
+from typing import TYPE_CHECKING
 
-from pptx import Presentation
-from pptx.enum.shapes import MSO_SHAPE_TYPE
-from pypdf import PdfReader
-from reportlab.lib import colors
-from reportlab.lib.colors import Color
-from reportlab.lib.utils import ImageReader
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFError, TTFont
-from reportlab.pdfgen.canvas import Canvas
+if TYPE_CHECKING:
+    from reportlab.lib.colors import Color
+    from reportlab.pdfgen.canvas import Canvas
 
 from ..config import Settings
 
@@ -86,6 +81,9 @@ def _font_path() -> Path | None:
 
 
 def _register_font() -> str:
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.ttfonts import TTFError, TTFont
+
     if FONT_NAME in pdfmetrics.getRegisteredFontNames():
         return FONT_NAME
     path = _font_path()
@@ -99,6 +97,8 @@ def _register_font() -> str:
 
 
 def _safe_color(value: object) -> Color | None:
+    from reportlab.lib import colors
+
     try:
         rgb = getattr(value, "rgb", None)
         if rgb is None:
@@ -169,6 +169,8 @@ def _draw_text(canvas: Canvas, shape: object, x: float, y: float, width: float, 
 
 
 def _draw_table(canvas: Canvas, shape: object, x: float, y: float, width: float, height: float, font: str) -> None:
+    from reportlab.lib import colors
+
     table = getattr(shape, "table", None)
     if table is None:
         return
@@ -191,6 +193,10 @@ def _draw_table(canvas: Canvas, shape: object, x: float, y: float, width: float,
 
 
 def _draw_shape(canvas: Canvas, shape: object, slide_height: float, font: str) -> None:
+    from pptx.enum.shapes import MSO_SHAPE_TYPE
+    from reportlab.lib import colors
+    from reportlab.lib.utils import ImageReader
+
     shape_type = getattr(shape, "shape_type", None)
     if shape_type == MSO_SHAPE_TYPE.GROUP:
         for child in getattr(shape, "shapes", []):
@@ -223,6 +229,10 @@ def _draw_shape(canvas: Canvas, shape: object, slide_height: float, font: str) -
 
 
 def _fallback_convert(source: Path, output: Path) -> None:
+    from pptx import Presentation
+    from reportlab.lib import colors
+    from reportlab.pdfgen.canvas import Canvas
+
     presentation = Presentation(str(source))
     slide_width = _points(presentation.slide_width)
     slide_height = _points(presentation.slide_height)
@@ -310,6 +320,9 @@ class PdfConversionService:
     @staticmethod
     def _validate_pdf(source: Path, generated: Path) -> None:
         try:
+            from pptx import Presentation
+            from pypdf import PdfReader
+
             pages = len(PdfReader(str(generated)).pages)
             expected_pages = len(Presentation(str(source)).slides)
         except Exception as exc:
@@ -421,7 +434,7 @@ class PdfConversionService:
                     temporary_output.write_bytes(pdf_bytes)
                     os.replace(temporary_output, output)
                 return output, "rhwp"
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001
                 logger.warning("rhwp PDF rendering failed for %s; falling back to LibreOffice: %s", source, exc)
 
         converter = self._find_converter()
