@@ -1,16 +1,19 @@
 from __future__ import annotations
 
+import ctypes
 import hashlib
 import json
 import math
 import re
+import sys
 from collections import Counter
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from functools import lru_cache
 
 import numpy as np
-from sqlalchemy import func, select, text
-from sqlalchemy.orm import Session
+from sqlalchemy import Text, cast, func, or_, select, text
+from sqlalchemy.orm import Session, defer
 
 from ..config import Settings
 from ..models import (
@@ -32,6 +35,21 @@ RELATION_WEIGHTS = {
     "SUPERSEDES": 0.88,
     "RELATED": 0.70,
 }
+
+
+def _malloc_trim() -> None:
+    if sys.platform != "linux":
+        return
+    try:
+        libc = ctypes.CDLL(None)
+        trim = libc.malloc_trim
+        trim.argtypes = [ctypes.c_size_t]
+        trim.restype = ctypes.c_int
+        trim(0)
+    except (AttributeError, OSError):
+        pass
+
+
 TOKEN_SUFFIXES = ("하다고", "으로서", "으로", "에서", "에게", "에는", "하면", "해야", "하고",
                   "할", "했", "한", "인", "은", "는", "이", "가", "을", "를", "에", "의", "도",
                   "과", "와")
@@ -244,7 +262,13 @@ class _Corpus:
     sections: dict[str, str]
 
     @classmethod
-    def build(cls, units: list[Fragment]) -> _Corpus:
+    def build(
+        cls,
+        units: list[Fragment],
+        *,
+        embedding_rows: Callable[[], Iterable[tuple[str, str | None, str | None]]] | None = None,
+        embedding_source_ids: dict[str, str] | None = None,
+    ) -> _Corpus:
         sections = _slide_sections(units)
         texts = [f"{sections.get(i, '')}\n{unit.title or ''}\n{unit.text or ''}" for i, unit in enumerate(units)]
         term_counts = [_token_counts(value) for value in texts]
@@ -252,14 +276,54 @@ class _Corpus:
         doc_freq: Counter[str] = Counter(term for counts in term_counts for term in counts)
         n_docs = max(len(units), 1)
         idf = {t: math.log((n_docs - df + 0.5) / (df + 0.5) + 1.0) for t, df in doc_freq.items()}
-        raw = [unit.embedding_vector or unit.embedding_json or [] for unit in units]
-        dims = Counter(len(vector) for vector in raw if len(vector)).most_common(1)
-        dim = dims[0][0] if dims else 0
-        vectors = np.zeros((len(units), dim), dtype=np.float32)
-        for row, vector in enumerate(raw):
-            if len(vector) == dim:
-                vectors[row] = vector
-        del raw
+        if embedding_rows is None:
+            raw = [unit.embedding_vector or unit.embedding_json or [] for unit in units]
+            dims = Counter(len(vector) for vector in raw if len(vector)).most_common(1)
+            dim = dims[0][0] if dims else 0
+            vectors = np.zeros((len(units), dim), dtype=np.float32)
+            for row, vector in enumerate(raw):
+                if len(vector) == dim:
+                    vectors[row] = vector
+            del raw
+        else:
+            rows_by_source: dict[str, list[int]] = {}
+            for row, unit in enumerate(units):
+                source_id = (embedding_source_ids or {}).get(unit.id, unit.id)
+                rows_by_source.setdefault(source_id, []).append(row)
+
+            dims: Counter[int] = Counter()
+            first_dim_row: dict[int, int] = {}
+            first_dim: int | None = None
+            vectors: np.ndarray | None = None
+            for fragment_id, vector_text, json_text in embedding_rows():
+                vector = json.loads(vector_text) if vector_text else []
+                if not vector:
+                    vector = json.loads(json_text) if json_text else []
+                rows = rows_by_source.get(fragment_id, ())
+                if vector and rows:
+                    dim = len(vector)
+                    dims[dim] += len(rows)
+                    first_dim_row[dim] = min(first_dim_row.get(dim, rows[0]), rows[0])
+                    if first_dim is None:
+                        first_dim = dim
+                        vectors = np.zeros((len(units), dim), dtype=np.float32)
+                    if dim == first_dim:
+                        for row in rows:
+                            vectors[row] = vector
+            if dims:
+                dim = max(dims, key=lambda value: (dims[value], -first_dim_row[value]))
+                if dim != first_dim:
+                    del vectors
+                    vectors = np.zeros((len(units), dim), dtype=np.float32)
+                    for fragment_id, vector_text, json_text in embedding_rows():
+                        vector = json.loads(vector_text) if vector_text else []
+                        if not vector:
+                            vector = json.loads(json_text) if json_text else []
+                        if len(vector) == dim:
+                            for row in rows_by_source.get(fragment_id, ()):
+                                vectors[row] = vector
+            else:
+                vectors = np.zeros((len(units), 0), dtype=np.float32)
         norms = np.linalg.norm(vectors, axis=1, keepdims=True)
         vectors = np.divide(vectors, norms, out=np.zeros_like(vectors), where=norms > 0)
         by_id = {units[i].id: heading for i, heading in sections.items() if heading}
@@ -586,13 +650,16 @@ class GraphRAGService:
     def _full_corpus(self, db: Session) -> _Corpus:
         """Every searchable unit, rebuilt only when fragments or document contents change.
 
-        Loading and decoding every embedding costs seconds, so the result is kept per process.
+        The corpus is kept per process; embeddings are streamed into its matrix on a cache miss.
         """
+        has_embedding = or_(
+            Fragment.embedding_json.is_not(None), Fragment.embedding_vector.is_not(None)
+        )
         # ponytail: signature misses in-place fragment edits; ingestion only inserts/deletes today.
         signature = (
             *db.execute(
                 select(func.count(Fragment.id), func.max(Fragment.created_at)).where(
-                    Fragment.embedding_json.is_not(None)
+                    has_embedding
                 )
             ).one(),
             db.scalar(select(func.count()).select_from(DocumentContent)),
@@ -600,19 +667,64 @@ class GraphRAGService:
         cached = self._corpus_cache
         if cached and cached[0] == signature:
             return cached[1]
-        fragments = list(db.scalars(select(Fragment).where(Fragment.embedding_json.is_not(None))))
-        units = self._article_units(self._search_units(db, fragments), db)
-        corpus = _Corpus.build(units)
+        fragments = list(
+            db.scalars(
+                select(Fragment)
+                .options(defer(Fragment.embedding_json), defer(Fragment.embedding_vector))
+                .where(has_embedding)
+            )
+        )
+        sources: dict[str, str] = {}
+        units = self._article_units(
+            self._search_units(db, fragments, defer_embeddings=True),
+            db,
+            include_embeddings=False,
+            embedding_source_ids=sources,
+        )
+        source_ids = list(dict.fromkeys(sources.get(unit.id, unit.id) for unit in units))
+        corpus = _Corpus.build(
+            units,
+            embedding_rows=lambda ids=source_ids: self._stream_embeddings(db, ids),
+            embedding_source_ids=sources,
+        )
         self._corpus_cache = (signature, corpus)
+        del units, fragments, sources, source_ids
+        _malloc_trim()
         return corpus
 
-    def _search_units(self, db: Session, fragments: list[Fragment]) -> list[Fragment]:
+    def _stream_embeddings(
+        self, db: Session, fragment_ids: list[str]
+    ) -> Iterable[tuple[str, str | None, str | None]]:
+        """Yield raw vector and JSON text in bounded batches, avoiding ORM JSON decoding."""
+        for start in range(0, len(fragment_ids), 500):
+            result = db.execute(
+                select(
+                    Fragment.id,
+                    cast(Fragment.embedding_vector, Text),
+                    cast(Fragment.embedding_json, Text),
+                )
+                .where(Fragment.id.in_(fragment_ids[start : start + 500]))
+                .execution_options(yield_per=256)
+            )
+            try:
+                yield from result
+            finally:
+                result.close()
+
+    def _search_units(
+        self, db: Session, fragments: list[Fragment], *, defer_embeddings: bool = False
+    ) -> list[Fragment]:
         """Search PPT slides as one unit instead of ranking every text box."""
         parent_ids = {fragment.parent_id for fragment in fragments if fragment.parent_id}
+        parent_query = select(Fragment).where(Fragment.id.in_(parent_ids))
+        if defer_embeddings:
+            parent_query = parent_query.options(
+                defer(Fragment.embedding_json), defer(Fragment.embedding_vector)
+            )
         parents = (
             {
                 parent.id: parent
-                for parent in db.scalars(select(Fragment).where(Fragment.id.in_(parent_ids))).all()
+                for parent in db.scalars(parent_query).all()
             }
             if parent_ids
             else {}
@@ -625,7 +737,14 @@ class GraphRAGService:
                 units[unit.id] = unit
         return list(units.values())
 
-    def _article_units(self, fragments: list[Fragment], db: Session | None = None) -> list[Fragment]:
+    def _article_units(
+        self,
+        fragments: list[Fragment],
+        db: Session | None = None,
+        *,
+        include_embeddings: bool = True,
+        embedding_source_ids: dict[str, str] | None = None,
+    ) -> list[Fragment]:
         contents: dict[str, DocumentContent] = {}
         if db:
             version_ids = {fragment.version_id for fragment in fragments if fragment.kind == "document"}
@@ -696,8 +815,8 @@ class GraphRAGService:
                             bbox_json=fragment.bbox_json,
                             asset_path=None,
                             content_hash=fragment.content_hash,
-                            embedding_json=fragment.embedding_json,
-                            embedding_vector=fragment.embedding_vector,
+                            embedding_json=fragment.embedding_json if include_embeddings else None,
+                            embedding_vector=fragment.embedding_vector if include_embeddings else None,
                             embedding_model=fragment.embedding_model,
                             metadata_json={
                                 **metadata,
@@ -710,6 +829,8 @@ class GraphRAGService:
                         candidate_rank = 0 if chunk_start <= article_start < chunk_end else 1
                         if previous is None or candidate_rank < previous[0]:
                             reconstructed[key] = (candidate_rank, unit, orig_ids)
+                            if embedding_source_ids is not None:
+                                embedding_source_ids[unit.id] = fragment.id
                     if not covered or APPENDIX_HEADING_RE.search(content.text, chunk_start, chunk_end):
                         # Text in 부칙/별표 belongs to no article; keep it searchable as the chunk.
                         units.append(fragment)
@@ -738,28 +859,29 @@ class GraphRAGService:
                     metadata["text_end"] = metadata["text_start"] + utf16_length(text_value)
                 metadata["original_fragment_ids"] = [fragment.id]
                 article = match.group(1)
-                units.append(
-                    Fragment(
-                        id=f"{fragment.id}:article:{article}:{index}",
-                        version_id=fragment.version_id,
-                        parent_id=fragment.parent_id,
-                        stable_key=f"{fragment.stable_key}:article:{article}:{index}",
-                        kind=fragment.kind,
-                        ordinal=fragment.ordinal,
-                        title=fragment.title,
-                        text=text_value,
-                        html=None,
-                        table_json=None,
-                        locator_json={**fragment.locator_json, "article": article},
-                        bbox_json=fragment.bbox_json,
-                        asset_path=None,
-                        content_hash=fragment.content_hash,
-                        embedding_json=fragment.embedding_json,
-                        embedding_vector=fragment.embedding_vector,
-                        embedding_model=fragment.embedding_model,
-                        metadata_json=metadata,
-                    )
+                unit = Fragment(
+                    id=f"{fragment.id}:article:{article}:{index}",
+                    version_id=fragment.version_id,
+                    parent_id=fragment.parent_id,
+                    stable_key=f"{fragment.stable_key}:article:{article}:{index}",
+                    kind=fragment.kind,
+                    ordinal=fragment.ordinal,
+                    title=fragment.title,
+                    text=text_value,
+                    html=None,
+                    table_json=None,
+                    locator_json={**fragment.locator_json, "article": article},
+                    bbox_json=fragment.bbox_json,
+                    asset_path=None,
+                    content_hash=fragment.content_hash,
+                    embedding_json=fragment.embedding_json if include_embeddings else None,
+                    embedding_vector=fragment.embedding_vector if include_embeddings else None,
+                    embedding_model=fragment.embedding_model,
+                    metadata_json=metadata,
                 )
+                if embedding_source_ids is not None:
+                    embedding_source_ids[unit.id] = fragment.id
+                units.append(unit)
         return [unit for _, unit, _ in reconstructed.values()] + units
 
     def _expand_links(

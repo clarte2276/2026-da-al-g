@@ -20,6 +20,7 @@ from app.services.embedding import HashEmbeddingProvider
 from app.services.rag import (
     Evidence,
     GraphRAGService,
+    _Corpus,
     _search_tokens,
     _slide_sections,
     answer_options,
@@ -41,6 +42,58 @@ def _fragment(version_id: str, stable_key: str, text: str, embedding: list[float
         embedding_vector=embedding,
         embedding_model="hash:hash-v1",
     )
+
+
+def test_corpus_build_streams_embedding_text_by_source_id() -> None:
+    units = [
+        Fragment(id="article", version_id="v", stable_key="article", kind="paragraph", text="one"),
+        Fragment(id="second", version_id="v", stable_key="second", kind="paragraph", text="two"),
+    ]
+    rows = [
+        ("third", "[1,2,3]", None),
+        ("source", "[]", "[3,4]"),
+        ("second", "[0,2]", "[3,4]"),
+    ]
+    units.append(
+        Fragment(id="third", version_id="v", stable_key="third", kind="paragraph", text="three")
+    )
+
+    corpus = _Corpus.build(
+        units,
+        embedding_rows=lambda: iter(rows),
+        embedding_source_ids={"article": "source"},
+    )
+    scores = corpus.scores([3, 4], set())
+
+    assert abs(scores[0] - 0.6) < 1e-6
+    assert abs(scores[1] - 0.48) < 1e-6
+
+
+def test_full_corpus_includes_vector_only_embeddings(tmp_path) -> None:
+    engine = create_engine("sqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    service = GraphRAGService(Settings(storage_root=tmp_path), HashEmbeddingProvider(dimensions=2))
+    with Session(engine) as db:
+        document = Document(filename="vector.txt", sha256="v" * 64)
+        db.add(document)
+        db.flush()
+        version = DocumentVersion(
+            document_id=document.id,
+            version_number=1,
+            sha256="w" * 64,
+            storage_path="vector.txt",
+        )
+        db.add(version)
+        db.flush()
+        fragment = _fragment(version.id, "vector", "vector only", [3.0, 4.0])
+        fragment.embedding_json = None
+        db.add(fragment)
+
+        corpus = service._full_corpus(db)
+        scores = corpus.scores([3.0, 4.0], set())
+
+    assert len(corpus.units) == 1
+    assert abs(scores[0] - 0.6) < 1e-6
 
 
 def test_rag_splits_rule_chunks_by_article(tmp_path) -> None:
