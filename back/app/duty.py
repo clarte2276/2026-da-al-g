@@ -6,8 +6,6 @@ import re
 from calendar import monthrange
 from datetime import date, datetime, time, timedelta
 
-from openpyxl import load_workbook
-
 OFFICE, LINE = "수색승무사업소", "6호선"
 ROUTE_SHEETS = {"평일, 평평240801": "평평", "평휴240801": "평휴", "휴평240801": "휴평", "휴일,휴휴": "휴휴"}
 # 수색 grid columns (A..N); 신내 block starts at O and is ignored.
@@ -101,7 +99,7 @@ def _block(rows: list[tuple], start: int, end: int) -> dict | None:
         if s["kind"] == "standby" and not s["from"] and i:  # wait where the previous run ended
             s["from"] = s["to"] = segments[i - 1]["to"]
     runs = [s for s in segments if s["kind"] == "run"]
-    minutes = lambda v: (_secs(v) or 0) // 60  # noqa: E731
+    minutes = lambda v: (_secs(v) or 0) // 60
     stations: list[str] = []
     for s in runs:
         for st in (s["from"], s["to"]):
@@ -117,6 +115,8 @@ def _block(rows: list[tuple], start: int, end: int) -> dict | None:
 
 
 def parse_route_xlsx(data: bytes, filename: str) -> dict:
+    from openpyxl import load_workbook
+
     try:
         workbook = load_workbook(io.BytesIO(data), read_only=True, data_only=True)
     except Exception as exc:
@@ -140,7 +140,7 @@ def parse_route_xlsx(data: bytes, filename: str) -> dict:
         if not turns:
             raise ValueError("행로표 시트(평일, 평평240801 등)를 찾을 수 없습니다")
         found = re.search(r"(\d{2})(\d{2})(\d{2})", filename)
-        effective = f"20{found[1]}-{found[2]}-{found[3]}" if found else date.today().isoformat()
+        effective = f"20{found[1]}-{found[2]}-{found[3]}" if found else datetime.now().astimezone().date().isoformat()
         return {"effective": effective, "source": filename, "turns": turns}
     finally:
         workbook.close()
@@ -173,6 +173,8 @@ def _day_types(workbook, first: date, last: date) -> dict[str, str]:
 
 
 def parse_duty_xlsx(data: bytes, month: str, filename: str) -> dict:
+    from openpyxl import load_workbook
+
     try:
         workbook = load_workbook(io.BytesIO(data), read_only=True, data_only=True)
         if "교번근무계획(지정근무반영)" not in workbook.sheetnames:
