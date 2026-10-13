@@ -40,6 +40,6 @@ back/runtime/storage/*
 !back/runtime/storage/page-images/
 !back/runtime/storage/page-images/**
 back/runtime/
-data/
+/data/
 data_pdf.zip
 data_raw.zip
