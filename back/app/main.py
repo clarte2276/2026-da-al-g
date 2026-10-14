@@ -243,7 +243,7 @@ def list_local_files(
     _admin: AdminUser,
     root_id: str | None = Query(default=None),
     query: str | None = Query(default=None, max_length=200),
-    limit: int = Query(default=500, ge=1, le=20000),
+    limit: int | None = Query(default=None, ge=1, le=20000),
 ) -> list[LocalFileOut]:
     try:
         files = local_file_service.list_files(root_id=root_id, query=query, limit=limit)
