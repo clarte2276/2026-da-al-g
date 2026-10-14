@@ -99,15 +99,8 @@ function TextPane({ content, selection, onSelect }) {
       <input aria-label="본문 찾기" placeholder="본문에서 찾기" value={query}
         onChange={(event) => { setQuery(event.target.value); searchEnd.current = 0; }} />
       <button>다음 찾기</button>
-      <button type="button" disabled={!pending} onClick={() => {
-        const kept = ranges.filter(range => range.end <= pending.start || range.start >= pending.end);
-        if (kept.length !== ranges.length) setMessage("겹치는 기존 구절을 새 선택으로 바꿨습니다.");
-        onSelect({ kind: "text", version_id: content.version_id,
-          ranges: [...kept, pending].sort((a, b) => a.start - b.start) });
-        setPending(null); window.getSelection()?.removeAllRanges();
-      }}>구절 추가</button>
     </form>
-    <p className="pane-hint" role="status">{message || "문장을 드래그하거나 Shift와 방향키로 선택한 뒤 구절 추가를 누르세요. 여러 구절을 더할 수 있습니다."}</p>
+    <p className="pane-hint" role="status">{message || "문장을 드래그하거나 Shift와 방향키로 선택한 뒤 아래 구절 추가를 누르세요. 여러 구절을 더할 수 있습니다."}</p>
     <pre ref={root} tabIndex={0} aria-label={`${content.filename} 본문`}
       className="continuous-text" onMouseUp={capture} onKeyDown={keyboardSelect} onKeyUp={capture}>
       {ranges.length ? ranges.flatMap((range, index) => [
@@ -115,6 +108,15 @@ function TextPane({ content, selection, onSelect }) {
         <mark key={index}>{text.slice(range.start, range.end)}</mark>,
       ]).concat(text.slice(ranges[ranges.length - 1].end)) : text}
     </pre>
+    <div className="passage-action">
+      <button type="button" disabled={!pending} onClick={() => {
+        const kept = ranges.filter(range => range.end <= pending.start || range.start >= pending.end);
+        if (kept.length !== ranges.length) setMessage("겹치는 기존 구절을 새 선택으로 바꿨습니다.");
+        onSelect({ kind: "text", version_id: content.version_id,
+          ranges: [...kept, pending].sort((a, b) => a.start - b.start) });
+        setPending(null); window.getSelection()?.removeAllRanges();
+      }}>구절 추가</button>
+    </div>
     {!text && <p role="status">추출된 텍스트가 없습니다. 원본을 확인해 주세요.</p>}
   </>;
 }

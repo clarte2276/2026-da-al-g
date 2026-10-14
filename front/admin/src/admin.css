@@ -291,6 +291,7 @@ div.document-entry-name small { margin-left: 8px; font-weight: 400; }
 .version-label { color: var(--muted); font-size: 12px; }
 .selection-viewer > button { min-height: 26px; margin-left: 4px; padding: 2px 8px; font-size: 12px; }
 .viewer-empty { display: grid; min-height: 280px; place-items: center; border-style: dashed; background: transparent; padding: 24px; color: var(--muted); font-size: 13px; text-align: center; }
+.passage-action { margin-top: 10px; }
 .continuous-text { height: 58vh; min-height: 380px; margin: 0; overflow: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--sunk); padding: 22px 24px; font: 15px/1.9 "IBM Plex Sans KR", "Noto Sans KR", system-ui, sans-serif; white-space: pre-wrap; overflow-wrap: anywhere; tab-size: 4; }
 .continuous-text mark { border-radius: 2px; background: var(--mark); color: inherit; }
 .continuous-text::selection, .continuous-text *::selection { background: rgba(205, 124, 47, .3); }
