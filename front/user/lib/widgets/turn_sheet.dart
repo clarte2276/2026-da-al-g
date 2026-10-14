@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../core/colors.dart';
 import '../core/duty_data.dart';
@@ -62,7 +61,6 @@ Future<void> showDaySheet(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               DayPersonalPanel(data: data, driver: driver, date: date, duty: duty),
-              _DaySwapPanel(driver: driver, date: date, duty: duty),
             ],
           );
           if (turn == null) {
@@ -350,142 +348,25 @@ class _PlainDaySheet extends StatelessWidget {
   }
 }
 
-/// 날짜별 메모와 교번 변경(기기에만 저장).
-class DayPersonalPanel extends StatelessWidget {
-  const DayPersonalPanel({super.key, required this.data, required this.driver, required this.date, required this.duty});
+/// 날짜별 메모와 교번 변경 흐름.
+class DayPersonalPanel extends StatefulWidget {
+  const DayPersonalPanel({
+    super.key,
+    required this.data,
+    required this.driver,
+    required this.date,
+    required this.duty,
+  });
   final DutyMonth data;
   final Driver driver;
   final String date;
   final DayDuty? duty;
 
-  Future<String?> _prompt(BuildContext context, String title, String initial, {int maxLines = 1}) {
-    final c = TextEditingController(text: initial);
-    return showDialog<String>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: TextField(
-          controller: c,
-          autofocus: true,
-          maxLines: maxLines,
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('취소')),
-          FilledButton(onPressed: () => Navigator.pop(context, c.text), child: const Text('저장')),
-        ],
-      ),
-    );
-  }
-
-  /// 고를 수 있는 근무 코드: 행로표 교번 번호 + 이 달 근무표에 나온 코드. 숫자 먼저.
-  List<String> _codes() {
-    final codes = {
-      for (final k in data.turns.keys) k.split(':').last,
-      for (final d in data.drivers) for (final x in d.days.values) if (x.code.isNotEmpty) x.code,
-    }.toList();
-    int? n(String c) => int.tryParse(c);
-    codes.sort((a, b) => switch ((n(a), n(b))) {
-          (int x, int y) => x.compareTo(y),
-          (int _, null) => -1,
-          (null, int _) => 1,
-          _ => a.compareTo(b),
-        });
-    return codes;
-  }
-
-  /// iOS식 휠 선택. 저장하면 고른 코드, 취소하면 null.
-  Future<String?> _pick(BuildContext context, String? initial) {
-    final codes = _codes();
-    if (codes.isEmpty) return Future.value();
-    var i = initial == null ? 0 : codes.indexOf(initial).clamp(0, codes.length - 1);
-    return showCupertinoModalPopup<String>(
-      context: context,
-      builder: (context) => Container(
-        height: 300,
-        color: AppColors.card,
-        child: SafeArea(
-          top: false,
-          child: Column(children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              CupertinoButton(onPressed: () => Navigator.pop(context), child: const Text('취소')),
-              const Text('교번 변경', style: TextStyle(fontWeight: FontWeight.w800)),
-              CupertinoButton(onPressed: () => Navigator.pop(context, codes[i]), child: const Text('저장')),
-            ]),
-            Expanded(
-              child: CupertinoPicker(
-                itemExtent: 40,
-                scrollController: FixedExtentScrollController(initialItem: i),
-                onSelectedItemChanged: (v) => i = v,
-                children: [for (final c in codes) Center(child: Text(c))],
-              ),
-            ),
-          ]),
-        ),
-      ),
-    );
-  }
-
   @override
-  Widget build(BuildContext context) {
-    final store = PersonalStore.instance;
-    final memo = store.memo(driver, date);
-    final original = duty?.original;
-    final overridden = store.overrides(driver).containsKey(date);
-    final label = TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.secondaryInk);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 8),
-        Divider(color: AppColors.border),
-        const SizedBox(height: 8),
-        Text('교번 변경', style: label),
-        const SizedBox(height: 4),
-        if (overridden) ...[
-          Text('변경 (원래: ${original == null || original.code.isEmpty ? '-' : original.code})',
-              style: const TextStyle(fontWeight: FontWeight.w800, color: AppColors.line6)),
-          TextButton.icon(
-            onPressed: () => store.setOverride(driver, date, null),
-            icon: const Icon(Icons.undo_rounded, size: 16),
-            label: const Text('원래 교번으로 되돌리기'),
-          ),
-        ],
-        OutlinedButton.icon(
-          onPressed: () async {
-            final code = await _pick(context, duty?.code);
-            if (code != null) await store.setOverride(driver, date, code);
-          },
-          icon: const Icon(Icons.swap_horiz_rounded, size: 18),
-          label: Text(overridden ? '다시 변경' : '바꾼 교번 선택'),
-        ),
-        const SizedBox(height: 16),
-        Text('메모', style: label),
-        const SizedBox(height: 4),
-        Text(memo ?? '메모 없음', style: TextStyle(color: memo == null ? AppColors.ghostText : AppColors.ink)),
-        TextButton.icon(
-          onPressed: () async {
-            final text = await _prompt(context, '메모', memo ?? '', maxLines: 4);
-            if (text != null) await store.setMemo(driver, date, text);
-          },
-          icon: const Icon(Icons.edit_note_rounded, size: 18),
-          label: Text(memo == null ? '메모 쓰기' : '메모 수정'),
-        ),
-      ],
-    );
-  }
+  State<DayPersonalPanel> createState() => _DayPersonalPanelState();
 }
 
-class _DaySwapPanel extends StatefulWidget {
-  const _DaySwapPanel({required this.driver, required this.date, required this.duty});
-
-  final Driver driver;
-  final String date;
-  final DayDuty? duty;
-
-  @override
-  State<_DaySwapPanel> createState() => _DaySwapPanelState();
-}
-
-class _DaySwapPanelState extends State<_DaySwapPanel> {
+class _DayPersonalPanelState extends State<DayPersonalPanel> {
   final _api = CrewApi();
   final _client = AiApiClient();
   List<Map<String, dynamic>> _posts = [];
@@ -509,41 +390,21 @@ class _DaySwapPanelState extends State<_DaySwapPanel> {
       final posts = await _api.fetchExchangePosts(mine: true);
       if (mounted) setState(() => _posts = posts);
     } catch (_) {
-      // The personal, device-only duty override works while this API is unavailable.
+      // Device-only overrides still work while this API is unavailable.
     }
   }
 
   Map<String, dynamic>? get _pending =>
       pendingDutySwap(_posts, widget.driver.name, widget.date);
 
-  Future<void> _requestSwap() async {
+  Future<bool> _requestSwap(_DutyCandidate candidate) async {
+    final name = candidate.name;
+    final theirCode = candidate.code;
+    final myCode =
+        widget.driver.days[widget.date]?.code ?? widget.duty?.code ?? '';
+    if (name.isEmpty || myCode.isEmpty || theirCode.isEmpty) return false;
     setState(() => _busy = true);
     try {
-      final candidates = await _client.fetchExchangeMatches(date: widget.date);
-      if (!mounted) return;
-      final candidate = await showModalBottomSheet<Map<String, dynamic>>(
-        context: context,
-        isScrollControlled: true,
-        backgroundColor: AppColors.canvas,
-        builder: (_) => _SwapCandidatePicker(candidates: candidates),
-      );
-      if (candidate == null || !mounted || candidate['swapped'] == true) return;
-      final name = candidate['name'] as String? ?? '';
-      final theirCode = candidate['code'] as String? ?? '';
-      final myCode = widget.driver.days[widget.date]?.code ?? widget.duty?.code ?? '';
-      if (name.isEmpty || myCode.isEmpty || theirCode.isEmpty) return;
-      final confirmed = await showDialog<bool>(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('맞교환 요청'),
-          content: Text('${widget.date}\n${widget.driver.name} $myCode ↔ $name $theirCode\n요청을 보낼까요?'),
-          actions: [
-            TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('취소')),
-            FilledButton(onPressed: () => Navigator.pop(context, true), child: const Text('요청')),
-          ],
-        ),
-      );
-      if (confirmed != true || !mounted) return;
       await _api.createExchangePost({
         'type': 'direct',
         'target_name': name,
@@ -552,9 +413,19 @@ class _DaySwapPanelState extends State<_DaySwapPanel> {
         'target_dias': [theirCode],
       });
       await _loadPosts();
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('맞교환 요청을 보냈습니다.')));
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('맞교환 요청을 보냈습니다.')));
+      }
+      return true;
     } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('맞교환 요청 실패: $e')));
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('맞교환 요청 실패: $e')));
+      }
+      return false;
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -563,59 +434,166 @@ class _DaySwapPanelState extends State<_DaySwapPanel> {
   Future<void> _cancelPending(Map<String, dynamic> post) async {
     final id = post['id'] as String?;
     if (id == null) return;
+    setState(() => _busy = true);
     try {
       await _api.deletePost(id);
       await _loadPosts();
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('맞교환 요청을 취소했습니다.')));
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('맞교환 요청을 취소했습니다.')));
+      }
     } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('요청 취소 실패: $e')));
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('요청 취소 실패: $e')));
+      }
+    } finally {
+      if (mounted) setState(() => _busy = false);
     }
   }
 
-  Future<void> _revertSwap() async {
+  Future<bool> _revertSwap() async {
     final id = widget.duty?.swapPostId;
-    if (id == null) return;
+    if (id == null) return false;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('교번 돌아가기'),
         content: const Text('맞교환한 근무를 원래대로 되돌리는 요청을 보낼까요?'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('취소')),
-          FilledButton(onPressed: () => Navigator.pop(context, true), child: const Text('요청')),
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('취소'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('요청'),
+          ),
         ],
       ),
     );
-    if (confirmed != true) return;
+    if (confirmed != true) return false;
+    setState(() => _busy = true);
     try {
       await _client.revertExchangePost(id);
       await _loadPosts();
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('되돌리기 요청을 보냈습니다.')));
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('되돌리기 요청을 보냈습니다.')));
+      }
+      return true;
     } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('되돌리기 요청 실패: $e')));
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('되돌리기 요청 실패: $e')));
+      }
+      return false;
+    } finally {
+      if (mounted) setState(() => _busy = false);
     }
   }
 
+  Future<String?> _prompt(
+    BuildContext context,
+    String title,
+    String initial, {
+    int maxLines = 1,
+  }) {
+    final c = TextEditingController(text: initial);
+    return showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: TextField(controller: c, autofocus: true, maxLines: maxLines),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('취소'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, c.text),
+            child: const Text('저장'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _openChangeSheet() => showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: AppColors.card,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (_) => _DutyChangeSheet(
+      data: widget.data,
+      driver: widget.driver,
+      date: widget.date,
+      duty: widget.duty,
+      pendingPosts: _posts,
+      hasPending: _pending != null,
+      canRequest: AuthSession.current?.user.name == widget.driver.name,
+      onRequestSwap: _requestSwap,
+      onRevertSwap: _revertSwap,
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
+    final store = PersonalStore.instance;
+    final memo = store.memo(widget.driver, widget.date);
+    final localOverride = store
+        .overrides(widget.driver)
+        .containsKey(widget.date);
     final pending = _pending;
-    final canRequest = AuthSession.current?.user.name == widget.driver.name;
     final original = widget.duty?.original;
+    final label = TextStyle(
+      fontSize: 13,
+      fontWeight: FontWeight.w700,
+      color: AppColors.secondaryInk,
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (widget.duty?.swapPostId != null) ...[
-          Text('맞교환 적용됨 (원래: ${original?.code.isNotEmpty == true ? original!.code : '-'})',
-              style: const TextStyle(fontWeight: FontWeight.w800, color: AppColors.line6)),
-          TextButton.icon(
-            onPressed: _busy ? null : _revertSwap,
-            icon: const Icon(Icons.undo_rounded, size: 16),
-            label: const Text('교번 돌아가기'),
+        const SizedBox(height: 8),
+        Divider(color: AppColors.border),
+        const SizedBox(height: 8),
+        OutlinedButton.icon(
+          onPressed: _busy ? null : _openChangeSheet,
+          icon: const Icon(Icons.swap_horiz_rounded, size: 18),
+          label: const Text('교번 변경'),
+        ),
+        if (localOverride)
+          Text(
+            '변경 (원래: ${original == null || original.code.isEmpty ? '-' : original.code})',
+            style: const TextStyle(
+              fontWeight: FontWeight.w800,
+              color: AppColors.line6,
+            ),
           ),
-        ],
+        if (widget.duty?.swapPostId != null)
+          Text(
+            '맞교환 적용됨 (원래: ${original?.code.isNotEmpty == true ? original!.code : '-'})',
+            style: const TextStyle(
+              fontWeight: FontWeight.w800,
+              color: AppColors.line6,
+            ),
+          ),
         if (pending != null) ...[
-          Text(pending['requester_name'] == widget.driver.name ? '맞교환 요청 대기 중' : '내게 온 맞교환 요청 대기 중',
-              style: const TextStyle(fontWeight: FontWeight.w800, color: AppColors.line6)),
+          Text(
+            pending['requester_name'] == widget.driver.name
+                ? '맞교환 요청 대기 중'
+                : '내게 온 맞교환 요청 대기 중',
+            style: const TextStyle(
+              fontWeight: FontWeight.w800,
+              color: AppColors.line6,
+            ),
+          ),
           if (pending['requester_name'] == widget.driver.name)
             TextButton.icon(
               onPressed: _busy ? null : () => _cancelPending(pending),
@@ -623,76 +601,540 @@ class _DaySwapPanelState extends State<_DaySwapPanel> {
               label: const Text('교번 돌아가기'),
             ),
         ],
-        if (canRequest)
-          OutlinedButton.icon(
-            onPressed: _busy || pending != null ? null : _requestSwap,
-            icon: const Icon(Icons.compare_arrows_rounded, size: 18),
-            label: Text(_busy ? '불러오는 중…' : '맞교환 요청'),
+        const SizedBox(height: 16),
+        Text('메모', style: label),
+        const SizedBox(height: 4),
+        Text(
+          memo ?? '메모 없음',
+          style: TextStyle(
+            color: memo == null ? AppColors.ghostText : AppColors.ink,
           ),
+        ),
+        TextButton.icon(
+          onPressed: () async {
+            final text = await _prompt(context, '메모', memo ?? '', maxLines: 4);
+            if (text != null) {
+              await store.setMemo(widget.driver, widget.date, text);
+            }
+          },
+          icon: const Icon(Icons.edit_note_rounded, size: 18),
+          label: Text(memo == null ? '메모 쓰기' : '메모 수정'),
+        ),
       ],
     );
   }
 }
 
-class _SwapCandidatePicker extends StatefulWidget {
-  const _SwapCandidatePicker({required this.candidates});
-  final List<Map<String, dynamic>> candidates;
+class _DutyCandidate {
+  const _DutyCandidate({
+    required this.name,
+    required this.code,
+    this.standalone = false,
+    this.changed = false,
+    this.pending = false,
+    this.startTime,
+    this.endTime,
+  });
 
-  @override
-  State<_SwapCandidatePicker> createState() => _SwapCandidatePickerState();
+  final String name;
+  final String code;
+  final bool standalone;
+  final bool changed;
+  final bool pending;
+  final String? startTime;
+  final String? endTime;
+
+  String get label => code == '~'
+      ? '비번'
+      : code == '휴'
+      ? '휴무'
+      : code;
 }
 
-class _SwapCandidatePickerState extends State<_SwapCandidatePicker> {
+class _DutyChangeSheet extends StatefulWidget {
+  const _DutyChangeSheet({
+    required this.data,
+    required this.driver,
+    required this.date,
+    required this.duty,
+    required this.pendingPosts,
+    required this.hasPending,
+    required this.canRequest,
+    required this.onRequestSwap,
+    required this.onRevertSwap,
+  });
+
+  final DutyMonth data;
+  final Driver driver;
+  final String date;
+  final DayDuty? duty;
+  final List<Map<String, dynamic>> pendingPosts;
+  final bool hasPending;
+  final bool canRequest;
+  final Future<bool> Function(_DutyCandidate) onRequestSwap;
+  final Future<bool> Function() onRevertSwap;
+
+  @override
+  State<_DutyChangeSheet> createState() => _DutyChangeSheetState();
+}
+
+class _DutyChangeSheetState extends State<_DutyChangeSheet> {
+  final _client = AiApiClient();
   String _query = '';
+  List<Map<String, dynamic>> _matches = [];
+  bool _loading = true;
+  bool _loadFailed = false;
+  bool _busy = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMatches();
+  }
+
+  @override
+  void dispose() {
+    _client.close();
+    super.dispose();
+  }
+
+  Future<void> _loadMatches() async {
+    try {
+      final matches = await _client.fetchExchangeMatches(date: widget.date);
+      if (mounted) setState(() => _matches = matches);
+    } catch (_) {
+      if (mounted) setState(() => _loadFailed = true);
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
+
+  bool _hasPendingWith(String name) => widget.pendingPosts.any((post) {
+    final dates = post['dates'] as List?;
+    return post['type'] == 'direct' &&
+        post['status'] == 'open' &&
+        (dates?.contains(widget.date) ?? false) &&
+        ((post['requester_name'] == widget.driver.name &&
+                post['target_name'] == name) ||
+            (post['target_name'] == widget.driver.name &&
+                post['requester_name'] == name));
+  });
+
+  List<_DutyCandidate> get _candidates {
+    final others = <_DutyCandidate>[];
+    for (final match in _matches) {
+      final name = match['name'] as String? ?? '';
+      final code = match['code'] as String? ?? '';
+      if (name.isEmpty ||
+          name == widget.driver.name ||
+          code.isEmpty ||
+          code == '~' ||
+          code.startsWith('휴')) {
+        continue;
+      }
+      final localDriver = widget.data.drivers
+          .where((driver) => driver.name == name)
+          .firstOrNull;
+      final localDuty = localDriver?.days[widget.date];
+      final turnKey = match['turnKey'] as String?;
+      final turn =
+          (turnKey == null ? null : widget.data.turns[turnKey]) ??
+          (localDuty == null ? null : widget.data.turnFor(localDuty));
+      others.add(
+        _DutyCandidate(
+          name: name,
+          code: code,
+          changed: match['swapped'] == true,
+          pending: _hasPendingWith(name),
+          startTime: turn?.depart,
+          endTime: turn?.arrive,
+        ),
+      );
+    }
+    others.sort((a, b) {
+      final codeOrder = _compareDutyCodes(a.code, b.code);
+      return codeOrder != 0 ? codeOrder : a.name.compareTo(b.name);
+    });
+    return [
+      const _DutyCandidate(name: '', code: '~', standalone: true),
+      const _DutyCandidate(name: '', code: '휴', standalone: true),
+      ...others,
+    ];
+  }
+
+  Future<void> _confirmChange(_DutyCandidate candidate) async {
+    if (_busy ||
+        candidate.changed ||
+        candidate.pending ||
+        (!candidate.standalone && (!widget.canRequest || widget.hasPending))) {
+      return;
+    }
+    final myCode =
+        widget.driver.days[widget.date]?.code ?? widget.duty?.code ?? '';
+    final originalCode =
+        widget.duty?.original?.code ??
+        widget.driver.days[widget.date]?.code ??
+        myCode;
+    final message = candidate.standalone
+        ? '${_formatDate(widget.date)}\n${widget.driver.name} ${_formatCode(originalCode)} → ${candidate.label}\n변경할까요?'
+        : '${_formatDate(widget.date)}\n${widget.driver.name} ${_formatCode(myCode)} ↔ ${candidate.name} ${_formatCode(candidate.code)}\n맞교환 요청을 보낼까요?';
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(candidate.standalone ? '교번 변경 확인' : '맞교환 요청'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('취소'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(candidate.standalone ? '변경' : '요청'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+    setState(() => _busy = true);
+    try {
+      final bool applied;
+      if (candidate.standalone) {
+        await PersonalStore.instance.setOverride(
+          widget.driver,
+          widget.date,
+          candidate.code,
+        );
+        applied = true;
+      } else {
+        applied = await widget.onRequestSwap(candidate);
+      }
+      if (applied && mounted) Navigator.pop(context);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('교번 변경 실패: $e')));
+      }
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  Future<void> _confirmReturn() async {
+    if (_busy) return;
+    final store = PersonalStore.instance;
+    final hasLocalOverride = store
+        .overrides(widget.driver)
+        .containsKey(widget.date);
+    if (hasLocalOverride) {
+      final previous = store.previousOverride(widget.driver, widget.date);
+      final original =
+          widget.duty?.original?.code ??
+          widget.driver.days[widget.date]?.code ??
+          '-';
+      final action = await showDialog<String>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('교번 돌아가기'),
+          content: Text('${_formatDate(widget.date)}\n어디로 돌아갈까요?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('취소'),
+            ),
+            if (previous != null)
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'previous'),
+                child: Text('직전 ${_formatCode(previous)}'),
+              ),
+            if (previous != null)
+              FilledButton(
+                onPressed: () => Navigator.pop(context, 'original'),
+                child: Text('맨 처음 ${_formatCode(original)}'),
+              ),
+            if (previous == null)
+              FilledButton(
+                onPressed: () => Navigator.pop(context, 'original'),
+                child: const Text('되돌리기'),
+              ),
+          ],
+        ),
+      );
+      if (action == null || !mounted) return;
+      setState(() => _busy = true);
+      try {
+        if (action == 'previous') {
+          await store.undoOverride(widget.driver, widget.date);
+        } else {
+          await store.setOverride(widget.driver, widget.date, null);
+        }
+        if (mounted) Navigator.pop(context);
+      } finally {
+        if (mounted) setState(() => _busy = false);
+      }
+    } else if (widget.duty?.swapPostId != null) {
+      final reverted = await widget.onRevertSwap();
+      if (reverted && mounted) Navigator.pop(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final duty = widget.duty;
+    final localOverride = PersonalStore.instance
+        .overrides(widget.driver)
+        .containsKey(widget.date);
+    final original =
+        duty?.original?.code ??
+        widget.driver.days[widget.date]?.code ??
+        duty?.code ??
+        '-';
+    final modified =
+        localOverride || duty?.swapPostId != null || duty?.original != null;
     final query = _query.trim().toLowerCase();
-    final candidates = widget.candidates.where((candidate) {
-      final name = candidate['name'] as String? ?? '';
-      final code = candidate['code'] as String? ?? '';
-      return query.isEmpty || name.toLowerCase().contains(query) || code.toLowerCase().contains(query);
-    }).toList();
+    final candidates = _candidates
+        .where(
+          (candidate) =>
+              query.isEmpty ||
+              candidate.name.toLowerCase().contains(query) ||
+              candidate.code.toLowerCase().contains(query) ||
+              candidate.label.toLowerCase().contains(query),
+        )
+        .toList();
     return SafeArea(
+      top: false,
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.7,
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(top: 16),
-              child: Text('맞교환할 기관사', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: TextField(
-                onChanged: (value) => setState(() => _query = value),
-                decoration: InputDecoration(
-                  hintText: '이름 · 교번 검색',
-                  prefixIcon: const Icon(Icons.search_rounded),
-                  filled: true,
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        height: MediaQuery.of(context).size.height * 0.82,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 42,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: AppColors.border,
+                    borderRadius: BorderRadius.circular(3),
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: candidates.length,
-                itemBuilder: (context, index) {
-                  final candidate = candidates[index];
-                  final swapped = candidate['swapped'] == true;
-                  return ListTile(
-                    title: Text(candidate['name'] as String? ?? ''),
-                    subtitle: Text(candidate['code'] as String? ?? ''),
-                    trailing: swapped ? Text('변경됨', style: TextStyle(color: AppColors.ghostText)) : null,
-                    enabled: !swapped,
-                    onTap: swapped ? null : () => Navigator.pop(context, candidate),
-                  );
-                },
+              const SizedBox(height: 14),
+              const Text(
+                '교번 변경',
+                style: TextStyle(fontSize: 23, fontWeight: FontWeight.w900),
               ),
-            ),
-          ],
+              const SizedBox(height: 14),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 13,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.canvas,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _formatDate(widget.date),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          '원래 ${_formatCode(original)}',
+                          style: TextStyle(
+                            color: AppColors.secondaryInk,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      constraints: const BoxConstraints(minWidth: 66),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.line6.withValues(alpha: 0.14),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            '현재',
+                            style: TextStyle(
+                              color: AppColors.line6,
+                              fontSize: 9,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          Text(
+                            _formatCode(duty?.code ?? '-'),
+                            style: const TextStyle(
+                              color: AppColors.line6,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (modified) ...[
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: _busy ? null : _confirmReturn,
+                    icon: const Icon(Icons.undo_rounded, size: 16),
+                    label: const Text('교번 돌아가기'),
+                  ),
+                ),
+              ],
+              const SizedBox(height: 8),
+              TextField(
+                enabled: !_busy,
+                onChanged: (value) => setState(() => _query = value),
+                decoration: InputDecoration(
+                  hintText: '이름 또는 DIA 검색',
+                  prefixIcon: const Icon(Icons.search_rounded),
+                  filled: true,
+                  fillColor: AppColors.canvas,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide(color: AppColors.border),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 6),
+              Expanded(
+                child: ListView(
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  children: [
+                    for (final candidate in candidates)
+                      _candidateTile(candidate),
+                    if (_loading)
+                      const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(16),
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                    if (_loadFailed)
+                      Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Text(
+                          '기관사 목록을 불러오지 못했어요.',
+                          style: TextStyle(color: AppColors.secondaryInk),
+                        ),
+                      ),
+                    if (!_loading && candidates.isEmpty && query.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Text(
+                          '검색 결과가 없어요.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: AppColors.secondaryInk),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+
+  Widget _candidateTile(_DutyCandidate candidate) {
+    final unavailable = candidate.changed || candidate.pending;
+    final disabled =
+        _busy ||
+        unavailable ||
+        (!candidate.standalone && (!widget.canRequest || widget.hasPending));
+    final times = [
+      if (candidate.startTime?.isNotEmpty == true) '출 ${candidate.startTime}',
+      if (candidate.endTime?.isNotEmpty == true) '퇴 ${candidate.endTime}',
+    ].join(' · ');
+    final subtitle = candidate.standalone
+        ? null
+        : '${candidate.name}${times.isEmpty ? '' : ' · $times'}';
+    return Opacity(
+      opacity: disabled ? 0.55 : 1,
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+        title: Text(
+          candidate.label,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+        ),
+        subtitle: subtitle == null
+            ? null
+            : Text(
+                subtitle,
+                style: TextStyle(color: AppColors.secondaryInk, fontSize: 12),
+              ),
+        trailing: unavailable
+            ? Text(
+                '변경됨',
+                style: TextStyle(
+                  color: AppColors.ghostText,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w800,
+                ),
+              )
+            : null,
+        enabled: !disabled,
+        onTap: disabled ? null : () => _confirmChange(candidate),
+      ),
+    );
+  }
 }
+
+int _compareDutyCodes(String left, String right) {
+  final chunks = RegExp(r'\d+|\D+');
+  final a = chunks
+      .allMatches(left.toLowerCase())
+      .map((match) => match[0]!)
+      .toList();
+  final b = chunks
+      .allMatches(right.toLowerCase())
+      .map((match) => match[0]!)
+      .toList();
+  for (var i = 0; i < a.length && i < b.length; i++) {
+    final aNumber = int.tryParse(a[i]);
+    final bNumber = int.tryParse(b[i]);
+    final comparison = aNumber != null && bNumber != null
+        ? aNumber.compareTo(bNumber)
+        : a[i].compareTo(b[i]);
+    if (comparison != 0) return comparison;
+  }
+  return a.length.compareTo(b.length);
+}
+
+String _formatDate(String date) {
+  final parts = date.split('-').map(int.parse).toList();
+  return '${parts[0]}년 ${parts[1]}월 ${parts[2]}일';
+}
+
+String _formatCode(String code) => code == '~'
+    ? '비번'
+    : code == '휴'
+    ? '휴무'
+    : code;

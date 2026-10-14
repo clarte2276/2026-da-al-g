@@ -11,7 +11,9 @@ Map<String, dynamic>? pendingDutySwap(
 ) {
   for (final post in posts) {
     if (post['type'] != 'direct' || post['status'] != 'open') continue;
-    if (post['requester_name'] != driverName && post['target_name'] != driverName) continue;
+    if (post['requester_name'] != driverName && post['target_name'] != driverName) {
+      continue;
+    }
     if ((post['dates'] as List?)?.contains(date) ?? false) return post;
   }
   return null;
@@ -28,6 +30,7 @@ class PersonalStore extends ChangeNotifier {
   // 기관사 키 → 날짜 → 값
   Map<String, Map<String, String>> _memos = {};
   Map<String, Map<String, String>> _overrides = {};
+  Map<String, Map<String, List<String>>> _overrideHistory = {};
 
   static String _driverKey(Driver d) => d.empNo ?? d.name;
 
@@ -39,6 +42,16 @@ class PersonalStore extends ChangeNotifier {
     final j = jsonDecode(raw) as Map<String, dynamic>;
     _memos = read(j['memo']);
     _overrides = read(j['override']);
+    _overrideHistory = (j['overrideHistory'] as Map<String, dynamic>? ?? {})
+        .map(
+          (driver, dates) => MapEntry(
+            driver,
+            (dates as Map<String, dynamic>).map(
+              (date, codes) =>
+                  MapEntry(date, (codes as List).cast<String>().toList()),
+            ),
+          ),
+        );
   }
 
   String? memo(Driver d, String date) => _memos[_driverKey(d)]?[date];
@@ -48,8 +61,41 @@ class PersonalStore extends ChangeNotifier {
 
   Future<void> setMemo(Driver d, String date, String? text) => _set(_memos, d, date, text);
 
-  /// null이면 원래 교번으로 되돌린다.
-  Future<void> setOverride(Driver d, String date, String? code) => _set(_overrides, d, date, code);
+  /// null이면 원래 교번으로 되돌린다. 교번 변경 이력은 최근 20개까지만 남긴다.
+  Future<void> setOverride(Driver d, String date, String? code) async {
+    final key = _driverKey(d);
+    final next = code?.trim() ?? '';
+    final current = _overrides[key]?[date];
+    if (next.isEmpty) {
+      _overrides[key]?.remove(date);
+      _overrideHistory[key]?.remove(date);
+    } else {
+      if (current == next) return;
+      if (current != null) {
+        final history = _overrideHistory
+            .putIfAbsent(key, () => {})
+            .putIfAbsent(date, () => []);
+        history.add(current);
+        if (history.length > 20) history.removeAt(0);
+      }
+      _overrides.putIfAbsent(key, () => {})[date] = next;
+    }
+    notifyListeners();
+    await _save();
+  }
+
+  String? previousOverride(Driver d, String date) =>
+      _overrideHistory[_driverKey(d)]?[date]?.lastOrNull;
+
+  Future<void> undoOverride(Driver d, String date) async {
+    final history = _overrideHistory[_driverKey(d)]?[date];
+    if (history == null || history.isEmpty) return;
+    _overrides.putIfAbsent(_driverKey(d), () => {})[date] = history
+        .removeLast();
+    if (history.isEmpty) _overrideHistory[_driverKey(d)]?.remove(date);
+    notifyListeners();
+    await _save();
+  }
 
   Future<void> _set(Map<String, Map<String, String>> map, Driver d, String date, String? value) async {
     final byDate = map.putIfAbsent(_driverKey(d), () => {});
@@ -60,7 +106,17 @@ class PersonalStore extends ChangeNotifier {
       byDate[date] = v;
     }
     notifyListeners();
-    await (await SharedPreferences.getInstance())
-        .setString(_prefsKey, jsonEncode({'memo': _memos, 'override': _overrides}));
+    await _save();
+  }
+
+  Future<void> _save() async {
+    await (await SharedPreferences.getInstance()).setString(
+      _prefsKey,
+      jsonEncode({
+        'memo': _memos,
+        'override': _overrides,
+        'overrideHistory': _overrideHistory,
+      }),
+    );
   }
 }
