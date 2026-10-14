@@ -3,6 +3,7 @@ import '../core/colors.dart';
 import '../core/duty_data.dart';
 import '../core/personal_store.dart';
 import '../services/auth_session.dart';
+import 'turn_sheet.dart';
 
 /// 이번 주 7일의 내 근무 유형을 근무표 JSON에서 읽어 보여준다. 없는 날은 '-'.
 class WeeklyDutyStrip extends StatelessWidget {
@@ -42,7 +43,19 @@ class WeeklyDutyStrip extends StatelessWidget {
           final type = duty?.type ?? DutyType.unknown;
           final c = dutyTypeColor(type);
           return GestureDetector(
-            onTap: onTapDay,
+            onTap: () {
+              if (data == null || me == null) {
+                onTapDay?.call();
+                return;
+              }
+              showDaySheet(
+                context,
+                data: data,
+                driver: me,
+                date: dutyDateKey(date),
+                subtitle: '${me.name} · ${date.month}/${date.day} (${wd[date.weekday % 7]})',
+              );
+            },
             child: Container(
               width: 60,
               decoration: BoxDecoration(
