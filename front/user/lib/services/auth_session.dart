@@ -6,7 +6,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/conversation_store.dart';
-import '../core/bookmark_store.dart';
 import 'ai_api_client.dart';
 
 class AuthSession {
@@ -82,7 +81,6 @@ class AuthSession {
   }
 
   static Future<void> _syncData(String userId) async {
-    await BookmarkStore.instance.refresh();
     final prefs = await SharedPreferences.getInstance();
     final marker = 'server_data_imported_$userId';
     final client = AiApiClient();
@@ -92,12 +90,10 @@ class AuthSession {
           ConversationStore.instance.conversations
               .map((c) => c.toJson())
               .toList(),
-          BookmarkStore.instance.items.map((b) => b.toJson()).toList(),
         );
         await prefs.setBool(marker, true);
       }
       await ConversationStore.instance.sync();
-      await BookmarkStore.instance.sync();
     } catch (_) {
       // Keep local data and retry on the next sign-in or app start.
     } finally {

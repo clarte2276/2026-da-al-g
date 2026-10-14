@@ -101,12 +101,14 @@ class Conversation {
   final String title;
   final DateTime createdAt;
   final List<ChatMsg> messages;
+  final bool saved;
 
   Conversation({
     required this.id,
     required this.title,
     required this.createdAt,
     required this.messages,
+    this.saved = false,
   });
 
   String get timeAgo {
@@ -134,6 +136,7 @@ class Conversation {
     messages: (j['messages'] as List)
         .map((m) => ChatMsg.fromJson(m as Map<String, dynamic>))
         .toList(),
+    saved: j['saved'] ?? false,
   );
 
   Map<String, dynamic> toJson() => {
@@ -141,6 +144,7 @@ class Conversation {
     'title': title,
     'createdAt': createdAt.toIso8601String(),
     'messages': messages.map((m) => m.toJson()).toList(),
+    'saved': saved,
   };
 }
 
