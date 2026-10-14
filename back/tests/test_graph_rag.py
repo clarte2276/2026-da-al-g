@@ -1,7 +1,9 @@
 import hashlib
+import struct
 import sys
 from types import SimpleNamespace
 
+import numpy as np
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
@@ -50,7 +52,7 @@ def test_corpus_build_streams_embedding_text_by_source_id() -> None:
         Fragment(id="second", version_id="v", stable_key="second", kind="paragraph", text="two"),
     ]
     rows = [
-        ("third", "[1,2,3]", None),
+        ("third", struct.pack("<2f", 3, 4), None),
         ("source", "[]", "[3,4]"),
         ("second", "[0,2]", "[3,4]"),
     ]
@@ -67,6 +69,36 @@ def test_corpus_build_streams_embedding_text_by_source_id() -> None:
 
     assert abs(scores[0] - 0.6) < 1e-6
     assert abs(scores[1] - 0.48) < 1e-6
+    assert abs(scores[2] - 0.6) < 1e-6
+
+
+def test_portable_vector_stores_float32_blob_and_reads_legacy_json() -> None:
+    from sqlalchemy import text
+
+    engine = create_engine("sqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    with Session(engine) as db:
+        fragment = _fragment("v", "vector", "vector", [0.1, -2.25])
+        fragment.embedding_json = None
+        fragment.embedding_vector = np.asarray([0.1, -2.25])
+        db.add(fragment)
+        db.flush()
+
+        blob = db.execute(
+            text("SELECT embedding_vector FROM fragments WHERE id = :id"), {"id": fragment.id}
+        ).scalar_one()
+        assert isinstance(blob, bytes)
+        assert len(blob) == 8
+        db.expire(fragment)
+        assert abs(fragment.embedding_vector[0] - 0.1) < 1e-7
+        assert fragment.embedding_vector[1] == -2.25
+
+        db.execute(
+            text("UPDATE fragments SET embedding_vector = :value WHERE id = :id"),
+            {"value": "[0.1,-2.25]", "id": fragment.id},
+        )
+        db.expire(fragment)
+        assert fragment.embedding_vector == [0.1, -2.25]
 
 
 def test_full_corpus_includes_vector_only_embeddings(tmp_path) -> None:

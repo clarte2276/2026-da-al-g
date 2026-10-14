@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from functools import lru_cache
 
 import numpy as np
-from sqlalchemy import Text, cast, func, or_, select, text
+from sqlalchemy import LargeBinary, Text, cast, func, or_, select, text, type_coerce
 from sqlalchemy.orm import Session, defer
 
 from ..config import Settings
@@ -266,7 +266,7 @@ class _Corpus:
         cls,
         units: list[Fragment],
         *,
-        embedding_rows: Callable[[], Iterable[tuple[str, str | None, str | None]]] | None = None,
+        embedding_rows: Callable[[], Iterable[tuple[str, bytes | str | None, str | None]]] | None = None,
         embedding_source_ids: dict[str, str] | None = None,
     ) -> _Corpus:
         sections = _slide_sections(units)
@@ -296,11 +296,11 @@ class _Corpus:
             first_dim: int | None = None
             vectors: np.ndarray | None = None
             for fragment_id, vector_text, json_text in embedding_rows():
-                vector = json.loads(vector_text) if vector_text else []
-                if not vector:
-                    vector = json.loads(json_text) if json_text else []
+                vector = _embedding_values(vector_text)
+                if len(vector) == 0:
+                    vector = _embedding_values(json_text)
                 rows = rows_by_source.get(fragment_id, ())
-                if vector and rows:
+                if len(vector) and rows:
                     dim = len(vector)
                     dims[dim] += len(rows)
                     first_dim_row[dim] = min(first_dim_row.get(dim, rows[0]), rows[0])
@@ -316,9 +316,9 @@ class _Corpus:
                     del vectors
                     vectors = np.zeros((len(units), dim), dtype=np.float32)
                     for fragment_id, vector_text, json_text in embedding_rows():
-                        vector = json.loads(vector_text) if vector_text else []
-                        if not vector:
-                            vector = json.loads(json_text) if json_text else []
+                        vector = _embedding_values(vector_text)
+                        if len(vector) == 0:
+                            vector = _embedding_values(json_text)
                         if len(vector) == dim:
                             for row in rows_by_source.get(fragment_id, ()):
                                 vectors[row] = vector
@@ -352,6 +352,13 @@ class _Corpus:
             ) / total_q_idf
             results.append(float(vector_scores[index]) * 0.6 + lexical * 0.4)
         return results
+
+
+def _embedding_values(value: bytes | bytearray | memoryview | str | None) -> np.ndarray:
+    if isinstance(value, (bytes, bytearray, memoryview)):
+        return np.frombuffer(value, dtype="<f4")
+    vector = json.loads(value) if value else None
+    return np.asarray(vector, dtype=np.float32) if vector else np.empty(0, dtype=np.float32)
 
 
 def _detached(fragment: Fragment) -> Fragment:
@@ -694,13 +701,18 @@ class GraphRAGService:
 
     def _stream_embeddings(
         self, db: Session, fragment_ids: list[str]
-    ) -> Iterable[tuple[str, str | None, str | None]]:
-        """Yield raw vector and JSON text in bounded batches, avoiding ORM JSON decoding."""
+    ) -> Iterable[tuple[str, bytes | str | None, str | None]]:
+        """Yield raw vector and JSON text in bounded batches, avoiding ORM decoding."""
         for start in range(0, len(fragment_ids), 500):
+            vector = (
+                type_coerce(Fragment.embedding_vector, LargeBinary())
+                if db.get_bind().dialect.name == "sqlite"
+                else cast(Fragment.embedding_vector, Text)
+            )
             result = db.execute(
                 select(
                     Fragment.id,
-                    cast(Fragment.embedding_vector, Text),
+                    vector,
                     cast(Fragment.embedding_json, Text),
                 )
                 .where(Fragment.id.in_(fragment_ids[start : start + 500]))
