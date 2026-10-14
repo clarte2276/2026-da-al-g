@@ -1,68 +1,190 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
+
 import '../core/duty_data.dart';
 import '../core/personal_store.dart';
 import 'auth_session.dart';
 
+enum DutyAlarmRule {
+  preparationBefore,
+  firstRunAfter,
+  nextTrainSignatureBefore,
+  nextTrainDepartureBefore,
+  depotDepartureBefore,
+}
+
+const dutyAlarmDefaultMinutes = <DutyAlarmRule, int>{
+  DutyAlarmRule.preparationBefore: 60,
+  DutyAlarmRule.firstRunAfter: 20,
+  DutyAlarmRule.nextTrainSignatureBefore: 40,
+  DutyAlarmRule.nextTrainDepartureBefore: 10,
+  DutyAlarmRule.depotDepartureBefore: 70,
+};
+
+const dutyAlarmDefaultEnabled = <DutyAlarmRule, bool>{
+  DutyAlarmRule.preparationBefore: false,
+  DutyAlarmRule.firstRunAfter: true,
+  DutyAlarmRule.nextTrainSignatureBefore: true,
+  DutyAlarmRule.nextTrainDepartureBefore: true,
+  DutyAlarmRule.depotDepartureBefore: true,
+};
+
 typedef DutyAlarmItem = ({DateTime at, String title, String body});
 
-String _hm(DateTime t) => '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}';
+int? _minutes(String value) {
+  final match = RegExp(r'^(\d{1,2}):(\d{2})$').firstMatch(value.trim());
+  if (match == null) return null;
+  final hours = int.parse(match[1]!);
+  final minutes = int.parse(match[2]!);
+  if (hours > 23 || minutes > 59) return null;
+  return hours * 60 + minutes;
+}
 
-/// [now]부터 [days]일 동안 울릴 알람(순수 함수). 시각은 서울 기준 벽시계 시각.
-/// - [leadMinutes]: 출근 N분 전 (null이면 끔)
-/// - [eveBefore]: 전날 21:00 "내일 06:12 출근 · 5교번"
-/// 행로표가 없는 날(대기 등)은 건너뛴다. 교번 변경으로 dia를 넣으면 그 dia로 울린다.
+String _hm(DateTime time) =>
+    '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+
 List<DutyAlarmItem> computeDutyAlarms(
   List<DutyMonth> months,
   String? driverName,
   Map<String, String> overrides, {
-  int? leadMinutes,
+  Map<DutyAlarmRule, bool>? rules,
+  Map<DutyAlarmRule, int>? minutes,
   bool eveBefore = false,
   required DateTime now,
-  int days = 14,
+  int days = 30,
+  // Kept for callers from the old one-rule settings until their next release.
+  int? leadMinutes,
 }) {
+  final legacyLead = leadMinutes != null;
+  final enabled =
+      rules ??
+      (legacyLead
+          ? const {DutyAlarmRule.preparationBefore: true}
+          : const <DutyAlarmRule, bool>{});
+  final timing = minutes ?? dutyAlarmDefaultMinutes;
   final out = <DutyAlarmItem>[];
-  for (var i = 0; i < days; i++) {
-    final date = DateTime(now.year, now.month, now.day + i);
+
+  for (var offset = -1; offset < days; offset++) {
+    final date = DateTime(now.year, now.month, now.day + offset);
     final key = dutyDateKey(date);
-    final m = months.where((m) => m.dates.contains(key) && !m.turnDetailIsDummy).firstOrNull;
-    final driver = m?.driverNamed(driverName);
-    if (m == null || driver == null) continue;
-    final duty = resolveDuty(m, driver, key, overrides);
+    final month = months
+        .where((m) => m.dates.contains(key) && !m.turnDetailIsDummy)
+        .firstOrNull;
+    final driver = month?.driverNamed(driverName);
+    if (month == null || driver == null) continue;
+    final duty = resolveDuty(month, driver, key, overrides);
     if (duty == null || duty.type == DutyType.standby) continue;
-    final turn = m.turnFor(duty);
+    final turn = month.turnFor(duty);
     final start = turn?.timesOn(date)?.$1;
     if (turn == null || start == null) continue;
-    if (leadMinutes != null) {
-      final at = start.subtract(Duration(minutes: leadMinutes));
-      if (at.isAfter(now)) out.add((at: at, title: '출근 $leadMinutes분 전', body: '${_hm(start)} 출근 · ${turn.id}교번'));
+
+    void add(DateTime at, String title, String body) {
+      if (at.isAfter(now)) out.add((at: at, title: title, body: body));
     }
+
+    if (enabled[DutyAlarmRule.preparationBefore] == true) {
+      final lead = leadMinutes ?? timing[DutyAlarmRule.preparationBefore]!;
+      add(
+        start.subtract(Duration(minutes: lead)),
+        legacyLead ? '출근 $lead분 전' : '출근 준비하세요',
+        '${_hm(start)} 출근 · ${turn.id}교번',
+      );
+    }
+    if (!legacyLead && enabled[DutyAlarmRule.firstRunAfter] == true) {
+      add(
+        start.add(Duration(minutes: timing[DutyAlarmRule.firstRunAfter]!)),
+        '출장하세요',
+        '${_hm(start)} 출근 · ${turn.id}교번',
+      );
+    }
+
+    var previousTrain = start;
+    for (final train in turn.trainTimes) {
+      final trainMinutes = _minutes(train.time);
+      if (trainMinutes == null) continue;
+      var trainAt = DateTime(
+        date.year,
+        date.month,
+        date.day,
+      ).add(Duration(minutes: trainMinutes));
+      while (!trainAt.isAfter(previousTrain)) {
+        trainAt = trainAt.add(const Duration(days: 1));
+      }
+      previousTrain = trainAt;
+      if (legacyLead) continue;
+      if (train.depot) {
+        if (enabled[DutyAlarmRule.depotDepartureBefore] == true) {
+          add(
+            trainAt.subtract(
+              Duration(minutes: timing[DutyAlarmRule.depotDepartureBefore]!),
+            ),
+            '서명 및 출장하세요',
+            '${train.time} 출고 열차 · ${turn.id}교번',
+          );
+        }
+      } else {
+        if (enabled[DutyAlarmRule.nextTrainSignatureBefore] == true) {
+          add(
+            trainAt.subtract(
+              Duration(
+                minutes: timing[DutyAlarmRule.nextTrainSignatureBefore]!,
+              ),
+            ),
+            '서명하세요',
+            '${train.time} 열차 · ${turn.id}교번',
+          );
+        }
+        if (enabled[DutyAlarmRule.nextTrainDepartureBefore] == true) {
+          add(
+            trainAt.subtract(
+              Duration(
+                minutes: timing[DutyAlarmRule.nextTrainDepartureBefore]!,
+              ),
+            ),
+            '출장하세요',
+            '${train.time} 열차 · ${turn.id}교번',
+          );
+        }
+      }
+    }
+
     final eve = DateTime(date.year, date.month, date.day - 1, 21);
     if (eveBefore && eve.isAfter(now) && eve.isBefore(start)) {
-      out.add((at: eve, title: '내일 ${_hm(start)} 출근 · ${turn.id}교번', body: '${duty.type.label} ${duty.code}'));
+      add(
+        eve,
+        '내일 ${_hm(start)} 출근 · ${turn.id}교번',
+        '${duty.type.label} ${duty.code}',
+      );
     }
   }
   out.sort((a, b) => a.at.compareTo(b.at));
   return out;
 }
 
-/// 근무 알람 설정과 예약. Android/iOS에서만 동작하고 그 밖에서는 아무 일도 하지 않는다.
 class DutyAlarm extends ChangeNotifier {
   DutyAlarm._();
   static final DutyAlarm instance = DutyAlarm._();
 
-  static const leadChoices = [10, 20, 30, 60, 70];
   static const _leadKey = 'alarm_lead_minutes';
   static const _eveKey = 'alarm_eve_before';
+  static const _channelId = 'duty_alarm_v2';
 
-  int? leadMinutes; // null = 끔
+  final rules = {...dutyAlarmDefaultEnabled};
+  final minutes = {...dutyAlarmDefaultMinutes};
   bool eveBefore = false;
+  List<DutyAlarmItem> upcoming = [];
+  bool? fullScreenAllowed;
 
   bool get supported =>
-      !kIsWeb && (defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS);
+      !kIsWeb &&
+      (defaultTargetPlatform == TargetPlatform.android ||
+          defaultTargetPlatform == TargetPlatform.iOS);
+  bool get anyEnabled => eveBefore || rules.values.any((value) => value);
 
   final _plugin = FlutterLocalNotificationsPlugin();
   tz.Location? _seoul;
@@ -70,34 +192,138 @@ class DutyAlarm extends ChangeNotifier {
 
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
-    leadMinutes = prefs.getInt(_leadKey);
+    final oldLead = prefs.getInt(_leadKey);
+    for (final rule in DutyAlarmRule.values) {
+      final suffix = rule.name;
+      minutes[rule] =
+          prefs.getInt('duty_alarm_${suffix}_minutes') ??
+          (rule == DutyAlarmRule.preparationBefore
+              ? oldLead ?? dutyAlarmDefaultMinutes[rule]!
+              : dutyAlarmDefaultMinutes[rule]!);
+      rules[rule] =
+          prefs.getBool('duty_alarm_${suffix}_enabled') ??
+          (rule == DutyAlarmRule.preparationBefore &&
+                  prefs.containsKey(_leadKey)
+              ? oldLead != null
+              : dutyAlarmDefaultEnabled[rule]!);
+    }
     eveBefore = prefs.getBool(_eveKey) ?? false;
-    // 교번 변경이 바뀌면 다시 예약한다.
+    if (prefs.containsKey(_leadKey)) {
+      await prefs.setInt(
+        'duty_alarm_preparationBefore_minutes',
+        minutes[DutyAlarmRule.preparationBefore]!,
+      );
+      await prefs.setBool(
+        'duty_alarm_preparationBefore_enabled',
+        oldLead != null,
+      );
+      await prefs.remove(_leadKey);
+    }
     PersonalStore.instance.addListener(reschedule);
-    reschedule();
+    unawaited(reschedule());
   }
 
-  Future<void> setLeadMinutes(int? m) async {
-    leadMinutes = m;
+  Future<void> setRuleEnabled(DutyAlarmRule rule, bool value) async {
+    rules[rule] = value;
     notifyListeners();
-    final prefs = await SharedPreferences.getInstance();
-    m == null ? await prefs.remove(_leadKey) : await prefs.setInt(_leadKey, m);
-    if (m != null) await _requestPermission();
-    reschedule();
+    await (await SharedPreferences.getInstance()).setBool(
+      'duty_alarm_${rule.name}_enabled',
+      value,
+    );
+    if (value) await _requestPermission();
+    await reschedule();
   }
 
-  Future<void> setEveBefore(bool on) async {
-    eveBefore = on;
+  Future<void> setMinutes(DutyAlarmRule rule, int value) async {
+    final max = rule == DutyAlarmRule.firstRunAfter ? 120 : 180;
+    if (value < 0 || value > max) throw ArgumentError.value(value, 'minutes');
+    minutes[rule] = value;
     notifyListeners();
-    await (await SharedPreferences.getInstance()).setBool(_eveKey, on);
-    if (on) await _requestPermission();
-    reschedule();
+    await (await SharedPreferences.getInstance()).setInt(
+      'duty_alarm_${rule.name}_minutes',
+      value,
+    );
+    await reschedule();
   }
 
-  /// 앞으로 14일 알람을 새로 잡는다. 겹쳐 불려도 차례로 돈다.
-  Future<void> reschedule() => _queue = _queue.then((_) => _reschedule()).catchError((Object e) {
+  Future<void> setEveBefore(bool value) async {
+    eveBefore = value;
+    notifyListeners();
+    await (await SharedPreferences.getInstance()).setBool(_eveKey, value);
+    if (value) await _requestPermission();
+    await reschedule();
+  }
+
+  Future<void> _requestPermission() async {
+    if (!supported) return;
+    await _ensureInit();
+    final android = _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
+    await android?.requestNotificationsPermission();
+    if (android != null &&
+        !(await android.canScheduleExactNotifications() ?? false)) {
+      await android.requestExactAlarmsPermission();
+    }
+    await _plugin
+        .resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin
+        >()
+        ?.requestPermissions(alert: true, badge: true, sound: true);
+  }
+
+  Future<bool> exactAlarmsAllowed() async {
+    final android = _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
+    return android == null ||
+        (await android.canScheduleExactNotifications() ?? false);
+  }
+
+  Future<bool> openExactAlarmSettings() async {
+    final android = _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
+    if (android == null) return true;
+    if (await android.canScheduleExactNotifications() ?? false) return true;
+    await android.requestExactAlarmsPermission();
+    return await android.canScheduleExactNotifications() ?? false;
+  }
+
+  Future<bool?> openFullScreenSettings() async {
+    final android = _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
+    if (android == null) return true;
+    fullScreenAllowed = await android.requestFullScreenIntentPermission();
+    notifyListeners();
+    return fullScreenAllowed;
+  }
+
+  Future<void> sendTestNotification() async {
+    await _requestPermission();
+    await _ensureInit();
+    await _plugin.show(
+      id: 2147483000,
+      title: '근무 알림 테스트',
+      body: '근무 알림이 정상적으로 도착합니다.',
+      notificationDetails: _details,
+    );
+  }
+
+  Future<void> reschedule() =>
+      _queue = _queue.then((_) => _reschedule()).catchError((Object e) {
         debugPrint('duty alarm: $e');
       });
+
+  Future<int> recalculate() async {
+    await reschedule();
+    return upcoming.length;
+  }
 
   Future<void> _ensureInit() async {
     if (_seoul != null) return;
@@ -115,69 +341,95 @@ class DutyAlarm extends ChangeNotifier {
     _seoul = tz.getLocation('Asia/Seoul');
   }
 
-  Future<void> _requestPermission() async {
-    if (!supported) return;
-    await _ensureInit();
-    final android = _plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
-    await android?.requestNotificationsPermission();
-    if (android != null && !(await android.canScheduleExactNotifications() ?? false)) {
-      await android.requestExactAlarmsPermission(); // 거부해도 부정확 예약으로 동작
-    }
-    await _plugin
-        .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(alert: true, badge: true, sound: true);
-  }
+  static const _details = NotificationDetails(
+    android: AndroidNotificationDetails(
+      _channelId,
+      '근무 알림',
+      channelDescription: '근무 시간에 맞춰 알립니다.',
+      importance: Importance.max,
+      priority: Priority.max,
+      category: AndroidNotificationCategory.alarm,
+      fullScreenIntent: true,
+    ),
+    iOS: DarwinNotificationDetails(),
+  );
 
   Future<void> _reschedule() async {
     if (!supported) return;
     await _ensureInit();
     await _plugin.cancelAll();
+    upcoming = [];
     final name = AuthSession.current?.user.name;
-    if ((leadMinutes == null && !eveBefore) || name == null) return;
+    if (!anyEnabled || name == null) {
+      notifyListeners();
+      return;
+    }
 
     final now = DateTime.now();
+    final first = DateTime(now.year, now.month, now.day - 1);
+    final last = DateTime(now.year, now.month, now.day + 29);
+    final monthsToLoad = <String>{};
+    for (
+      var day = first;
+      !day.isAfter(last);
+      day = day.add(const Duration(days: 1))
+    ) {
+      monthsToLoad.add('${day.year}-${day.month.toString().padLeft(2, '0')}');
+    }
     final months = <DutyMonth>[];
-    for (final d in [now, DateTime(now.year, now.month + 1)]) {
-      final month = '${d.year}-${d.month.toString().padLeft(2, '0')}';
+    for (final month in monthsToLoad) {
       try {
         months.add(await DutyRepository.instance.load(month));
       } catch (_) {
-        // 다음 달 근무표가 아직 없을 수 있다.
+        // A missing month can be filled the next time the schedule is refreshed.
       }
     }
-    final me = months.map((m) => m.driverNamed(name)).nonNulls.firstOrNull;
-    if (me == null) return;
-    final items = computeDutyAlarms(
+    final driver = months
+        .map((month) => month.driverNamed(name))
+        .nonNulls
+        .firstOrNull;
+    if (driver == null) {
+      notifyListeners();
+      return;
+    }
+    upcoming = computeDutyAlarms(
       months,
       name,
-      PersonalStore.instance.overrides(me),
-      leadMinutes: leadMinutes,
+      PersonalStore.instance.overrides(driver),
+      rules: rules,
+      minutes: minutes,
       eveBefore: eveBefore,
       now: now,
     );
 
-    final android = _plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
-    final exact = android == null || (await android.canScheduleExactNotifications() ?? false);
-    const details = NotificationDetails(
-      android: AndroidNotificationDetails(
-        'duty_alarm',
-        '근무 알람',
-        channelDescription: '출근 전·전날 저녁 근무 알림',
-        importance: Importance.high,
-        priority: Priority.high,
-      ),
-      iOS: DarwinNotificationDetails(),
-    );
-    for (var i = 0; i < items.length; i++) {
-      final a = items[i];
+    final android = _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
+    if (android != null &&
+        !(await android.canScheduleExactNotifications() ?? false)) {
+      notifyListeners();
+      return;
+    }
+    final scheduled = android == null ? upcoming.take(60).toList() : upcoming;
+    for (var i = 0; i < scheduled.length; i++) {
+      final alarm = scheduled[i];
       await _plugin.zonedSchedule(
         id: i,
-        scheduledDate: tz.TZDateTime(_seoul!, a.at.year, a.at.month, a.at.day, a.at.hour, a.at.minute),
-        notificationDetails: details,
-        androidScheduleMode: exact ? AndroidScheduleMode.exactAllowWhileIdle : AndroidScheduleMode.inexactAllowWhileIdle,
-        title: a.title,
-        body: a.body,
+        scheduledDate: tz.TZDateTime(
+          _seoul!,
+          alarm.at.year,
+          alarm.at.month,
+          alarm.at.day,
+          alarm.at.hour,
+          alarm.at.minute,
+        ),
+        notificationDetails: _details,
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        title: alarm.title,
+        body: alarm.body,
       );
     }
+    notifyListeners();
   }
 }

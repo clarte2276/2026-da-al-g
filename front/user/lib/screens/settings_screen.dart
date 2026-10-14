@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+
 import '../core/colors.dart';
 import '../core/theme_controller.dart';
 import '../services/duty_alarm.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_page.dart';
 import '../widgets/page_header.dart';
+import 'duty_alarm_screen.dart';
 import 'my_page_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -69,7 +71,7 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
-/// 근무 알람: 출근 N분 전 + 전날 21:00 익일 근무 알림.
+/// 근무 알림 설정으로 이동하는 카드.
 class _DutyAlarmCard extends StatelessWidget {
   const _DutyAlarmCard();
 
@@ -77,62 +79,20 @@ class _DutyAlarmCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final alarm = DutyAlarm.instance;
     return AppCard(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-      child: ListenableBuilder(
-        listenable: alarm,
-        builder: (context, _) => Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Row(
-              children: [
-                Icon(Icons.alarm_rounded, color: AppColors.line6Gold),
-                SizedBox(width: 16),
-                Text('근무 알람', style: TextStyle(fontSize: 16)),
-              ],
-            ),
-            if (!alarm.supported) ...[
-              const SizedBox(height: 8),
-              Text('이 기기에서는 알람을 지원하지 않습니다 (Android·iOS 전용).',
-                  style: TextStyle(fontSize: 13, color: AppColors.secondaryInk)),
-            ] else ...[
-              const SizedBox(height: 12),
-              Text('출근 전 알림', style: TextStyle(fontSize: 13, color: AppColors.secondaryInk)),
-              const SizedBox(height: 6),
-              Wrap(
-                spacing: 6,
-                runSpacing: 6,
-                children: [
-                  ChoiceChip(
-                    label: const Text('끔'),
-                    selected: alarm.leadMinutes == null,
-                    onSelected: (_) => alarm.setLeadMinutes(null),
-                  ),
-                  for (final m in DutyAlarm.leadChoices)
-                    ChoiceChip(
-                      label: Text('$m분 전'),
-                      selected: alarm.leadMinutes == m,
-                      onSelected: (_) => alarm.setLeadMinutes(m),
-                    ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('익일 근무 알람', style: TextStyle(fontSize: 15)),
-                        Text('전날 21:00 · 예) 내일 06:12 출근 · 5교번',
-                            style: TextStyle(fontSize: 13, color: AppColors.secondaryInk)),
-                      ],
-                    ),
-                  ),
-                  Switch(value: alarm.eveBefore, onChanged: alarm.setEveBefore),
-                ],
-              ),
-            ],
-          ],
+      padding: EdgeInsets.zero,
+      child: ListTile(
+        leading: const Icon(Icons.alarm_rounded, color: AppColors.line6Gold),
+        title: const Text('근무 알림', style: TextStyle(fontSize: 16)),
+        subtitle: Text(
+          alarm.supported
+              ? '출근·열차 알림과 예정 알림을 설정해요.'
+              : 'Android·iOS에서 사용할 수 있어요.',
+          style: TextStyle(fontSize: 13, color: AppColors.secondaryInk),
+        ),
+        trailing: const Icon(Icons.chevron_right_rounded),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const DutyAlarmScreen()),
         ),
       ),
     );
