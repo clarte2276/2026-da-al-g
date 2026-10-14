@@ -318,6 +318,20 @@ def test_crew_matching_uses_fixed_time_and_mock_trains(client):
     assert matched[-1]["crew_name"] == "신내사업소"
 
 
+def test_crew_rides_only_the_earliest_matching_train(monkeypatch):
+    def seg(train, direction, start, end, order):
+        return {"trainNumber": train, "direction": direction, "startStation": start, "endStation": end,
+                "profileName": "한 사람", "turnKey": "평평:61", "order": ("2026-06-01", order)}
+
+    # 신내행으로 봉화산까지 온 뒤 같은 사람이 신내에서 응암행 열차로 갈아탄다.
+    active = [seg("6267", "sinnae", "응암", "신내", 0), seg("6296", "eungam", "신내", "응암", 1)]
+    monkeypatch.setattr(crew, "_active_train_segments", lambda *_args: active)
+    trains = [{"train_no": "6296", "station": "신내", "direction": "up", "status": "전역출발"},
+              {"train_no": "6267", "station": "봉화산", "direction": "down", "status": "도착"}]
+    matched = crew._with_train_crews(trains, None, datetime.now())
+    assert [t["crew_name"] for t in matched] == ["신내사업소", "한 사람"]
+
+
 def test_realtime_trains_mock_setting(client, monkeypatch, tmp_path):
     settings = Settings(_env_file=None, storage_root=tmp_path, realtime_trains_mock=True)
     monkeypatch.setattr(crew, "get_settings", lambda: settings)

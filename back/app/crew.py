@@ -858,17 +858,21 @@ def _station_index(name: str) -> int:
         return 1_000_000
 
 
-def _crew_for_train(train: dict, active: list[dict]) -> tuple[str, str | None]:
+def _matching_segments(train: dict, active: list[dict]) -> list[dict]:
     direction = {"up": "eungam", "down": "sinnae"}.get(train["direction"], train["direction"])
     station = _station_index(train["station"])
     matches = []
     for segment in active:
         start, end = _station_index(segment["startStation"]), _station_index(segment["endStation"])
-        if segment["trainNumber"] == str(train["train_no"]) and segment["direction"] == direction \
-                and max(station, start, end) < 1_000_000 and min(start, end) <= station <= max(start, end):
+        if segment["trainNumber"] == str(train["train_no"]) and segment["direction"] == direction                 and max(station, start, end) < 1_000_000 and min(start, end) <= station <= max(start, end):
             matches.append(segment)
+    return matches
+
+
+def _crew_for_train(train: dict, matches: list[dict]) -> tuple[str, str | None]:
     if not matches:
         return _UNMATCHED_CREW, None
+    station = _station_index(train["station"])
     at_boundary = train["status"] in {"도착", "출발"}
     boundary = next((segment for segment in matches
                      if _station_index(segment["startStation"] if at_boundary else segment["endStation"]) == station), None)
@@ -905,15 +909,27 @@ def _active_train_segments(db: Session, now: datetime) -> list[dict]:
                 end += timedelta(days=1)
             if not start <= now <= end:
                 continue
-            for segment in segment_pack.get(table_key, {}).get(code, []):
-                active.append({**segment, "profileName": driver["name"], "turnKey": turn_key})
+            for order, segment in enumerate(segment_pack.get(table_key, {}).get(code, [])):
+                active.append({**segment, "profileName": driver["name"], "turnKey": turn_key,
+                               "order": (day, order)})
     return active
 
 
 def _with_train_crews(items: list[dict], db: Session, now: datetime) -> list[dict]:
     active = _active_train_segments(db, now)
-    return [{**item, "crew_name": (match := _crew_for_train(item, active))[0], "crew_turn": match[1]}
-            for item in items]
+    matches = [_matching_segments(item, active) for item in items]
+    # 구간은 기관사마다 운행 순서대로다. 여러 열차에 걸리면 아직 구간 안에 있는 가장 앞 열차에 타고 있다.
+    current: dict[str, tuple] = {}
+    for found in matches:
+        for segment in found:
+            key = segment["profileName"]
+            current[key] = min(current.get(key, segment["order"]), segment["order"])
+    out = []
+    for item, found in zip(items, matches):
+        found = [segment for segment in found if current[segment["profileName"]] == segment["order"]]
+        name, turn = _crew_for_train(item, found)
+        out.append({**item, "crew_name": name, "crew_turn": turn})
+    return out
 
 
 def _empty_train_result(data: dict) -> tuple[bool, str]:
