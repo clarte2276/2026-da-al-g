@@ -116,7 +116,7 @@ export function LinkGenerator({ tab, onTab: setTab, api, apiBase, token, user, o
       const link = await api(editing ? `/api/links/${editing}` : "/api/links", write(editing ? "PUT" : "POST", {
         source_selection: sourceSelection, target_selection: targetSelection, note: note || null, relation_type: relation,
       }));
-      setEditing(link.id);
+      setEditing(null); setNote(""); setRelation("RELATED"); setSourceSelection(null); setTargetSelection(null);
       setMessage("연결 1건을 저장했습니다. 바로 검색에 반영됩니다.");
       await refresh();
     });
