@@ -157,7 +157,7 @@ class AiApiClient {
     await _send(
       'POST',
       '/api/me/import',
-      body: {'conversations': conversations, 'bookmarks': []},
+      body: {'conversations': conversations},
     );
   }
 

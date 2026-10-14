@@ -77,7 +77,7 @@ OpenAI 키가 없으면 로컬 해시 임베딩과 근거 발췌로 동작합니
 
 `data/data_pdf/`는 기본 문서 루트가 아니며, 이미지 전용 문서는 OCR을 제공하지 않아 텍스트 fragment와 검색 임베딩이 생성되지 않을 수 있습니다.
 
-기존 PostgreSQL DB의 사전 마이그레이션 파일은 `back/migrations/`에 있습니다. 새 구절·페이지 연결용 파일은 `003_document_links.sql`입니다.
+기존 PostgreSQL DB의 사전 마이그레이션 파일은 `back/migrations/`에 있습니다. 새 구절·페이지 연결용 파일은 `003_document_links.sql`이며, 폐기된 규정 북마크 데이터를 제거하려면 `005_drop_bookmark_records.sql`을 적용합니다. 이 마이그레이션은 북마크 데이터를 삭제합니다.
 
 ## 검증
 
