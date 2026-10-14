@@ -5,6 +5,7 @@ import '../core/colors.dart';
 import '../core/duty_data.dart';
 import '../core/personal_store.dart';
 import '../services/auth_session.dart';
+import 'projected_duty_notice.dart';
 import 'status_pill.dart';
 import 'turn_sheet.dart';
 
@@ -163,6 +164,10 @@ class _TodayDutyCardState extends State<TodayDutyCard> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (data?.projected ?? false) ...[
+          const ProjectedDutyNotice(dark: true),
+          const SizedBox(height: 10),
+        ],
         Text(greeting, style: TextStyle(color: AppColors.dutyMeta, fontSize: 14)),
         const SizedBox(height: 6),
         Text(title, style: const TextStyle(color: Colors.white, fontSize: 19, fontWeight: FontWeight.w700)),

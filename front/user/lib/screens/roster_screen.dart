@@ -3,6 +3,7 @@ import '../core/colors.dart';
 import '../core/duty_data.dart';
 import '../widgets/app_card.dart';
 import '../widgets/page_header.dart';
+import '../widgets/projected_duty_notice.dart';
 
 class RosterScreen extends StatefulWidget {
   const RosterScreen({super.key});
@@ -73,6 +74,11 @@ class _RosterScreenState extends State<RosterScreen> {
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                 child: const PageHeader(title: '일일 교번'),
               ),
+              if (data.projected)
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
+                  child: ProjectedDutyNotice(),
+                ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: AppCard(

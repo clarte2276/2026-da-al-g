@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../core/colors.dart';
 import '../core/duty_data.dart';
 import '../services/auth_session.dart';
+import '../widgets/projected_duty_notice.dart';
 
 class CompareScreen extends StatefulWidget {
   const CompareScreen({super.key});
@@ -111,6 +112,11 @@ class _CompareScreenState extends State<CompareScreen> {
                   );
                 },
               ),
+              if (data.projected)
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
+                  child: ProjectedDutyNotice(),
+                ),
               
               Padding(
                 padding: const EdgeInsets.all(16),

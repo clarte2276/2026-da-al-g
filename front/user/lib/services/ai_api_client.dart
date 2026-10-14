@@ -23,6 +23,13 @@ class AiApiClient {
   final bool _ownsClient;
   final String baseUrl;
 
+  static Map<String, String> get authorizationHeaders {
+    final bearer = AuthSession.current?.accessToken;
+    return {
+      if (bearer != null && bearer.isNotEmpty) 'Authorization': 'Bearer $bearer',
+    };
+  }
+
   /// 답변 스트림(NDJSON): status·delta 이벤트가 오고, 마지막 done에 인용을 정리한 최종 답변과 근거가 온다.
   Stream<AiChatEvent> askStream(
     String question, {
@@ -189,6 +196,14 @@ class AiApiClient {
   Future<List<String>> fetchDutyMonths() async =>
       (await _send('GET', '/api/duty') as List).cast<String>();
 
+  Future<List<Map<String, dynamic>>> fetchExchangeMatches({required String date}) async =>
+      (await _send('GET', '/api/exchange/match?date=${Uri.encodeQueryComponent(date)}') as List)
+          .cast<Map<String, dynamic>>();
+
+  Future<void> revertExchangePost(String postId) async {
+    await _send('POST', '/api/exchange/posts/${Uri.encodeComponent(postId)}/revert');
+  }
+
   /// 규정 목록 = 서버에 적재된 문서 목록.
   Future<List<Map<String, dynamic>>> fetchRegulations() async {
     final decoded = await _send('GET', '/api/documents');
@@ -244,15 +259,11 @@ class AiApiClient {
 
   /// 서버가 원문을 변환하는 동안(202) 다시 요청한다. 한 번에 최대 10초씩 기다리므로 약 2분까지.
   Future<http.Response> _getWhenConverted(Uri uri) async {
-    final bearer = AuthSession.current?.accessToken;
     for (var attempt = 0; attempt < 12; attempt++) {
       final response = await _httpClient
           .get(
             uri,
-            headers: {
-              if (bearer != null && bearer.isNotEmpty)
-                'Authorization': 'Bearer $bearer',
-            },
+            headers: authorizationHeaders,
           )
           .timeout(const Duration(seconds: 30));
       if (response.statusCode == 202) continue;

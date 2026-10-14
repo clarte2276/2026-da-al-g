@@ -4,6 +4,19 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'duty_data.dart';
 
+Map<String, dynamic>? pendingDutySwap(
+  List<Map<String, dynamic>> posts,
+  String driverName,
+  String date,
+) {
+  for (final post in posts) {
+    if (post['type'] != 'direct' || post['status'] != 'open') continue;
+    if (post['requester_name'] != driverName && post['target_name'] != driverName) continue;
+    if ((post['dates'] as List?)?.contains(date) ?? false) return post;
+  }
+  return null;
+}
+
 /// 기기에만 저장하는 개인 기록: 날짜별 메모와 교번 변경(덮어쓸 근무 코드).
 /// (기관사, 날짜) 단위. 근무 화면은 [DutyMonth.dutyOn]을 거치므로 교번 변경이 저절로 반영된다.
 class PersonalStore extends ChangeNotifier {
