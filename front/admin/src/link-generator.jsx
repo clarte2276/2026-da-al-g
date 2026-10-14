@@ -121,10 +121,6 @@ export function LinkGenerator({ tab, onTab: setTab, api, apiBase, token, user, o
       await refresh();
     });
   }
-  function newLink() {
-    setEditing(null); setNote(""); setRelation("RELATED"); setSourceSelection(null); setTargetSelection(null);
-    setMessage("새 연결을 만들 구절이나 페이지를 지정하세요.");
-  }
   async function loadLink(link) {
       const [left, right] = await Promise.all([
         loadContent(link.source_document_id, link.source_version_id),
@@ -167,7 +163,7 @@ export function LinkGenerator({ tab, onTab: setTab, api, apiBase, token, user, o
           {roots.map(root => <option value={root.id} key={root.id}>{root.label}</option>)}</select>
           <input aria-label="파일명·폴더명 검색" placeholder="파일명·폴더명 검색" value={query} onChange={event => setQuery(event.target.value)} /></div>
         {!roots.length && <p>설정된 문서 폴더가 없습니다.</p>}
-        <FileExplorer files={files} rootId={rootId} query={query} onOpen={openFile} />
+        <FileExplorer files={files.filter(file => String(file.relative_path || "").replaceAll("\\", "/").startsWith("data_raw/"))} rootId={rootId} query={query} onOpen={openFile} />
       </details>
       <div className="reading-panes">
         <SelectionViewer content={source} selection={sourceSelection} onSelect={setSourceSelection} apiBase={apiBase} authToken={token} onResource={setSourceResource} />
@@ -180,7 +176,7 @@ export function LinkGenerator({ tab, onTab: setTab, api, apiBase, token, user, o
         </div>
         <label>메모 <textarea value={note} onChange={event => setNote(event.target.value)} maxLength={5000} placeholder="이 연결의 의미 (선택)" /></label>
         <div className="pane-toolbar"><button className="primary-button" disabled={busy || !sourceSelection || !targetSelection} onClick={save}>
-          {editing ? "수정 저장" : "연결 저장"}</button><button disabled={busy} onClick={newLink}>새 연결</button>
+          {editing ? "수정 저장" : "연결 저장"}</button>
           <span>저장하면 바로 검색에 반영됩니다.</span></div>
       </section>
     </div>
