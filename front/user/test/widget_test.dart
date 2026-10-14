@@ -4,6 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:user/data/chat_models.dart';
 import 'package:user/data/conversation_store.dart';
+import 'package:user/screens/bookmark_screen.dart';
+import 'package:user/screens/chat_room_screen.dart';
 
 Future<void> pumpLoggedInApp(WidgetTester tester) async {
   SharedPreferences.setMockInitialValues({});
@@ -59,5 +61,66 @@ void main() {
     expect(find.text('관련 조항'), findsOneWidget);
     expect(find.byIcon(Icons.thumb_down_outlined), findsOneWidget);
     expect(find.text('AI 답변은 참고용입니다. 공식 규정집이 우선합니다.'), findsOneWidget);
+  });
+
+  test('conversation saved flag round-trips and defaults for old data', () {
+    final conversation = Conversation(
+      id: 'saved',
+      title: 'Saved chat',
+      createdAt: DateTime.now(),
+      messages: [],
+      saved: true,
+    );
+    expect(Conversation.fromJson(conversation.toJson()).saved, isTrue);
+    expect(
+      Conversation(
+        id: 'new',
+        title: 'New chat',
+        createdAt: DateTime.now(),
+        messages: [],
+      ).saved,
+      isFalse,
+    );
+
+    final oldData = conversation.toJson()..remove('saved');
+    expect(Conversation.fromJson(oldData).saved, isFalse);
+  });
+
+  testWidgets('saved chats open and can be removed', (tester) async {
+    ConversationStore.instance.clear();
+    addTearDown(ConversationStore.instance.clear);
+    final conversation = Conversation(
+      id: 'saved',
+      title: 'Saved chat',
+      createdAt: DateTime.now(),
+      messages: [
+        ChatMsg(isUser: true, text: 'Question'),
+        ChatMsg(isUser: false, text: 'Answer'),
+      ],
+      saved: true,
+    );
+    ConversationStore.instance.addOrUpdate(conversation);
+    await tester.pumpWidget(const MaterialApp(home: BookmarkScreen()));
+    await tester.pumpAndSettle();
+
+    expect(find.text('저장한 채팅'), findsOneWidget);
+    expect(find.text('Answer'), findsOneWidget);
+    await tester.tap(find.text('Saved chat'));
+    await tester.pumpAndSettle();
+    expect(find.byType(ChatRoomScreen), findsOneWidget);
+
+    await tester.tap(find.byTooltip('보관함에서 제거'));
+    await tester.pumpAndSettle();
+    expect(ConversationStore.instance.conversations.single.saved, isFalse);
+    await tester.tap(find.byTooltip('보관함에 저장'));
+    await tester.pumpAndSettle();
+    expect(ConversationStore.instance.conversations.single.saved, isTrue);
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byTooltip('보관함에서 제거'));
+    await tester.pumpAndSettle();
+    expect(find.text('저장된 채팅이 없습니다'), findsOneWidget);
+    expect(find.text('Saved chat'), findsNothing);
   });
 }

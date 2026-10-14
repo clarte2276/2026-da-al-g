@@ -48,6 +48,7 @@ class ConversationWrite(BaseModel):
     title: str = Field(max_length=200)
     createdAt: datetime
     messages: list[dict[str, Any]] = Field(max_length=500)
+    saved: bool = False
 
 
 class BookmarkWrite(BaseModel):

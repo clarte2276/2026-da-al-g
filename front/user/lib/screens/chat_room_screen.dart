@@ -24,6 +24,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   AiApiClient? _aiApiClient;
   late final List<ChatMsg> _messages;
   bool _isSending = false;
+  late bool _saved;
 
   /// 첫 답변 조각이 오기 전까지 보여줄 진행 문구. null이면 표시하지 않는다.
   String? _status;
@@ -32,6 +33,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   void initState() {
     super.initState();
     _messages = List.of(widget.conversation.messages);
+    _saved = widget.conversation.saved;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToBottom();
       if (_messages.length == 1 && _messages.first.isUser) {
@@ -311,8 +313,14 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
         title: widget.conversation.title,
         createdAt: widget.conversation.createdAt,
         messages: List.of(_messages),
+        saved: _saved,
       ),
     );
+  }
+
+  void _toggleSaved() {
+    setState(() => _saved = !_saved);
+    _saveToStore();
   }
 
   ChatSource _sourceFrom(AiEvidenceSource source) {
@@ -354,6 +362,13 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
           style: const TextStyle(fontSize: 16),
         ),
         actions: [
+          IconButton(
+            tooltip: _saved ? '보관함에서 제거' : '보관함에 저장',
+            icon: Icon(
+              _saved ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
+            ),
+            onPressed: _toggleSaved,
+          ),
           IconButton(
             icon: const Icon(Icons.more_horiz_rounded),
             onPressed: _showOptions,

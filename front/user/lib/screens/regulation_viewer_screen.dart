@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import '../core/bookmark_store.dart';
 import '../core/colors.dart';
 import '../data/chat_models.dart';
 import '../services/ai_api_client.dart';
@@ -23,8 +22,6 @@ class RegulationViewerScreen extends StatelessWidget {
         ? source!.content!.trim()
         : source?.excerpt?.trim();
 
-    final store = BookmarkStore.instance;
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -32,31 +29,6 @@ class RegulationViewerScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
-        actions: [
-          if (source != null)
-            AnimatedBuilder(
-              animation: store,
-              builder: (context, _) {
-                final saved = store.isBookmarked(source!);
-                return IconButton(
-                  tooltip: saved ? '보관함에서 제거' : '보관함에 저장',
-                  icon: Icon(
-                    saved ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
-                    color: AppColors.line6Gold,
-                  ),
-                  onPressed: () {
-                    final added = store.toggle(source!);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        duration: const Duration(seconds: 1),
-                        content: Text(added ? '보관함에 저장했습니다.' : '보관함에서 제거했습니다.'),
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-        ],
       ),
       body: AppPage(
         children: [

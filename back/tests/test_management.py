@@ -55,6 +55,8 @@ def test_admin_account_and_personal_data_lifecycle(tmp_path, monkeypatch):
             assert client.post("/api/me/import", headers=user, json=payload).status_code == 200
             assert client.post("/api/me/import", headers=user, json=payload).status_code == 200
             assert len(client.get("/api/me/conversations", headers=user).json()) == 1
+            client.put("/api/me/conversations/old-1", headers=user, json={**conversation, "saved": True})
+            assert client.get("/api/me/conversations", headers=user).json()[0]["saved"] is True
             assert len(client.get("/api/me/bookmarks", headers=user).json()) == 1
             assert client.get(f"/api/admin/users/{user_id}/bookmarks", headers=admin).status_code == 404
             assert client.get(f"/api/admin/users/{user_id}/conversations", headers=admin).status_code == 404

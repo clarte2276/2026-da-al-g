@@ -153,12 +153,11 @@ class AiApiClient {
 
   Future<void> importLocal(
     List<Map<String, dynamic>> conversations,
-    List<Map<String, dynamic>> bookmarks,
   ) async {
     await _send(
       'POST',
       '/api/me/import',
-      body: {'conversations': conversations, 'bookmarks': bookmarks},
+      body: {'conversations': conversations, 'bookmarks': []},
     );
   }
 
@@ -176,18 +175,6 @@ class AiApiClient {
 
   Future<void> deleteConversation(String id) async {
     await _send('DELETE', '/api/me/conversations/${Uri.encodeComponent(id)}');
-  }
-
-  Future<List<Map<String, dynamic>>> fetchBookmarks() async =>
-      (await _send('GET', '/api/me/bookmarks') as List)
-          .cast<Map<String, dynamic>>();
-
-  Future<void> saveBookmark(Map<String, dynamic> bookmark) async {
-    await _send('POST', '/api/me/bookmarks', body: bookmark);
-  }
-
-  Future<void> deleteBookmark(Map<String, dynamic> bookmark) async {
-    await _send('DELETE', '/api/me/bookmarks', body: bookmark);
   }
 
   Future<Map<String, dynamic>> fetchDutyMonth(String month) async =>
