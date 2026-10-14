@@ -24,7 +24,9 @@ Future<void> showTurnSheet(
     ),
     builder: (_) => DraggableScrollableSheet(
       expand: false,
-      initialChildSize: turn.segments.isEmpty || isDummy ? 0.5 : 0.75,
+      initialChildSize: turn.diaImage?.isNotEmpty == true
+          ? 0.75
+          : (turn.segments.isEmpty || isDummy ? 0.5 : 0.75),
       maxChildSize: 0.95,
       builder: (context, controller) =>
           TurnSheet(turn: turn, isDummy: isDummy, subtitle: subtitle, controller: controller),
@@ -156,10 +158,19 @@ class TurnSheet extends StatelessWidget {
           ],
           if (turn.diaImage?.isNotEmpty ?? false) ...[
             const SizedBox(height: 12),
-            OutlinedButton.icon(
-              onPressed: () => showDiaImageViewer(context, turn.diaImage!),
-              icon: const Icon(Icons.image_search_rounded, size: 18),
-              label: const Text('운전표 보기'),
+            Material(
+              color: AppColors.canvas,
+              borderRadius: BorderRadius.circular(12),
+              clipBehavior: Clip.antiAlias,
+              child: InkWell(
+                onTap: () => showDiaImageViewer(context, turn.diaImage!),
+                child: DiaImage(
+                  path: turn.diaImage!,
+                  width: double.infinity,
+                  loadingColor: AppColors.line6,
+                  errorColor: AppColors.secondaryInk,
+                ),
+              ),
             ),
           ],
           ?footer,
