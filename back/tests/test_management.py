@@ -1,9 +1,9 @@
+import re
 from datetime import date
 from io import BytesIO
 from pathlib import Path
 
 import pytest
-
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from openpyxl import Workbook
@@ -14,7 +14,15 @@ from sqlalchemy.pool import StaticPool
 from app import auth, duty, management
 from app.config import Settings
 from app.db import Base, get_db
-from app.models import AuthSession, AuditEvent, BookmarkRecord, ConversationRecord, Inquiry, InquiryReply, User
+from app.models import (
+    AuditEvent,
+    AuthSession,
+    BookmarkRecord,
+    ConversationRecord,
+    Inquiry,
+    InquiryReply,
+    User,
+)
 
 
 def test_admin_account_and_personal_data_lifecycle(tmp_path, monkeypatch):
@@ -139,6 +147,53 @@ def test_duty_code_classification():
              "지정(야)": "designated", "보완교육": "designated", "7": "day", "61": "night",
              "김대현-휴직(1/1~)": "unknown"}
     assert {code: duty.classify(code) for code in cases} == cases
+
+
+def test_projected_month_follows_cycle_for_known_driver():
+    pack, month, start = duty.dia_data(), "2026-10", 17
+    driver_name = pack["metadata"]["standardRosterName"]
+    days = {}
+    for offset in range(31):
+        code = duty._cycle_code(pack, start + offset)
+        days[f"{month}-{offset + 1:02d}"] = duty._day(code)
+    latest = {"month": month, "drivers": [{"no": 1, "name": driver_name, "days": days}]}
+    projected = duty.project_schedule(latest, "2026-11")
+    assert projected["drivers"][0]["name"] == driver_name
+    assert projected["drivers"][0]["days"]["2026-11-01"]["code"] == duty._cycle_code(pack, start + 31)
+    assert len(projected["dates"]) == 30
+
+
+def test_merged_turns_include_train_times_and_image():
+    pack = duty.dia_data()
+    found = None
+    for table, entries in pack["schedules"].items():
+        for code, detail in entries.items():
+            note = detail.get("note") or ""
+            matches = list(re.finditer(r"(\d{1,2}):(\d{2})", note))
+            if matches and "출" in note[:matches[0].start()]:
+                found = table, code, detail
+                break
+        if found:
+            break
+    assert found
+    table, code, detail = found
+    kind = {"ord": "평평", "hol": "휴휴", "ordord": "평평", "ordhol": "평휴",
+            "holord": "휴평", "holhol": "휴휴"}[table]
+    first, second = {"평평": ("평", "평"), "휴휴": ("휴", "휴"),
+                     "평휴": ("평", "휴"), "휴평": ("휴", "평")}[kind]
+    day = "2026-06-01"
+    turn_key = f"{kind}:{code}"
+    schedule = {"month": "2026-06", "dates": [day], "dayTypes": {day: first, "2026-06-02": second},
+                "drivers": [{"name": "Driver", "days": {day: duty._day(code)}}],
+                "turns": {}, "turnDetailIsDummy": True}
+    merged = duty.merge_routes(schedule, {"turns": {turn_key: {}}})
+    turn = merged["turns"][turn_key]
+    times = list(re.finditer(r"(\d{1,2}):(\d{2})", detail["note"]))
+    assert [item["time"] for item in turn["trainTimes"]] == [
+        f"{int(match[1]):02d}:{match[2]}" for match in times
+    ]
+    assert turn["trainTimes"][0]["depot"] is True
+    assert turn["diaImage"] == f"/api/duty/dia-images/{table}-{code}.png"
 
 
 @real_data

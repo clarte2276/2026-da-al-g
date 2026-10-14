@@ -35,6 +35,7 @@ class Settings(BaseSettings):
     bootstrap_admin_password: str | None = None
     bootstrap_admin_display_name: str = "관리자"
     seoul_subway_api_key: str | None = None
+    realtime_trains_mock: bool = False
     cors_origins: str = "*"
 
     # Always `back/.env`, regardless of the working directory.

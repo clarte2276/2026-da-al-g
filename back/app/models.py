@@ -4,7 +4,17 @@ from datetime import UTC, datetime
 from typing import Any
 from uuid import uuid4
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, Index, Integer, String, Text, UniqueConstraint
+from sqlalchemy import (
+    Boolean,
+    DateTime,
+    ForeignKey,
+    Index,
+    Integer,
+    String,
+    Text,
+    UniqueConstraint,
+    text,
+)
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.types import JSON, TypeDecorator
 
@@ -272,6 +282,21 @@ class DutyRoute(Base):
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
 
 
+class DutyOverride(Base):
+    __tablename__ = "duty_overrides"
+    __table_args__ = (Index("uq_duty_overrides_active_driver_date", "driver_name", "date", unique=True,
+                            postgresql_where=text("active"), sqlite_where=text("active = 1")),)
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    driver_name: Mapped[str] = mapped_column(String(100), index=True)
+    date: Mapped[str] = mapped_column(String(10), index=True)
+    code: Mapped[str] = mapped_column(String(32))
+    original_code: Mapped[str] = mapped_column(String(32))
+    post_id: Mapped[str] = mapped_column(String(36), index=True)
+    active: Mapped[bool] = mapped_column(Boolean, default=True, index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
 class ExchangePost(Base):
     __tablename__ = "exchange_posts"
 
@@ -286,6 +311,7 @@ class ExchangePost(Base):
     memo: Mapped[str | None] = mapped_column(Text, nullable=True)
     decline_reason: Mapped[str | None] = mapped_column(Text, nullable=True)
     accepted_volunteer_id: Mapped[str | None] = mapped_column(String(36), nullable=True)
+    revert_of: Mapped[str | None] = mapped_column(String(36), nullable=True, index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
 

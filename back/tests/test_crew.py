@@ -1,3 +1,7 @@
+import json
+from datetime import datetime
+from pathlib import Path
+
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
@@ -5,9 +9,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
-from app import auth, crew
+from app import auth, crew, management
 from app.config import Settings
 from app.db import Base, get_db
+from app.models import DutySchedule
 
 
 @pytest.fixture
@@ -30,9 +35,12 @@ def client(tmp_path, monkeypatch):
         app = FastAPI()
         app.include_router(auth.router)
         app.include_router(crew.router)
+        app.include_router(management.router)
         app.dependency_overrides[get_db] = lambda: db
-        
-        yield TestClient(app)
+
+        test_client = TestClient(app)
+        test_client.db = db
+        yield test_client
 
 def login(client, username, password):
     res = client.post("/api/auth/login", json={"username": username, "password": password})
@@ -167,6 +175,151 @@ def test_realtime_503_without_key(client):
     res = client.get("/api/realtime/trains", headers=u1)
     assert res.status_code == 503
     assert "키가 설정되지 않았습니다" in res.json()["detail"]
+
+
+def test_realtime_seoul_errors_and_no_trains(client, monkeypatch, tmp_path):
+    settings = Settings(_env_file=None, storage_root=tmp_path, seoul_subway_api_key="test-key")
+    monkeypatch.setattr(crew, "get_settings", lambda: settings)
+    headers = login(client, "user1", "pw")
+
+    class FakeResponse:
+        def __init__(self, payload):
+            self.payload = payload
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return None
+
+        def read(self):
+            return json.dumps(self.payload).encode()
+
+    crew._train_cache.update(items=[], ts=0.0)
+    payload = {"RESULT": {"CODE": "INFO-100", "MESSAGE": "INFO-100 인증키가 유효하지 않습니다"}}
+    monkeypatch.setattr(crew.urllib.request, "urlopen", lambda *_args, **_kwargs: FakeResponse(payload))
+    error = client.get("/api/realtime/trains", headers=headers)
+    assert error.status_code == 502 and "INFO-100" in error.json()["detail"]
+
+    payload = {"RESULT": {"CODE": "INFO-200", "MESSAGE": "해당하는 데이터가 없습니다"}}
+    no_trains = client.get("/api/realtime/trains", headers=headers)
+    assert no_trains.status_code == 200 and no_trains.json() == []
+
+
+def _seed_duty(client, dates, codes):
+    drivers = []
+    for number, (name, day_codes) in enumerate(codes.items(), 1):
+        days = {}
+        for day in dates:
+            code = day_codes[day]
+            kind = "night" if code.isdigit() and int(code) >= 60 else "day"
+            days[day] = {"code": code, "type": kind, "turn": code}
+        drivers.append({"no": number, "name": name, "days": days})
+    data = {"month": "2026-06", "line": "6호선", "office": "수색승무사업소",
+            "dates": dates, "dayTypes": {"2026-05-31": "휴", "2026-06-01": "평",
+                                           "2026-06-02": "평"},
+            "drivers": drivers, "turns": {}, "turnDetailIsDummy": True}
+    client.db.add(DutySchedule(month="2026-06", data=data, source_filename="test.xlsx"))
+    client.db.commit()
+
+
+def test_exchange_applies_both_sides_stale_codes_and_revert(client):
+    u1, u2, u3 = (login(client, f"user{i}", "pw") for i in (1, 2, 3))
+    _seed_duty(client, ["2026-06-01"], {
+        "User One": {"2026-06-01": "1"},
+        "User Two": {"2026-06-01": "61"},
+        "User Three": {"2026-06-01": "2"},
+    })
+    months = client.get("/api/duty", headers=u1).json()
+    assert months[:3] == ["2026-12", "2026-11", "2026-10"]
+    projected = client.get("/api/duty/2026-07", headers=u1).json()
+    assert projected["projected"] is True and projected["projectedFrom"] == "2026-06"
+    post = client.post("/api/exchange/posts", headers=u1, json={
+        "type": "direct", "target_name": "User Two", "dates": ["2026-06-01"],
+        "requester_dias": ["1"], "target_dias": ["61"],
+    }).json()
+    accepted = client.post(f"/api/exchange/posts/{post['id']}/respond", headers=u2,
+                           json={"action": "accept"})
+    assert accepted.status_code == 200 and accepted.json()["applied"] is True
+    duty = client.get("/api/duty/2026-06", headers=u1).json()
+    assert duty["drivers"][0]["days"]["2026-06-01"]["code"] == "61"
+    assert duty["drivers"][0]["days"]["2026-06-01"]["original"]["code"] == "1"
+    assert duty["drivers"][1]["days"]["2026-06-01"]["code"] == "1"
+    matches = client.get("/api/exchange/match?date=2026-06-01", headers=u1).json()
+    partner_match = next(item for item in matches if item["name"] == "User Two")
+    assert partner_match["turnKey"] == "평평:1" and partner_match["swapped"] is True
+
+    stale = client.post("/api/exchange/posts", headers=u1, json={
+        "type": "direct", "target_name": "User Three", "dates": ["2026-06-01"],
+        "requester_dias": ["1"], "target_dias": ["2"],
+    }).json()
+    assert client.post(f"/api/exchange/posts/{stale['id']}/respond", headers=u3,
+                       json={"action": "accept"}).status_code == 409
+    assert len(client.db.query(crew.DutyOverride).filter_by(active=True).all()) == 2
+
+    revert = client.post(f"/api/exchange/posts/{post['id']}/revert", headers=u1)
+    assert revert.status_code == 201 and revert.json()["revert_of"] == post["id"]
+    assert client.post(f"/api/exchange/posts/{revert.json()['id']}/respond", headers=u2,
+                       json={"action": "accept"}).status_code == 200
+    duty = client.get("/api/duty/2026-06", headers=u1).json()
+    assert duty["drivers"][0]["days"]["2026-06-01"]["code"] == "1"
+    assert duty["drivers"][1]["days"]["2026-06-01"]["code"] == "61"
+
+
+def test_open_exchange_accept_applies_swap(client):
+    u1, u3 = login(client, "user1", "pw"), login(client, "user3", "pw")
+    _seed_duty(client, ["2026-06-02"], {
+        "User One": {"2026-06-02": "1"},
+        "User Two": {"2026-06-02": "61"},
+        "User Three": {"2026-06-02": "2"},
+    })
+    post = client.post("/api/exchange/posts", headers=u1, json={
+        "type": "open", "dates": ["2026-06-02"], "requester_dias": ["1"],
+    }).json()
+    volunteer = client.post(f"/api/exchange/posts/{post['id']}/volunteers", headers=u3).json()
+    accepted = client.post(f"/api/exchange/posts/{post['id']}/volunteers/{volunteer['id']}/accept", headers=u1)
+    assert accepted.status_code == 200 and accepted.json()["applied"] is True
+    data = client.get("/api/duty/2026-06", headers=u1).json()
+    assert data["drivers"][0]["days"]["2026-06-02"]["code"] == "2"
+    assert data["drivers"][2]["days"]["2026-06-02"]["code"] == "1"
+
+
+def test_dia_image_auth_and_name_validation(client):
+    user = login(client, "user1", "pw")
+    image = next((Path(crew.__file__).parent / "static" / "dia").glob("*.png"))
+    url = f"/api/duty/dia-images/{image.stem}.png"
+    assert client.get(url).status_code == 401
+    response = client.get(url, headers=user)
+    assert response.status_code == 200 and response.headers["content-type"] == "image/png"
+    assert client.get("/api/duty/dia-images/nope-1.png", headers=user).status_code == 404
+
+
+def test_crew_matching_uses_fixed_time_and_mock_trains(client):
+    from zoneinfo import ZoneInfo
+
+    fixed = datetime(2026, 6, 1, 7, 0, tzinfo=ZoneInfo("Asia/Seoul"))
+    _seed_duty(client, ["2026-06-01"], {
+        "User One": {"2026-06-01": "2"},
+        "User Two": {"2026-06-01": "61"},
+        "User Three": {"2026-06-01": "3"},
+    })
+    data = client.db.query(DutySchedule).filter_by(month="2026-06").one().data
+    data["dayTypes"]["2026-06-01"] = "휴"
+    client.db.query(DutySchedule).filter_by(month="2026-06").one().data = data
+    client.db.commit()
+    trains = crew._mock_trains(fixed)
+    matched = crew._with_train_crews(trains, client.db, fixed)
+    assert matched[0]["crew_name"] == "User One"
+    assert matched[0]["crew_turn"] == "휴휴:2"
+    assert matched[-1]["crew_name"] == "신내사업소"
+
+
+def test_realtime_trains_mock_setting(client, monkeypatch, tmp_path):
+    settings = Settings(_env_file=None, storage_root=tmp_path, realtime_trains_mock=True)
+    monkeypatch.setattr(crew, "get_settings", lambda: settings)
+    response = client.get("/api/realtime/trains", headers=login(client, "user1", "pw"))
+    assert response.status_code == 200 and len(response.json()) == 8
+    assert all("crew_name" in item and "crew_turn" in item for item in response.json())
 
 
 def test_input_guards(client, tmp_path):

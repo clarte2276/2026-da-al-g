@@ -5,10 +5,11 @@ import re
 import secrets
 from datetime import UTC, datetime
 from io import BytesIO
+from pathlib import Path
 from typing import TYPE_CHECKING, Annotated, Any, Literal
 
 from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
-from fastapi.responses import Response
+from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel, Field
 from sqlalchemy import delete, select, update
 from sqlalchemy.exc import IntegrityError
@@ -17,7 +18,7 @@ from sqlalchemy.orm import Session
 from .auth import AdminUser, CurrentUser, normalize_username, password_hash
 from .config import get_settings
 from .db import get_db
-from .duty import merge_routes, parse_duty_xlsx, parse_route_xlsx
+from .duty import load_duty, parse_duty_xlsx, parse_route_xlsx, projected_months
 from .models import (
     AuditEvent,
     AuthSession,
@@ -203,16 +204,26 @@ def import_local(payload: ImportWrite, db: DB, user: CurrentUser) -> dict:
 def get_duty(month: str, db: DB, _user: CurrentUser) -> dict:
     if not MONTH_RE.fullmatch(month):
         raise HTTPException(422, "Invalid month")
-    row = db.get(DutySchedule, month)
-    if not row:
+    result = load_duty(db, month)
+    if result is None:
         raise HTTPException(404, "No duty schedule for this month")
-    route = db.scalars(select(DutyRoute).order_by(DutyRoute.effective_date.desc()).limit(1)).first()
-    return merge_routes(row.data, route.data if route else None)
+    return result
 
 
 @router.get("/duty")
 def available_duty_months(db: DB, _user: CurrentUser) -> list[str]:
-    return list(db.scalars(select(DutySchedule.month).order_by(DutySchedule.month.desc())).all())
+    months = list(db.scalars(select(DutySchedule.month).order_by(DutySchedule.month.desc())).all())
+    return sorted(set(months + projected_months(months[0] if months else None)), reverse=True)
+
+
+@router.get("/duty/dia-images/{name}.png")
+def duty_dia_image(name: str, _user: CurrentUser) -> FileResponse:
+    if not re.fullmatch(r"(ord|hol|ordord|ordhol|holord|holhol)-\d{1,2}", name):
+        raise HTTPException(404, "Dia image not found")
+    image = Path(__file__).parent / "static" / "dia" / f"{name}.png"
+    if not image.is_file():
+        raise HTTPException(404, "Dia image not found")
+    return FileResponse(image, media_type="image/png")
 
 
 @router.get("/admin/duty")
