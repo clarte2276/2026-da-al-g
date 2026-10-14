@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+import struct
 from datetime import UTC, datetime
 from typing import Any
 from uuid import uuid4
@@ -10,6 +12,7 @@ from sqlalchemy import (
     ForeignKey,
     Index,
     Integer,
+    LargeBinary,
     String,
     Text,
     UniqueConstraint,
@@ -24,7 +27,7 @@ VECTOR_DIMENSIONS = 1536
 
 
 class PortableVector(TypeDecorator):
-    """Use pgvector on PostgreSQL and JSON for the local SQLite profile."""
+    """Use pgvector on PostgreSQL and float32 blobs on SQLite."""
 
     impl = JSON
     cache_ok = True
@@ -34,7 +37,28 @@ class PortableVector(TypeDecorator):
             from pgvector.sqlalchemy import Vector
 
             return dialect.type_descriptor(Vector(VECTOR_DIMENSIONS))
+        if dialect.name == "sqlite":
+            return dialect.type_descriptor(LargeBinary())
         return dialect.type_descriptor(JSON())
+
+    def process_bind_param(self, value, dialect):  # type: ignore[no-untyped-def]
+        if value is None or dialect.name != "sqlite":
+            return value
+        if hasattr(value, "tolist"):
+            value = value.tolist()
+        return struct.pack("<" + "f" * len(value), *value)
+
+    def process_result_value(self, value, dialect):  # type: ignore[no-untyped-def]
+        if value is None or dialect.name != "sqlite":
+            return value
+        if isinstance(value, str):
+            vector = json.loads(value)
+            return [float(item) for item in vector] if vector is not None else None
+        if isinstance(value, (bytes, bytearray, memoryview)):
+            if len(value) % 4:
+                raise ValueError("SQLite vector blob size must be divisible by 4")
+            return list(struct.unpack("<" + "f" * (len(value) // 4), value))
+        return value
 
 
 def utcnow() -> datetime:

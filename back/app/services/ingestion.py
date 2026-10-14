@@ -255,7 +255,7 @@ class IngestionService:
                 bbox_json=fragment.bbox,
                 asset_path=asset_paths.get(fragment.asset_key or ""),
                 content_hash=hashlib.sha256(content.encode("utf-8")).hexdigest(),
-                embedding_json=embedding,
+                embedding_json=None,
                 embedding_vector=embedding,
                 embedding_model=f"{self.embedding_provider.name}:{self.embedding_provider.model}",
                 metadata_json=fragment.metadata,
