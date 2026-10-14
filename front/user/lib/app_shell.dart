@@ -9,6 +9,7 @@ import 'screens/my_page_screen.dart';
 import 'screens/regulation_library_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/more_screen.dart';
+import 'screens/trains_screen.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
@@ -36,6 +37,7 @@ class _AppShellState extends State<AppShell> {
         onOpenSchedule: () => _openTab(1),
         onOpenRegulations: () => _push(const RegulationLibraryScreen()),
         onOpenBookmarks: () => _push(const BookmarkScreen()),
+        onOpenTrains: () => _push(const TrainsScreen()),
         onOpenProfile: () => _push(const MyPageScreen()),
         onOpenMore: () => _push(const MoreScreen()),
       ),

@@ -17,6 +17,7 @@ class HomeScreen extends StatefulWidget {
     required this.onAskWithText,
     required this.onOpenSchedule,
     required this.onOpenBookmarks,
+    required this.onOpenTrains,
     required this.onOpenRegulations,
     required this.onOpenProfile,
     required this.onOpenMore,
@@ -24,6 +25,7 @@ class HomeScreen extends StatefulWidget {
   final ValueChanged<String> onAskWithText;
   final VoidCallback onOpenSchedule;
   final VoidCallback onOpenBookmarks;
+  final VoidCallback onOpenTrains;
   final VoidCallback onOpenRegulations;
   final VoidCallback onOpenProfile;
   final VoidCallback onOpenMore;
@@ -93,6 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
               QuickActionGrid(
                 onOpenSchedule: widget.onOpenSchedule,
                 onOpenBookmarks: widget.onOpenBookmarks,
+                onOpenTrains: widget.onOpenTrains,
                 onOpenRegulations: widget.onOpenRegulations,
                 onOpenMore: widget.onOpenMore,
               ),

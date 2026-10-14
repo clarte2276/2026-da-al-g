@@ -6,10 +6,11 @@ class QuickActionGrid extends StatelessWidget {
     super.key,
     required this.onOpenSchedule,
     required this.onOpenBookmarks,
+    required this.onOpenTrains,
     required this.onOpenRegulations,
     required this.onOpenMore,
   });
-  final VoidCallback onOpenSchedule, onOpenBookmarks, onOpenRegulations, onOpenMore;
+  final VoidCallback onOpenSchedule, onOpenBookmarks, onOpenTrains, onOpenRegulations, onOpenMore;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,8 @@ class QuickActionGrid extends StatelessWidget {
         _QuickTile(icon: Icons.calendar_month, label: '근무', onTap: onOpenSchedule),
         const SizedBox(width: 8),
         _QuickTile(icon: Icons.bookmark_border, label: '보관함', onTap: onOpenBookmarks),
+        const SizedBox(width: 8),
+        _QuickTile(icon: Icons.subway, label: '6호선 실시간', onTap: onOpenTrains),
         const SizedBox(width: 8),
         _QuickTile(icon: Icons.menu_book_rounded, label: '규정 본문', onTap: onOpenRegulations),
         const SizedBox(width: 8),
@@ -50,11 +53,13 @@ class _QuickTile extends StatelessWidget {
             children: [
               Icon(icon, color: AppColors.line6Gold),
               const SizedBox(height: 10),
-              Text(
-                label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.ink),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.ink),
+                ),
               ),
             ],
           ),
