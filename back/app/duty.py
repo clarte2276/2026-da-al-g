@@ -2,9 +2,18 @@
 from __future__ import annotations
 
 import io
+import json
 import re
 from calendar import monthrange
+from copy import deepcopy
 from datetime import date, datetime, time, timedelta
+from functools import lru_cache
+from pathlib import Path
+
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+from .models import DutyOverride, DutyRoute, DutySchedule
 
 OFFICE, LINE = "수색승무사업소", "6호선"
 ROUTE_SHEETS = {"평일, 평평240801": "평평", "평휴240801": "평휴", "휴평240801": "휴평", "휴일,휴휴": "휴휴"}
@@ -161,15 +170,20 @@ def classify(code: str) -> str:
 
 
 def _day_types(workbook, first: date, last: date) -> dict[str, str]:
-    holidays: set[date] = set()
-    if "공휴일" in workbook.sheetnames:
-        holidays = {v.date() for (v,) in workbook["공휴일"].iter_rows(max_col=1, values_only=True)
-                    if isinstance(v, datetime)}
+    holidays = {date.fromisoformat(value) for value in _holiday_dates(workbook)}
     out, day = {}, first
     while day <= last:
         out[day.isoformat()] = "휴" if day.weekday() >= 5 or day in holidays else "평"
         day += timedelta(days=1)
     return out
+
+
+def _holiday_dates(workbook) -> list[str]:
+    if "공휴일" not in workbook.sheetnames:
+        return []
+    return sorted({(value.date() if isinstance(value, datetime) else value).isoformat()
+                   for (value,) in workbook["공휴일"].iter_rows(max_col=1, values_only=True)
+                   if isinstance(value, (date, datetime))})
 
 
 def parse_duty_xlsx(data: bytes, month: str, filename: str) -> dict:
@@ -193,6 +207,7 @@ def parse_duty_xlsx(data: bytes, month: str, filename: str) -> dict:
         return {"month": month, "line": LINE, "office": OFFICE, "source": filename,
                 "dates": [(first + timedelta(days=i)).isoformat() for i in range(days_in)],
                 "dayTypes": _day_types(workbook, first - timedelta(days=1), first + timedelta(days=days_in)),
+                "holidayDates": _holiday_dates(workbook),
                 "drivers": drivers, "turns": {}, "turnDetailIsDummy": True}
     finally:
         workbook.close()
@@ -252,7 +267,7 @@ def _legacy_drivers(sheet, month: str, days_in: int) -> list[dict]:
 
 def merge_routes(schedule: dict, routes: dict | None) -> dict:
     """Attach dayType/turnKey/continues per day and the referenced 행로표 turns."""
-    out = {**schedule, "drivers": [], "turns": dict(schedule.get("turns") or {})}
+    out = {**schedule, "drivers": [], "turns": deepcopy(schedule.get("turns") or {})}
     types = schedule.get("dayTypes") or {}
 
     def dtype(day: date) -> str:
@@ -281,4 +296,171 @@ def merge_routes(schedule: dict, routes: dict | None) -> dict:
         out["drivers"].append({**driver, "days": days})
     if routes:
         out["turnDetailIsDummy"] = False
+    pack = dia_data()
+    for key, turn in out["turns"].items():
+        table_key = table_key_for_turn(key)
+        code = key.rsplit(":", 1)[-1]
+        detail = pack["schedules"].get(table_key, {}).get(code, {}) if table_key else {}
+        note = detail.get("note") or ""
+        last = 0
+        turn["trainTimes"] = []
+        for match in re.finditer(r"(\d{1,2}):(\d{2})", note):
+            turn["trainTimes"].append({"time": f"{int(match[1]):02d}:{match[2]}",
+                                       "depot": "출" in note[last:match.start()]})
+            last = match.end()
+        turn["diaImage"] = f"/api/duty/dia-images/{table_key}-{code}.png" if table_key and re.fullmatch(r"\d{1,2}", code) else None
     return out
+
+
+@lru_cache(maxsize=1)
+def dia_data() -> dict:
+    return json.loads((Path(__file__).parent / "data" / "dia-data.json").read_text(encoding="utf-8"))
+
+
+def table_key_for_turn(turn_key: str | None) -> str | None:
+    if not turn_key or ":" not in turn_key:
+        return None
+    kind, code = turn_key.split(":", 1)
+    try:
+        night = int(code) >= 60
+    except ValueError:
+        return None
+    return {"평평": "ordord" if night else "ord", "휴휴": "holhol" if night else "hol",
+            "평휴": "ordhol", "휴평": "holord"}.get(kind)
+
+
+def _month_after(month: str, count: int) -> str:
+    year, mon = map(int, month.split("-"))
+    year, mon = divmod(year * 12 + mon - 1 + count, 12)
+    return f"{year:04d}-{mon + 1:02d}"
+
+
+def projected_months(latest_month: str | None) -> list[str]:
+    return [_month_after(latest_month, i) for i in range(1, 7)] if latest_month else []
+
+
+def _cycle_code(pack: dict, index: int) -> str:
+    cycle = pack["cycle"]
+    entry = cycle[index % len(cycle)]["code"]
+    if entry != "~":
+        return entry
+    previous = cycle[(index - 1) % len(cycle)]["code"]
+    return f"{previous}~" if previous.isdigit() and int(previous) >= 60 else "비"
+
+
+def _known_holidays(pack: dict, schedules: list[DutySchedule]) -> tuple[set[str], set[int]]:
+    holidays = set(pack.get("holidays", []))
+    for row in schedules:
+        data = row.data
+        holidays.update(data.get("holidayDates", []))
+        for iso, kind in data.get("dayTypes", {}).items():
+            if kind == "휴" and date.fromisoformat(iso).weekday() < 5:
+                holidays.add(iso)
+    return holidays, {int(day[:4]) for day in holidays}
+
+
+def project_schedule(latest: dict, month: str, uploads: list[DutySchedule] = ()) -> dict:
+    """Project one month by aligning each latest-upload roster to the 94-day cycle."""
+    pack = dia_data()
+    length = pack["metadata"]["cycleLength"]
+    anchor = date.fromisoformat(f"{latest['month']}-01")
+    year, mon = map(int, month.split("-"))
+    first = date(year, mon, 1)
+    days_in = monthrange(year, mon)[1]
+    holidays, known_years = _known_holidays(pack, list(uploads))
+    dates = [date(year, mon, day) for day in range(1, days_in + 1)]
+    drivers = []
+    for driver in latest["drivers"]:
+        samples = [(date.fromisoformat(iso), cell["code"]) for iso, cell in driver.get("days", {}).items()
+                   if cell.get("code") and classify(cell["code"]) in {"day", "night", "off", "rest", "standby"}]
+        if not samples:
+            continue
+        best_index, best_score = max(
+            ((start, sum(_cycle_code(pack, start + (day - anchor).days) == code for day, code in samples) / len(samples))
+             for start in range(length)), key=lambda result: result[1])
+        if best_score < 0.6:
+            continue
+        days = {}
+        for day in dates:
+            iso = day.isoformat()
+            code = _cycle_code(pack, best_index + (day - anchor).days)
+            days[iso] = _day(code)
+        drivers.append({key: value for key, value in driver.items() if key != "days"} | {"days": days})
+    day_types = {}
+    day = first - timedelta(days=1)
+    last = dates[-1] + timedelta(days=1)
+    while day <= last:
+        if day.weekday() >= 5:
+            kind = "휴"
+        else:
+            # ponytail: missing holiday years use weekends only, add that year's workbook dates when available.
+            kind = "휴" if day.year in known_years and day.isoformat() in holidays else "평"
+        day_types[day.isoformat()] = kind
+        day += timedelta(days=1)
+    return {"month": month, "line": LINE, "office": OFFICE, "source": "94-day cycle",
+            "dates": [day.isoformat() for day in dates], "dayTypes": day_types,
+            "drivers": drivers, "turns": {}, "turnDetailIsDummy": True}
+
+
+def load_duty(db: Session, month: str) -> dict | None:
+    row = db.get(DutySchedule, month)
+    projected, projected_from = False, None
+    if row:
+        schedule = row.data
+    else:
+        uploads = list(db.scalars(select(DutySchedule).order_by(DutySchedule.month.desc())).all())
+        if not uploads or month not in projected_months(uploads[0].month):
+            return None
+        projected, projected_from = True, uploads[0].month
+        schedule = project_schedule(uploads[0].data, month, uploads)
+    route = db.scalars(select(DutyRoute).order_by(DutyRoute.effective_date.desc()).limit(1)).first()
+    start = (date.fromisoformat(schedule["dates"][0]) - timedelta(days=1)).isoformat()
+    end = schedule["dates"][-1]
+    overrides = list(db.scalars(select(DutyOverride).where(
+        DutyOverride.active.is_(True), DutyOverride.date >= start, DutyOverride.date <= end)).all())
+    result = _apply_overrides(schedule, overrides, route.data if route else None)
+    result["projected"] = projected
+    result["projectedFrom"] = projected_from
+    return result
+
+
+def _apply_overrides(schedule: dict, overrides: list[DutyOverride], routes: dict | None) -> dict:
+    if not overrides:
+        return merge_routes(schedule, routes)
+    updated = deepcopy(schedule)
+    by_day = {(row.driver_name, row.date): row for row in overrides}
+    drivers = {driver["name"]: driver for driver in updated["drivers"]}
+    original_codes = {}
+    for row in overrides:
+        driver = drivers.get(row.driver_name)
+        cell = driver and driver["days"].get(row.date)
+        if not cell:
+            continue
+        original_codes[(row.driver_name, row.date)] = row.original_code
+        cell.update(_day(row.code))
+    for (name, iso), original_code in original_codes.items():
+        driver = drivers[name]
+        next_iso = (date.fromisoformat(iso) + timedelta(days=1)).isoformat()
+        next_cell = driver["days"].get(next_iso)
+        row = by_day[(name, iso)]
+        if not next_cell or (name, next_iso) in by_day:
+            continue
+        if (classify(original_code) == "night" or classify(row.code) == "night") \
+                and (next_cell["code"] == f"{original_code}~" or next_cell["code"] == "비"):
+            next_cell.update(_day(f"{row.code}~" if classify(row.code) == "night" else "비"))
+    result = merge_routes(updated, routes)
+    for row in overrides:
+        driver = next((item for item in result["drivers"] if item["name"] == row.driver_name), None)
+        if not driver or row.date not in driver["days"]:
+            continue
+        before = deepcopy(updated)
+        before_driver = next(item for item in before["drivers"] if item["name"] == row.driver_name)
+        before_driver["days"][row.date].update(_day(row.original_code))
+        original_day = merge_routes(before, routes)["drivers"][
+            next(i for i, item in enumerate(before["drivers"]) if item["name"] == row.driver_name)
+        ]["days"][row.date]
+        driver["days"][row.date]["original"] = {
+            key: original_day[key] for key in ("code", "type", "dayType", "turnKey", "continues") if key in original_day
+        }
+        driver["days"][row.date]["swapPostId"] = row.post_id
+    return result

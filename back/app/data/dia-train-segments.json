@@ -1,0 +1,3762 @@
+{
+  "schemaVersion": 1,
+  "sourceDate": "2024-08-01",
+  "segments": {
+    "ord": {
+      "1": [
+        {
+          "trainNumber": "6022",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6033",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6082",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6136",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6147",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6170",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6181",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "2": [
+        {
+          "trainNumber": "6041",
+          "direction": "sinnae",
+          "startStation": "연신내",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6092",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6137",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6166",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6177",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "3": [
+        {
+          "trainNumber": "6029",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6086",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6142",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6153",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6176",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6187",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "4": [
+        {
+          "trainNumber": "6026",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6037",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6088",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6132",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6143",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6172",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "5": [
+        {
+          "trainNumber": "6036",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6049",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6136",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6175",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6198",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6209",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "6": [
+        {
+          "trainNumber": "6051",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6098",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6178",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6189",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6214",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6225",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "7": [
+        {
+          "trainNumber": "6052",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6065",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6164",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6175",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6201",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6230",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "8": [
+        {
+          "trainNumber": "6055",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6106",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6117",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6193",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6220",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6231",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "9": [
+        {
+          "trainNumber": "6057",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6102",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6161",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6190",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6201",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "10": [
+        {
+          "trainNumber": "6040",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6053",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6142",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6177",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6200",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6211",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "11": [
+        {
+          "trainNumber": "6061",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6150",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6161",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6211",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6244",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6255",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "12": [
+        {
+          "trainNumber": "6063",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6104",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6160",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6171",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6226",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6237",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "13": [
+        {
+          "trainNumber": "6071",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6108",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6185",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6234",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6245",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "14": [
+        {
+          "trainNumber": "6073",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6110",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6121",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6187",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6242",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6253",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "15": [
+        {
+          "trainNumber": "6082",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6095",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6120",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6155",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6248",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6259",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "16": [
+        {
+          "trainNumber": "6088",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6099",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6126",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6137",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6209",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6246",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6257",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "17": [
+        {
+          "trainNumber": "6117",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6140",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6151",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6208",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6219",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6254",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6265",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "18": [
+        {
+          "trainNumber": "6108",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6119",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6148",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6215",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6250",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6261",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "19": [
+        {
+          "trainNumber": "6121",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6144",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6155",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6210",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6221",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6260",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6271",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "20": [
+        {
+          "trainNumber": "6120",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6131",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6160",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6206",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6217",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6256",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "21": [
+        {
+          "trainNumber": "6138",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6149",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6178",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6231",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6266",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6277",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "22": [
+        {
+          "trainNumber": "6151",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6174",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6185",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6230",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6241",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6274",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6285",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "23": [
+        {
+          "trainNumber": "6148",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6159",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6182",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6193",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6245",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6278",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "26": [
+        {
+          "trainNumber": "6092",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6103",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6179",
+          "direction": "sinnae",
+          "startStation": "봉화산",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6208",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "27": [
+        {
+          "trainNumber": "6104",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6115",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6138",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6172",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6183",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6206",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "28": [
+        {
+          "trainNumber": "6102",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6113",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6210",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "29": [
+        {
+          "trainNumber": "6098",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6109",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6132",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6181",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6204",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6215",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ]
+    },
+    "hol": {
+      "1": [
+        {
+          "trainNumber": "6029",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6050",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6061",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "합정"
+        },
+        {
+          "trainNumber": "6099",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6118",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6129",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "2": [
+        {
+          "trainNumber": "6031",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6054",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6065",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "합정"
+        },
+        {
+          "trainNumber": "6101",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6122",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6133",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "3": [
+        {
+          "trainNumber": "6028",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6039",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6058",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6069",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6102",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6113",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "4": [
+        {
+          "trainNumber": "6035",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6056",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6067",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6109",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6132",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6143",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "5": [
+        {
+          "trainNumber": "6043",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6066",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6077",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6111",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6130",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "6": [
+        {
+          "trainNumber": "6038",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6049",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6072",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6083",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6110",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6121",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "7": [
+        {
+          "trainNumber": "6045",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6078",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6089",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6127",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6150",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "8": [
+        {
+          "trainNumber": "6047",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6068",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6079",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6113",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6134",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6145",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "9": [
+        {
+          "trainNumber": "6061",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6084",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6095",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6129",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6148",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6159",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "10": [
+        {
+          "trainNumber": "6065",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6086",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6097",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6131",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6152",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6163",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "11": [
+        {
+          "trainNumber": "6067",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6090",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6101",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6133",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6156",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "12": [
+        {
+          "trainNumber": "6069",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6088",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6099",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6115",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6170",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6181",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "13": [
+        {
+          "trainNumber": "6051",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6070",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6081",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6121",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6144",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "14": [
+        {
+          "trainNumber": "6077",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6098",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6109",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6143",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6164",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6175",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "15": [
+        {
+          "trainNumber": "6083",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6104",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6115",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6150",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6161",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6182",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "16": [
+        {
+          "trainNumber": "6079",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6102",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6145",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6168",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6179",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "17": [
+        {
+          "trainNumber": "6081",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6100",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6111",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6144",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6155",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6176",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "18": [
+        {
+          "trainNumber": "6089",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6110",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6159",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6178",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6189",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "19": [
+        {
+          "trainNumber": "6095",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6116",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6127",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6156",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6167",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6188",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "20": [
+        {
+          "trainNumber": "6097",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6120",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6131",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6163",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6186",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        }
+      ]
+    },
+    "ordord": {
+      "61": [
+        {
+          "trainNumber": "6256",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6267",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6296",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6307",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6009",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6036",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "62": [
+        {
+          "trainNumber": "6255",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6306",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6317",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6013",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6052",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "63": [
+        {
+          "trainNumber": "6225",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6264",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6275",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6018",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6029",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "64": [
+        {
+          "trainNumber": "6237",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6276",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6287",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6038",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6051",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "65": [
+        {
+          "trainNumber": "6253",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6284",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6295",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6042",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6055",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "66": [
+        {
+          "trainNumber": "6257",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6292",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6303",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6044",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6057",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "67": [
+        {
+          "trainNumber": "6271",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6300",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6311",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6048",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6061",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "68": [
+        {
+          "trainNumber": "6285",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6308",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6319",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6050",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6063",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "69": [
+        {
+          "trainNumber": "6289",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6316",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6327",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6058",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6071",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "70": [
+        {
+          "trainNumber": "6299",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6318",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6329",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6060",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6073",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "71": [
+        {
+          "trainNumber": "6277",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6320",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6331",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6040",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "73": [
+        {
+          "trainNumber": "6278",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6289",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6312",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6323",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6338",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "안암"
+        },
+        {
+          "trainNumber": "6001",
+          "direction": "sinnae",
+          "startStation": "안암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6022",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "74": [
+        {
+          "trainNumber": "6290",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6301",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6324",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6335",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "약수"
+        },
+        {
+          "trainNumber": "6003",
+          "direction": "sinnae",
+          "startStation": "약수",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6026",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "75": [
+        {
+          "trainNumber": "6259",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6288",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6299",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6317",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6334",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "공덕"
+        },
+        {
+          "trainNumber": "6004",
+          "direction": "eungam",
+          "startStation": "버티고개",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6015",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "76": [
+        {
+          "trainNumber": "6265",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6322",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6333",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "합정"
+        },
+        {
+          "trainNumber": "6002",
+          "direction": "eungam",
+          "startStation": "합정",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6013",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "77": [
+        {
+          "trainNumber": "6261",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6290",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6307",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6326",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6337",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "연신내"
+        },
+        {
+          "trainNumber": "6009",
+          "direction": "sinnae",
+          "startStation": "연신내",
+          "endStation": "디지털미디어시티"
+        }
+      ]
+    },
+    "ordhol": {
+      "61": [
+        {
+          "trainNumber": "6256",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6267",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6296",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6307",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6009",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6028",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "62": [
+        {
+          "trainNumber": "6255",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6306",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6317",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6015",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6038",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "63": [
+        {
+          "trainNumber": "6225",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6264",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6275",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6018",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "64": [
+        {
+          "trainNumber": "6237",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6276",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6287",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6020",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6020",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6031",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "65": [
+        {
+          "trainNumber": "6253",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6284",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6295",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6018",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6029",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "66": [
+        {
+          "trainNumber": "6257",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6292",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6303",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6024",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6035",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "67": [
+        {
+          "trainNumber": "6271",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6300",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6311",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6036",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6047",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "68": [
+        {
+          "trainNumber": "6285",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6308",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6319",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6034",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6045",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "69": [
+        {
+          "trainNumber": "6289",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6316",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6327",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6032",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "70": [
+        {
+          "trainNumber": "6299",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6318",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6329",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6011",
+          "direction": "sinnae",
+          "startStation": "봉화산",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6034",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "71": [
+        {
+          "trainNumber": "6277",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6320",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6331",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6032",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        }
+      ],
+      "73": [
+        {
+          "trainNumber": "6278",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6289",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6312",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6323",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6338",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "안암"
+        },
+        {
+          "trainNumber": "6001",
+          "direction": "sinnae",
+          "startStation": "안암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6020",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "74": [
+        {
+          "trainNumber": "6290",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6301",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6324",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6335",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "약수"
+        },
+        {
+          "trainNumber": "6003",
+          "direction": "sinnae",
+          "startStation": "약수",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6022",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "75": [
+        {
+          "trainNumber": "6259",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6288",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6299",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6317",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6334",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "공덕"
+        },
+        {
+          "trainNumber": "6004",
+          "direction": "eungam",
+          "startStation": "공덕",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6015",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "76": [
+        {
+          "trainNumber": "6265",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6322",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6333",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "합정"
+        },
+        {
+          "trainNumber": "6002",
+          "direction": "eungam",
+          "startStation": "합정",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "77": [
+        {
+          "trainNumber": "6261",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6290",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6307",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6326",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6337",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "연신내"
+        },
+        {
+          "trainNumber": "6009",
+          "direction": "sinnae",
+          "startStation": "연신내",
+          "endStation": "디지털미디어시티"
+        }
+      ]
+    },
+    "holord": {
+      "61": [
+        {
+          "trainNumber": "6175",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6198",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6209",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6009",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6036",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "62": [
+        {
+          "trainNumber": "6179",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6200",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6211",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6013",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6052",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "63": [
+        {
+          "trainNumber": "6181",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6204",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6215",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6018",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6029",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "64": [
+        {
+          "trainNumber": "6176",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6187",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6210",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6221",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6038",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6051",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "65": [
+        {
+          "trainNumber": "6182",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6193",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6216",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6042",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6055",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "66": [
+        {
+          "trainNumber": "6189",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6208",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6219",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6044",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6057",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "67": [
+        {
+          "trainNumber": "6186",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6197",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6048",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6061",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "68": [
+        {
+          "trainNumber": "6188",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6199",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6222",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6050",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6063",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "69": [
+        {
+          "trainNumber": "6209",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6226",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6237",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6058",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6071",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "70": [
+        {
+          "trainNumber": "6211",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6232",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6243",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "안암"
+        },
+        {
+          "trainNumber": "6060",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6073",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "71": [
+        {
+          "trainNumber": "6235",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6040",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "73": [
+        {
+          "trainNumber": "6222",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6233",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6250",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "안암"
+        },
+        {
+          "trainNumber": "6001",
+          "direction": "sinnae",
+          "startStation": "안암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6022",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "74": [
+        {
+          "trainNumber": "6215",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6234",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6245",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "버티고개"
+        },
+        {
+          "trainNumber": "6003",
+          "direction": "sinnae",
+          "startStation": "약수",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6026",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "75": [
+        {
+          "trainNumber": "6217",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6236",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6247",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "공덕"
+        },
+        {
+          "trainNumber": "6004",
+          "direction": "eungam",
+          "startStation": "공덕",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6015",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "76": [
+        {
+          "trainNumber": "6227",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6244",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "합정"
+        },
+        {
+          "trainNumber": "6002",
+          "direction": "eungam",
+          "startStation": "합정",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6013",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "77": [
+        {
+          "trainNumber": "6221",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6240",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6251",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "연신내"
+        },
+        {
+          "trainNumber": "6009",
+          "direction": "sinnae",
+          "startStation": "연신내",
+          "endStation": "디지털미디어시티"
+        }
+      ]
+    },
+    "holhol": {
+      "61": [
+        {
+          "trainNumber": "6176",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6187",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6210",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6221",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6020",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6031",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "62": [
+        {
+          "trainNumber": "6182",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6193",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6216",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6227",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6009",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6028",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "63": [
+        {
+          "trainNumber": "6188",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6199",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6222",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6015",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6038",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "64": [
+        {
+          "trainNumber": "6043",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6181",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6204",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6215",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6235",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6032",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        }
+      ],
+      "65": [
+        {
+          "trainNumber": "6189",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6208",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6219",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6024",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6035",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "66": [
+        {
+          "trainNumber": "6186",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6197",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6018",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6029",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "67": [
+        {
+          "trainNumber": "6209",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6226",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6237",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6036",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6047",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "68": [
+        {
+          "trainNumber": "6211",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6232",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6243",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "안암"
+        },
+        {
+          "trainNumber": "6011",
+          "direction": "sinnae",
+          "startStation": "봉화산",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6034",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6045",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "73": [
+        {
+          "trainNumber": "6222",
+          "direction": "eungam",
+          "startStation": "디지털미디어시티",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6233",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6250",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "안암"
+        },
+        {
+          "trainNumber": "6001",
+          "direction": "sinnae",
+          "startStation": "안암",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6020",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "74": [
+        {
+          "trainNumber": "6215",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6234",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6245",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "버티고개"
+        },
+        {
+          "trainNumber": "6003",
+          "direction": "sinnae",
+          "startStation": "약수",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6022",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "75": [
+        {
+          "trainNumber": "6217",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6236",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6247",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "공덕"
+        },
+        {
+          "trainNumber": "6004",
+          "direction": "eungam",
+          "startStation": "공덕",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6015",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "76": [
+        {
+          "trainNumber": "6175",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6198",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6209",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6227",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6244",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "합정"
+        },
+        {
+          "trainNumber": "6002",
+          "direction": "eungam",
+          "startStation": "합정",
+          "endStation": "디지털미디어시티"
+        }
+      ],
+      "77": [
+        {
+          "trainNumber": "6179",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "봉화산"
+        },
+        {
+          "trainNumber": "6200",
+          "direction": "eungam",
+          "startStation": "봉화산",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6211",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "디지털미디어시티"
+        },
+        {
+          "trainNumber": "6221",
+          "direction": "sinnae",
+          "startStation": "디지털미디어시티",
+          "endStation": "신내"
+        },
+        {
+          "trainNumber": "6240",
+          "direction": "eungam",
+          "startStation": "신내",
+          "endStation": "응암"
+        },
+        {
+          "trainNumber": "6251",
+          "direction": "sinnae",
+          "startStation": "응암",
+          "endStation": "연신내"
+        },
+        {
+          "trainNumber": "6009",
+          "direction": "sinnae",
+          "startStation": "연신내",
+          "endStation": "디지털미디어시티"
+        }
+      ]
+    }
+  }
+}

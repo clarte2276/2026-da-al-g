@@ -9,8 +9,10 @@ import xml.etree.ElementTree as ET
 from datetime import UTC, datetime, timedelta
 from datetime import date as date_cls
 from email.utils import parsedate_to_datetime
+from functools import lru_cache
 from pathlib import Path
 from typing import Annotated, Any, Literal
+from zoneinfo import ZoneInfo
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse
@@ -21,8 +23,9 @@ from sqlalchemy.orm import Session
 from .auth import AdminUser, CurrentUser
 from .config import get_settings
 from .db import get_db
+from .duty import dia_data, load_duty, table_key_for_turn
 from .models import (
-    DutySchedule,
+    DutyOverride,
     EduVideo,
     EmergencyContact,
     ExchangePost,
@@ -89,7 +92,7 @@ def _volunteer_out(v: ExchangeVolunteer) -> dict:
             "created_at": v.created_at.isoformat()}
 
 
-def _post_out(post: ExchangePost, volunteers: list[ExchangeVolunteer], me: str) -> dict:
+def _post_out(post: ExchangePost, volunteers: list[ExchangeVolunteer], me: str, db: Session) -> dict:
     is_mine = (post.requester_name == me or post.target_name == me or
                any(v.person_name == me for v in volunteers))
     return {
@@ -100,9 +103,70 @@ def _post_out(post: ExchangePost, volunteers: list[ExchangeVolunteer], me: str) 
         "target_dias": post.target_dias, "memo": post.memo,
         "decline_reason": post.decline_reason,
         "accepted_volunteer_id": post.accepted_volunteer_id,
+        "revert_of": post.revert_of,
+        "applied": db.scalar(select(DutyOverride.id).where(DutyOverride.post_id == post.id).limit(1)) is not None,
         "volunteers": [_volunteer_out(v) for v in volunteers],
         "created_at": post.created_at.isoformat(), "mine": is_mine,
     }
+
+
+def _post_partner(db: Session, post: ExchangePost) -> str | None:
+    if post.target_name:
+        return post.target_name
+    volunteer = db.get(ExchangeVolunteer, post.accepted_volunteer_id) if post.accepted_volunteer_id else None
+    return volunteer.person_name if volunteer else None
+
+
+def _effective_code(db: Session, name: str, day: str, cache: dict[str, dict | None]) -> str | None:
+    month = day[:7]
+    if month not in cache:
+        cache[month] = load_duty(db, month)
+    schedule = cache[month]
+    driver = next((item for item in schedule["drivers"] if item["name"] == name), None) if schedule else None
+    cell = driver and driver["days"].get(day)
+    return cell.get("code") if cell else None
+
+
+def _apply_swap(db: Session, post: ExchangePost, partner: str) -> None:
+    cache: dict[str, dict | None] = {}
+    if post.revert_of:
+        original = db.get(ExchangePost, post.revert_of)
+        original_partner = _post_partner(db, original) if original else None
+        participants = {original.requester_name, original_partner} if original and original_partner else set()
+        if not original or original.status != "accepted" or participants != {post.requester_name, partner} or not db.scalar(
+            select(DutyOverride.id).where(DutyOverride.post_id == post.revert_of).limit(1)
+        ):
+            raise HTTPException(409, "원본 교체를 되돌릴 수 없습니다")
+        active = list(db.scalars(select(DutyOverride).where(
+            DutyOverride.post_id == original.id, DutyOverride.active.is_(True))).all())
+        expected = {(name, day) for day in post.dates for name in (original.requester_name, original_partner)}
+        if len(active) != len(expected) or {(row.driver_name, row.date) for row in active} != expected:
+            raise HTTPException(409, "원본 교체가 이미 변경되어 되돌릴 수 없습니다")
+
+    snapshots = []
+    for index, day in enumerate(post.dates):
+        requester_code = _effective_code(db, post.requester_name, day, cache)
+        target_code = _effective_code(db, partner, day, cache)
+        if not requester_code or not target_code:
+            if not post.revert_of and not any(cache.values()) and not post.requester_dias and not post.target_dias:
+                return  # shortcut: accepts remain unapplied with no roster, require a duty upload to exchange codes.
+            raise HTTPException(409, "근무가 이미 바뀌어 교체할 수 없습니다")
+        if index < len(post.requester_dias) and post.requester_dias[index] and requester_code != post.requester_dias[index]:
+            raise HTTPException(409, "근무가 이미 바뀌어 교체할 수 없습니다")
+        if index < len(post.target_dias) and post.target_dias[index] and target_code != post.target_dias[index]:
+            raise HTTPException(409, "근무가 이미 바뀌어 교체할 수 없습니다")
+        snapshots.append((day, requester_code, target_code))
+
+    for day, requester_code, target_code in snapshots:
+        active = db.scalars(select(DutyOverride).where(
+            DutyOverride.date == day, DutyOverride.active.is_(True),
+            DutyOverride.driver_name.in_((post.requester_name, partner)))).all()
+        for row in active:
+            row.active = False
+        db.add(DutyOverride(driver_name=post.requester_name, date=day, code=target_code,
+                            original_code=requester_code, post_id=post.id, active=True))
+        db.add(DutyOverride(driver_name=partner, date=day, code=requester_code,
+                            original_code=target_code, post_id=post.id, active=True))
 
 
 @router.get("/exchange/posts")
@@ -116,7 +180,7 @@ def list_exchange_posts(db: DB, user: CurrentUser,
     for p in posts:
         vols = list(db.scalars(select(ExchangeVolunteer).where(
             ExchangeVolunteer.post_id == p.id)).all())
-        d = _post_out(p, vols, user.display_name)
+        d = _post_out(p, vols, user.display_name, db)
         if mine and not d["mine"]:
             continue
         out.append(d)
@@ -127,6 +191,8 @@ def list_exchange_posts(db: DB, user: CurrentUser,
 def create_exchange_post(payload: ExchangeCreate, db: DB, user: CurrentUser) -> dict:
     for d in payload.dates:
         _check_date(d)
+    if len(set(payload.dates)) != len(payload.dates):
+        raise HTTPException(422, "dates must be unique")
     if payload.type == "direct":
         if not payload.target_name:
             raise HTTPException(422, "direct type requires target_name")
@@ -143,7 +209,7 @@ def create_exchange_post(payload: ExchangeCreate, db: DB, user: CurrentUser) -> 
     db.add(post)
     db.commit()
     db.refresh(post)
-    return _post_out(post, [], user.display_name)
+    return _post_out(post, [], user.display_name, db)
 
 
 @router.post("/exchange/posts/{post_id}/respond")
@@ -158,6 +224,7 @@ def respond_exchange(post_id: str, payload: ExchangeRespond, db: DB, user: Curre
     if post.target_name != user.display_name:
         raise HTTPException(403, "대상자만 응답할 수 있습니다")
     if payload.action == "accept":
+        _apply_swap(db, post, post.target_name)
         post.status = "accepted"
     else:
         post.status = "declined"
@@ -166,7 +233,7 @@ def respond_exchange(post_id: str, payload: ExchangeRespond, db: DB, user: Curre
     db.refresh(post)
     vols = list(db.scalars(select(ExchangeVolunteer).where(
         ExchangeVolunteer.post_id == post.id)).all())
-    return _post_out(post, vols, user.display_name)
+    return _post_out(post, vols, user.display_name, db)
 
 
 @router.post("/exchange/posts/{post_id}/volunteers", status_code=201)
@@ -204,6 +271,7 @@ def accept_volunteer(post_id: str, vid: str, db: DB, user: CurrentUser) -> dict:
     vol = db.get(ExchangeVolunteer, vid)
     if not vol or vol.post_id != post_id:
         raise HTTPException(404, "Volunteer not found")
+    _apply_swap(db, post, vol.person_name)
     post.status = "accepted"
     post.accepted_volunteer_id = vid
     vol.status = "accepted"
@@ -214,7 +282,34 @@ def accept_volunteer(post_id: str, vid: str, db: DB, user: CurrentUser) -> dict:
     db.refresh(post)
     vols = list(db.scalars(select(ExchangeVolunteer).where(
         ExchangeVolunteer.post_id == post.id)).all())
-    return _post_out(post, vols, user.display_name)
+    return _post_out(post, vols, user.display_name, db)
+
+
+@router.post("/exchange/posts/{post_id}/revert", status_code=201)
+def revert_exchange(post_id: str, db: DB, user: CurrentUser) -> dict:
+    post = db.get(ExchangePost, post_id)
+    if not post:
+        raise HTTPException(404, "Post not found")
+    partner = _post_partner(db, post)
+    if post.status != "accepted" or not db.scalar(
+        select(DutyOverride.id).where(DutyOverride.post_id == post.id).limit(1)
+    ):
+        raise HTTPException(409, "적용된 교체만 되돌릴 수 있습니다")
+    if user.display_name not in {post.requester_name, partner}:
+        raise HTTPException(403, "교체 당사자만 되돌릴 수 있습니다")
+    other = partner if user.display_name == post.requester_name else post.requester_name
+    cache: dict[str, dict | None] = {}
+    requester_dias, target_dias = [], []
+    for day in post.dates:
+        requester_dias.append(_effective_code(db, user.display_name, day, cache) or "")
+        target_dias.append(_effective_code(db, other, day, cache) or "")
+    revert = ExchangePost(type="direct", status="open", requester_name=user.display_name,
+                          target_name=other, dates=post.dates, requester_dias=requester_dias,
+                          target_dias=target_dias, revert_of=post.id)
+    db.add(revert)
+    db.commit()
+    db.refresh(revert)
+    return _post_out(revert, [], user.display_name, db)
 
 
 @router.delete("/exchange/posts/{post_id}")
@@ -234,12 +329,14 @@ def cancel_exchange(post_id: str, db: DB, user: CurrentUser) -> dict:
 @router.get("/exchange/match")
 def exchange_match(date: str, db: DB, user: CurrentUser,
                    kind: str | None = None) -> list[dict]:
-    month = _check_date(date)[:7]
-    sched = db.get(DutySchedule, month)
+    date = _check_date(date)
+    sched = load_duty(db, date[:7])
     if not sched:
         return []
+    swapped = set(db.scalars(select(DutyOverride.driver_name).where(
+        DutyOverride.date == date, DutyOverride.active.is_(True))).all())
     results = []
-    for driver in sched.data.get("drivers", []):
+    for driver in sched.get("drivers", []):
         if driver["name"] == user.display_name:
             continue
         day_data = driver.get("days", {}).get(date)
@@ -248,7 +345,8 @@ def exchange_match(date: str, db: DB, user: CurrentUser,
         if kind and day_data.get("type") != kind:
             continue
         results.append({"name": driver["name"], "code": day_data.get("code", ""),
-                        "type": day_data.get("type", "")})
+                        "type": day_data.get("type", ""), "turnKey": day_data.get("turnKey"),
+                        "swapped": driver["name"] in swapped})
     return results
 
 
@@ -724,21 +822,143 @@ def delete_video(video_id: str, db: DB, _admin: AdminUser) -> dict:
 # ── realtime trains ──
 _train_cache: dict[str, Any] = {"items": [], "ts": 0.0}
 _TRAIN_TTL = 20
+_SEOUL = ZoneInfo("Asia/Seoul")
+_LINE6_STATIONS = [
+    "응암", "역촌", "불광", "독바위", "연신내", "구산", "새절", "증산", "디지털미디어시티",
+    "월드컵경기장", "마포구청", "망원", "합정", "상수", "광흥창", "대흥", "공덕",
+    "효창공원앞", "삼각지", "녹사평", "이태원", "한강진", "버티고개", "약수", "청구",
+    "신당", "동묘앞", "창신", "보문", "안암", "고려대", "월곡", "상월곡", "돌곶이",
+    "석계", "태릉입구", "화랑대", "봉화산", "신내",
+]
+_UNMATCHED_CREW = "신내사업소"
+
+
+@lru_cache(maxsize=1)
+def _train_segments() -> dict:
+    return _json.loads((Path(__file__).parent / "data" / "dia-train-segments.json").read_text(encoding="utf-8"))["segments"]
+
+
+def _mock_trains(now: datetime) -> list[dict]:
+    received = (now - timedelta(seconds=18)).strftime("%Y-%m-%d %H:%M:%S")
+    mock = [("6101", "망원", "down", "출발", "신내"), ("6102", "합정", "up", "출발", "응암"),
+            ("6103", "버티고개", "down", "출발", "신내"), ("6104", "약수", "up", "출발", "응암"),
+            ("6105", "돌곶이", "down", "출발", "신내"), ("6106", "석계", "up", "출발", "응암"),
+            ("6107", "공덕", "down", "도착", "신내"), ("6108", "봉화산", "up", "도착", "응암")]
+    return [{"train_no": train, "station": station, "direction": direction, "status": status,
+             "terminal": terminal, "updated_at": received}
+            for train, station, direction, status, terminal in mock]
+
+
+def _station_index(name: str) -> int:
+    normalized = re.sub(r"\s*\(.*\)\s*$", "", name).strip()
+    try:
+        return _LINE6_STATIONS.index(normalized)
+    except ValueError:
+        return 1_000_000
+
+
+def _crew_for_train(train: dict, active: list[dict]) -> tuple[str, str | None]:
+    direction = {"up": "eungam", "down": "sinnae"}.get(train["direction"], train["direction"])
+    station = _station_index(train["station"])
+    matches = []
+    for segment in active:
+        start, end = _station_index(segment["startStation"]), _station_index(segment["endStation"])
+        if segment["trainNumber"] == str(train["train_no"]) and segment["direction"] == direction \
+                and max(station, start, end) < 1_000_000 and min(start, end) <= station <= max(start, end):
+            matches.append(segment)
+    if not matches:
+        return _UNMATCHED_CREW, None
+    at_boundary = train["status"] in {"도착", "출발"}
+    boundary = next((segment for segment in matches
+                     if _station_index(segment["startStation"] if at_boundary else segment["endStation"]) == station), None)
+    selected = boundary or matches[0]
+    return selected["profileName"], selected["turnKey"]
+
+
+def _active_train_segments(db: Session, now: datetime) -> list[dict]:
+    now = now.replace(tzinfo=_SEOUL) if now.tzinfo is None else now.astimezone(_SEOUL)
+    pack, segment_pack, active = dia_data(), _train_segments(), []
+    for duty_date in (now.date() - timedelta(days=1), now.date()):
+        day = duty_date.isoformat()
+        schedule = load_duty(db, day[:7])
+        if not schedule:
+            continue
+        for driver in schedule["drivers"]:
+            cell = driver["days"].get(day)
+            turn_key = cell and cell.get("turnKey")
+            table_key = table_key_for_turn(turn_key)
+            if not cell or not table_key:
+                continue
+            code = cell["code"]
+            detail = pack["schedules"].get(table_key, {}).get(code, {})
+            start_text, end_text = detail.get("startTime"), detail.get("endTime")
+            start_match = re.fullmatch(r"(\d{1,2}):(\d{2})", start_text or "")
+            end_match = re.fullmatch(r"(\d{1,2}):(\d{2})", end_text or "")
+            if not start_match or not end_match:
+                continue
+            start = datetime.combine(duty_date, datetime.min.time(), _SEOUL).replace(
+                hour=int(start_match[1]), minute=int(start_match[2]))
+            end = datetime.combine(duty_date, datetime.min.time(), _SEOUL).replace(
+                hour=int(end_match[1]), minute=int(end_match[2]))
+            if end <= start:
+                end += timedelta(days=1)
+            if not start <= now <= end:
+                continue
+            for segment in segment_pack.get(table_key, {}).get(code, []):
+                active.append({**segment, "profileName": driver["name"], "turnKey": turn_key})
+    return active
+
+
+def _with_train_crews(items: list[dict], db: Session, now: datetime) -> list[dict]:
+    active = _active_train_segments(db, now)
+    return [{**item, "crew_name": (match := _crew_for_train(item, active))[0], "crew_turn": match[1]}
+            for item in items]
+
+
+def _empty_train_result(data: dict) -> tuple[bool, str]:
+    result = data.get("errorMessage") or data.get("RESULT")
+    if not result:
+        return False, ""
+    if isinstance(result, dict):
+        code = str(result.get("code") or result.get("CODE") or result.get("status") or "")
+        message = str(result.get("message") or result.get("MESSAGE") or result.get("msg") or result.get("MSG") or code)
+    else:
+        message = str(result)
+        code = re.search(r"INFO-\d+", message)
+        code = code.group(0) if code else ""
+    if code == "INFO-200" or "INFO-200" in message or "해당하는 데이터가 없습니다" in message:
+        return True, message
+    return False, message
 
 
 @router.get("/realtime/trains")
-def realtime_trains(_user: CurrentUser) -> list[dict]:
+def realtime_trains(_user: CurrentUser, db: DB) -> list[dict]:
     settings = get_settings()
+    now = datetime.now(_SEOUL)
+    if settings.realtime_trains_mock:
+        return _with_train_crews(_mock_trains(now), db, now)
     key = settings.seoul_subway_api_key
     if not key:
         raise HTTPException(503, "실시간 열차 API 키가 설정되지 않았습니다")
-    now = time.time()
-    if now - _train_cache["ts"] < _TRAIN_TTL and _train_cache["items"]:
-        return _train_cache["items"]
+    timestamp = time.time()
+    if timestamp - _train_cache["ts"] < _TRAIN_TTL and _train_cache["items"]:
+        return _with_train_crews(_train_cache["items"], db, now)
     try:
         url = f"http://swopenapi.seoul.go.kr/api/subway/{key}/json/realtimePosition/0/100/6호선"
         with urllib.request.urlopen(url, timeout=10) as resp:
             data = _json.loads(resp.read())
+        if not isinstance(data, dict):
+            raise TypeError("Invalid Seoul realtime train response")
+        if "realtimePositionList" not in data:
+            empty, message = _empty_train_result(data)
+            if not empty and message:
+                if not _train_cache["items"]:
+                    raise HTTPException(502, message)
+                return _with_train_crews(_train_cache["items"], db, now)
+            if empty:
+                _train_cache["items"] = []
+                _train_cache["ts"] = timestamp
+                return []
         status_map = {"0": "진입", "1": "도착", "2": "출발", "3": "전역출발", "4": "전역진입", "5": "전역도착", "99": "운행중"}
         items = []
         for t in data.get("realtimePositionList", []):
@@ -749,12 +969,12 @@ def realtime_trains(_user: CurrentUser) -> list[dict]:
                           "terminal": t.get("statnTnm", ""),
                           "updated_at": t.get("recptnDt", "")})
         _train_cache["items"] = items
-        _train_cache["ts"] = now
-        return items
+        _train_cache["ts"] = timestamp
+        return _with_train_crews(items, db, now)
     except HTTPException:
         raise
-    except (OSError, ValueError):
-        return _train_cache["items"] or []
+    except (OSError, TypeError, ValueError):
+        return _with_train_crews(_train_cache["items"] or [], db, now)
 
 
 # ── games ──

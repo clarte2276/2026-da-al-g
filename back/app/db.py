@@ -56,6 +56,7 @@ def _ensure_sqlite_compat_columns() -> None:
         return
     additions = {
         "users": {"must_change_password": "BOOLEAN NOT NULL DEFAULT 0"},
+        "exchange_posts": {"revert_of": "VARCHAR(36)"},
         "fragments": {"embedding_vector": "JSON"},
         "knowledge_edges": {
             "source_anchor_json": "JSON",
@@ -65,12 +66,18 @@ def _ensure_sqlite_compat_columns() -> None:
     with engine.begin() as connection:
         inspector = inspect(connection)
         for table_name, columns in additions.items():
+            if not inspector.has_table(table_name):
+                continue
             existing = {column["name"] for column in inspector.get_columns(table_name)}
             for column_name, column_type in columns.items():
                 if column_name not in existing:
                     connection.exec_driver_sql(
                         f"ALTER TABLE {table_name} ADD COLUMN {column_name} {column_type}"
                     )
+        if inspector.has_table("exchange_posts"):
+            connection.exec_driver_sql(
+                "CREATE INDEX IF NOT EXISTS ix_exchange_posts_revert_of ON exchange_posts(revert_of)"
+            )
 
 
 def get_db() -> Generator[Session, None, None]:
