@@ -15,7 +15,7 @@ from fastapi import Depends, FastAPI, File, Form, HTTPException, Query, UploadFi
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
-from sqlalchemy import func, select
+from sqlalchemy import delete, func, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -28,7 +28,18 @@ from .links import get_version
 from .links import router as links_router
 from .management import backfill_feedback_inquiries
 from .management import router as management_router
-from .models import AuditEvent, Document, DocumentVersion, Fragment, Inquiry, KnowledgeEdge, new_id
+from .models import (
+    AuditEvent,
+    Document,
+    DocumentContent,
+    DocumentLink,
+    DocumentVersion,
+    Fragment,
+    IngestionJob,
+    Inquiry,
+    KnowledgeEdge,
+    new_id,
+)
 from .schemas import (
     ChatFeedbackRequest,
     ChatRequest,
@@ -295,9 +306,40 @@ def create_local_folder(payload: LocalFolderRequest, _admin: AdminUser) -> dict[
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
+def _forget_documents(db: Session, path: Path) -> None:
+    """Drop every indexed document at or under a deleted path so RAG can no longer cite it."""
+    path = path.resolve()
+    document_ids = [
+        document.id
+        for document in db.scalars(select(Document).where(Document.source_path.is_not(None)))
+        if Path(document.source_path).resolve().is_relative_to(path)
+    ]
+    if not document_ids:
+        return
+    version_ids = select(DocumentVersion.id).where(DocumentVersion.document_id.in_(document_ids))
+    fragment_ids = select(Fragment.id).where(Fragment.version_id.in_(version_ids))
+    # SQLite does not enforce the ON DELETE cascades, so children go first explicitly.
+    db.execute(delete(KnowledgeEdge).where(
+        KnowledgeEdge.source_fragment_id.in_(fragment_ids) | KnowledgeEdge.target_fragment_id.in_(fragment_ids)
+    ))
+    db.execute(delete(DocumentLink).where(
+        DocumentLink.source_version_id.in_(version_ids) | DocumentLink.target_version_id.in_(version_ids)
+    ))
+    db.execute(delete(Fragment).where(Fragment.version_id.in_(version_ids)))
+    db.execute(delete(DocumentContent).where(DocumentContent.version_id.in_(version_ids)))
+    db.execute(delete(IngestionJob).where(IngestionJob.document_version_id.in_(version_ids)))
+    db.execute(delete(DocumentVersion).where(DocumentVersion.document_id.in_(document_ids)))
+    db.execute(delete(Document).where(Document.id.in_(document_ids)))
+
+
 @app.delete("/api/local/folders")
-def delete_local_folder(payload: LocalFolderRequest, _admin: AdminUser) -> dict[str, bool]:
+def delete_local_folder(
+    payload: LocalFolderRequest,
+    db: Annotated[Session, Depends(get_db)],
+    _admin: AdminUser,
+) -> dict[str, bool]:
     try:
+        _forget_documents(db, local_file_service.path(payload.root_id, payload.relative_path))
         local_file_service.delete_empty_folder(payload.root_id, payload.relative_path, payload.recursive)
     except FileNotFoundError as exc:
         raise HTTPException(status_code=404, detail="Folder not found") from exc
@@ -305,6 +347,7 @@ def delete_local_folder(payload: LocalFolderRequest, _admin: AdminUser) -> dict[
         raise HTTPException(status_code=409, detail="Only empty folders can be deleted") from exc
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+    db.commit()
     return {"deleted": True}
 
 
@@ -323,13 +366,19 @@ def copy_local_entry(payload: LocalCopyRequest, _admin: AdminUser) -> dict[str, 
 
 
 @app.delete("/api/local/files")
-def delete_local_file(payload: LocalFolderRequest, _admin: AdminUser) -> dict[str, bool]:
+def delete_local_file(
+    payload: LocalFolderRequest,
+    db: Annotated[Session, Depends(get_db)],
+    _admin: AdminUser,
+) -> dict[str, bool]:
     try:
+        _forget_documents(db, local_file_service.resolve(payload.root_id, payload.relative_path).path)
         local_file_service.delete_file(payload.root_id, payload.relative_path)
     except FileNotFoundError as exc:
         raise HTTPException(status_code=404, detail="File not found") from exc
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+    db.commit()
     return {"deleted": True}
 
 

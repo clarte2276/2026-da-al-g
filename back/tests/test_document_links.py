@@ -305,3 +305,36 @@ def test_long_text_chunks_start_at_a_line() -> None:
 
     assert len(chunks) > 1
     assert all(text[chunk.metadata["chunk_start"] - 1] == "\n" for chunk in chunks[1:])
+
+
+def test_deleting_a_local_file_removes_it_from_rag(workspace):
+    from app.main import _forget_documents
+
+    db, client, service, _rag, tmp = workspace
+    folder = tmp / "docs"
+    folder.mkdir()
+    gone, kept = folder / "gone.docx", tmp / "kept.docx"
+    sample_word(gone)
+    word = WordDocument()
+    word.add_paragraph("남는 문서의 중간 문장")
+    word.save(kept)
+    gone_doc, gone_version = ingest(service, db, gone)
+    gone_doc.source_path = str(gone)
+    kept_doc, kept_version = ingest(service, db, kept)
+    kept_doc.source_path = str(kept)
+    db.commit()
+    texts = {v.id: client.get(f"/api/documents/{d.id}/content", params={"version_id": v.id}).json()["text"]
+             for d, v in ((gone_doc, gone_version), (kept_doc, kept_version))}
+    assert client.post("/api/links", json={
+        "source_selection": text_selection(gone_version, texts[gone_version.id], "중간 문장"),
+        "target_selection": text_selection(kept_version, texts[kept_version.id], "중간 문장"),
+    }).status_code == 201
+
+    _forget_documents(db, folder)
+    db.commit()
+
+    assert [d.id for d in db.scalars(select(Document))] == [kept_doc.id]
+    assert not db.scalar(select(Fragment.id).where(Fragment.version_id == gone_version.id))
+    assert not db.get(DocumentContent, gone_version.id)
+    assert not db.scalar(select(DocumentLink.id))
+    assert db.scalar(select(Fragment.id).where(Fragment.version_id == kept_version.id))

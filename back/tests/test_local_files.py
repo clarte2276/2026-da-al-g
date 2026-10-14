@@ -72,10 +72,16 @@ def test_recursive_folder_delete_is_opt_in_and_maps_nonempty_conflict_to_409(
     tmp_path, monkeypatch
 ) -> None:
     from fastapi import HTTPException
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import Session
 
     from app import main
+    from app.db import Base
     from app.schemas import LocalFolderRequest
 
+    engine = create_engine("sqlite://")
+    Base.metadata.create_all(engine)
+    db = Session(engine)
     folder = tmp_path / "folder"
     folder.mkdir()
     (folder / "document.pdf").write_bytes(b"pdf")
@@ -86,12 +92,12 @@ def test_recursive_folder_delete_is_opt_in_and_maps_nonempty_conflict_to_409(
     )
 
     with pytest.raises(HTTPException) as exc_info:
-        main.delete_local_folder(LocalFolderRequest(root_id="root-0", relative_path="folder"), None)
+        main.delete_local_folder(LocalFolderRequest(root_id="root-0", relative_path="folder"), db, None)
     assert exc_info.value.status_code == 409
     assert (folder / "document.pdf").is_file()
 
     assert main.delete_local_folder(
-        LocalFolderRequest(root_id="root-0", relative_path="folder", recursive=True), None
+        LocalFolderRequest(root_id="root-0", relative_path="folder", recursive=True), db, None
     ) == {"deleted": True}
     assert not folder.exists()
 
