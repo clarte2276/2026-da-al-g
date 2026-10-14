@@ -197,7 +197,11 @@ def test_realtime_seoul_errors_and_no_trains(client, monkeypatch, tmp_path):
 
     crew._train_cache.update(items=[], ts=0.0)
     payload = {"RESULT": {"CODE": "INFO-100", "MESSAGE": "INFO-100 인증키가 유효하지 않습니다"}}
-    monkeypatch.setattr(crew.urllib.request, "urlopen", lambda *_args, **_kwargs: FakeResponse(payload))
+    def fake_urlopen(url, **_kwargs):
+        assert url.isascii(), url  # 실제 urlopen은 한글 URL을 보내지 못한다
+        return FakeResponse(payload)
+
+    monkeypatch.setattr(crew.urllib.request, "urlopen", fake_urlopen)
     error = client.get("/api/realtime/trains", headers=headers)
     assert error.status_code == 502 and "INFO-100" in error.json()["detail"]
 

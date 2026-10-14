@@ -4,6 +4,7 @@ import hashlib
 import json as _json
 import re
 import time
+import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import UTC, datetime, timedelta
@@ -944,7 +945,7 @@ def realtime_trains(_user: CurrentUser, db: DB) -> list[dict]:
     if timestamp - _train_cache["ts"] < _TRAIN_TTL and _train_cache["items"]:
         return _with_train_crews(_train_cache["items"], db, now)
     try:
-        url = f"http://swopenapi.seoul.go.kr/api/subway/{key}/json/realtimePosition/0/100/6호선"
+        url = f"http://swopenapi.seoul.go.kr/api/subway/{key}/json/realtimePosition/0/100/{urllib.parse.quote('6호선')}"
         with urllib.request.urlopen(url, timeout=10) as resp:
             data = _json.loads(resp.read())
         if not isinstance(data, dict):
