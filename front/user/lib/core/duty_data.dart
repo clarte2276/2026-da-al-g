@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/ai_api_client.dart';
-import '../services/auth_session.dart';
 import 'personal_store.dart';
 
 /// 근무 유형. 엑셀 코드(비/휴/대/지정/숫자)를 파서가 분류한 결과와 1:1.
@@ -61,6 +59,7 @@ class DayDuty {
     this.turnKey,
     this.continues,
     this.original,
+    this.swapPostId,
   });
   final String code;
   final DutyType type;
@@ -77,6 +76,7 @@ class DayDuty {
 
   /// 교번 변경으로 덮어쓴 경우 근무표의 원래 근무.
   final DayDuty? original;
+  final String? swapPostId;
 
   factory DayDuty.fromJson(Map<String, dynamic> j) => DayDuty(
         code: j['code'] as String? ?? '',
@@ -85,6 +85,10 @@ class DayDuty {
         dayType: j['dayType'] as String?,
         turnKey: j['turnKey'] as String?,
         continues: j['continues'] as String?,
+        original: j['original'] is Map<String, dynamic>
+            ? DayDuty.fromJson(j['original'] as Map<String, dynamic>)
+            : null,
+        swapPostId: j['swapPostId'] as String?,
       );
 }
 
@@ -189,6 +193,8 @@ class TurnDetail {
     this.driveMinutes,
     this.standbyMinutes,
     this.segments = const [],
+    this.trainTimes = const [],
+    this.diaImage,
   });
   final String id;
   final DutyType type;
@@ -204,6 +210,8 @@ class TurnDetail {
   final int? driveMinutes;
   final int? standbyMinutes;
   final List<TurnSegment> segments;
+  final List<({String time, bool depot})> trainTimes;
+  final String? diaImage;
 
   /// 교번 시작일 [date] 기준 출근·퇴근 시각. 시각이 없으면 null.
   (DateTime, DateTime)? timesOn(DateTime date) {
@@ -233,6 +241,14 @@ class TurnDetail {
         segments: (j['segments'] as List? ?? [])
             .map((e) => TurnSegment.fromJson(e as Map<String, dynamic>))
             .toList(),
+        trainTimes: (j['trainTimes'] as List? ?? []).map((e) {
+          final time = e as Map<String, dynamic>;
+          return (
+            time: time['time'] as String? ?? '',
+            depot: time['depot'] as bool? ?? false,
+          );
+        }).toList(),
+        diaImage: j['diaImage'] as String?,
       );
 }
 
@@ -246,6 +262,8 @@ class DutyMonth {
     required this.turns,
     required this.turnDetailIsDummy,
     this.offline = false,
+    this.projected = false,
+    this.projectedFrom,
   });
   final String month; // yyyy-MM
   final String line;
@@ -257,6 +275,8 @@ class DutyMonth {
 
   /// 서버 대신 기기에 저장해 둔 근무표를 보여주는 중.
   final bool offline;
+  final bool projected;
+  final String? projectedFrom;
 
   factory DutyMonth.fromJson(Map<String, dynamic> j, {bool offline = false}) => DutyMonth(
         month: j['month'] as String? ?? '',
@@ -271,6 +291,8 @@ class DutyMonth {
         ),
         turnDetailIsDummy: j['turnDetailIsDummy'] as bool? ?? false,
         offline: offline,
+        projected: j['projected'] as bool? ?? false,
+        projectedFrom: j['projectedFrom'] as String?,
       );
 
   /// 로그인한 사용자의 이름과 같은 기관사. 없으면 null.
@@ -406,7 +428,8 @@ DayDuty? resolveDuty(DutyMonth m, Driver driver, String date, Map<String, String
       type: base.type,
       dayType: base.dayType,
       continues: prevTurn != null && prevTurn.nextDay ? prev!.turnKey ?? prev.turn : null,
-      original: base,
+      original: base.original ?? base,
+      swapPostId: base.swapPostId,
     );
   }
   String dayTypeOn(DateTime x) =>
@@ -425,7 +448,8 @@ DayDuty? resolveDuty(DutyMonth m, Driver driver, String date, Map<String, String
       turn: n,
       dayType: dt,
       turnKey: key,
-      original: base,
+      original: base?.original ?? base,
+      swapPostId: base?.swapPostId,
     );
   }
   final type = code.startsWith('대')
@@ -435,7 +459,13 @@ DayDuty? resolveDuty(DutyMonth m, Driver driver, String date, Map<String, String
           : code.startsWith('비') || code.endsWith('~')
               ? DutyType.off
               : DutyType.designated;
-  return DayDuty(code: code, type: type, dayType: dt, original: base);
+  return DayDuty(
+    code: code,
+    type: type,
+    dayType: dt,
+    original: base?.original ?? base,
+    swapPostId: base?.swapPostId,
+  );
 }
 
 /// 행로표에 없는 대기 근무 이름: 대N, N<60 주간 / N>=60 야간.
@@ -459,7 +489,6 @@ class DutyRepository {
   final Map<String, Future<DutyMonth>> _loading = {};
 
   Future<List<String>> availableMonths() async {
-    if (AuthSession.current == null) return ['2026-06'];
     final client = AiApiClient();
     try {
       return (await client.fetchDutyMonths())..sort(); // 서버는 최신순으로 준다
@@ -487,10 +516,6 @@ class DutyRepository {
   }
 
   Future<DutyMonth> _read(String month) async {
-    if (AuthSession.current == null) {
-      final raw = await rootBundle.loadString('assets/data/duty_2026_06.json');
-      return _cache[month] = DutyMonth.fromJson(jsonDecode(raw) as Map<String, dynamic>);
-    }
     final client = AiApiClient();
     final prefs = await SharedPreferences.getInstance();
     try {
@@ -506,5 +531,10 @@ class DutyRepository {
       _loading.remove(month);
       client.close();
     }
+  }
+
+  void invalidate(String month) {
+    _cache.remove(month);
+    _loading.remove(month);
   }
 }

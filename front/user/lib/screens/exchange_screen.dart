@@ -63,9 +63,34 @@ class _ExchangeScreenState extends State<ExchangeScreen> with SingleTickerProvid
     }
   }
 
+  Map<String, dynamic>? _postById(String id) => [
+        ...?_allPosts,
+        ...?_myPosts,
+      ].where((post) => post['id'] == id).firstOrNull;
+
+  Future<void> _reloadDuties(Map<String, dynamic> post) async {
+    final dates = (post['dates'] as List? ?? []).whereType<String>();
+    final months = dates
+        .map((date) => date.length >= 7 ? date.substring(0, 7) : '')
+        .where((month) => month.isNotEmpty)
+        .toSet();
+    for (final month in months) {
+      DutyRepository.instance.invalidate(month);
+    }
+    for (final month in months) {
+      try {
+        await DutyRepository.instance.load(month);
+      } catch (_) {
+        // The repository will use the saved month on the next read if offline.
+      }
+    }
+  }
+
   Future<void> _respond(String id, String action) async {
     try {
       await _api.respondToPost(id, action: action);
+      final post = _postById(id);
+      if (action == 'accept' && post != null) await _reloadDuties(post);
       _load();
     } catch (e) {
       if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('응답 실패: $e')));
@@ -84,6 +109,8 @@ class _ExchangeScreenState extends State<ExchangeScreen> with SingleTickerProvid
   Future<void> _acceptVolunteer(String id, String vid) async {
     try {
       await _api.acceptVolunteer(id, vid);
+      final post = _postById(id);
+      if (post != null) await _reloadDuties(post);
       _load();
     } catch (e) {
       if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('수락 실패: $e')));
@@ -206,6 +233,8 @@ class _PostList extends StatelessWidget {
         final reqDias = (p['requester_dias'] as List).cast<String>();
         final tgtDias = (p['target_dias'] as List?)?.cast<String>();
         final vols = (p['volunteers'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+        final revert = p['revert_of'] != null;
+        final applied = p['applied'] == true;
         
         final amITarget = type == 'direct' && targetName == me;
         final amIRequester = requester == me;
@@ -220,12 +249,12 @@ class _PostList extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: status == 'open' ? AppColors.line6.withValues(alpha: 0.1) : AppColors.softEvidence,
+                      color: applied ? AppColors.line6.withValues(alpha: 0.12) : status == 'open' ? AppColors.line6.withValues(alpha: 0.1) : AppColors.softEvidence,
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
-                      status == 'open' ? '진행중' : status == 'accepted' ? '교체완료' : status == 'declined' ? '거절됨' : '취소됨',
-                      style: TextStyle(color: status == 'open' ? AppColors.line6 : AppColors.secondaryInk, fontWeight: FontWeight.bold, fontSize: 12),
+                      applied ? (revert ? '되돌림 적용됨' : '근무 반영됨') : revert && status == 'open' ? '되돌리기 요청' : status == 'open' ? '진행중' : status == 'accepted' ? '교체완료' : status == 'declined' ? '거절됨' : '취소됨',
+                      style: TextStyle(color: applied || status == 'open' ? AppColors.line6 : AppColors.secondaryInk, fontWeight: FontWeight.bold, fontSize: 12),
                     ),
                   ),
                   if ((amIRequester || (AuthSession.current?.user.isAdmin ?? false)) && status == 'open')
@@ -239,7 +268,7 @@ class _PostList extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                type == 'direct' ? '$requester ⇄ $targetName' : '$requester (오픈 교체)',
+                revert ? '$requester ⇄ $targetName · 되돌리기 요청' : type == 'direct' ? '$requester ⇄ $targetName' : '$requester (오픈 교체)',
                 style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               const SizedBox(height: 8),

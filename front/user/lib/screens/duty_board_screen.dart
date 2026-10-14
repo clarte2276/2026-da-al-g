@@ -4,6 +4,7 @@ import '../core/duty_data.dart';
 import '../core/personal_store.dart';
 import '../services/auth_session.dart';
 import '../widgets/offline_banner.dart';
+import '../widgets/projected_duty_notice.dart';
 import '../widgets/skeleton.dart';
 import '../widgets/turn_sheet.dart';
 import 'compare_screen.dart';
@@ -27,6 +28,7 @@ enum _Mode { calendar, turns }
 class _DutyBoardScreenState extends State<DutyBoardScreen> {
   late Future<DutyMonth> _future;
   late final Future<List<String>> _monthsFuture;
+  late String _month;
   _Mode _mode = _Mode.calendar;
   int? _driverNo; // null이면 나
   String? _selectedDate;
@@ -34,7 +36,9 @@ class _DutyBoardScreenState extends State<DutyBoardScreen> {
   @override
   void initState() {
     super.initState();
-    _future = DutyRepository.instance.load();
+    final now = DateTime.now();
+    _month = '${now.year}-${now.month.toString().padLeft(2, '0')}';
+    _future = DutyRepository.instance.load(_month);
     _monthsFuture = DutyRepository.instance.availableMonths();
   }
 
@@ -79,6 +83,11 @@ class _DutyBoardScreenState extends State<DutyBoardScreen> {
                       : () => setState(() => _driverNo = null),
                 ),
               ),
+              if (data.projected)
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
+                  child: ProjectedDutyNotice(),
+                ),
               if (data.offline)
                 const Padding(
                   padding: EdgeInsets.fromLTRB(16, 12, 16, 0),
@@ -101,7 +110,7 @@ class _DutyBoardScreenState extends State<DutyBoardScreen> {
                     const SizedBox(width: 8),
                     ActionChip(
                       label: const Text('근무 교체'),
-                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ExchangeScreen())),
+                      onPressed: _openExchange,
                     ),
                     const SizedBox(width: 8),
                     ActionChip(
@@ -134,9 +143,15 @@ class _DutyBoardScreenState extends State<DutyBoardScreen> {
   }
 
   void _loadMonth(String month) => setState(() {
+        _month = month;
         _future = DutyRepository.instance.load(month);
         _selectedDate = null;
       });
+
+  Future<void> _openExchange() async {
+    await Navigator.push(context, MaterialPageRoute(builder: (_) => const ExchangeScreen()));
+    if (mounted) setState(() => _future = DutyRepository.instance.load(_month));
+  }
 
   Future<void> _pickDriver(DutyMonth data, Driver current) async {
     final picked = await showModalBottomSheet<Driver>(

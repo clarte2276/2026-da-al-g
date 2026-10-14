@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,6 +12,7 @@ import 'package:user/screens/chat_room_screen.dart';
 import 'package:user/screens/duty_board_screen.dart';
 import 'package:user/screens/login_screen.dart';
 import 'package:user/screens/my_page_screen.dart';
+import 'package:user/widgets/turn_sheet.dart';
 
 /// 기기 글자 크기를 최대(2배)로 키워도 폰 화면에서 레이아웃이 넘치지 않는지 확인한다.
 /// 넘치면 RenderFlex overflow 오류로 테스트가 실패한다.
@@ -29,7 +33,13 @@ Future<void> pumpScaled(WidgetTester tester, Widget home) async {
 }
 
 void main() {
-  setUp(() => SharedPreferences.setMockInitialValues({}));
+  setUp(() {
+    final now = DateTime.now();
+    final month = '${now.year}-${now.month.toString().padLeft(2, '0')}';
+    final fixture = File('assets/data/duty_2026_06.json').readAsStringSync();
+    SharedPreferences.setMockInitialValues({'duty_month_$month': fixture});
+    DutyRepository.instance.invalidate(month);
+  });
 
   testWidgets('tabs survive 2x text', (tester) async {
     await tester.runAsync(() async {
@@ -49,15 +59,24 @@ void main() {
   });
 
   testWidgets('duty calendar and 행로표 sheet survive 2x text', (tester) async {
-    await tester.runAsync(() => DutyRepository.instance.load());
+    final data = (await tester.runAsync(() => DutyRepository.instance.load()))!;
     await pumpScaled(tester, const DutyBoardScreen());
     expect(find.text('근무 요약'), findsOneWidget);
 
-    await tester.tap(find.text('63').first); // 6/1 야간 63
+    final context = tester.element(find.byType(DutyBoardScreen));
+    unawaited(showDaySheet(
+      context,
+      data: data,
+      driver: data.drivers.first,
+      date: data.dates.first,
+      subtitle: '6/1',
+    ));
     await tester.pumpAndSettle();
     expect(find.text('교번 63'), findsOneWidget);
     expect(find.text('평평'), findsOneWidget);
     expect(find.text('출근'), findsOneWidget);
+    Navigator.of(context).pop();
+    await tester.pumpAndSettle();
   });
 
   testWidgets('chat room with sources survives 2x text', (tester) async {

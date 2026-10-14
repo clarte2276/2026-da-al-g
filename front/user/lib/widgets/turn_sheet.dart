@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import '../core/colors.dart';
 import '../core/duty_data.dart';
 import '../core/personal_store.dart';
+import '../services/ai_api_client.dart';
+import '../services/auth_session.dart';
+import '../services/crew_api.dart';
+import 'dia_image_viewer.dart';
 
 /// 행로표(교번 상세)를 바텀시트로 연다. [subtitle]은 날짜·기관사 등 맥락 한 줄.
 Future<void> showTurnSheet(
@@ -52,7 +56,13 @@ Future<void> showDaySheet(
         builder: (context, _) {
           final duty = data.dutyOn(driver, date);
           final turn = duty == null ? null : data.turnFor(duty) ?? data.turns[duty.continues];
-          final footer = DayPersonalPanel(data: data, driver: driver, date: date, duty: duty);
+          final footer = Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              DayPersonalPanel(data: data, driver: driver, date: date, duty: duty),
+              _DaySwapPanel(driver: driver, date: date, duty: duty),
+            ],
+          );
           if (turn == null) {
             return _PlainDaySheet(duty: duty, subtitle: subtitle, controller: controller, footer: footer);
           }
@@ -143,6 +153,14 @@ class TurnSheet extends StatelessWidget {
             else
               for (var i = 0; i < turn.segments.length; i++)
                 _SegmentRow(seg: turn.segments[i], last: i == turn.segments.length - 1),
+          ],
+          if (turn.diaImage?.isNotEmpty ?? false) ...[
+            const SizedBox(height: 12),
+            OutlinedButton.icon(
+              onPressed: () => showDiaImageViewer(context, turn.diaImage!),
+              icon: const Icon(Icons.image_search_rounded, size: 18),
+              label: const Text('운전표 보기'),
+            ),
           ],
           ?footer,
         ],
@@ -441,6 +459,229 @@ class DayPersonalPanel extends StatelessWidget {
           label: Text(memo == null ? '메모 쓰기' : '메모 수정'),
         ),
       ],
+    );
+  }
+}
+
+class _DaySwapPanel extends StatefulWidget {
+  const _DaySwapPanel({required this.driver, required this.date, required this.duty});
+
+  final Driver driver;
+  final String date;
+  final DayDuty? duty;
+
+  @override
+  State<_DaySwapPanel> createState() => _DaySwapPanelState();
+}
+
+class _DaySwapPanelState extends State<_DaySwapPanel> {
+  final _api = CrewApi();
+  final _client = AiApiClient();
+  List<Map<String, dynamic>> _posts = [];
+  bool _busy = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPosts();
+  }
+
+  @override
+  void dispose() {
+    _api.close();
+    _client.close();
+    super.dispose();
+  }
+
+  Future<void> _loadPosts() async {
+    try {
+      final posts = await _api.fetchExchangePosts(mine: true);
+      if (mounted) setState(() => _posts = posts);
+    } catch (_) {
+      // The personal, device-only duty override works while this API is unavailable.
+    }
+  }
+
+  Map<String, dynamic>? get _pending =>
+      pendingDutySwap(_posts, widget.driver.name, widget.date);
+
+  Future<void> _requestSwap() async {
+    setState(() => _busy = true);
+    try {
+      final candidates = await _client.fetchExchangeMatches(date: widget.date);
+      if (!mounted) return;
+      final candidate = await showModalBottomSheet<Map<String, dynamic>>(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: AppColors.canvas,
+        builder: (_) => _SwapCandidatePicker(candidates: candidates),
+      );
+      if (candidate == null || !mounted || candidate['swapped'] == true) return;
+      final name = candidate['name'] as String? ?? '';
+      final theirCode = candidate['code'] as String? ?? '';
+      final myCode = widget.driver.days[widget.date]?.code ?? widget.duty?.code ?? '';
+      if (name.isEmpty || myCode.isEmpty || theirCode.isEmpty) return;
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('맞교환 요청'),
+          content: Text('${widget.date}\n${widget.driver.name} $myCode ↔ $name $theirCode\n요청을 보낼까요?'),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('취소')),
+            FilledButton(onPressed: () => Navigator.pop(context, true), child: const Text('요청')),
+          ],
+        ),
+      );
+      if (confirmed != true || !mounted) return;
+      await _api.createExchangePost({
+        'type': 'direct',
+        'target_name': name,
+        'dates': [widget.date],
+        'requester_dias': [myCode],
+        'target_dias': [theirCode],
+      });
+      await _loadPosts();
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('맞교환 요청을 보냈습니다.')));
+    } catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('맞교환 요청 실패: $e')));
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  Future<void> _cancelPending(Map<String, dynamic> post) async {
+    final id = post['id'] as String?;
+    if (id == null) return;
+    try {
+      await _api.deletePost(id);
+      await _loadPosts();
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('맞교환 요청을 취소했습니다.')));
+    } catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('요청 취소 실패: $e')));
+    }
+  }
+
+  Future<void> _revertSwap() async {
+    final id = widget.duty?.swapPostId;
+    if (id == null) return;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('교번 돌아가기'),
+        content: const Text('맞교환한 근무를 원래대로 되돌리는 요청을 보낼까요?'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('취소')),
+          FilledButton(onPressed: () => Navigator.pop(context, true), child: const Text('요청')),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    try {
+      await _client.revertExchangePost(id);
+      await _loadPosts();
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('되돌리기 요청을 보냈습니다.')));
+    } catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('되돌리기 요청 실패: $e')));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final pending = _pending;
+    final canRequest = AuthSession.current?.user.name == widget.driver.name;
+    final original = widget.duty?.original;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.duty?.swapPostId != null) ...[
+          Text('맞교환 적용됨 (원래: ${original?.code.isNotEmpty == true ? original!.code : '-'})',
+              style: const TextStyle(fontWeight: FontWeight.w800, color: AppColors.line6)),
+          TextButton.icon(
+            onPressed: _busy ? null : _revertSwap,
+            icon: const Icon(Icons.undo_rounded, size: 16),
+            label: const Text('교번 돌아가기'),
+          ),
+        ],
+        if (pending != null) ...[
+          Text(pending['requester_name'] == widget.driver.name ? '맞교환 요청 대기 중' : '내게 온 맞교환 요청 대기 중',
+              style: const TextStyle(fontWeight: FontWeight.w800, color: AppColors.line6)),
+          if (pending['requester_name'] == widget.driver.name)
+            TextButton.icon(
+              onPressed: _busy ? null : () => _cancelPending(pending),
+              icon: const Icon(Icons.close_rounded, size: 16),
+              label: const Text('교번 돌아가기'),
+            ),
+        ],
+        if (canRequest)
+          OutlinedButton.icon(
+            onPressed: _busy || pending != null ? null : _requestSwap,
+            icon: const Icon(Icons.compare_arrows_rounded, size: 18),
+            label: Text(_busy ? '불러오는 중…' : '맞교환 요청'),
+          ),
+      ],
+    );
+  }
+}
+
+class _SwapCandidatePicker extends StatefulWidget {
+  const _SwapCandidatePicker({required this.candidates});
+  final List<Map<String, dynamic>> candidates;
+
+  @override
+  State<_SwapCandidatePicker> createState() => _SwapCandidatePickerState();
+}
+
+class _SwapCandidatePickerState extends State<_SwapCandidatePicker> {
+  String _query = '';
+
+  @override
+  Widget build(BuildContext context) {
+    final query = _query.trim().toLowerCase();
+    final candidates = widget.candidates.where((candidate) {
+      final name = candidate['name'] as String? ?? '';
+      final code = candidate['code'] as String? ?? '';
+      return query.isEmpty || name.toLowerCase().contains(query) || code.toLowerCase().contains(query);
+    }).toList();
+    return SafeArea(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.7,
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(top: 16),
+              child: Text('맞교환할 기관사', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: TextField(
+                onChanged: (value) => setState(() => _query = value),
+                decoration: InputDecoration(
+                  hintText: '이름 · 교번 검색',
+                  prefixIcon: const Icon(Icons.search_rounded),
+                  filled: true,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: candidates.length,
+                itemBuilder: (context, index) {
+                  final candidate = candidates[index];
+                  final swapped = candidate['swapped'] == true;
+                  return ListTile(
+                    title: Text(candidate['name'] as String? ?? ''),
+                    subtitle: Text(candidate['code'] as String? ?? ''),
+                    trailing: swapped ? Text('변경됨', style: TextStyle(color: AppColors.ghostText)) : null,
+                    enabled: !swapped,
+                    onTap: swapped ? null : () => Navigator.pop(context, candidate),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
