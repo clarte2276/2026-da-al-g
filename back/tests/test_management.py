@@ -17,7 +17,6 @@ from app.db import Base, get_db
 from app.models import (
     AuditEvent,
     AuthSession,
-    BookmarkRecord,
     ConversationRecord,
     Inquiry,
     InquiryReply,
@@ -50,21 +49,16 @@ def test_admin_account_and_personal_data_lifecycle(tmp_path, monkeypatch):
                                json={"current_password": created.json()["initial_password"],
                                      "new_password": "password-123"}).status_code == 200
             conversation = {"id": "old-1", "title": "Question", "createdAt": "2026-06-01T00:00:00Z", "messages": [{"isUser": True, "text": "Hello"}]}
-            bookmark = {"regulation": "Rule", "chapter": "1", "version": ""}
-            payload = {"conversations": [conversation], "bookmarks": [bookmark]}
+            payload = {"conversations": [conversation]}
             assert client.post("/api/me/import", headers=user, json=payload).status_code == 200
             assert client.post("/api/me/import", headers=user, json=payload).status_code == 200
             assert len(client.get("/api/me/conversations", headers=user).json()) == 1
             client.put("/api/me/conversations/old-1", headers=user, json={**conversation, "saved": True})
             assert client.get("/api/me/conversations", headers=user).json()[0]["saved"] is True
-            assert len(client.get("/api/me/bookmarks", headers=user).json()) == 1
-            assert client.get(f"/api/admin/users/{user_id}/bookmarks", headers=admin).status_code == 404
             assert client.get(f"/api/admin/users/{user_id}/conversations", headers=admin).status_code == 404
-            assert client.delete(f"/api/admin/users/{user_id}/bookmarks/old-1", headers=admin).status_code == 404
             assert client.delete(f"/api/admin/users/{user_id}/conversations/old-1", headers=admin).status_code == 404
             assert client.get("/api/admin/feedback", headers=admin).status_code == 404
             assert client.patch(f"/api/admin/users/{user_id}", headers=admin, json={"is_active": False}).status_code == 200
-            assert client.get("/api/me/bookmarks", headers=user).status_code == 401
 
 
 def test_admin_deletes_member_and_personal_data(tmp_path, monkeypatch):
@@ -99,7 +93,6 @@ def test_admin_deletes_member_and_personal_data(tmp_path, monkeypatch):
             assert client.post("/api/me/import", headers=user, json={
                 "conversations": [{"id": "old-1", "title": "Question", "createdAt": "2026-06-01T00:00:00Z",
                                    "messages": [{"isUser": True, "text": "Hello"}]}],
-                "bookmarks": [{"regulation": "Rule", "chapter": "1", "version": ""}],
             }).status_code == 200
             inquiry = client.post("/api/me/inquiries", headers=user,
                                   json={"title": "Inquiry", "body": "Please check."})
@@ -112,7 +105,6 @@ def test_admin_deletes_member_and_personal_data(tmp_path, monkeypatch):
             assert db.scalar(select(User).where(User.id == user_id)) is None
             assert db.scalar(select(AuthSession).where(AuthSession.user_id == user_id)) is None
             assert db.scalar(select(ConversationRecord).where(ConversationRecord.user_id == user_id)) is None
-            assert db.scalar(select(BookmarkRecord).where(BookmarkRecord.user_id == user_id)) is None
             assert db.scalar(select(Inquiry).where(Inquiry.user_id == user_id)) is None
             assert db.scalar(select(InquiryReply).where(InquiryReply.inquiry_id == inquiry.json()["id"])) is None
             assert db.scalar(select(AuditEvent).where(AuditEvent.action == "user.deleted",

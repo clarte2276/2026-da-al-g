@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import hashlib
 import re
 import secrets
 from datetime import UTC, datetime
@@ -22,7 +21,6 @@ from .duty import load_duty, parse_duty_xlsx, parse_route_xlsx, projected_months
 from .models import (
     AuditEvent,
     AuthSession,
-    BookmarkRecord,
     ConversationRecord,
     DutyRoute,
     DutySchedule,
@@ -51,23 +49,8 @@ class ConversationWrite(BaseModel):
     saved: bool = False
 
 
-class BookmarkWrite(BaseModel):
-    regulation: str = Field(min_length=1, max_length=200)
-    chapter: str = Field(min_length=1, max_length=200)
-    version: str = Field(max_length=100)
-    excerpt: str | None = Field(default=None, max_length=10000)
-    content: str | None = Field(default=None, max_length=20000)
-    sourcePath: str | None = Field(default=None, max_length=2000)
-    chunkId: str | None = Field(default=None, max_length=100)
-    retriever: str | None = Field(default=None, max_length=100)
-    documentId: str | None = Field(default=None, max_length=100)
-    versionId: str | None = Field(default=None, max_length=100)
-    page: int | None = Field(default=None, ge=1)
-
-
 class ImportWrite(BaseModel):
     conversations: list[ConversationWrite] = Field(default_factory=list, max_length=1000)
-    bookmarks: list[BookmarkWrite] = Field(default_factory=list, max_length=1000)
 
 
 class UserCreate(BaseModel):
@@ -104,10 +87,6 @@ def _audit(db: Session, actor: str, action: str, entity_type: str, entity_id: st
            payload: dict | None = None) -> None:
     db.add(AuditEvent(actor=actor, action=action, entity_type=entity_type,
                       entity_id=entity_id, payload_json=payload or {}))
-
-
-def _bookmark_id(data: BookmarkWrite) -> str:
-    return hashlib.sha256(f"{data.regulation}|{data.chapter}".encode()).hexdigest()
 
 
 def _validate_conversation(data: ConversationWrite) -> None:
@@ -153,50 +132,12 @@ def delete_conversation(conversation_id: str, db: DB, user: CurrentUser) -> dict
     return {"status": "ok"}
 
 
-@router.get("/me/bookmarks")
-def my_bookmarks(db: DB, user: CurrentUser) -> list[dict]:
-    rows = db.scalars(select(BookmarkRecord).where(BookmarkRecord.user_id == user.id,
-                            BookmarkRecord.deleted.is_(False)).order_by(BookmarkRecord.updated_at.desc())).all()
-    return [row.data for row in rows]
-
-
-@router.post("/me/bookmarks")
-def save_bookmark(payload: BookmarkWrite, db: DB, user: CurrentUser) -> dict:
-    key = _bookmark_id(payload)
-    row = db.get(BookmarkRecord, (key, user.id))
-    if row and row.deleted:
-        raise HTTPException(410, "Bookmark was deleted")
-    if not row:
-        row = BookmarkRecord(id=key, user_id=user.id, data={})
-        db.add(row)
-    row.data = payload.model_dump(mode="json")
-    db.commit()
-    return row.data
-
-
-@router.delete("/me/bookmarks")
-def delete_bookmark(payload: BookmarkWrite, db: DB, user: CurrentUser) -> dict:
-    key = _bookmark_id(payload)
-    row = db.get(BookmarkRecord, (key, user.id))
-    if not row:
-        row = BookmarkRecord(id=key, user_id=user.id, data={}, deleted=True)
-        db.add(row)
-    row.deleted = True
-    row.data = {}
-    db.commit()
-    return {"status": "ok"}
-
-
 @router.post("/me/import")
 def import_local(payload: ImportWrite, db: DB, user: CurrentUser) -> dict:
     for item in payload.conversations:
         _validate_conversation(item)
         if not db.get(ConversationRecord, (item.id, user.id)):
             db.add(ConversationRecord(id=item.id, user_id=user.id, data=item.model_dump(mode="json")))
-    for item in payload.bookmarks:
-        key = _bookmark_id(item)
-        if not db.get(BookmarkRecord, (key, user.id)):
-            db.add(BookmarkRecord(id=key, user_id=user.id, data=item.model_dump(mode="json")))
     db.commit()
     return {"status": "ok"}
 
@@ -386,7 +327,7 @@ def delete_user(user_id: str, db: DB, admin: AdminUser) -> dict:
     if user.role != "user" or user.id == admin.id:
         raise HTTPException(403, "Cannot delete administrators or yourself")
     inquiry_ids = select(Inquiry.id).where(Inquiry.user_id == user.id)
-    for model in (AuthSession, ConversationRecord, BookmarkRecord):
+    for model in (AuthSession, ConversationRecord):
         db.execute(delete(model).where(model.user_id == user.id))
     db.execute(delete(InquiryReply).where(InquiryReply.inquiry_id.in_(inquiry_ids)))
     db.execute(delete(Inquiry).where(Inquiry.user_id == user.id))

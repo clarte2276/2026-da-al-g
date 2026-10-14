@@ -42,8 +42,7 @@
 | 채팅방 | `screens/chat_room_screen.dart` | AI 질의응답, 응답모드(즉시/일반/심층) 선택, 근거 소스 카드, 대화 삭제 | **실동작** | `POST /ai/chat` |
 | 규정 라이브러리 | `screens/regulation_library_screen.dart` | 규정 목록(카테고리별 그룹핑) | **실동작** | `GET /regulations` |
 | 규정 원문 뷰어(목록발) | `regulation_library_screen.dart`(`RegulationDocumentScreen`) | 규정 본문 + 별표/별지 부속서류 이동 | **실동작** | `GET /regulations/document` |
-| 규정 원문 뷰어(채팅발) | `screens/regulation_viewer_screen.dart` | 챗봇 답변 근거 조항 원문 표시, 북마크 토글 | **실동작** | `/bookmarks` |
-| 보관함 | `screens/bookmark_screen.dart` | 저장한 규정 조항 목록, 삭제, 원문 이동 | **실동작** | `GET/POST/DELETE /bookmarks` |
+| 보관함 | `screens/bookmark_screen.dart` | 저장한 채팅 목록, 다시 열기, 보관함에서 제거 | **실동작** | — |
 | 시간표(근무표) | `screens/schedule_screen.dart` | 오늘/주간/타임라인 탭, 근무계획·교번표 진입 | **실동작**(로컬 JSON) | — |
 | 근무표 업로드 | `screens/schedule_upload_screen.dart` | 파일 업로드 UI | **Mock** — 실제 파일 선택 없이 "샘플 파일 분석" 버튼으로 바로 완료 처리 | — |
 | 근무·교번 보드 | `screens/duty_board_screen.dart` | 기관사별 월간 근무 달력, 일자별 교번표, 교번 상세시트 | **실동작**(파싱 데이터) — 단 교번 상세 시각·구간은 `turnDetailIsDummy` 플래그로 더미임을 UI에 명시 | — |
@@ -68,13 +67,12 @@
   - 응답: `{answer, sources: [{score, title, file_name, content, linked_annex, source, chunk_id, retriever}], searchKeywords}`
 - **리트리버 선택지**(`core/ai_retriever.dart`): `hybrid`(기본) / `local_graph` / `local_fts` / `local_vector` / `local_vector_openai` 5종이 정의되어 있으나, 앱은 항상 `hybrid`를 고정 사용 — 사용자가 UI에서 검색기를 바꾸는 화면은 없음.
 - **응답 모드**(채팅방 상단 `SegmentedButton`): 즉시 응답(`fast_extractive_v1`, top-k 3) / 일반 채팅(`llm_relevancy_v2`, `gpt-4o-mini`, top-k 3, 기본) / 심층 응답(`llm_relevancy_v2`, `gpt-4o`, top-k 5).
-- 첫 번째 근거(`sources.first`)만 근거 카드로 표시, 탭하면 규정 원문 뷰어로 이동해 전문·북마크 제공.
+- 첫 번째 근거(`sources.first`)만 근거 카드로 표시하고, 탭하면 관련 규정 원문을 확인할 수 있다.
 - 서버 미기동/타임아웃/에러 시 한국어 오류 메시지를 분기 처리하여 노출.
 
 ### 1.5 로컬 저장/캐싱
 
 - **`ConversationStore`**: `SharedPreferences`(`conversations_v1`)에 대화 목록 저장. 최초 실행 시 저장 데이터가 없으면 `mock_conversations.dart`의 샘플 5개로 시드. 서버 동기화 없는 순수 로컬 저장.
-- **`BookmarkStore`**: 서버(`/bookmarks`)를 진실 소스로 삼되 낙관적 업데이트 — 토글 즉시 로컬 갱신 후 백그라운드로 서버 반영(실패해도 로컬 유지, 오프라인 폴백).
 - **`AuthSession`**: `SharedPreferences`(`auth_session`)에 세션 저장.
 - **`DutyRepository`**: 앱 번들 자산(`assets/data/duty_2026_06.json`)을 1회 로드 후 메모리 캐시. 서버 API 없음.
 - **`ThemeController`**: 다크모드 상태는 메모리에만 보관(영속화 없음, 재시작 시 라이트모드로 리셋).
@@ -115,7 +113,6 @@
 | `/ai/index/local/rebuild` | POST | 로컬 SQLite 검색 인덱스 재구축 |
 | `/ai/compare` | POST | 여러 검색기로 동일 질문을 병렬 비교 |
 | `/ai`, `/ai/chat` | POST | RAG 질의응답(핵심 기능) — `question`, `retriever`, `model`, `generation_mode`, `k` |
-| `/bookmarks` | GET/POST/DELETE | 규정 조항 보관함 CRUD |
 | `/duties/meta` | GET | 근무표 메타(월, 노선, 날짜 목록, 기관사 목록) |
 | `/duties` | GET | 특정 일자의 교번 배정 목록 |
 | `/duties/driver/{no}` | GET | 특정 기관사의 월간 근무 캘린더 |
@@ -183,7 +180,7 @@ RAG 파이프라인의 소스 코퍼스:
 - 회원가입/로그인/세션 관리 (자체 인증, PBKDF2 해싱)
 - RAG 기반 규정 챗봇 (`/ai/chat`) — 5종 검색기, hybrid 기본, 다수 생성 모드 프리셋
 - 규정 원문 라이브러리·뷰어 (부속서류 연결 포함)
-- 규정 조항 북마크(보관함) — 서버 동기화 + 로컬 낙관적 업데이트
+- 채팅 대화 보관함 — `Conversation.saved`에 보관 상태를 포함
 - 근무표/교번 조회 API 및 화면 (단, 다이아 상세는 더미 데이터)
 - 검색기 비교 도구(`/ai/compare`, CLI)
 
