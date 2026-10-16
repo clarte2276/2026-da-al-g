@@ -18,7 +18,9 @@ Expected repeats are r1–r3; high variation is flagged at between-repeat SD ≥
 - High between-repeat variation: proposed/all/answer_latency_seconds SD=0.186 across 3 repeats.
 - link_all comparison uses only case-name intersections; partial run sizes are 31, 35, 31/37 cases.
 - BM25 has retrieval-only results; answer-generation/RAGAS metrics are unavailable.
-- hybrid_rerank was not run; its paired comparisons are marked TODO.
+- hybrid_rerank was not run; no variant or paired-comparison metrics are available.
+- Source split: existing_v2 has 12 doc/5 graph cases (17 total); llm_drafted has 5 doc/15 graph cases (20 total).
+- New graph cases cover 15/36 distinct approved links, based on the human-review checklist.
 
 ## Input coverage
 

@@ -14,10 +14,15 @@ ROOT = Path(__file__).resolve().parent
 RESULTS = ROOT / "results"
 CHECKPOINTS = ROOT / "logs"
 SUMMARY = ROOT / "summary"
+EVAL_SET = ROOT.parent / "data" / "eval_set_v3.json"
+DATA_README = ROOT.parent / "data" / "README.md"
+HUMAN_CHECKLIST = ROOT.parent / "data" / "human_review_checklist.md"
 VARIANTS = ("bm25", "dense", "hybrid", "hybrid_rerank", "link_all", "proposed")
 REPEATS = ("r1", "r2", "r3")
 CATEGORIES = ("doc", "graph", "all")
 EXPECTED_CASES = {"doc": 17, "graph": 20, "all": 37}
+SOURCE_GROUPS = ("existing_v2", "llm_drafted")
+SOURCE_METRICS = ("precision", "recall", "mrr", "context_precision", "context_recall", "answer_correctness")
 RETRIEVAL_METRICS = (
     "recall",
     "precision",
@@ -125,6 +130,50 @@ def _rows_for(run: dict[str, Any], category: str) -> list[dict[str, Any]]:
     if category == "all":
         return rows
     return [row for row in rows if _case_category(row) == category]
+
+
+def _source_graph_cases() -> dict[str, set[str]]:
+    cases = json.loads(EVAL_SET.read_text(encoding="utf-8"))["cases"]
+    groups = {
+        source: {case["name"] for case in cases if case["label_source"] == source and case["category"] == "graph"}
+        for source in SOURCE_GROUPS
+    }
+    if len(cases) != 37 or {source: len(names) for source, names in groups.items()} != {"existing_v2": 5, "llm_drafted": 15}:
+        raise ValueError("Unexpected eval_set_v3 graph source split")
+    return groups
+
+
+def _link_coverage() -> tuple[int, int]:
+    count = re.search(r"approved-link query returned (\d+) rows", DATA_README.read_text(encoding="utf-8"))
+    links = set(re.findall(r"Link ID: `([^`]+)`", HUMAN_CHECKLIST.read_text(encoding="utf-8")))
+    if not count or not links:
+        raise ValueError("Could not read the approved-link coverage from paper/data")
+    return len(links), int(count.group(1))
+
+
+def _source_summaries(
+    runs: list[dict[str, Any]], graph_cases: dict[str, set[str]]
+) -> dict[tuple[str, str, str], dict[str, Any]]:
+    summaries: dict[tuple[str, str, str], dict[str, Any]] = {}
+    for source, names in graph_cases.items():
+        for variant in VARIANTS:
+            variant_runs = [run for run in runs if run["variant"] == variant]
+            case_counts = [sum(row.get("case") in names for row in run["rows"]) for run in variant_runs]
+            for metric in SOURCE_METRICS:
+                repeat_means = []
+                for run in variant_runs:
+                    values = [_number(row.get(metric)) for row in run["rows"] if row.get("case") in names]
+                    present = [value for value in values if value is not None]
+                    if present:
+                        repeat_means.append(mean(present))
+                summaries[(variant, source, metric)] = {
+                    "mean": mean(repeat_means) if repeat_means else None,
+                    "std": stdev(repeat_means) if len(repeat_means) > 1 else None,
+                    "repeats": len(repeat_means),
+                    "case_counts": case_counts,
+                    "partial": any(count < len(names) for count in case_counts),
+                }
+    return summaries
 
 
 def _run_mean(run: dict[str, Any], category: str, metric: str) -> float | None:
@@ -276,6 +325,7 @@ def _coverage_notes(runs: list[dict[str, Any]], notes: list[str]) -> list[str]:
 def _write_markdown(
     runs: list[dict[str, Any]],
     summaries: dict[tuple[str, str, str], dict[str, Any]],
+    source_summaries: dict[tuple[str, str, str], dict[str, Any]],
     comparisons: list[dict[str, Any]],
     notes: list[str],
 ) -> None:
@@ -284,7 +334,8 @@ def _write_markdown(
         "",
         "Each cell is the mean of repeat-level case means ± sample SD across repeats. "
         "`n` is the number of repeats with that metric; `—` means the SD is undefined for one repeat. "
-        "Partial runs remain in the summary and are identified below.",
+        "Partial runs remain in the summary and are identified below. Unavailable metrics are omitted; "
+        "all reported p-values are unadjusted exploratory results.",
         "",
         *_coverage_notes(runs, notes),
         "",
@@ -297,9 +348,33 @@ def _write_markdown(
         for category in CATEGORIES:
             for metric in METRICS:
                 item = summaries[(variant, category, metric)]
+                if item["mean"] is None:
+                    continue
                 counts = ", ".join(str(value) for value in item["case_counts"]) or "—"
                 lines.append(
                     f"| {variant} | {category} | {metric} | {_format_cell(item)} | {counts} | "
+                    f"{'yes' if item['partial'] else 'no'} |"
+                )
+
+    lines += [
+        "",
+        "## Source-separated graph metrics",
+        "",
+        "`existing_v2` is development data; `llm_drafted` is the 20-case new set, whose labels remain unreviewed. "
+        "Metrics are averaged within each repeat and then across repeats.",
+        "",
+        "| Source | Variant | Metric | Mean ± SD | Cases per repeat | Partial |",
+        "|---|---|---|---:|---|:---:|",
+    ]
+    for source in SOURCE_GROUPS:
+        for variant in VARIANTS:
+            for metric in SOURCE_METRICS:
+                item = source_summaries[(variant, source, metric)]
+                if item["mean"] is None:
+                    continue
+                counts = ", ".join(str(value) for value in item["case_counts"]) or "—"
+                lines.append(
+                    f"| {source} (graph) | {variant} | {metric} | {_format_cell(item)} | {counts} | "
                     f"{'yes' if item['partial'] else 'no'} |"
                 )
 
@@ -315,6 +390,8 @@ def _write_markdown(
         "|---|---|---|---:|---:|---:|---|",
     ]
     for item in comparisons:
+        if not item["n"]:
+            continue
         difference = _format(item["mean_difference"])
         p_value = _format(item["p_value"])
         n = f"{item['n']} ({item['n_nonzero']})" if item["n"] else "0"
@@ -328,10 +405,11 @@ def _write_markdown(
 
 def _write_csv(
     summaries: dict[tuple[str, str, str], dict[str, Any]],
+    source_summaries: dict[tuple[str, str, str], dict[str, Any]],
     comparisons: list[dict[str, Any]],
 ) -> None:
     columns = (
-        "record_type", "variant", "comparison", "category", "metric", "mean", "std",
+        "record_type", "variant", "comparison", "source_group", "category", "metric", "mean", "std",
         "repeat_count", "case_counts", "mean_difference", "p_value", "n", "n_nonzero", "partial",
     )
     with (SUMMARY / "main_table.csv").open("w", encoding="utf-8-sig", newline="") as f:
@@ -342,6 +420,19 @@ def _write_csv(
                 "record_type": "variant_metric",
                 "variant": variant,
                 "category": category,
+                "metric": metric,
+                "mean": item["mean"],
+                "std": item["std"],
+                "repeat_count": item["repeats"],
+                "case_counts": ",".join(map(str, item["case_counts"])),
+                "partial": item["partial"],
+            })
+        for (variant, source, metric), item in source_summaries.items():
+            writer.writerow({
+                "record_type": "source_metric",
+                "variant": variant,
+                "source_group": source,
+                "category": "graph",
                 "metric": metric,
                 "mean": item["mean"],
                 "std": item["std"],
@@ -383,7 +474,9 @@ def main() -> None:
         "",
     ]
     runs = _load_runs(notes)
+    source_graph_cases = _source_graph_cases()
     summaries = _summaries(runs)
+    source_summaries = _source_summaries(runs, source_graph_cases)
     comparisons = _comparison_rows(runs)
     coverage = _coverage_notes(runs, notes)
     _variance_notes(summaries, notes)
@@ -402,12 +495,15 @@ def main() -> None:
     if not any(run["variant"] == "proposed" for run in runs):
         notes.append("- No proposed results were found; proposed comparisons are unavailable.")
     if not any(run["variant"] == "hybrid_rerank" for run in runs):
-        notes.append("- hybrid_rerank was not run; its paired comparisons are marked TODO.")
+        notes.append("- hybrid_rerank was not run; no variant or paired-comparison metrics are available.")
+    notes.append("- Source split: existing_v2 has 12 doc/5 graph cases (17 total); llm_drafted has 5 doc/15 graph cases (20 total).")
+    used_links, approved_links = _link_coverage()
+    notes.append(f"- New graph cases cover {used_links}/{approved_links} distinct approved links, based on the human-review checklist.")
     if coverage:
         notes += ["", *coverage]
     (SUMMARY / "notes.md").write_text("\n".join(notes) + "\n", encoding="utf-8")
-    _write_markdown(runs, summaries, comparisons, notes)
-    _write_csv(summaries, comparisons)
+    _write_markdown(runs, summaries, source_summaries, comparisons, notes)
+    _write_csv(summaries, source_summaries, comparisons)
     print(f"Wrote {SUMMARY / 'main_table.md'}, {SUMMARY / 'main_table.csv'}, and {SUMMARY / 'notes.md'}")
 
 

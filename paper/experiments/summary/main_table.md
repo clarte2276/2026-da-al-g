@@ -1,6 +1,6 @@
 # Aggregated experiment results
 
-Each cell is the mean of repeat-level case means ± sample SD across repeats. `n` is the number of repeats with that metric; `—` means the SD is undefined for one repeat. Partial runs remain in the summary and are identified below.
+Each cell is the mean of repeat-level case means ± sample SD across repeats. `n` is the number of repeats with that metric; `—` means the SD is undefined for one repeat. Partial runs remain in the summary and are identified below. Unavailable metrics are omitted; all reported p-values are unadjusted exploratory results.
 
 ## Input coverage
 
@@ -20,17 +20,10 @@ Each cell is the mean of repeat-level case means ± sample SD across repeats. `n
 | bm25 | doc | precision | 0.1765 ± — (n=1) | 17 | no |
 | bm25 | doc | mrr | 0.7500 ± — (n=1) | 17 | no |
 | bm25 | doc | ndcg_at_10 | 0.7611 ± — (n=1) | 17 | no |
-| bm25 | doc | linked_gold_recall | TODO(실험 미완료) | 17 | no |
 | bm25 | doc | special_rule_hit | 0.0000 ± — (n=1) | 17 | no |
 | bm25 | doc | evidence_count | 5.0000 ± — (n=1) | 17 | no |
 | bm25 | doc | linked_evidence_count | 0.0000 ± — (n=1) | 17 | no |
 | bm25 | doc | retrieval_latency_seconds | 0.2929 ± — (n=1) | 17 | no |
-| bm25 | doc | answer_latency_seconds | TODO(실험 미완료) | 17 | no |
-| bm25 | doc | faithfulness | TODO(실험 미완료) | 17 | no |
-| bm25 | doc | answer_relevancy | TODO(실험 미완료) | 17 | no |
-| bm25 | doc | answer_correctness | TODO(실험 미완료) | 17 | no |
-| bm25 | doc | context_precision | TODO(실험 미완료) | 17 | no |
-| bm25 | doc | context_recall | TODO(실험 미완료) | 17 | no |
 | bm25 | graph | recall | 0.5750 ± — (n=1) | 20 | no |
 | bm25 | graph | precision | 0.2500 ± — (n=1) | 20 | no |
 | bm25 | graph | mrr | 0.8167 ± — (n=1) | 20 | no |
@@ -40,12 +33,6 @@ Each cell is the mean of repeat-level case means ± sample SD across repeats. `n
 | bm25 | graph | evidence_count | 5.0000 ± — (n=1) | 20 | no |
 | bm25 | graph | linked_evidence_count | 0.0000 ± — (n=1) | 20 | no |
 | bm25 | graph | retrieval_latency_seconds | 0.1521 ± — (n=1) | 20 | no |
-| bm25 | graph | answer_latency_seconds | TODO(실험 미완료) | 20 | no |
-| bm25 | graph | faithfulness | TODO(실험 미완료) | 20 | no |
-| bm25 | graph | answer_relevancy | TODO(실험 미완료) | 20 | no |
-| bm25 | graph | answer_correctness | TODO(실험 미완료) | 20 | no |
-| bm25 | graph | context_precision | TODO(실험 미완료) | 20 | no |
-| bm25 | graph | context_recall | TODO(실험 미완료) | 20 | no |
 | bm25 | all | recall | 0.6892 ± — (n=1) | 37 | no |
 | bm25 | all | precision | 0.2162 ± — (n=1) | 37 | no |
 | bm25 | all | mrr | 0.7860 ± — (n=1) | 37 | no |
@@ -55,152 +42,10 @@ Each cell is the mean of repeat-level case means ± sample SD across repeats. `n
 | bm25 | all | evidence_count | 5.0000 ± — (n=1) | 37 | no |
 | bm25 | all | linked_evidence_count | 0.0000 ± — (n=1) | 37 | no |
 | bm25 | all | retrieval_latency_seconds | 0.2168 ± — (n=1) | 37 | no |
-| bm25 | all | answer_latency_seconds | TODO(실험 미완료) | 37 | no |
-| bm25 | all | faithfulness | TODO(실험 미완료) | 37 | no |
-| bm25 | all | answer_relevancy | TODO(실험 미완료) | 37 | no |
-| bm25 | all | answer_correctness | TODO(실험 미완료) | 37 | no |
-| bm25 | all | context_precision | TODO(실험 미완료) | 37 | no |
-| bm25 | all | context_recall | TODO(실험 미완료) | 37 | no |
-| dense | doc | recall | TODO(실험 미완료) | — | no |
-| dense | doc | precision | TODO(실험 미완료) | — | no |
-| dense | doc | mrr | TODO(실험 미완료) | — | no |
-| dense | doc | ndcg_at_10 | TODO(실험 미완료) | — | no |
-| dense | doc | linked_gold_recall | TODO(실험 미완료) | — | no |
-| dense | doc | special_rule_hit | TODO(실험 미완료) | — | no |
-| dense | doc | evidence_count | TODO(실험 미완료) | — | no |
-| dense | doc | linked_evidence_count | TODO(실험 미완료) | — | no |
-| dense | doc | retrieval_latency_seconds | TODO(실험 미완료) | — | no |
-| dense | doc | answer_latency_seconds | TODO(실험 미완료) | — | no |
-| dense | doc | faithfulness | TODO(실험 미완료) | — | no |
-| dense | doc | answer_relevancy | TODO(실험 미완료) | — | no |
-| dense | doc | answer_correctness | TODO(실험 미완료) | — | no |
-| dense | doc | context_precision | TODO(실험 미완료) | — | no |
-| dense | doc | context_recall | TODO(실험 미완료) | — | no |
-| dense | graph | recall | TODO(실험 미완료) | — | no |
-| dense | graph | precision | TODO(실험 미완료) | — | no |
-| dense | graph | mrr | TODO(실험 미완료) | — | no |
-| dense | graph | ndcg_at_10 | TODO(실험 미완료) | — | no |
-| dense | graph | linked_gold_recall | TODO(실험 미완료) | — | no |
-| dense | graph | special_rule_hit | TODO(실험 미완료) | — | no |
-| dense | graph | evidence_count | TODO(실험 미완료) | — | no |
-| dense | graph | linked_evidence_count | TODO(실험 미완료) | — | no |
-| dense | graph | retrieval_latency_seconds | TODO(실험 미완료) | — | no |
-| dense | graph | answer_latency_seconds | TODO(실험 미완료) | — | no |
-| dense | graph | faithfulness | TODO(실험 미완료) | — | no |
-| dense | graph | answer_relevancy | TODO(실험 미완료) | — | no |
-| dense | graph | answer_correctness | TODO(실험 미완료) | — | no |
-| dense | graph | context_precision | TODO(실험 미완료) | — | no |
-| dense | graph | context_recall | TODO(실험 미완료) | — | no |
-| dense | all | recall | TODO(실험 미완료) | — | no |
-| dense | all | precision | TODO(실험 미완료) | — | no |
-| dense | all | mrr | TODO(실험 미완료) | — | no |
-| dense | all | ndcg_at_10 | TODO(실험 미완료) | — | no |
-| dense | all | linked_gold_recall | TODO(실험 미완료) | — | no |
-| dense | all | special_rule_hit | TODO(실험 미완료) | — | no |
-| dense | all | evidence_count | TODO(실험 미완료) | — | no |
-| dense | all | linked_evidence_count | TODO(실험 미완료) | — | no |
-| dense | all | retrieval_latency_seconds | TODO(실험 미완료) | — | no |
-| dense | all | answer_latency_seconds | TODO(실험 미완료) | — | no |
-| dense | all | faithfulness | TODO(실험 미완료) | — | no |
-| dense | all | answer_relevancy | TODO(실험 미완료) | — | no |
-| dense | all | answer_correctness | TODO(실험 미완료) | — | no |
-| dense | all | context_precision | TODO(실험 미완료) | — | no |
-| dense | all | context_recall | TODO(실험 미완료) | — | no |
-| hybrid | doc | recall | TODO(실험 미완료) | — | no |
-| hybrid | doc | precision | TODO(실험 미완료) | — | no |
-| hybrid | doc | mrr | TODO(실험 미완료) | — | no |
-| hybrid | doc | ndcg_at_10 | TODO(실험 미완료) | — | no |
-| hybrid | doc | linked_gold_recall | TODO(실험 미완료) | — | no |
-| hybrid | doc | special_rule_hit | TODO(실험 미완료) | — | no |
-| hybrid | doc | evidence_count | TODO(실험 미완료) | — | no |
-| hybrid | doc | linked_evidence_count | TODO(실험 미완료) | — | no |
-| hybrid | doc | retrieval_latency_seconds | TODO(실험 미완료) | — | no |
-| hybrid | doc | answer_latency_seconds | TODO(실험 미완료) | — | no |
-| hybrid | doc | faithfulness | TODO(실험 미완료) | — | no |
-| hybrid | doc | answer_relevancy | TODO(실험 미완료) | — | no |
-| hybrid | doc | answer_correctness | TODO(실험 미완료) | — | no |
-| hybrid | doc | context_precision | TODO(실험 미완료) | — | no |
-| hybrid | doc | context_recall | TODO(실험 미완료) | — | no |
-| hybrid | graph | recall | TODO(실험 미완료) | — | no |
-| hybrid | graph | precision | TODO(실험 미완료) | — | no |
-| hybrid | graph | mrr | TODO(실험 미완료) | — | no |
-| hybrid | graph | ndcg_at_10 | TODO(실험 미완료) | — | no |
-| hybrid | graph | linked_gold_recall | TODO(실험 미완료) | — | no |
-| hybrid | graph | special_rule_hit | TODO(실험 미완료) | — | no |
-| hybrid | graph | evidence_count | TODO(실험 미완료) | — | no |
-| hybrid | graph | linked_evidence_count | TODO(실험 미완료) | — | no |
-| hybrid | graph | retrieval_latency_seconds | TODO(실험 미완료) | — | no |
-| hybrid | graph | answer_latency_seconds | TODO(실험 미완료) | — | no |
-| hybrid | graph | faithfulness | TODO(실험 미완료) | — | no |
-| hybrid | graph | answer_relevancy | TODO(실험 미완료) | — | no |
-| hybrid | graph | answer_correctness | TODO(실험 미완료) | — | no |
-| hybrid | graph | context_precision | TODO(실험 미완료) | — | no |
-| hybrid | graph | context_recall | TODO(실험 미완료) | — | no |
-| hybrid | all | recall | TODO(실험 미완료) | — | no |
-| hybrid | all | precision | TODO(실험 미완료) | — | no |
-| hybrid | all | mrr | TODO(실험 미완료) | — | no |
-| hybrid | all | ndcg_at_10 | TODO(실험 미완료) | — | no |
-| hybrid | all | linked_gold_recall | TODO(실험 미완료) | — | no |
-| hybrid | all | special_rule_hit | TODO(실험 미완료) | — | no |
-| hybrid | all | evidence_count | TODO(실험 미완료) | — | no |
-| hybrid | all | linked_evidence_count | TODO(실험 미완료) | — | no |
-| hybrid | all | retrieval_latency_seconds | TODO(실험 미완료) | — | no |
-| hybrid | all | answer_latency_seconds | TODO(실험 미완료) | — | no |
-| hybrid | all | faithfulness | TODO(실험 미완료) | — | no |
-| hybrid | all | answer_relevancy | TODO(실험 미완료) | — | no |
-| hybrid | all | answer_correctness | TODO(실험 미완료) | — | no |
-| hybrid | all | context_precision | TODO(실험 미완료) | — | no |
-| hybrid | all | context_recall | TODO(실험 미완료) | — | no |
-| hybrid_rerank | doc | recall | TODO(실험 미완료) | — | no |
-| hybrid_rerank | doc | precision | TODO(실험 미완료) | — | no |
-| hybrid_rerank | doc | mrr | TODO(실험 미완료) | — | no |
-| hybrid_rerank | doc | ndcg_at_10 | TODO(실험 미완료) | — | no |
-| hybrid_rerank | doc | linked_gold_recall | TODO(실험 미완료) | — | no |
-| hybrid_rerank | doc | special_rule_hit | TODO(실험 미완료) | — | no |
-| hybrid_rerank | doc | evidence_count | TODO(실험 미완료) | — | no |
-| hybrid_rerank | doc | linked_evidence_count | TODO(실험 미완료) | — | no |
-| hybrid_rerank | doc | retrieval_latency_seconds | TODO(실험 미완료) | — | no |
-| hybrid_rerank | doc | answer_latency_seconds | TODO(실험 미완료) | — | no |
-| hybrid_rerank | doc | faithfulness | TODO(실험 미완료) | — | no |
-| hybrid_rerank | doc | answer_relevancy | TODO(실험 미완료) | — | no |
-| hybrid_rerank | doc | answer_correctness | TODO(실험 미완료) | — | no |
-| hybrid_rerank | doc | context_precision | TODO(실험 미완료) | — | no |
-| hybrid_rerank | doc | context_recall | TODO(실험 미완료) | — | no |
-| hybrid_rerank | graph | recall | TODO(실험 미완료) | — | no |
-| hybrid_rerank | graph | precision | TODO(실험 미완료) | — | no |
-| hybrid_rerank | graph | mrr | TODO(실험 미완료) | — | no |
-| hybrid_rerank | graph | ndcg_at_10 | TODO(실험 미완료) | — | no |
-| hybrid_rerank | graph | linked_gold_recall | TODO(실험 미완료) | — | no |
-| hybrid_rerank | graph | special_rule_hit | TODO(실험 미완료) | — | no |
-| hybrid_rerank | graph | evidence_count | TODO(실험 미완료) | — | no |
-| hybrid_rerank | graph | linked_evidence_count | TODO(실험 미완료) | — | no |
-| hybrid_rerank | graph | retrieval_latency_seconds | TODO(실험 미완료) | — | no |
-| hybrid_rerank | graph | answer_latency_seconds | TODO(실험 미완료) | — | no |
-| hybrid_rerank | graph | faithfulness | TODO(실험 미완료) | — | no |
-| hybrid_rerank | graph | answer_relevancy | TODO(실험 미완료) | — | no |
-| hybrid_rerank | graph | answer_correctness | TODO(실험 미완료) | — | no |
-| hybrid_rerank | graph | context_precision | TODO(실험 미완료) | — | no |
-| hybrid_rerank | graph | context_recall | TODO(실험 미완료) | — | no |
-| hybrid_rerank | all | recall | TODO(실험 미완료) | — | no |
-| hybrid_rerank | all | precision | TODO(실험 미완료) | — | no |
-| hybrid_rerank | all | mrr | TODO(실험 미완료) | — | no |
-| hybrid_rerank | all | ndcg_at_10 | TODO(실험 미완료) | — | no |
-| hybrid_rerank | all | linked_gold_recall | TODO(실험 미완료) | — | no |
-| hybrid_rerank | all | special_rule_hit | TODO(실험 미완료) | — | no |
-| hybrid_rerank | all | evidence_count | TODO(실험 미완료) | — | no |
-| hybrid_rerank | all | linked_evidence_count | TODO(실험 미완료) | — | no |
-| hybrid_rerank | all | retrieval_latency_seconds | TODO(실험 미완료) | — | no |
-| hybrid_rerank | all | answer_latency_seconds | TODO(실험 미완료) | — | no |
-| hybrid_rerank | all | faithfulness | TODO(실험 미완료) | — | no |
-| hybrid_rerank | all | answer_relevancy | TODO(실험 미완료) | — | no |
-| hybrid_rerank | all | answer_correctness | TODO(실험 미완료) | — | no |
-| hybrid_rerank | all | context_precision | TODO(실험 미완료) | — | no |
-| hybrid_rerank | all | context_recall | TODO(실험 미완료) | — | no |
 | link_all | doc | recall | 1.0000 ± 0.0000 (n=3) | 12, 15, 12 | yes |
 | link_all | doc | precision | 0.6119 ± 0.0148 (n=3) | 12, 15, 12 | yes |
 | link_all | doc | mrr | 0.9204 ± 0.0305 (n=3) | 12, 15, 12 | yes |
 | link_all | doc | ndcg_at_10 | 0.9411 ± 0.0176 (n=3) | 12, 15, 12 | yes |
-| link_all | doc | linked_gold_recall | TODO(실험 미완료) | 12, 15, 12 | yes |
 | link_all | doc | special_rule_hit | 0.0000 ± 0.0000 (n=3) | 12, 15, 12 | yes |
 | link_all | doc | evidence_count | 2.6278 ± 0.1873 (n=3) | 12, 15, 12 | yes |
 | link_all | doc | linked_evidence_count | 0.0778 ± 0.0096 (n=3) | 12, 15, 12 | yes |
@@ -245,7 +90,6 @@ Each cell is the mean of repeat-level case means ± sample SD across repeats. `n
 | proposed | doc | precision | 0.6480 ± 0.0145 (n=3) | 17, 17, 17 | no |
 | proposed | doc | mrr | 1.0000 ± 0.0000 (n=3) | 17, 17, 17 | no |
 | proposed | doc | ndcg_at_10 | 0.9969 ± 0.0027 (n=3) | 17, 17, 17 | no |
-| proposed | doc | linked_gold_recall | TODO(실험 미완료) | 17, 17, 17 | no |
 | proposed | doc | special_rule_hit | 0.0000 ± 0.0000 (n=3) | 17, 17, 17 | no |
 | proposed | doc | evidence_count | 2.4118 ± 0.0000 (n=3) | 17, 17, 17 | no |
 | proposed | doc | linked_evidence_count | 0.0588 ± 0.0000 (n=3) | 17, 17, 17 | no |
@@ -287,6 +131,43 @@ Each cell is the mean of repeat-level case means ± sample SD across repeats. `n
 | proposed | all | context_precision | 0.9435 ± 0.0188 (n=3) | 37, 37, 37 | no |
 | proposed | all | context_recall | 0.9547 ± 0.0059 (n=3) | 37, 37, 37 | no |
 
+## Source-separated graph metrics
+
+`existing_v2` is development data; `llm_drafted` is the 20-case new set, whose labels remain unreviewed. Metrics are averaged within each repeat and then across repeats.
+
+| Source | Variant | Metric | Mean ± SD | Cases per repeat | Partial |
+|---|---|---|---:|---|:---:|
+| existing_v2 (graph) | bm25 | precision | 0.2000 ± — (n=1) | 5 | no |
+| existing_v2 (graph) | bm25 | recall | 0.3000 ± — (n=1) | 5 | no |
+| existing_v2 (graph) | bm25 | mrr | 0.4667 ± — (n=1) | 5 | no |
+| existing_v2 (graph) | link_all | precision | 0.6190 ± 0.0545 (n=3) | 5, 5, 5 | no |
+| existing_v2 (graph) | link_all | recall | 0.6667 ± 0.0000 (n=3) | 5, 5, 5 | no |
+| existing_v2 (graph) | link_all | mrr | 0.8667 ± 0.0577 (n=3) | 5, 5, 5 | no |
+| existing_v2 (graph) | link_all | context_precision | 0.6811 ± 0.0647 (n=3) | 5, 5, 5 | no |
+| existing_v2 (graph) | link_all | context_recall | 0.8845 ± 0.0211 (n=3) | 5, 5, 5 | no |
+| existing_v2 (graph) | link_all | answer_correctness | 0.7418 ± 0.0202 (n=3) | 5, 5, 5 | no |
+| existing_v2 (graph) | proposed | precision | 0.5689 ± 0.0385 (n=3) | 5, 5, 5 | no |
+| existing_v2 (graph) | proposed | recall | 0.6889 ± 0.0385 (n=3) | 5, 5, 5 | no |
+| existing_v2 (graph) | proposed | mrr | 1.0000 ± 0.0000 (n=3) | 5, 5, 5 | no |
+| existing_v2 (graph) | proposed | context_precision | 0.7896 ± 0.0737 (n=3) | 5, 5, 5 | no |
+| existing_v2 (graph) | proposed | context_recall | 0.8335 ± 0.0189 (n=3) | 5, 5, 5 | no |
+| existing_v2 (graph) | proposed | answer_correctness | 0.7392 ± 0.0259 (n=3) | 5, 5, 5 | no |
+| llm_drafted (graph) | bm25 | precision | 0.2667 ± — (n=1) | 15 | no |
+| llm_drafted (graph) | bm25 | recall | 0.6667 ± — (n=1) | 15 | no |
+| llm_drafted (graph) | bm25 | mrr | 0.9333 ± — (n=1) | 15 | no |
+| llm_drafted (graph) | link_all | precision | 0.7793 ± 0.0372 (n=3) | 14, 15, 14 | yes |
+| llm_drafted (graph) | link_all | recall | 0.9183 ± 0.0221 (n=3) | 14, 15, 14 | yes |
+| llm_drafted (graph) | link_all | mrr | 1.0000 ± 0.0000 (n=3) | 14, 15, 14 | yes |
+| llm_drafted (graph) | link_all | context_precision | 0.9545 ± 0.0357 (n=3) | 14, 15, 14 | yes |
+| llm_drafted (graph) | link_all | context_recall | 0.9539 ± 0.0139 (n=3) | 14, 15, 14 | yes |
+| llm_drafted (graph) | link_all | answer_correctness | 0.7668 ± 0.0327 (n=3) | 14, 15, 14 | yes |
+| llm_drafted (graph) | proposed | precision | 0.7996 ± 0.0172 (n=3) | 15, 15, 15 | no |
+| llm_drafted (graph) | proposed | recall | 0.8889 ± 0.0509 (n=3) | 15, 15, 15 | no |
+| llm_drafted (graph) | proposed | mrr | 0.9667 ± 0.0000 (n=3) | 15, 15, 15 | no |
+| llm_drafted (graph) | proposed | context_precision | 0.9679 ± 0.0204 (n=3) | 15, 15, 15 | no |
+| llm_drafted (graph) | proposed | context_recall | 0.9438 ± 0.0205 (n=3) | 15, 15, 15 | no |
+| llm_drafted (graph) | proposed | answer_correctness | 0.7613 ± 0.0096 (n=3) | 15, 15, 15 | no |
+
 ## Paired case-level comparisons
 
 For each case, scores are averaged across available repeats before pairing by case name. Differences are proposed minus comparator; p-values use a two-sided exact Wilcoxon signed-rank test with zero differences omitted. `n` is the number of paired cases (the test uses nonzero pairs).
@@ -320,30 +201,3 @@ For each case, scores are averaged across available repeats before pairing by ca
 | proposed - link_all | all | answer_correctness | 0.0013 | 0.9549 | 35 (35) | partial |
 | proposed - link_all | all | context_precision | 0.0497 | 0.0047 | 35 (20) | partial |
 | proposed - link_all | all | context_recall | -0.0075 | 0.6523 | 35 (9) | partial |
-| proposed - hybrid_rerank | doc | precision | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | doc | recall | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | doc | mrr | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | doc | ndcg_at_10 | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | doc | faithfulness | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | doc | answer_relevancy | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | doc | answer_correctness | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | doc | context_precision | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | doc | context_recall | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | graph | precision | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | graph | recall | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | graph | mrr | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | graph | ndcg_at_10 | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | graph | faithfulness | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | graph | answer_relevancy | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | graph | answer_correctness | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | graph | context_precision | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | graph | context_recall | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | all | precision | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | all | recall | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | all | mrr | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | all | ndcg_at_10 | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | all | faithfulness | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | all | answer_relevancy | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | all | answer_correctness | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | all | context_precision | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
-| proposed - hybrid_rerank | all | context_recall | TODO(실험 미완료) | TODO(실험 미완료) | 0 | not run |
