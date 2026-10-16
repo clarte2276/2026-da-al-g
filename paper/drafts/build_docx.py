@@ -223,6 +223,9 @@ def _insert_blocks(doc, cursor, parent, blocks, image_dir: Path, *, before: bool
                 p.alignment = WD_ALIGN_PARAGRAPH.LEFT
                 _write_text(p, lines, size=9, bold=True)
                 p.paragraph_format.keep_with_next = True
+            elif re.match(r"\[\d+\]\s", text):
+                _write_text(p, lines, size=7.5)
+                p.paragraph_format.space_after = Pt(0)
             else:
                 _write_text(p, lines, size=9)
     return cursor

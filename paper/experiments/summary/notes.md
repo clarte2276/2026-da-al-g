@@ -20,6 +20,10 @@ Expected repeats are r1–r3; high variation is flagged at between-repeat SD ≥
 - BM25 has retrieval-only results; answer-generation/RAGAS metrics are unavailable.
 - hybrid_rerank was not run; no variant or paired-comparison metrics are available.
 - Source split: existing_v2 has 12 doc/5 graph cases (17 total); llm_drafted has 5 doc/15 graph cases (20 total).
+- Generation and evaluation judge model: `gpt-5.6-luna` (result metadata).
+- Search embedding model: `text-embedding-3-small` (result metadata).
+- Evaluation embedding model: `text-embedding-3-large` (result metadata).
+- Paired tests are restricted to graph cases and split by source group; mixed development/new-set tests are omitted. Each case averages available repeats, so partial `link_all` coverage can give unequal repeat counts. P-values are unadjusted and exploratory; new labels remain unreviewed.
 - New graph cases cover 15/36 distinct approved links, based on the human-review checklist.
 
 ## Input coverage

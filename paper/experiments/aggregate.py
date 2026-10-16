@@ -22,7 +22,10 @@ REPEATS = ("r1", "r2", "r3")
 CATEGORIES = ("doc", "graph", "all")
 EXPECTED_CASES = {"doc": 17, "graph": 20, "all": 37}
 SOURCE_GROUPS = ("existing_v2", "llm_drafted")
-SOURCE_METRICS = ("precision", "recall", "mrr", "context_precision", "context_recall", "answer_correctness")
+SOURCE_METRICS = (
+    "precision", "recall", "mrr", "context_precision", "context_recall", "answer_correctness",
+    "retrieval_latency_seconds",
+)
 RETRIEVAL_METRICS = (
     "recall",
     "precision",
@@ -257,38 +260,48 @@ def _format_cell(summary: dict[str, Any]) -> str:
     return f"{value:.4f} ± {sd} (n={summary['repeats']})"
 
 
-def _comparison_rows(runs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def _comparison_rows(
+    runs: list[dict[str, Any]], graph_cases: dict[str, set[str]]
+) -> list[dict[str, Any]]:
     by_variant = {
-        variant: [run for run in runs if run["variant"] == variant]
+        variant: {run["repeat"]: run for run in runs if run["variant"] == variant}
         for variant in VARIANTS
     }
     rows: list[dict[str, Any]] = []
-    for comparator in ("link_all", "hybrid_rerank"):
-        for category in CATEGORIES:
+    for source, names in graph_cases.items():
+        for comparator in ("link_all", "hybrid_rerank"):
             for metric in PAIRED_METRICS:
-                left_runs = by_variant["proposed"]
-                right_runs = by_variant[comparator]
                 left: dict[str, list[float]] = defaultdict(list)
                 right: dict[str, list[float]] = defaultdict(list)
-                for run in left_runs:
-                    for case, value in _metric_values(run, category, metric).items():
-                        left[case].append(value)
-                for run in right_runs:
-                    for case, value in _metric_values(run, category, metric).items():
-                        right[case].append(value)
+                repeat_counts: dict[str, list[int]] = {"proposed": [], comparator: []}
+                for variant, values in (("proposed", left), (comparator, right)):
+                    for repeat in REPEATS:
+                        run = by_variant[variant].get(repeat)
+                        run_values = _metric_values(run, "graph", metric) if run else {}
+                        repeat_counts[variant].append(sum(case in names for case in run_values))
+                        for case, value in run_values.items():
+                            if case in names:
+                                values[case].append(value)
                 common = sorted(left.keys() & right.keys())
                 differences = [mean(left[case]) - mean(right[case]) for case in common]
                 p_value, nonzero = _exact_wilcoxon(differences)
+                if len(common) > len(names):
+                    raise ValueError(f"Paired comparison exceeded {source} graph case count")
                 rows.append({
+                    "source_group": source,
                     "comparison": f"proposed - {comparator}",
-                    "category": category,
+                    "category": "graph",
                     "metric": metric,
                     "mean_difference": mean(differences) if differences else None,
                     "p_value": p_value,
                     "n": len(differences),
                     "n_nonzero": nonzero,
-                    "partial": comparator == "link_all" and any(
-                        len(_rows_for(run, category)) < EXPECTED_CASES[category] for run in right_runs
+                    "proposed_case_counts": repeat_counts["proposed"],
+                    "comparator_case_counts": repeat_counts[comparator],
+                    "partial": any(
+                        count != len(names)
+                        for counts in repeat_counts.values()
+                        for count in counts
                     ),
                 })
     return rows
@@ -382,12 +395,14 @@ def _write_markdown(
         "",
         "## Paired case-level comparisons",
         "",
-        "For each case, scores are averaged across available repeats before pairing by case name. "
+        "Comparisons use graph cases separated by `label_source`; mixed document/graph and development/new-set "
+        "tests are omitted. Each case is averaged over available repeats before pairing by case name. "
         "Differences are proposed minus comparator; p-values use a two-sided exact Wilcoxon signed-rank test "
-        "with zero differences omitted. `n` is the number of paired cases (the test uses nonzero pairs).",
+        "with zero differences omitted and are unadjusted exploratory values. The per-repeat counts expose "
+        "uneven coverage; `n` is the number of paired cases (the test uses nonzero pairs).",
         "",
-        "| Comparison | Category | Metric | Mean difference | p-value | n paired (nonzero) | Coverage |",
-        "|---|---|---|---:|---:|---:|---|",
+        "| Source group | Comparison | Metric | Mean difference | p-value | n paired (nonzero) | Proposed cases/repeat | Comparator cases/repeat | Coverage |",
+        "|---|---|---|---:|---:|---:|---|---|---|",
     ]
     for item in comparisons:
         if not item["n"]:
@@ -396,9 +411,11 @@ def _write_markdown(
         p_value = _format(item["p_value"])
         n = f"{item['n']} ({item['n_nonzero']})" if item["n"] else "0"
         coverage = "partial" if item["partial"] else ("available" if item["n"] else "not run")
+        proposed_counts = ", ".join(map(str, item["proposed_case_counts"]))
+        comparator_counts = ", ".join(map(str, item["comparator_case_counts"]))
         lines.append(
-            f"| {item['comparison']} | {item['category']} | {item['metric']} | {difference} | "
-            f"{p_value} | {n} | {coverage} |"
+            f"| {item['source_group']} (graph) | {item['comparison']} | {item['metric']} | {difference} | "
+            f"{p_value} | {n} | {proposed_counts} | {comparator_counts} | {coverage} |"
         )
     (SUMMARY / "main_table.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -410,7 +427,8 @@ def _write_csv(
 ) -> None:
     columns = (
         "record_type", "variant", "comparison", "source_group", "category", "metric", "mean", "std",
-        "repeat_count", "case_counts", "mean_difference", "p_value", "n", "n_nonzero", "partial",
+        "repeat_count", "case_counts", "proposed_case_counts", "comparator_case_counts",
+        "mean_difference", "p_value", "n", "n_nonzero", "partial",
     )
     with (SUMMARY / "main_table.csv").open("w", encoding="utf-8-sig", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=columns)
@@ -444,8 +462,11 @@ def _write_csv(
             writer.writerow({
                 "record_type": "paired_comparison",
                 "comparison": item["comparison"],
+                "source_group": item["source_group"],
                 "category": item["category"],
                 "metric": item["metric"],
+                "proposed_case_counts": ",".join(map(str, item["proposed_case_counts"])),
+                "comparator_case_counts": ",".join(map(str, item["comparator_case_counts"])),
                 "mean_difference": item["mean_difference"],
                 "p_value": item["p_value"],
                 "n": item["n"],
@@ -477,7 +498,7 @@ def main() -> None:
     source_graph_cases = _source_graph_cases()
     summaries = _summaries(runs)
     source_summaries = _source_summaries(runs, source_graph_cases)
-    comparisons = _comparison_rows(runs)
+    comparisons = _comparison_rows(runs, source_graph_cases)
     coverage = _coverage_notes(runs, notes)
     _variance_notes(summaries, notes)
 
@@ -497,6 +518,19 @@ def main() -> None:
     if not any(run["variant"] == "hybrid_rerank" for run in runs):
         notes.append("- hybrid_rerank was not run; no variant or paired-comparison metrics are available.")
     notes.append("- Source split: existing_v2 has 12 doc/5 graph cases (17 total); llm_drafted has 5 doc/15 graph cases (20 total).")
+    for field, label in (
+        ("llm_model", "Generation and evaluation judge model"),
+        ("embedding_model", "Search embedding model"),
+        ("evaluator_embedding_model", "Evaluation embedding model"),
+    ):
+        values = sorted({str(run["payload"].get(field)) for run in runs if run["payload"].get(field)})
+        if values:
+            notes.append(f"- {label}: {', '.join(f'`{value}`' for value in values)} (result metadata).")
+    notes.append(
+        "- Paired tests are restricted to graph cases and split by source group; mixed development/new-set "
+        "tests are omitted. Each case averages available repeats, so partial `link_all` coverage can give "
+        "unequal repeat counts. P-values are unadjusted and exploratory; new labels remain unreviewed."
+    )
     used_links, approved_links = _link_coverage()
     notes.append(f"- New graph cases cover {used_links}/{approved_links} distinct approved links, based on the human-review checklist.")
     if coverage:

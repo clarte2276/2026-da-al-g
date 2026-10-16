@@ -140,64 +140,61 @@ Each cell is the mean of repeat-level case means ± sample SD across repeats. `n
 | existing_v2 (graph) | bm25 | precision | 0.2000 ± — (n=1) | 5 | no |
 | existing_v2 (graph) | bm25 | recall | 0.3000 ± — (n=1) | 5 | no |
 | existing_v2 (graph) | bm25 | mrr | 0.4667 ± — (n=1) | 5 | no |
+| existing_v2 (graph) | bm25 | retrieval_latency_seconds | 0.1490 ± — (n=1) | 5 | no |
 | existing_v2 (graph) | link_all | precision | 0.6190 ± 0.0545 (n=3) | 5, 5, 5 | no |
 | existing_v2 (graph) | link_all | recall | 0.6667 ± 0.0000 (n=3) | 5, 5, 5 | no |
 | existing_v2 (graph) | link_all | mrr | 0.8667 ± 0.0577 (n=3) | 5, 5, 5 | no |
 | existing_v2 (graph) | link_all | context_precision | 0.6811 ± 0.0647 (n=3) | 5, 5, 5 | no |
 | existing_v2 (graph) | link_all | context_recall | 0.8845 ± 0.0211 (n=3) | 5, 5, 5 | no |
 | existing_v2 (graph) | link_all | answer_correctness | 0.7418 ± 0.0202 (n=3) | 5, 5, 5 | no |
+| existing_v2 (graph) | link_all | retrieval_latency_seconds | 1.7409 ± 0.1461 (n=3) | 5, 5, 5 | no |
 | existing_v2 (graph) | proposed | precision | 0.5689 ± 0.0385 (n=3) | 5, 5, 5 | no |
 | existing_v2 (graph) | proposed | recall | 0.6889 ± 0.0385 (n=3) | 5, 5, 5 | no |
 | existing_v2 (graph) | proposed | mrr | 1.0000 ± 0.0000 (n=3) | 5, 5, 5 | no |
 | existing_v2 (graph) | proposed | context_precision | 0.7896 ± 0.0737 (n=3) | 5, 5, 5 | no |
 | existing_v2 (graph) | proposed | context_recall | 0.8335 ± 0.0189 (n=3) | 5, 5, 5 | no |
 | existing_v2 (graph) | proposed | answer_correctness | 0.7392 ± 0.0259 (n=3) | 5, 5, 5 | no |
+| existing_v2 (graph) | proposed | retrieval_latency_seconds | 2.7981 ± 0.1380 (n=3) | 5, 5, 5 | no |
 | llm_drafted (graph) | bm25 | precision | 0.2667 ± — (n=1) | 15 | no |
 | llm_drafted (graph) | bm25 | recall | 0.6667 ± — (n=1) | 15 | no |
 | llm_drafted (graph) | bm25 | mrr | 0.9333 ± — (n=1) | 15 | no |
+| llm_drafted (graph) | bm25 | retrieval_latency_seconds | 0.1531 ± — (n=1) | 15 | no |
 | llm_drafted (graph) | link_all | precision | 0.7793 ± 0.0372 (n=3) | 14, 15, 14 | yes |
 | llm_drafted (graph) | link_all | recall | 0.9183 ± 0.0221 (n=3) | 14, 15, 14 | yes |
 | llm_drafted (graph) | link_all | mrr | 1.0000 ± 0.0000 (n=3) | 14, 15, 14 | yes |
 | llm_drafted (graph) | link_all | context_precision | 0.9545 ± 0.0357 (n=3) | 14, 15, 14 | yes |
 | llm_drafted (graph) | link_all | context_recall | 0.9539 ± 0.0139 (n=3) | 14, 15, 14 | yes |
 | llm_drafted (graph) | link_all | answer_correctness | 0.7668 ± 0.0327 (n=3) | 14, 15, 14 | yes |
+| llm_drafted (graph) | link_all | retrieval_latency_seconds | 1.6891 ± 0.0298 (n=3) | 14, 15, 14 | yes |
 | llm_drafted (graph) | proposed | precision | 0.7996 ± 0.0172 (n=3) | 15, 15, 15 | no |
 | llm_drafted (graph) | proposed | recall | 0.8889 ± 0.0509 (n=3) | 15, 15, 15 | no |
 | llm_drafted (graph) | proposed | mrr | 0.9667 ± 0.0000 (n=3) | 15, 15, 15 | no |
 | llm_drafted (graph) | proposed | context_precision | 0.9679 ± 0.0204 (n=3) | 15, 15, 15 | no |
 | llm_drafted (graph) | proposed | context_recall | 0.9438 ± 0.0205 (n=3) | 15, 15, 15 | no |
 | llm_drafted (graph) | proposed | answer_correctness | 0.7613 ± 0.0096 (n=3) | 15, 15, 15 | no |
+| llm_drafted (graph) | proposed | retrieval_latency_seconds | 2.6378 ± 0.0305 (n=3) | 15, 15, 15 | no |
 
 ## Paired case-level comparisons
 
-For each case, scores are averaged across available repeats before pairing by case name. Differences are proposed minus comparator; p-values use a two-sided exact Wilcoxon signed-rank test with zero differences omitted. `n` is the number of paired cases (the test uses nonzero pairs).
+Comparisons use graph cases separated by `label_source`; mixed document/graph and development/new-set tests are omitted. Each case is averaged over available repeats before pairing by case name. Differences are proposed minus comparator; p-values use a two-sided exact Wilcoxon signed-rank test with zero differences omitted and are unadjusted exploratory values. The per-repeat counts expose uneven coverage; `n` is the number of paired cases (the test uses nonzero pairs).
 
-| Comparison | Category | Metric | Mean difference | p-value | n paired (nonzero) | Coverage |
-|---|---|---|---:|---:|---:|---|
-| proposed - link_all | doc | precision | 0.0085 | 0.8750 | 15 (7) | partial |
-| proposed - link_all | doc | recall | 0.0000 | 1.0000 | 15 (0) | partial |
-| proposed - link_all | doc | mrr | 0.0667 | 0.5000 | 15 (2) | partial |
-| proposed - link_all | doc | ndcg_at_10 | 0.0461 | 0.5000 | 15 (3) | partial |
-| proposed - link_all | doc | faithfulness | 0.0047 | 1.0000 | 15 (7) | partial |
-| proposed - link_all | doc | answer_relevancy | 0.0032 | 0.5614 | 15 (15) | partial |
-| proposed - link_all | doc | answer_correctness | 0.0084 | 0.8040 | 15 (15) | partial |
-| proposed - link_all | doc | context_precision | 0.0569 | 0.0625 | 15 (6) | partial |
-| proposed - link_all | doc | context_recall | 0.0117 | 1.0000 | 15 (1) | partial |
-| proposed - link_all | graph | precision | 0.0183 | 0.8496 | 20 (11) | partial |
-| proposed - link_all | graph | recall | -0.0194 | 0.5000 | 20 (5) | partial |
-| proposed - link_all | graph | mrr | 0.0083 | 1.0000 | 20 (3) | partial |
-| proposed - link_all | graph | ndcg_at_10 | -0.0182 | 0.7822 | 20 (11) | partial |
-| proposed - link_all | graph | faithfulness | 0.0031 | 0.2031 | 20 (9) | partial |
-| proposed - link_all | graph | answer_relevancy | 0.0152 | 0.0362 | 20 (20) | partial |
-| proposed - link_all | graph | answer_correctness | -0.0041 | 0.4980 | 20 (20) | partial |
-| proposed - link_all | graph | context_precision | 0.0444 | 0.0673 | 20 (14) | partial |
-| proposed - link_all | graph | context_recall | -0.0220 | 0.3828 | 20 (8) | partial |
-| proposed - link_all | all | precision | 0.0141 | 0.7096 | 35 (18) | partial |
-| proposed - link_all | all | recall | -0.0111 | 0.5000 | 35 (5) | partial |
-| proposed - link_all | all | mrr | 0.0333 | 0.3750 | 35 (5) | partial |
-| proposed - link_all | all | ndcg_at_10 | 0.0094 | 0.7269 | 35 (14) | partial |
-| proposed - link_all | all | faithfulness | 0.0038 | 0.4407 | 35 (16) | partial |
-| proposed - link_all | all | answer_relevancy | 0.0100 | 0.0625 | 35 (35) | partial |
-| proposed - link_all | all | answer_correctness | 0.0013 | 0.9549 | 35 (35) | partial |
-| proposed - link_all | all | context_precision | 0.0497 | 0.0047 | 35 (20) | partial |
-| proposed - link_all | all | context_recall | -0.0075 | 0.6523 | 35 (9) | partial |
+| Source group | Comparison | Metric | Mean difference | p-value | n paired (nonzero) | Proposed cases/repeat | Comparator cases/repeat | Coverage |
+|---|---|---|---:|---:|---:|---|---|---|
+| existing_v2 (graph) | proposed - link_all | precision | -0.0502 | 0.1250 | 5 (4) | 5, 5, 5 | 5, 5, 5 | available |
+| existing_v2 (graph) | proposed - link_all | recall | 0.0222 | 1.0000 | 5 (1) | 5, 5, 5 | 5, 5, 5 | available |
+| existing_v2 (graph) | proposed - link_all | mrr | 0.1333 | 0.5000 | 5 (2) | 5, 5, 5 | 5, 5, 5 | available |
+| existing_v2 (graph) | proposed - link_all | ndcg_at_10 | 0.0526 | 0.3125 | 5 (5) | 5, 5, 5 | 5, 5, 5 | available |
+| existing_v2 (graph) | proposed - link_all | faithfulness | -0.0039 | 0.5000 | 5 (2) | 5, 5, 5 | 5, 5, 5 | available |
+| existing_v2 (graph) | proposed - link_all | answer_relevancy | 0.0067 | 0.4375 | 5 (5) | 5, 5, 5 | 5, 5, 5 | available |
+| existing_v2 (graph) | proposed - link_all | answer_correctness | -0.0026 | 0.8125 | 5 (5) | 5, 5, 5 | 5, 5, 5 | available |
+| existing_v2 (graph) | proposed - link_all | context_precision | 0.1085 | 0.3125 | 5 (5) | 5, 5, 5 | 5, 5, 5 | available |
+| existing_v2 (graph) | proposed - link_all | context_recall | -0.0510 | 0.1250 | 5 (4) | 5, 5, 5 | 5, 5, 5 | available |
+| llm_drafted (graph) | proposed - link_all | precision | 0.0411 | 0.6250 | 15 (7) | 15, 15, 15 | 14, 15, 14 | partial |
+| llm_drafted (graph) | proposed - link_all | recall | -0.0333 | 0.5000 | 15 (4) | 15, 15, 15 | 14, 15, 14 | partial |
+| llm_drafted (graph) | proposed - link_all | mrr | -0.0333 | 1.0000 | 15 (1) | 15, 15, 15 | 14, 15, 14 | partial |
+| llm_drafted (graph) | proposed - link_all | ndcg_at_10 | -0.0418 | 0.2500 | 15 (6) | 15, 15, 15 | 14, 15, 14 | partial |
+| llm_drafted (graph) | proposed - link_all | faithfulness | 0.0055 | 0.0312 | 15 (7) | 15, 15, 15 | 14, 15, 14 | partial |
+| llm_drafted (graph) | proposed - link_all | answer_relevancy | 0.0180 | 0.0554 | 15 (15) | 15, 15, 15 | 14, 15, 14 | partial |
+| llm_drafted (graph) | proposed - link_all | answer_correctness | -0.0046 | 0.5614 | 15 (15) | 15, 15, 15 | 14, 15, 14 | partial |
+| llm_drafted (graph) | proposed - link_all | context_precision | 0.0231 | 0.1289 | 15 (9) | 15, 15, 15 | 14, 15, 14 | partial |
+| llm_drafted (graph) | proposed - link_all | context_recall | -0.0123 | 1.0000 | 15 (4) | 15, 15, 15 | 14, 15, 14 | partial |

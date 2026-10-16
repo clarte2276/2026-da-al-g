@@ -1,397 +1,391 @@
-﻿record_type,variant,comparison,source_group,category,metric,mean,std,repeat_count,case_counts,mean_difference,p_value,n,n_nonzero,partial
-variant_metric,bm25,,,doc,recall,0.8235294117647058,,1,17,,,,,False
-variant_metric,bm25,,,doc,precision,0.17647058823529413,,1,17,,,,,False
-variant_metric,bm25,,,doc,mrr,0.75,,1,17,,,,,False
-variant_metric,bm25,,,doc,ndcg_at_10,0.7611071545284058,,1,17,,,,,False
-variant_metric,bm25,,,doc,linked_gold_recall,,,0,17,,,,,False
-variant_metric,bm25,,,doc,special_rule_hit,0.0,,1,17,,,,,False
-variant_metric,bm25,,,doc,evidence_count,5.0,,1,17,,,,,False
-variant_metric,bm25,,,doc,linked_evidence_count,0.0,,1,17,,,,,False
-variant_metric,bm25,,,doc,retrieval_latency_seconds,0.2928882352941176,,1,17,,,,,False
-variant_metric,bm25,,,doc,answer_latency_seconds,,,0,17,,,,,False
-variant_metric,bm25,,,doc,faithfulness,,,0,17,,,,,False
-variant_metric,bm25,,,doc,answer_relevancy,,,0,17,,,,,False
-variant_metric,bm25,,,doc,answer_correctness,,,0,17,,,,,False
-variant_metric,bm25,,,doc,context_precision,,,0,17,,,,,False
-variant_metric,bm25,,,doc,context_recall,,,0,17,,,,,False
-variant_metric,bm25,,,graph,recall,0.575,,1,20,,,,,False
-variant_metric,bm25,,,graph,precision,0.25,,1,20,,,,,False
-variant_metric,bm25,,,graph,mrr,0.8166666666666667,,1,20,,,,,False
-variant_metric,bm25,,,graph,ndcg_at_10,0.6030694668033569,,1,20,,,,,False
-variant_metric,bm25,,,graph,linked_gold_recall,0.275,,1,20,,,,,False
-variant_metric,bm25,,,graph,special_rule_hit,0.0,,1,20,,,,,False
-variant_metric,bm25,,,graph,evidence_count,5.0,,1,20,,,,,False
-variant_metric,bm25,,,graph,linked_evidence_count,0.0,,1,20,,,,,False
-variant_metric,bm25,,,graph,retrieval_latency_seconds,0.1521,,1,20,,,,,False
-variant_metric,bm25,,,graph,answer_latency_seconds,,,0,20,,,,,False
-variant_metric,bm25,,,graph,faithfulness,,,0,20,,,,,False
-variant_metric,bm25,,,graph,answer_relevancy,,,0,20,,,,,False
-variant_metric,bm25,,,graph,answer_correctness,,,0,20,,,,,False
-variant_metric,bm25,,,graph,context_precision,,,0,20,,,,,False
-variant_metric,bm25,,,graph,context_recall,,,0,20,,,,,False
-variant_metric,bm25,,,all,recall,0.6891891891891891,,1,37,,,,,False
-variant_metric,bm25,,,all,precision,0.21621621621621623,,1,37,,,,,False
-variant_metric,bm25,,,all,mrr,0.786036036036036,,1,37,,,,,False
-variant_metric,bm25,,,all,ndcg_at_10,0.6756813773797308,,1,37,,,,,False
-variant_metric,bm25,,,all,linked_gold_recall,0.275,,1,37,,,,,False
-variant_metric,bm25,,,all,special_rule_hit,0.0,,1,37,,,,,False
-variant_metric,bm25,,,all,evidence_count,5.0,,1,37,,,,,False
-variant_metric,bm25,,,all,linked_evidence_count,0.0,,1,37,,,,,False
-variant_metric,bm25,,,all,retrieval_latency_seconds,0.2167864864864865,,1,37,,,,,False
-variant_metric,bm25,,,all,answer_latency_seconds,,,0,37,,,,,False
-variant_metric,bm25,,,all,faithfulness,,,0,37,,,,,False
-variant_metric,bm25,,,all,answer_relevancy,,,0,37,,,,,False
-variant_metric,bm25,,,all,answer_correctness,,,0,37,,,,,False
-variant_metric,bm25,,,all,context_precision,,,0,37,,,,,False
-variant_metric,bm25,,,all,context_recall,,,0,37,,,,,False
-variant_metric,dense,,,doc,recall,,,0,,,,,,False
-variant_metric,dense,,,doc,precision,,,0,,,,,,False
-variant_metric,dense,,,doc,mrr,,,0,,,,,,False
-variant_metric,dense,,,doc,ndcg_at_10,,,0,,,,,,False
-variant_metric,dense,,,doc,linked_gold_recall,,,0,,,,,,False
-variant_metric,dense,,,doc,special_rule_hit,,,0,,,,,,False
-variant_metric,dense,,,doc,evidence_count,,,0,,,,,,False
-variant_metric,dense,,,doc,linked_evidence_count,,,0,,,,,,False
-variant_metric,dense,,,doc,retrieval_latency_seconds,,,0,,,,,,False
-variant_metric,dense,,,doc,answer_latency_seconds,,,0,,,,,,False
-variant_metric,dense,,,doc,faithfulness,,,0,,,,,,False
-variant_metric,dense,,,doc,answer_relevancy,,,0,,,,,,False
-variant_metric,dense,,,doc,answer_correctness,,,0,,,,,,False
-variant_metric,dense,,,doc,context_precision,,,0,,,,,,False
-variant_metric,dense,,,doc,context_recall,,,0,,,,,,False
-variant_metric,dense,,,graph,recall,,,0,,,,,,False
-variant_metric,dense,,,graph,precision,,,0,,,,,,False
-variant_metric,dense,,,graph,mrr,,,0,,,,,,False
-variant_metric,dense,,,graph,ndcg_at_10,,,0,,,,,,False
-variant_metric,dense,,,graph,linked_gold_recall,,,0,,,,,,False
-variant_metric,dense,,,graph,special_rule_hit,,,0,,,,,,False
-variant_metric,dense,,,graph,evidence_count,,,0,,,,,,False
-variant_metric,dense,,,graph,linked_evidence_count,,,0,,,,,,False
-variant_metric,dense,,,graph,retrieval_latency_seconds,,,0,,,,,,False
-variant_metric,dense,,,graph,answer_latency_seconds,,,0,,,,,,False
-variant_metric,dense,,,graph,faithfulness,,,0,,,,,,False
-variant_metric,dense,,,graph,answer_relevancy,,,0,,,,,,False
-variant_metric,dense,,,graph,answer_correctness,,,0,,,,,,False
-variant_metric,dense,,,graph,context_precision,,,0,,,,,,False
-variant_metric,dense,,,graph,context_recall,,,0,,,,,,False
-variant_metric,dense,,,all,recall,,,0,,,,,,False
-variant_metric,dense,,,all,precision,,,0,,,,,,False
-variant_metric,dense,,,all,mrr,,,0,,,,,,False
-variant_metric,dense,,,all,ndcg_at_10,,,0,,,,,,False
-variant_metric,dense,,,all,linked_gold_recall,,,0,,,,,,False
-variant_metric,dense,,,all,special_rule_hit,,,0,,,,,,False
-variant_metric,dense,,,all,evidence_count,,,0,,,,,,False
-variant_metric,dense,,,all,linked_evidence_count,,,0,,,,,,False
-variant_metric,dense,,,all,retrieval_latency_seconds,,,0,,,,,,False
-variant_metric,dense,,,all,answer_latency_seconds,,,0,,,,,,False
-variant_metric,dense,,,all,faithfulness,,,0,,,,,,False
-variant_metric,dense,,,all,answer_relevancy,,,0,,,,,,False
-variant_metric,dense,,,all,answer_correctness,,,0,,,,,,False
-variant_metric,dense,,,all,context_precision,,,0,,,,,,False
-variant_metric,dense,,,all,context_recall,,,0,,,,,,False
-variant_metric,hybrid,,,doc,recall,,,0,,,,,,False
-variant_metric,hybrid,,,doc,precision,,,0,,,,,,False
-variant_metric,hybrid,,,doc,mrr,,,0,,,,,,False
-variant_metric,hybrid,,,doc,ndcg_at_10,,,0,,,,,,False
-variant_metric,hybrid,,,doc,linked_gold_recall,,,0,,,,,,False
-variant_metric,hybrid,,,doc,special_rule_hit,,,0,,,,,,False
-variant_metric,hybrid,,,doc,evidence_count,,,0,,,,,,False
-variant_metric,hybrid,,,doc,linked_evidence_count,,,0,,,,,,False
-variant_metric,hybrid,,,doc,retrieval_latency_seconds,,,0,,,,,,False
-variant_metric,hybrid,,,doc,answer_latency_seconds,,,0,,,,,,False
-variant_metric,hybrid,,,doc,faithfulness,,,0,,,,,,False
-variant_metric,hybrid,,,doc,answer_relevancy,,,0,,,,,,False
-variant_metric,hybrid,,,doc,answer_correctness,,,0,,,,,,False
-variant_metric,hybrid,,,doc,context_precision,,,0,,,,,,False
-variant_metric,hybrid,,,doc,context_recall,,,0,,,,,,False
-variant_metric,hybrid,,,graph,recall,,,0,,,,,,False
-variant_metric,hybrid,,,graph,precision,,,0,,,,,,False
-variant_metric,hybrid,,,graph,mrr,,,0,,,,,,False
-variant_metric,hybrid,,,graph,ndcg_at_10,,,0,,,,,,False
-variant_metric,hybrid,,,graph,linked_gold_recall,,,0,,,,,,False
-variant_metric,hybrid,,,graph,special_rule_hit,,,0,,,,,,False
-variant_metric,hybrid,,,graph,evidence_count,,,0,,,,,,False
-variant_metric,hybrid,,,graph,linked_evidence_count,,,0,,,,,,False
-variant_metric,hybrid,,,graph,retrieval_latency_seconds,,,0,,,,,,False
-variant_metric,hybrid,,,graph,answer_latency_seconds,,,0,,,,,,False
-variant_metric,hybrid,,,graph,faithfulness,,,0,,,,,,False
-variant_metric,hybrid,,,graph,answer_relevancy,,,0,,,,,,False
-variant_metric,hybrid,,,graph,answer_correctness,,,0,,,,,,False
-variant_metric,hybrid,,,graph,context_precision,,,0,,,,,,False
-variant_metric,hybrid,,,graph,context_recall,,,0,,,,,,False
-variant_metric,hybrid,,,all,recall,,,0,,,,,,False
-variant_metric,hybrid,,,all,precision,,,0,,,,,,False
-variant_metric,hybrid,,,all,mrr,,,0,,,,,,False
-variant_metric,hybrid,,,all,ndcg_at_10,,,0,,,,,,False
-variant_metric,hybrid,,,all,linked_gold_recall,,,0,,,,,,False
-variant_metric,hybrid,,,all,special_rule_hit,,,0,,,,,,False
-variant_metric,hybrid,,,all,evidence_count,,,0,,,,,,False
-variant_metric,hybrid,,,all,linked_evidence_count,,,0,,,,,,False
-variant_metric,hybrid,,,all,retrieval_latency_seconds,,,0,,,,,,False
-variant_metric,hybrid,,,all,answer_latency_seconds,,,0,,,,,,False
-variant_metric,hybrid,,,all,faithfulness,,,0,,,,,,False
-variant_metric,hybrid,,,all,answer_relevancy,,,0,,,,,,False
-variant_metric,hybrid,,,all,answer_correctness,,,0,,,,,,False
-variant_metric,hybrid,,,all,context_precision,,,0,,,,,,False
-variant_metric,hybrid,,,all,context_recall,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,doc,recall,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,doc,precision,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,doc,mrr,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,doc,ndcg_at_10,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,doc,linked_gold_recall,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,doc,special_rule_hit,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,doc,evidence_count,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,doc,linked_evidence_count,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,doc,retrieval_latency_seconds,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,doc,answer_latency_seconds,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,doc,faithfulness,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,doc,answer_relevancy,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,doc,answer_correctness,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,doc,context_precision,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,doc,context_recall,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,graph,recall,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,graph,precision,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,graph,mrr,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,graph,ndcg_at_10,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,graph,linked_gold_recall,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,graph,special_rule_hit,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,graph,evidence_count,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,graph,linked_evidence_count,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,graph,retrieval_latency_seconds,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,graph,answer_latency_seconds,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,graph,faithfulness,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,graph,answer_relevancy,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,graph,answer_correctness,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,graph,context_precision,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,graph,context_recall,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,all,recall,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,all,precision,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,all,mrr,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,all,ndcg_at_10,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,all,linked_gold_recall,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,all,special_rule_hit,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,all,evidence_count,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,all,linked_evidence_count,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,all,retrieval_latency_seconds,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,all,answer_latency_seconds,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,all,faithfulness,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,all,answer_relevancy,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,all,answer_correctness,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,all,context_precision,,,0,,,,,,False
-variant_metric,hybrid_rerank,,,all,context_recall,,,0,,,,,,False
-variant_metric,link_all,,,doc,recall,1.0,0.0,3,"12,15,12",,,,,True
-variant_metric,link_all,,,doc,precision,0.6119444444444444,0.014821468413282319,3,"12,15,12",,,,,True
-variant_metric,link_all,,,doc,mrr,0.9203703703703704,0.03047126420723027,3,"12,15,12",,,,,True
-variant_metric,link_all,,,doc,ndcg_at_10,0.9411145545761932,0.01758327753732552,3,"12,15,12",,,,,True
-variant_metric,link_all,,,doc,linked_gold_recall,,,0,"12,15,12",,,,,True
-variant_metric,link_all,,,doc,special_rule_hit,0.0,0.0,3,"12,15,12",,,,,True
-variant_metric,link_all,,,doc,evidence_count,2.6277777777777778,0.18733017000097074,3,"12,15,12",,,,,True
-variant_metric,link_all,,,doc,linked_evidence_count,0.07777777777777778,0.00962250448649376,3,"12,15,12",,,,,True
-variant_metric,link_all,,,doc,retrieval_latency_seconds,1.9894872222222222,0.11968476971163008,3,"12,15,12",,,,,True
-variant_metric,link_all,,,doc,answer_latency_seconds,5.447150555555556,0.13157338172557415,3,"12,15,12",,,,,True
-variant_metric,link_all,,,doc,faithfulness,0.9742213804713805,0.01129403723641709,3,"12,15,12",,,,,True
-variant_metric,link_all,,,doc,answer_relevancy,0.8214462756192271,0.006416528499986998,3,"12,15,12",,,,,True
-variant_metric,link_all,,,doc,answer_correctness,0.8316356581245016,0.03507965912900938,3,"12,15,12",,,,,True
-variant_metric,link_all,,,doc,context_precision,0.8902083332582309,0.01833425397306008,3,"12,15,12",,,,,True
-variant_metric,link_all,,,doc,context_recall,0.9861111111111112,0.004811252243246864,3,"12,15,12",,,,,True
-variant_metric,link_all,,,graph,recall,0.8532163742690059,0.017573075089259312,3,"19,20,19",,,,,True
-variant_metric,link_all,,,graph,precision,0.7374394319131161,0.016996271291511846,3,"19,20,19",,,,,True
-variant_metric,link_all,,,graph,mrr,0.9653508771929824,0.015587154073611312,3,"19,20,19",,,,,True
-variant_metric,link_all,,,graph,ndcg_at_10,0.8561673942259049,0.02041633038040312,3,"19,20,19",,,,,True
-variant_metric,link_all,,,graph,linked_gold_recall,0.7412280701754386,0.007596714068284573,3,"19,20,19",,,,,True
-variant_metric,link_all,,,graph,special_rule_hit,1.0,0.0,3,"19,20,19",,,,,True
-variant_metric,link_all,,,graph,evidence_count,2.980701754385965,0.10661413757360351,3,"19,20,19",,,,,True
-variant_metric,link_all,,,graph,linked_evidence_count,1.068421052631579,0.027348170645824465,3,"19,20,19",,,,,True
-variant_metric,link_all,,,graph,retrieval_latency_seconds,1.7029716666666668,0.04245821127570289,3,"19,20,19",,,,,True
-variant_metric,link_all,,,graph,answer_latency_seconds,7.640569824561403,0.19544028484986828,3,"19,20,19",,,,,True
-variant_metric,link_all,,,graph,faithfulness,0.9812114925596676,0.0033647035741896656,3,"19,20,19",,,,,True
-variant_metric,link_all,,,graph,answer_relevancy,0.824905113991186,0.014390856656172556,3,"19,20,19",,,,,True
-variant_metric,link_all,,,graph,answer_correctness,0.7603402373281939,0.029317363549039164,3,"19,20,19",,,,,True
-variant_metric,link_all,,,graph,context_precision,0.8833966860912398,0.01316760795795096,3,"19,20,19",,,,,True
-variant_metric,link_all,,,graph,context_recall,0.9359146555199187,0.00925328204644917,3,"19,20,19",,,,,True
-variant_metric,link_all,,,all,recall,0.911879160266257,0.013106738766806326,3,"31,35,31",,,,,True
-variant_metric,link_all,,,all,precision,0.6876241679467486,0.00733181402384277,3,"31,35,31",,,,,True
-variant_metric,link_all,,,all,mrr,0.9476702508960574,0.01832168877294921,3,"31,35,31",,,,,True
-variant_metric,link_all,,,all,ndcg_at_10,0.8902662909990975,0.020237368553875163,3,"31,35,31",,,,,True
-variant_metric,link_all,,,all,linked_gold_recall,0.7412280701754386,0.007596714068284573,3,"31,35,31",,,,,True
-variant_metric,link_all,,,all,special_rule_hit,0.6666666666666666,0.0,3,"31,35,31",,,,,True
-variant_metric,link_all,,,all,evidence_count,2.835330261136713,0.06478111042997892,3,"31,35,31",,,,,True
-variant_metric,link_all,,,all,linked_evidence_count,0.6706605222734254,0.011706641402923263,3,"31,35,31",,,,,True
-variant_metric,link_all,,,all,retrieval_latency_seconds,1.8159210752688173,0.05420758154074679,3,"31,35,31",,,,,True
-variant_metric,link_all,,,all,answer_latency_seconds,6.762687803379416,0.20947726514248874,3,"31,35,31",,,,,True
-variant_metric,link_all,,,all,faithfulness,0.9782207413684707,0.002741380701776259,3,"31,35,31",,,,,True
-variant_metric,link_all,,,all,answer_relevancy,0.8238392214504827,0.006130066126975835,3,"31,35,31",,,,,True
-variant_metric,link_all,,,all,answer_correctness,0.7882825815569564,0.02069938861991878,3,"31,35,31",,,,,True
-variant_metric,link_all,,,all,context_precision,0.8865941286196306,0.001379234863802723,3,"31,35,31",,,,,True
-variant_metric,link_all,,,all,context_recall,0.9559868625997658,0.008399842817239614,3,"31,35,31",,,,,True
-variant_metric,proposed,,,doc,recall,1.0,0.0,3,"17,17,17",,,,,False
-variant_metric,proposed,,,doc,precision,0.6480392156862744,0.014508479006812505,3,"17,17,17",,,,,False
-variant_metric,proposed,,,doc,mrr,1.0,0.0,3,"17,17,17",,,,,False
-variant_metric,proposed,,,doc,ndcg_at_10,0.9968517956528701,0.002726424940919085,3,"17,17,17",,,,,False
-variant_metric,proposed,,,doc,linked_gold_recall,,,0,"17,17,17",,,,,False
-variant_metric,proposed,,,doc,special_rule_hit,0.0,0.0,3,"17,17,17",,,,,False
-variant_metric,proposed,,,doc,evidence_count,2.411764705882353,0.0,3,"17,17,17",,,,,False
-variant_metric,proposed,,,doc,linked_evidence_count,0.058823529411764705,0.0,3,"17,17,17",,,,,False
-variant_metric,proposed,,,doc,retrieval_latency_seconds,1.905407843137255,0.06889287113479108,3,"17,17,17",,,,,False
-variant_metric,proposed,,,doc,answer_latency_seconds,4.4123431372549025,0.24152375464946918,3,"17,17,17",,,,,False
-variant_metric,proposed,,,doc,faithfulness,0.9838001867413633,0.014606395058985113,3,"17,17,17",,,,,False
-variant_metric,proposed,,,doc,answer_relevancy,0.8263691711147143,0.009378691228242223,3,"17,17,17",,,,,False
-variant_metric,proposed,,,doc,answer_correctness,0.8448677501770805,0.0018558729450894502,3,"17,17,17",,,,,False
-variant_metric,proposed,,,doc,context_precision,0.9673202613486601,0.00566029675647802,3,"17,17,17",,,,,False
-variant_metric,proposed,,,doc,context_recall,1.0,0.0,3,"17,17,17",,,,,False
-variant_metric,proposed,,,graph,recall,0.8388888888888889,0.04589642122738419,3,"20,20,20",,,,,False
-variant_metric,proposed,,,graph,precision,0.7419444444444445,0.021736000177210696,3,"20,20,20",,,,,False
-variant_metric,proposed,,,graph,mrr,0.975,0.0,3,"20,20,20",,,,,False
-variant_metric,proposed,,,graph,ndcg_at_10,0.8430290260553351,0.028161863983991627,3,"20,20,20",,,,,False
-variant_metric,proposed,,,graph,linked_gold_recall,0.7083333333333334,0.06291528696058958,3,"20,20,20",,,,,False
-variant_metric,proposed,,,graph,special_rule_hit,1.0,0.0,3,"20,20,20",,,,,False
-variant_metric,proposed,,,graph,evidence_count,3.0,0.1732050807568879,3,"20,20,20",,,,,False
-variant_metric,proposed,,,graph,linked_evidence_count,0.95,0.04999999999999999,3,"20,20,20",,,,,False
-variant_metric,proposed,,,graph,retrieval_latency_seconds,2.6778483333333334,0.03865165628188949,3,"20,20,20",,,,,False
-variant_metric,proposed,,,graph,answer_latency_seconds,7.59907,0.39511574706027647,3,"20,20,20",,,,,False
-variant_metric,proposed,,,graph,faithfulness,0.9850238202555136,0.001605417612296241,3,"20,20,20",,,,,False
-variant_metric,proposed,,,graph,answer_relevancy,0.8422115667429632,0.01035468228538962,3,"20,20,20",,,,,False
-variant_metric,proposed,,,graph,answer_correctness,0.7558164811570053,0.011988905894271781,3,"20,20,20",,,,,False
-variant_metric,proposed,,,graph,context_precision,0.9233101851200083,0.03340590575194855,3,"20,20,20",,,,,False
-variant_metric,proposed,,,graph,context_recall,0.91625481000481,0.01092746269273626,3,"20,20,20",,,,,False
-variant_metric,proposed,,,all,recall,0.9129129129129129,0.024808876339126554,3,"37,37,37",,,,,False
-variant_metric,proposed,,,all,precision,0.6987987987987988,0.008807813439076526,3,"37,37,37",,,,,False
-variant_metric,proposed,,,all,mrr,0.9864864864864865,0.0,3,"37,37,37",,,,,False
-variant_metric,proposed,,,all,ndcg_at_10,0.9137043526271755,0.015593069752728062,3,"37,37,37",,,,,False
-variant_metric,proposed,,,all,linked_gold_recall,0.7083333333333334,0.06291528696058958,3,"37,37,37",,,,,False
-variant_metric,proposed,,,all,special_rule_hit,0.6666666666666666,0.0,3,"37,37,37",,,,,False
-variant_metric,proposed,,,all,evidence_count,2.72972972972973,0.09362436797669588,3,"37,37,37",,,,,False
-variant_metric,proposed,,,all,linked_evidence_count,0.5405405405405406,0.02702702702702703,3,"37,37,37",,,,,False
-variant_metric,proposed,,,all,retrieval_latency_seconds,2.3229432432432433,0.02956189468283219,3,"37,37,37",,,,,False
-variant_metric,proposed,,,all,answer_latency_seconds,6.134898198198198,0.1862674907310408,3,"37,37,37",,,,,False
-variant_metric,proposed,,,all,faithfulness,0.9844616102625255,0.007570423039393485,3,"37,37,37",,,,,False
-variant_metric,proposed,,,all,answer_relevancy,0.8349326282110651,0.0035180471858928717,3,"37,37,37",,,,,False
-variant_metric,proposed,,,all,answer_correctness,0.7967319290851479,0.00683996967844044,3,"37,37,37",,,,,False
-variant_metric,proposed,,,all,context_precision,0.9435310309547943,0.018771934163510348,3,"37,37,37",,,,,False
-variant_metric,proposed,,,all,context_recall,0.9547323297323297,0.005906736590668286,3,"37,37,37",,,,,False
-source_metric,bm25,,existing_v2,graph,precision,0.2,,1,5,,,,,False
-source_metric,bm25,,existing_v2,graph,recall,0.3,,1,5,,,,,False
-source_metric,bm25,,existing_v2,graph,mrr,0.4666666666666667,,1,5,,,,,False
-source_metric,bm25,,existing_v2,graph,context_precision,,,0,5,,,,,False
-source_metric,bm25,,existing_v2,graph,context_recall,,,0,5,,,,,False
-source_metric,bm25,,existing_v2,graph,answer_correctness,,,0,5,,,,,False
-source_metric,dense,,existing_v2,graph,precision,,,0,,,,,,False
-source_metric,dense,,existing_v2,graph,recall,,,0,,,,,,False
-source_metric,dense,,existing_v2,graph,mrr,,,0,,,,,,False
-source_metric,dense,,existing_v2,graph,context_precision,,,0,,,,,,False
-source_metric,dense,,existing_v2,graph,context_recall,,,0,,,,,,False
-source_metric,dense,,existing_v2,graph,answer_correctness,,,0,,,,,,False
-source_metric,hybrid,,existing_v2,graph,precision,,,0,,,,,,False
-source_metric,hybrid,,existing_v2,graph,recall,,,0,,,,,,False
-source_metric,hybrid,,existing_v2,graph,mrr,,,0,,,,,,False
-source_metric,hybrid,,existing_v2,graph,context_precision,,,0,,,,,,False
-source_metric,hybrid,,existing_v2,graph,context_recall,,,0,,,,,,False
-source_metric,hybrid,,existing_v2,graph,answer_correctness,,,0,,,,,,False
-source_metric,hybrid_rerank,,existing_v2,graph,precision,,,0,,,,,,False
-source_metric,hybrid_rerank,,existing_v2,graph,recall,,,0,,,,,,False
-source_metric,hybrid_rerank,,existing_v2,graph,mrr,,,0,,,,,,False
-source_metric,hybrid_rerank,,existing_v2,graph,context_precision,,,0,,,,,,False
-source_metric,hybrid_rerank,,existing_v2,graph,context_recall,,,0,,,,,,False
-source_metric,hybrid_rerank,,existing_v2,graph,answer_correctness,,,0,,,,,,False
-source_metric,link_all,,existing_v2,graph,precision,0.6190476190476191,0.05453576496083965,3,"5,5,5",,,,,False
-source_metric,link_all,,existing_v2,graph,recall,0.6666666666666666,0.0,3,"5,5,5",,,,,False
-source_metric,link_all,,existing_v2,graph,mrr,0.8666666666666667,0.05773502691896256,3,"5,5,5",,,,,False
-source_metric,link_all,,existing_v2,graph,context_precision,0.6811111110624074,0.06466437566800377,3,"5,5,5",,,,,False
-source_metric,link_all,,existing_v2,graph,context_recall,0.8845014245014245,0.021100092860416315,3,"5,5,5",,,,,False
-source_metric,link_all,,existing_v2,graph,answer_correctness,0.7417900849326994,0.020152714847872337,3,"5,5,5",,,,,False
-source_metric,proposed,,existing_v2,graph,precision,0.5688888888888889,0.03849001794597504,3,"5,5,5",,,,,False
-source_metric,proposed,,existing_v2,graph,recall,0.6888888888888889,0.03849001794597504,3,"5,5,5",,,,,False
-source_metric,proposed,,existing_v2,graph,mrr,1.0,0.0,3,"5,5,5",,,,,False
-source_metric,proposed,,existing_v2,graph,context_precision,0.7896296295871604,0.07370556483263302,3,"5,5,5",,,,,False
-source_metric,proposed,,existing_v2,graph,context_recall,0.8335185185185185,0.018899778995811918,3,"5,5,5",,,,,False
-source_metric,proposed,,existing_v2,graph,answer_correctness,0.7392295531302367,0.025925048079722554,3,"5,5,5",,,,,False
-source_metric,bm25,,llm_drafted,graph,precision,0.26666666666666666,,1,15,,,,,False
-source_metric,bm25,,llm_drafted,graph,recall,0.6666666666666666,,1,15,,,,,False
-source_metric,bm25,,llm_drafted,graph,mrr,0.9333333333333333,,1,15,,,,,False
-source_metric,bm25,,llm_drafted,graph,context_precision,,,0,15,,,,,False
-source_metric,bm25,,llm_drafted,graph,context_recall,,,0,15,,,,,False
-source_metric,bm25,,llm_drafted,graph,answer_correctness,,,0,15,,,,,False
-source_metric,dense,,llm_drafted,graph,precision,,,0,,,,,,False
-source_metric,dense,,llm_drafted,graph,recall,,,0,,,,,,False
-source_metric,dense,,llm_drafted,graph,mrr,,,0,,,,,,False
-source_metric,dense,,llm_drafted,graph,context_precision,,,0,,,,,,False
-source_metric,dense,,llm_drafted,graph,context_recall,,,0,,,,,,False
-source_metric,dense,,llm_drafted,graph,answer_correctness,,,0,,,,,,False
-source_metric,hybrid,,llm_drafted,graph,precision,,,0,,,,,,False
-source_metric,hybrid,,llm_drafted,graph,recall,,,0,,,,,,False
-source_metric,hybrid,,llm_drafted,graph,mrr,,,0,,,,,,False
-source_metric,hybrid,,llm_drafted,graph,context_precision,,,0,,,,,,False
-source_metric,hybrid,,llm_drafted,graph,context_recall,,,0,,,,,,False
-source_metric,hybrid,,llm_drafted,graph,answer_correctness,,,0,,,,,,False
-source_metric,hybrid_rerank,,llm_drafted,graph,precision,,,0,,,,,,False
-source_metric,hybrid_rerank,,llm_drafted,graph,recall,,,0,,,,,,False
-source_metric,hybrid_rerank,,llm_drafted,graph,mrr,,,0,,,,,,False
-source_metric,hybrid_rerank,,llm_drafted,graph,context_precision,,,0,,,,,,False
-source_metric,hybrid_rerank,,llm_drafted,graph,context_recall,,,0,,,,,,False
-source_metric,hybrid_rerank,,llm_drafted,graph,answer_correctness,,,0,,,,,,False
-source_metric,link_all,,llm_drafted,graph,precision,0.7792592592592592,0.03716500944799657,3,"14,15,14",,,,,True
-source_metric,link_all,,llm_drafted,graph,recall,0.9182539682539683,0.022122793436137055,3,"14,15,14",,,,,True
-source_metric,link_all,,llm_drafted,graph,mrr,1.0,0.0,3,"14,15,14",,,,,True
-source_metric,link_all,,llm_drafted,graph,context_precision,0.9544885360796056,0.035684784337400834,3,"14,15,14",,,,,True
-source_metric,link_all,,llm_drafted,graph,context_recall,0.9538995396138253,0.013855935108919906,3,"14,15,14",,,,,True
-source_metric,link_all,,llm_drafted,graph,answer_correctness,0.7667696436790072,0.03266659351541296,3,"14,15,14",,,,,True
-source_metric,proposed,,llm_drafted,graph,precision,0.7996296296296297,0.017225208821086618,3,"15,15,15",,,,,False
-source_metric,proposed,,llm_drafted,graph,recall,0.888888888888889,0.05091750772173154,3,"15,15,15",,,,,False
-source_metric,proposed,,llm_drafted,graph,mrr,0.9666666666666667,0.0,3,"15,15,15",,,,,False
-source_metric,proposed,,llm_drafted,graph,context_precision,0.9678703702976242,0.02044326183384888,3,"15,15,15",,,,,False
-source_metric,proposed,,llm_drafted,graph,context_recall,0.9438335738335738,0.020487807122133935,3,"15,15,15",,,,,False
-source_metric,proposed,,llm_drafted,graph,answer_correctness,0.7613454571659282,0.009594972114856392,3,"15,15,15",,,,,False
-paired_comparison,,proposed - link_all,,doc,precision,,,,,0.008518518518518514,0.875,15,7,True
-paired_comparison,,proposed - link_all,,doc,recall,,,,,0.0,1.0,15,0,True
-paired_comparison,,proposed - link_all,,doc,mrr,,,,,0.06666666666666668,0.5,15,2,True
-paired_comparison,,proposed - link_all,,doc,ndcg_at_10,,,,,0.046119410127195205,0.5,15,3,True
-paired_comparison,,proposed - link_all,,doc,faithfulness,,,,,0.004687349687349681,1.0,15,7,True
-paired_comparison,,proposed - link_all,,doc,answer_relevancy,,,,,0.003189182358125679,0.5614013671875,15,15,True
-paired_comparison,,proposed - link_all,,doc,answer_correctness,,,,,0.00838589935621541,0.803955078125,15,15,True
-paired_comparison,,proposed - link_all,,doc,context_precision,,,,,0.056851851842689816,0.0625,15,6,True
-paired_comparison,,proposed - link_all,,doc,context_recall,,,,,0.011666666666666662,1.0,15,1,True
-paired_comparison,,proposed - link_all,,graph,precision,,,,,0.018293650793650796,0.849609375,20,11,True
-paired_comparison,,proposed - link_all,,graph,recall,,,,,-0.01944444444444444,0.5,20,5,True
-paired_comparison,,proposed - link_all,,graph,mrr,,,,,0.008333333333333331,1.0,20,3,True
-paired_comparison,,proposed - link_all,,graph,ndcg_at_10,,,,,-0.01821913750078046,0.7822265625,20,11,True
-paired_comparison,,proposed - link_all,,graph,faithfulness,,,,,0.0031354985239256394,0.203125,20,9,True
-paired_comparison,,proposed - link_all,,graph,answer_relevancy,,,,,0.015188473797993046,0.03623390197753906,20,20,True
-paired_comparison,,proposed - link_all,,graph,answer_correctness,,,,,-0.004096847881009585,0.49800872802734375,20,20,True
-paired_comparison,,proposed - link_all,,graph,context_precision,,,,,0.04442129629825829,0.0672607421875,20,14,True
-paired_comparison,,proposed - link_all,,graph,context_recall,,,,,-0.0219520757020757,0.3828125,20,8,True
-paired_comparison,,proposed - link_all,,all,precision,,,,,0.014104308390022675,0.7095718383789062,35,18,True
-paired_comparison,,proposed - link_all,,all,recall,,,,,-0.01111111111111111,0.5,35,5,True
-paired_comparison,,proposed - link_all,,all,mrr,,,,,0.03333333333333333,0.375,35,5,True
-paired_comparison,,proposed - link_all,,all,ndcg_at_10,,,,,0.009354525768351968,0.7269287109375,35,14,True
-paired_comparison,,proposed - link_all,,all,faithfulness,,,,,0.003800577593964514,0.44073486328125,35,16,True
-paired_comparison,,proposed - link_all,,all,answer_relevancy,,,,,0.010045920323764175,0.062489338393788785,35,35,True
-paired_comparison,,proposed - link_all,,all,answer_correctness,,,,,0.0012529009349439837,0.954866194690112,35,35,True
-paired_comparison,,proposed - link_all,,all,context_precision,,,,,0.0497486772458718,0.0046539306640625,35,20,True
-paired_comparison,,proposed - link_all,,all,context_recall,,,,,-0.007544043258328974,0.65234375,35,9,True
-paired_comparison,,proposed - hybrid_rerank,,doc,precision,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,doc,recall,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,doc,mrr,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,doc,ndcg_at_10,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,doc,faithfulness,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,doc,answer_relevancy,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,doc,answer_correctness,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,doc,context_precision,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,doc,context_recall,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,graph,precision,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,graph,recall,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,graph,mrr,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,graph,ndcg_at_10,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,graph,faithfulness,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,graph,answer_relevancy,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,graph,answer_correctness,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,graph,context_precision,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,graph,context_recall,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,all,precision,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,all,recall,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,all,mrr,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,all,ndcg_at_10,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,all,faithfulness,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,all,answer_relevancy,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,all,answer_correctness,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,all,context_precision,,,,,,,0,0,False
-paired_comparison,,proposed - hybrid_rerank,,all,context_recall,,,,,,,0,0,False
+﻿record_type,variant,comparison,source_group,category,metric,mean,std,repeat_count,case_counts,proposed_case_counts,comparator_case_counts,mean_difference,p_value,n,n_nonzero,partial
+variant_metric,bm25,,,doc,recall,0.8235294117647058,,1,17,,,,,,,False
+variant_metric,bm25,,,doc,precision,0.17647058823529413,,1,17,,,,,,,False
+variant_metric,bm25,,,doc,mrr,0.75,,1,17,,,,,,,False
+variant_metric,bm25,,,doc,ndcg_at_10,0.7611071545284058,,1,17,,,,,,,False
+variant_metric,bm25,,,doc,linked_gold_recall,,,0,17,,,,,,,False
+variant_metric,bm25,,,doc,special_rule_hit,0.0,,1,17,,,,,,,False
+variant_metric,bm25,,,doc,evidence_count,5.0,,1,17,,,,,,,False
+variant_metric,bm25,,,doc,linked_evidence_count,0.0,,1,17,,,,,,,False
+variant_metric,bm25,,,doc,retrieval_latency_seconds,0.2928882352941176,,1,17,,,,,,,False
+variant_metric,bm25,,,doc,answer_latency_seconds,,,0,17,,,,,,,False
+variant_metric,bm25,,,doc,faithfulness,,,0,17,,,,,,,False
+variant_metric,bm25,,,doc,answer_relevancy,,,0,17,,,,,,,False
+variant_metric,bm25,,,doc,answer_correctness,,,0,17,,,,,,,False
+variant_metric,bm25,,,doc,context_precision,,,0,17,,,,,,,False
+variant_metric,bm25,,,doc,context_recall,,,0,17,,,,,,,False
+variant_metric,bm25,,,graph,recall,0.575,,1,20,,,,,,,False
+variant_metric,bm25,,,graph,precision,0.25,,1,20,,,,,,,False
+variant_metric,bm25,,,graph,mrr,0.8166666666666667,,1,20,,,,,,,False
+variant_metric,bm25,,,graph,ndcg_at_10,0.6030694668033569,,1,20,,,,,,,False
+variant_metric,bm25,,,graph,linked_gold_recall,0.275,,1,20,,,,,,,False
+variant_metric,bm25,,,graph,special_rule_hit,0.0,,1,20,,,,,,,False
+variant_metric,bm25,,,graph,evidence_count,5.0,,1,20,,,,,,,False
+variant_metric,bm25,,,graph,linked_evidence_count,0.0,,1,20,,,,,,,False
+variant_metric,bm25,,,graph,retrieval_latency_seconds,0.1521,,1,20,,,,,,,False
+variant_metric,bm25,,,graph,answer_latency_seconds,,,0,20,,,,,,,False
+variant_metric,bm25,,,graph,faithfulness,,,0,20,,,,,,,False
+variant_metric,bm25,,,graph,answer_relevancy,,,0,20,,,,,,,False
+variant_metric,bm25,,,graph,answer_correctness,,,0,20,,,,,,,False
+variant_metric,bm25,,,graph,context_precision,,,0,20,,,,,,,False
+variant_metric,bm25,,,graph,context_recall,,,0,20,,,,,,,False
+variant_metric,bm25,,,all,recall,0.6891891891891891,,1,37,,,,,,,False
+variant_metric,bm25,,,all,precision,0.21621621621621623,,1,37,,,,,,,False
+variant_metric,bm25,,,all,mrr,0.786036036036036,,1,37,,,,,,,False
+variant_metric,bm25,,,all,ndcg_at_10,0.6756813773797308,,1,37,,,,,,,False
+variant_metric,bm25,,,all,linked_gold_recall,0.275,,1,37,,,,,,,False
+variant_metric,bm25,,,all,special_rule_hit,0.0,,1,37,,,,,,,False
+variant_metric,bm25,,,all,evidence_count,5.0,,1,37,,,,,,,False
+variant_metric,bm25,,,all,linked_evidence_count,0.0,,1,37,,,,,,,False
+variant_metric,bm25,,,all,retrieval_latency_seconds,0.2167864864864865,,1,37,,,,,,,False
+variant_metric,bm25,,,all,answer_latency_seconds,,,0,37,,,,,,,False
+variant_metric,bm25,,,all,faithfulness,,,0,37,,,,,,,False
+variant_metric,bm25,,,all,answer_relevancy,,,0,37,,,,,,,False
+variant_metric,bm25,,,all,answer_correctness,,,0,37,,,,,,,False
+variant_metric,bm25,,,all,context_precision,,,0,37,,,,,,,False
+variant_metric,bm25,,,all,context_recall,,,0,37,,,,,,,False
+variant_metric,dense,,,doc,recall,,,0,,,,,,,,False
+variant_metric,dense,,,doc,precision,,,0,,,,,,,,False
+variant_metric,dense,,,doc,mrr,,,0,,,,,,,,False
+variant_metric,dense,,,doc,ndcg_at_10,,,0,,,,,,,,False
+variant_metric,dense,,,doc,linked_gold_recall,,,0,,,,,,,,False
+variant_metric,dense,,,doc,special_rule_hit,,,0,,,,,,,,False
+variant_metric,dense,,,doc,evidence_count,,,0,,,,,,,,False
+variant_metric,dense,,,doc,linked_evidence_count,,,0,,,,,,,,False
+variant_metric,dense,,,doc,retrieval_latency_seconds,,,0,,,,,,,,False
+variant_metric,dense,,,doc,answer_latency_seconds,,,0,,,,,,,,False
+variant_metric,dense,,,doc,faithfulness,,,0,,,,,,,,False
+variant_metric,dense,,,doc,answer_relevancy,,,0,,,,,,,,False
+variant_metric,dense,,,doc,answer_correctness,,,0,,,,,,,,False
+variant_metric,dense,,,doc,context_precision,,,0,,,,,,,,False
+variant_metric,dense,,,doc,context_recall,,,0,,,,,,,,False
+variant_metric,dense,,,graph,recall,,,0,,,,,,,,False
+variant_metric,dense,,,graph,precision,,,0,,,,,,,,False
+variant_metric,dense,,,graph,mrr,,,0,,,,,,,,False
+variant_metric,dense,,,graph,ndcg_at_10,,,0,,,,,,,,False
+variant_metric,dense,,,graph,linked_gold_recall,,,0,,,,,,,,False
+variant_metric,dense,,,graph,special_rule_hit,,,0,,,,,,,,False
+variant_metric,dense,,,graph,evidence_count,,,0,,,,,,,,False
+variant_metric,dense,,,graph,linked_evidence_count,,,0,,,,,,,,False
+variant_metric,dense,,,graph,retrieval_latency_seconds,,,0,,,,,,,,False
+variant_metric,dense,,,graph,answer_latency_seconds,,,0,,,,,,,,False
+variant_metric,dense,,,graph,faithfulness,,,0,,,,,,,,False
+variant_metric,dense,,,graph,answer_relevancy,,,0,,,,,,,,False
+variant_metric,dense,,,graph,answer_correctness,,,0,,,,,,,,False
+variant_metric,dense,,,graph,context_precision,,,0,,,,,,,,False
+variant_metric,dense,,,graph,context_recall,,,0,,,,,,,,False
+variant_metric,dense,,,all,recall,,,0,,,,,,,,False
+variant_metric,dense,,,all,precision,,,0,,,,,,,,False
+variant_metric,dense,,,all,mrr,,,0,,,,,,,,False
+variant_metric,dense,,,all,ndcg_at_10,,,0,,,,,,,,False
+variant_metric,dense,,,all,linked_gold_recall,,,0,,,,,,,,False
+variant_metric,dense,,,all,special_rule_hit,,,0,,,,,,,,False
+variant_metric,dense,,,all,evidence_count,,,0,,,,,,,,False
+variant_metric,dense,,,all,linked_evidence_count,,,0,,,,,,,,False
+variant_metric,dense,,,all,retrieval_latency_seconds,,,0,,,,,,,,False
+variant_metric,dense,,,all,answer_latency_seconds,,,0,,,,,,,,False
+variant_metric,dense,,,all,faithfulness,,,0,,,,,,,,False
+variant_metric,dense,,,all,answer_relevancy,,,0,,,,,,,,False
+variant_metric,dense,,,all,answer_correctness,,,0,,,,,,,,False
+variant_metric,dense,,,all,context_precision,,,0,,,,,,,,False
+variant_metric,dense,,,all,context_recall,,,0,,,,,,,,False
+variant_metric,hybrid,,,doc,recall,,,0,,,,,,,,False
+variant_metric,hybrid,,,doc,precision,,,0,,,,,,,,False
+variant_metric,hybrid,,,doc,mrr,,,0,,,,,,,,False
+variant_metric,hybrid,,,doc,ndcg_at_10,,,0,,,,,,,,False
+variant_metric,hybrid,,,doc,linked_gold_recall,,,0,,,,,,,,False
+variant_metric,hybrid,,,doc,special_rule_hit,,,0,,,,,,,,False
+variant_metric,hybrid,,,doc,evidence_count,,,0,,,,,,,,False
+variant_metric,hybrid,,,doc,linked_evidence_count,,,0,,,,,,,,False
+variant_metric,hybrid,,,doc,retrieval_latency_seconds,,,0,,,,,,,,False
+variant_metric,hybrid,,,doc,answer_latency_seconds,,,0,,,,,,,,False
+variant_metric,hybrid,,,doc,faithfulness,,,0,,,,,,,,False
+variant_metric,hybrid,,,doc,answer_relevancy,,,0,,,,,,,,False
+variant_metric,hybrid,,,doc,answer_correctness,,,0,,,,,,,,False
+variant_metric,hybrid,,,doc,context_precision,,,0,,,,,,,,False
+variant_metric,hybrid,,,doc,context_recall,,,0,,,,,,,,False
+variant_metric,hybrid,,,graph,recall,,,0,,,,,,,,False
+variant_metric,hybrid,,,graph,precision,,,0,,,,,,,,False
+variant_metric,hybrid,,,graph,mrr,,,0,,,,,,,,False
+variant_metric,hybrid,,,graph,ndcg_at_10,,,0,,,,,,,,False
+variant_metric,hybrid,,,graph,linked_gold_recall,,,0,,,,,,,,False
+variant_metric,hybrid,,,graph,special_rule_hit,,,0,,,,,,,,False
+variant_metric,hybrid,,,graph,evidence_count,,,0,,,,,,,,False
+variant_metric,hybrid,,,graph,linked_evidence_count,,,0,,,,,,,,False
+variant_metric,hybrid,,,graph,retrieval_latency_seconds,,,0,,,,,,,,False
+variant_metric,hybrid,,,graph,answer_latency_seconds,,,0,,,,,,,,False
+variant_metric,hybrid,,,graph,faithfulness,,,0,,,,,,,,False
+variant_metric,hybrid,,,graph,answer_relevancy,,,0,,,,,,,,False
+variant_metric,hybrid,,,graph,answer_correctness,,,0,,,,,,,,False
+variant_metric,hybrid,,,graph,context_precision,,,0,,,,,,,,False
+variant_metric,hybrid,,,graph,context_recall,,,0,,,,,,,,False
+variant_metric,hybrid,,,all,recall,,,0,,,,,,,,False
+variant_metric,hybrid,,,all,precision,,,0,,,,,,,,False
+variant_metric,hybrid,,,all,mrr,,,0,,,,,,,,False
+variant_metric,hybrid,,,all,ndcg_at_10,,,0,,,,,,,,False
+variant_metric,hybrid,,,all,linked_gold_recall,,,0,,,,,,,,False
+variant_metric,hybrid,,,all,special_rule_hit,,,0,,,,,,,,False
+variant_metric,hybrid,,,all,evidence_count,,,0,,,,,,,,False
+variant_metric,hybrid,,,all,linked_evidence_count,,,0,,,,,,,,False
+variant_metric,hybrid,,,all,retrieval_latency_seconds,,,0,,,,,,,,False
+variant_metric,hybrid,,,all,answer_latency_seconds,,,0,,,,,,,,False
+variant_metric,hybrid,,,all,faithfulness,,,0,,,,,,,,False
+variant_metric,hybrid,,,all,answer_relevancy,,,0,,,,,,,,False
+variant_metric,hybrid,,,all,answer_correctness,,,0,,,,,,,,False
+variant_metric,hybrid,,,all,context_precision,,,0,,,,,,,,False
+variant_metric,hybrid,,,all,context_recall,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,doc,recall,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,doc,precision,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,doc,mrr,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,doc,ndcg_at_10,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,doc,linked_gold_recall,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,doc,special_rule_hit,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,doc,evidence_count,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,doc,linked_evidence_count,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,doc,retrieval_latency_seconds,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,doc,answer_latency_seconds,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,doc,faithfulness,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,doc,answer_relevancy,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,doc,answer_correctness,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,doc,context_precision,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,doc,context_recall,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,graph,recall,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,graph,precision,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,graph,mrr,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,graph,ndcg_at_10,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,graph,linked_gold_recall,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,graph,special_rule_hit,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,graph,evidence_count,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,graph,linked_evidence_count,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,graph,retrieval_latency_seconds,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,graph,answer_latency_seconds,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,graph,faithfulness,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,graph,answer_relevancy,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,graph,answer_correctness,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,graph,context_precision,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,graph,context_recall,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,all,recall,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,all,precision,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,all,mrr,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,all,ndcg_at_10,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,all,linked_gold_recall,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,all,special_rule_hit,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,all,evidence_count,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,all,linked_evidence_count,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,all,retrieval_latency_seconds,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,all,answer_latency_seconds,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,all,faithfulness,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,all,answer_relevancy,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,all,answer_correctness,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,all,context_precision,,,0,,,,,,,,False
+variant_metric,hybrid_rerank,,,all,context_recall,,,0,,,,,,,,False
+variant_metric,link_all,,,doc,recall,1.0,0.0,3,"12,15,12",,,,,,,True
+variant_metric,link_all,,,doc,precision,0.6119444444444444,0.014821468413282319,3,"12,15,12",,,,,,,True
+variant_metric,link_all,,,doc,mrr,0.9203703703703704,0.03047126420723027,3,"12,15,12",,,,,,,True
+variant_metric,link_all,,,doc,ndcg_at_10,0.9411145545761932,0.01758327753732552,3,"12,15,12",,,,,,,True
+variant_metric,link_all,,,doc,linked_gold_recall,,,0,"12,15,12",,,,,,,True
+variant_metric,link_all,,,doc,special_rule_hit,0.0,0.0,3,"12,15,12",,,,,,,True
+variant_metric,link_all,,,doc,evidence_count,2.6277777777777778,0.18733017000097074,3,"12,15,12",,,,,,,True
+variant_metric,link_all,,,doc,linked_evidence_count,0.07777777777777778,0.00962250448649376,3,"12,15,12",,,,,,,True
+variant_metric,link_all,,,doc,retrieval_latency_seconds,1.9894872222222222,0.11968476971163008,3,"12,15,12",,,,,,,True
+variant_metric,link_all,,,doc,answer_latency_seconds,5.447150555555556,0.13157338172557415,3,"12,15,12",,,,,,,True
+variant_metric,link_all,,,doc,faithfulness,0.9742213804713805,0.01129403723641709,3,"12,15,12",,,,,,,True
+variant_metric,link_all,,,doc,answer_relevancy,0.8214462756192271,0.006416528499986998,3,"12,15,12",,,,,,,True
+variant_metric,link_all,,,doc,answer_correctness,0.8316356581245016,0.03507965912900938,3,"12,15,12",,,,,,,True
+variant_metric,link_all,,,doc,context_precision,0.8902083332582309,0.01833425397306008,3,"12,15,12",,,,,,,True
+variant_metric,link_all,,,doc,context_recall,0.9861111111111112,0.004811252243246864,3,"12,15,12",,,,,,,True
+variant_metric,link_all,,,graph,recall,0.8532163742690059,0.017573075089259312,3,"19,20,19",,,,,,,True
+variant_metric,link_all,,,graph,precision,0.7374394319131161,0.016996271291511846,3,"19,20,19",,,,,,,True
+variant_metric,link_all,,,graph,mrr,0.9653508771929824,0.015587154073611312,3,"19,20,19",,,,,,,True
+variant_metric,link_all,,,graph,ndcg_at_10,0.8561673942259049,0.02041633038040312,3,"19,20,19",,,,,,,True
+variant_metric,link_all,,,graph,linked_gold_recall,0.7412280701754386,0.007596714068284573,3,"19,20,19",,,,,,,True
+variant_metric,link_all,,,graph,special_rule_hit,1.0,0.0,3,"19,20,19",,,,,,,True
+variant_metric,link_all,,,graph,evidence_count,2.980701754385965,0.10661413757360351,3,"19,20,19",,,,,,,True
+variant_metric,link_all,,,graph,linked_evidence_count,1.068421052631579,0.027348170645824465,3,"19,20,19",,,,,,,True
+variant_metric,link_all,,,graph,retrieval_latency_seconds,1.7029716666666668,0.04245821127570289,3,"19,20,19",,,,,,,True
+variant_metric,link_all,,,graph,answer_latency_seconds,7.640569824561403,0.19544028484986828,3,"19,20,19",,,,,,,True
+variant_metric,link_all,,,graph,faithfulness,0.9812114925596676,0.0033647035741896656,3,"19,20,19",,,,,,,True
+variant_metric,link_all,,,graph,answer_relevancy,0.824905113991186,0.014390856656172556,3,"19,20,19",,,,,,,True
+variant_metric,link_all,,,graph,answer_correctness,0.7603402373281939,0.029317363549039164,3,"19,20,19",,,,,,,True
+variant_metric,link_all,,,graph,context_precision,0.8833966860912398,0.01316760795795096,3,"19,20,19",,,,,,,True
+variant_metric,link_all,,,graph,context_recall,0.9359146555199187,0.00925328204644917,3,"19,20,19",,,,,,,True
+variant_metric,link_all,,,all,recall,0.911879160266257,0.013106738766806326,3,"31,35,31",,,,,,,True
+variant_metric,link_all,,,all,precision,0.6876241679467486,0.00733181402384277,3,"31,35,31",,,,,,,True
+variant_metric,link_all,,,all,mrr,0.9476702508960574,0.01832168877294921,3,"31,35,31",,,,,,,True
+variant_metric,link_all,,,all,ndcg_at_10,0.8902662909990975,0.020237368553875163,3,"31,35,31",,,,,,,True
+variant_metric,link_all,,,all,linked_gold_recall,0.7412280701754386,0.007596714068284573,3,"31,35,31",,,,,,,True
+variant_metric,link_all,,,all,special_rule_hit,0.6666666666666666,0.0,3,"31,35,31",,,,,,,True
+variant_metric,link_all,,,all,evidence_count,2.835330261136713,0.06478111042997892,3,"31,35,31",,,,,,,True
+variant_metric,link_all,,,all,linked_evidence_count,0.6706605222734254,0.011706641402923263,3,"31,35,31",,,,,,,True
+variant_metric,link_all,,,all,retrieval_latency_seconds,1.8159210752688173,0.05420758154074679,3,"31,35,31",,,,,,,True
+variant_metric,link_all,,,all,answer_latency_seconds,6.762687803379416,0.20947726514248874,3,"31,35,31",,,,,,,True
+variant_metric,link_all,,,all,faithfulness,0.9782207413684707,0.002741380701776259,3,"31,35,31",,,,,,,True
+variant_metric,link_all,,,all,answer_relevancy,0.8238392214504827,0.006130066126975835,3,"31,35,31",,,,,,,True
+variant_metric,link_all,,,all,answer_correctness,0.7882825815569564,0.02069938861991878,3,"31,35,31",,,,,,,True
+variant_metric,link_all,,,all,context_precision,0.8865941286196306,0.001379234863802723,3,"31,35,31",,,,,,,True
+variant_metric,link_all,,,all,context_recall,0.9559868625997658,0.008399842817239614,3,"31,35,31",,,,,,,True
+variant_metric,proposed,,,doc,recall,1.0,0.0,3,"17,17,17",,,,,,,False
+variant_metric,proposed,,,doc,precision,0.6480392156862744,0.014508479006812505,3,"17,17,17",,,,,,,False
+variant_metric,proposed,,,doc,mrr,1.0,0.0,3,"17,17,17",,,,,,,False
+variant_metric,proposed,,,doc,ndcg_at_10,0.9968517956528701,0.002726424940919085,3,"17,17,17",,,,,,,False
+variant_metric,proposed,,,doc,linked_gold_recall,,,0,"17,17,17",,,,,,,False
+variant_metric,proposed,,,doc,special_rule_hit,0.0,0.0,3,"17,17,17",,,,,,,False
+variant_metric,proposed,,,doc,evidence_count,2.411764705882353,0.0,3,"17,17,17",,,,,,,False
+variant_metric,proposed,,,doc,linked_evidence_count,0.058823529411764705,0.0,3,"17,17,17",,,,,,,False
+variant_metric,proposed,,,doc,retrieval_latency_seconds,1.905407843137255,0.06889287113479108,3,"17,17,17",,,,,,,False
+variant_metric,proposed,,,doc,answer_latency_seconds,4.4123431372549025,0.24152375464946918,3,"17,17,17",,,,,,,False
+variant_metric,proposed,,,doc,faithfulness,0.9838001867413633,0.014606395058985113,3,"17,17,17",,,,,,,False
+variant_metric,proposed,,,doc,answer_relevancy,0.8263691711147143,0.009378691228242223,3,"17,17,17",,,,,,,False
+variant_metric,proposed,,,doc,answer_correctness,0.8448677501770805,0.0018558729450894502,3,"17,17,17",,,,,,,False
+variant_metric,proposed,,,doc,context_precision,0.9673202613486601,0.00566029675647802,3,"17,17,17",,,,,,,False
+variant_metric,proposed,,,doc,context_recall,1.0,0.0,3,"17,17,17",,,,,,,False
+variant_metric,proposed,,,graph,recall,0.8388888888888889,0.04589642122738419,3,"20,20,20",,,,,,,False
+variant_metric,proposed,,,graph,precision,0.7419444444444445,0.021736000177210696,3,"20,20,20",,,,,,,False
+variant_metric,proposed,,,graph,mrr,0.975,0.0,3,"20,20,20",,,,,,,False
+variant_metric,proposed,,,graph,ndcg_at_10,0.8430290260553351,0.028161863983991627,3,"20,20,20",,,,,,,False
+variant_metric,proposed,,,graph,linked_gold_recall,0.7083333333333334,0.06291528696058958,3,"20,20,20",,,,,,,False
+variant_metric,proposed,,,graph,special_rule_hit,1.0,0.0,3,"20,20,20",,,,,,,False
+variant_metric,proposed,,,graph,evidence_count,3.0,0.1732050807568879,3,"20,20,20",,,,,,,False
+variant_metric,proposed,,,graph,linked_evidence_count,0.95,0.04999999999999999,3,"20,20,20",,,,,,,False
+variant_metric,proposed,,,graph,retrieval_latency_seconds,2.6778483333333334,0.03865165628188949,3,"20,20,20",,,,,,,False
+variant_metric,proposed,,,graph,answer_latency_seconds,7.59907,0.39511574706027647,3,"20,20,20",,,,,,,False
+variant_metric,proposed,,,graph,faithfulness,0.9850238202555136,0.001605417612296241,3,"20,20,20",,,,,,,False
+variant_metric,proposed,,,graph,answer_relevancy,0.8422115667429632,0.01035468228538962,3,"20,20,20",,,,,,,False
+variant_metric,proposed,,,graph,answer_correctness,0.7558164811570053,0.011988905894271781,3,"20,20,20",,,,,,,False
+variant_metric,proposed,,,graph,context_precision,0.9233101851200083,0.03340590575194855,3,"20,20,20",,,,,,,False
+variant_metric,proposed,,,graph,context_recall,0.91625481000481,0.01092746269273626,3,"20,20,20",,,,,,,False
+variant_metric,proposed,,,all,recall,0.9129129129129129,0.024808876339126554,3,"37,37,37",,,,,,,False
+variant_metric,proposed,,,all,precision,0.6987987987987988,0.008807813439076526,3,"37,37,37",,,,,,,False
+variant_metric,proposed,,,all,mrr,0.9864864864864865,0.0,3,"37,37,37",,,,,,,False
+variant_metric,proposed,,,all,ndcg_at_10,0.9137043526271755,0.015593069752728062,3,"37,37,37",,,,,,,False
+variant_metric,proposed,,,all,linked_gold_recall,0.7083333333333334,0.06291528696058958,3,"37,37,37",,,,,,,False
+variant_metric,proposed,,,all,special_rule_hit,0.6666666666666666,0.0,3,"37,37,37",,,,,,,False
+variant_metric,proposed,,,all,evidence_count,2.72972972972973,0.09362436797669588,3,"37,37,37",,,,,,,False
+variant_metric,proposed,,,all,linked_evidence_count,0.5405405405405406,0.02702702702702703,3,"37,37,37",,,,,,,False
+variant_metric,proposed,,,all,retrieval_latency_seconds,2.3229432432432433,0.02956189468283219,3,"37,37,37",,,,,,,False
+variant_metric,proposed,,,all,answer_latency_seconds,6.134898198198198,0.1862674907310408,3,"37,37,37",,,,,,,False
+variant_metric,proposed,,,all,faithfulness,0.9844616102625255,0.007570423039393485,3,"37,37,37",,,,,,,False
+variant_metric,proposed,,,all,answer_relevancy,0.8349326282110651,0.0035180471858928717,3,"37,37,37",,,,,,,False
+variant_metric,proposed,,,all,answer_correctness,0.7967319290851479,0.00683996967844044,3,"37,37,37",,,,,,,False
+variant_metric,proposed,,,all,context_precision,0.9435310309547943,0.018771934163510348,3,"37,37,37",,,,,,,False
+variant_metric,proposed,,,all,context_recall,0.9547323297323297,0.005906736590668286,3,"37,37,37",,,,,,,False
+source_metric,bm25,,existing_v2,graph,precision,0.2,,1,5,,,,,,,False
+source_metric,bm25,,existing_v2,graph,recall,0.3,,1,5,,,,,,,False
+source_metric,bm25,,existing_v2,graph,mrr,0.4666666666666667,,1,5,,,,,,,False
+source_metric,bm25,,existing_v2,graph,context_precision,,,0,5,,,,,,,False
+source_metric,bm25,,existing_v2,graph,context_recall,,,0,5,,,,,,,False
+source_metric,bm25,,existing_v2,graph,answer_correctness,,,0,5,,,,,,,False
+source_metric,bm25,,existing_v2,graph,retrieval_latency_seconds,0.14896,,1,5,,,,,,,False
+source_metric,dense,,existing_v2,graph,precision,,,0,,,,,,,,False
+source_metric,dense,,existing_v2,graph,recall,,,0,,,,,,,,False
+source_metric,dense,,existing_v2,graph,mrr,,,0,,,,,,,,False
+source_metric,dense,,existing_v2,graph,context_precision,,,0,,,,,,,,False
+source_metric,dense,,existing_v2,graph,context_recall,,,0,,,,,,,,False
+source_metric,dense,,existing_v2,graph,answer_correctness,,,0,,,,,,,,False
+source_metric,dense,,existing_v2,graph,retrieval_latency_seconds,,,0,,,,,,,,False
+source_metric,hybrid,,existing_v2,graph,precision,,,0,,,,,,,,False
+source_metric,hybrid,,existing_v2,graph,recall,,,0,,,,,,,,False
+source_metric,hybrid,,existing_v2,graph,mrr,,,0,,,,,,,,False
+source_metric,hybrid,,existing_v2,graph,context_precision,,,0,,,,,,,,False
+source_metric,hybrid,,existing_v2,graph,context_recall,,,0,,,,,,,,False
+source_metric,hybrid,,existing_v2,graph,answer_correctness,,,0,,,,,,,,False
+source_metric,hybrid,,existing_v2,graph,retrieval_latency_seconds,,,0,,,,,,,,False
+source_metric,hybrid_rerank,,existing_v2,graph,precision,,,0,,,,,,,,False
+source_metric,hybrid_rerank,,existing_v2,graph,recall,,,0,,,,,,,,False
+source_metric,hybrid_rerank,,existing_v2,graph,mrr,,,0,,,,,,,,False
+source_metric,hybrid_rerank,,existing_v2,graph,context_precision,,,0,,,,,,,,False
+source_metric,hybrid_rerank,,existing_v2,graph,context_recall,,,0,,,,,,,,False
+source_metric,hybrid_rerank,,existing_v2,graph,answer_correctness,,,0,,,,,,,,False
+source_metric,hybrid_rerank,,existing_v2,graph,retrieval_latency_seconds,,,0,,,,,,,,False
+source_metric,link_all,,existing_v2,graph,precision,0.6190476190476191,0.05453576496083965,3,"5,5,5",,,,,,,False
+source_metric,link_all,,existing_v2,graph,recall,0.6666666666666666,0.0,3,"5,5,5",,,,,,,False
+source_metric,link_all,,existing_v2,graph,mrr,0.8666666666666667,0.05773502691896256,3,"5,5,5",,,,,,,False
+source_metric,link_all,,existing_v2,graph,context_precision,0.6811111110624074,0.06466437566800377,3,"5,5,5",,,,,,,False
+source_metric,link_all,,existing_v2,graph,context_recall,0.8845014245014245,0.021100092860416315,3,"5,5,5",,,,,,,False
+source_metric,link_all,,existing_v2,graph,answer_correctness,0.7417900849326994,0.020152714847872337,3,"5,5,5",,,,,,,False
+source_metric,link_all,,existing_v2,graph,retrieval_latency_seconds,1.7409333333333332,0.14610640141120898,3,"5,5,5",,,,,,,False
+source_metric,proposed,,existing_v2,graph,precision,0.5688888888888889,0.03849001794597504,3,"5,5,5",,,,,,,False
+source_metric,proposed,,existing_v2,graph,recall,0.6888888888888889,0.03849001794597504,3,"5,5,5",,,,,,,False
+source_metric,proposed,,existing_v2,graph,mrr,1.0,0.0,3,"5,5,5",,,,,,,False
+source_metric,proposed,,existing_v2,graph,context_precision,0.7896296295871604,0.07370556483263302,3,"5,5,5",,,,,,,False
+source_metric,proposed,,existing_v2,graph,context_recall,0.8335185185185185,0.018899778995811918,3,"5,5,5",,,,,,,False
+source_metric,proposed,,existing_v2,graph,answer_correctness,0.7392295531302367,0.025925048079722554,3,"5,5,5",,,,,,,False
+source_metric,proposed,,existing_v2,graph,retrieval_latency_seconds,2.79806,0.1380228691195774,3,"5,5,5",,,,,,,False
+source_metric,bm25,,llm_drafted,graph,precision,0.26666666666666666,,1,15,,,,,,,False
+source_metric,bm25,,llm_drafted,graph,recall,0.6666666666666666,,1,15,,,,,,,False
+source_metric,bm25,,llm_drafted,graph,mrr,0.9333333333333333,,1,15,,,,,,,False
+source_metric,bm25,,llm_drafted,graph,context_precision,,,0,15,,,,,,,False
+source_metric,bm25,,llm_drafted,graph,context_recall,,,0,15,,,,,,,False
+source_metric,bm25,,llm_drafted,graph,answer_correctness,,,0,15,,,,,,,False
+source_metric,bm25,,llm_drafted,graph,retrieval_latency_seconds,0.15314666666666668,,1,15,,,,,,,False
+source_metric,dense,,llm_drafted,graph,precision,,,0,,,,,,,,False
+source_metric,dense,,llm_drafted,graph,recall,,,0,,,,,,,,False
+source_metric,dense,,llm_drafted,graph,mrr,,,0,,,,,,,,False
+source_metric,dense,,llm_drafted,graph,context_precision,,,0,,,,,,,,False
+source_metric,dense,,llm_drafted,graph,context_recall,,,0,,,,,,,,False
+source_metric,dense,,llm_drafted,graph,answer_correctness,,,0,,,,,,,,False
+source_metric,dense,,llm_drafted,graph,retrieval_latency_seconds,,,0,,,,,,,,False
+source_metric,hybrid,,llm_drafted,graph,precision,,,0,,,,,,,,False
+source_metric,hybrid,,llm_drafted,graph,recall,,,0,,,,,,,,False
+source_metric,hybrid,,llm_drafted,graph,mrr,,,0,,,,,,,,False
+source_metric,hybrid,,llm_drafted,graph,context_precision,,,0,,,,,,,,False
+source_metric,hybrid,,llm_drafted,graph,context_recall,,,0,,,,,,,,False
+source_metric,hybrid,,llm_drafted,graph,answer_correctness,,,0,,,,,,,,False
+source_metric,hybrid,,llm_drafted,graph,retrieval_latency_seconds,,,0,,,,,,,,False
+source_metric,hybrid_rerank,,llm_drafted,graph,precision,,,0,,,,,,,,False
+source_metric,hybrid_rerank,,llm_drafted,graph,recall,,,0,,,,,,,,False
+source_metric,hybrid_rerank,,llm_drafted,graph,mrr,,,0,,,,,,,,False
+source_metric,hybrid_rerank,,llm_drafted,graph,context_precision,,,0,,,,,,,,False
+source_metric,hybrid_rerank,,llm_drafted,graph,context_recall,,,0,,,,,,,,False
+source_metric,hybrid_rerank,,llm_drafted,graph,answer_correctness,,,0,,,,,,,,False
+source_metric,hybrid_rerank,,llm_drafted,graph,retrieval_latency_seconds,,,0,,,,,,,,False
+source_metric,link_all,,llm_drafted,graph,precision,0.7792592592592592,0.03716500944799657,3,"14,15,14",,,,,,,True
+source_metric,link_all,,llm_drafted,graph,recall,0.9182539682539683,0.022122793436137055,3,"14,15,14",,,,,,,True
+source_metric,link_all,,llm_drafted,graph,mrr,1.0,0.0,3,"14,15,14",,,,,,,True
+source_metric,link_all,,llm_drafted,graph,context_precision,0.9544885360796056,0.035684784337400834,3,"14,15,14",,,,,,,True
+source_metric,link_all,,llm_drafted,graph,context_recall,0.9538995396138253,0.013855935108919906,3,"14,15,14",,,,,,,True
+source_metric,link_all,,llm_drafted,graph,answer_correctness,0.7667696436790072,0.03266659351541296,3,"14,15,14",,,,,,,True
+source_metric,link_all,,llm_drafted,graph,retrieval_latency_seconds,1.6891406349206348,0.029770581936341408,3,"14,15,14",,,,,,,True
+source_metric,proposed,,llm_drafted,graph,precision,0.7996296296296297,0.017225208821086618,3,"15,15,15",,,,,,,False
+source_metric,proposed,,llm_drafted,graph,recall,0.888888888888889,0.05091750772173154,3,"15,15,15",,,,,,,False
+source_metric,proposed,,llm_drafted,graph,mrr,0.9666666666666667,0.0,3,"15,15,15",,,,,,,False
+source_metric,proposed,,llm_drafted,graph,context_precision,0.9678703702976242,0.02044326183384888,3,"15,15,15",,,,,,,False
+source_metric,proposed,,llm_drafted,graph,context_recall,0.9438335738335738,0.020487807122133935,3,"15,15,15",,,,,,,False
+source_metric,proposed,,llm_drafted,graph,answer_correctness,0.7613454571659282,0.009594972114856392,3,"15,15,15",,,,,,,False
+source_metric,proposed,,llm_drafted,graph,retrieval_latency_seconds,2.6377777777777776,0.0304676895038613,3,"15,15,15",,,,,,,False
+paired_comparison,,proposed - link_all,existing_v2,graph,precision,,,,,"5,5,5","5,5,5",-0.050158730158730166,0.125,5,4,False
+paired_comparison,,proposed - link_all,existing_v2,graph,recall,,,,,"5,5,5","5,5,5",0.022222222222222233,1.0,5,1,False
+paired_comparison,,proposed - link_all,existing_v2,graph,mrr,,,,,"5,5,5","5,5,5",0.13333333333333333,0.5,5,2,False
+paired_comparison,,proposed - link_all,existing_v2,graph,ndcg_at_10,,,,,"5,5,5","5,5,5",0.052586586803979055,0.3125,5,5,False
+paired_comparison,,proposed - link_all,existing_v2,graph,faithfulness,,,,,"5,5,5","5,5,5",-0.0038820701292097137,0.5,5,2,False
+paired_comparison,,proposed - link_all,existing_v2,graph,answer_relevancy,,,,,"5,5,5","5,5,5",0.006724396596683002,0.4375,5,5,False
+paired_comparison,,proposed - link_all,existing_v2,graph,answer_correctness,,,,,"5,5,5","5,5,5",-0.00256053180246274,0.8125,5,5,False
+paired_comparison,,proposed - link_all,existing_v2,graph,context_precision,,,,,"5,5,5","5,5,5",0.10851851852475307,0.3125,5,5,False
+paired_comparison,,proposed - link_all,existing_v2,graph,context_recall,,,,,"5,5,5","5,5,5",-0.05098290598290598,0.125,5,4,False
+paired_comparison,,proposed - hybrid_rerank,existing_v2,graph,precision,,,,,"5,5,5","0,0,0",,,0,0,True
+paired_comparison,,proposed - hybrid_rerank,existing_v2,graph,recall,,,,,"5,5,5","0,0,0",,,0,0,True
+paired_comparison,,proposed - hybrid_rerank,existing_v2,graph,mrr,,,,,"5,5,5","0,0,0",,,0,0,True
+paired_comparison,,proposed - hybrid_rerank,existing_v2,graph,ndcg_at_10,,,,,"5,5,5","0,0,0",,,0,0,True
+paired_comparison,,proposed - hybrid_rerank,existing_v2,graph,faithfulness,,,,,"5,5,5","0,0,0",,,0,0,True
+paired_comparison,,proposed - hybrid_rerank,existing_v2,graph,answer_relevancy,,,,,"5,5,5","0,0,0",,,0,0,True
+paired_comparison,,proposed - hybrid_rerank,existing_v2,graph,answer_correctness,,,,,"5,5,5","0,0,0",,,0,0,True
+paired_comparison,,proposed - hybrid_rerank,existing_v2,graph,context_precision,,,,,"5,5,5","0,0,0",,,0,0,True
+paired_comparison,,proposed - hybrid_rerank,existing_v2,graph,context_recall,,,,,"5,5,5","0,0,0",,,0,0,True
+paired_comparison,,proposed - link_all,llm_drafted,graph,precision,,,,,"15,15,15","14,15,14",0.04111111111111112,0.625,15,7,True
+paired_comparison,,proposed - link_all,llm_drafted,graph,recall,,,,,"15,15,15","14,15,14",-0.03333333333333333,0.5,15,4,True
+paired_comparison,,proposed - link_all,llm_drafted,graph,mrr,,,,,"15,15,15","14,15,14",-0.03333333333333333,1.0,15,1,True
+paired_comparison,,proposed - link_all,llm_drafted,graph,ndcg_at_10,,,,,"15,15,15","14,15,14",-0.04182104560236696,0.25,15,6,True
+paired_comparison,,proposed - link_all,llm_drafted,graph,faithfulness,,,,,"15,15,15","14,15,14",0.005474688074970757,0.03125,15,7,True
+paired_comparison,,proposed - link_all,llm_drafted,graph,answer_relevancy,,,,,"15,15,15","14,15,14",0.018009832865096394,0.05535888671875,15,15,True
+paired_comparison,,proposed - link_all,llm_drafted,graph,answer_correctness,,,,,"15,15,15","14,15,14",-0.0046089532405252,0.5614013671875,15,15,True
+paired_comparison,,proposed - link_all,llm_drafted,graph,context_precision,,,,,"15,15,15","14,15,14",0.02305555555609336,0.12890625,15,9,True
+paired_comparison,,proposed - link_all,llm_drafted,graph,context_recall,,,,,"15,15,15","14,15,14",-0.012275132275132276,1.0,15,4,True
+paired_comparison,,proposed - hybrid_rerank,llm_drafted,graph,precision,,,,,"15,15,15","0,0,0",,,0,0,True
+paired_comparison,,proposed - hybrid_rerank,llm_drafted,graph,recall,,,,,"15,15,15","0,0,0",,,0,0,True
+paired_comparison,,proposed - hybrid_rerank,llm_drafted,graph,mrr,,,,,"15,15,15","0,0,0",,,0,0,True
+paired_comparison,,proposed - hybrid_rerank,llm_drafted,graph,ndcg_at_10,,,,,"15,15,15","0,0,0",,,0,0,True
+paired_comparison,,proposed - hybrid_rerank,llm_drafted,graph,faithfulness,,,,,"15,15,15","0,0,0",,,0,0,True
+paired_comparison,,proposed - hybrid_rerank,llm_drafted,graph,answer_relevancy,,,,,"15,15,15","0,0,0",,,0,0,True
+paired_comparison,,proposed - hybrid_rerank,llm_drafted,graph,answer_correctness,,,,,"15,15,15","0,0,0",,,0,0,True
+paired_comparison,,proposed - hybrid_rerank,llm_drafted,graph,context_precision,,,,,"15,15,15","0,0,0",,,0,0,True
+paired_comparison,,proposed - hybrid_rerank,llm_drafted,graph,context_recall,,,,,"15,15,15","0,0,0",,,0,0,True
