@@ -1,0 +1,150 @@
+START proposed_r1 2026-10-17T01:22:29.1643673+09:00
+Using CPython 3.13.14
+Creating virtual environment at: .venv
+Installed 139 packages in 1.62s
+Run ID: proposed_r1 | Ref Version: v2 | Variant: proposed | LLM: gpt-5.6-luna | Embedding: openai
+Executing: 37 document cases, 0 general cases
+================================================================================
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] vehicle_failure: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] brake_pipe: mode=rag, evidence=3, recall=1.0
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] door_failure: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] rescue_train_protection: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 4/5 supported, uncited=0
+         ✗ [1] 정거장 외에서 운전 중 인접 선로에 장애가 발생하여 열차 운전에 지장을 주는 경우에는 신속히 열차를 정차시키고, 운전관제에 보고한 뒤 지장 지역 — 정차 후 운전관제에 보고하고 양방향 제1종 방호를 해야 한다는 내용은 있으나, ‘보고한 뒤 방호’라는 구체적인 순서는 cited_evidence에 명시되어 있지 않습니다.
+[DONE] adjacent_line_protection: mode=rag, evidence=4, recall=1.0
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] automatic_driving: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] front_cab_failure: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] runaway_vehicle: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 1/1 supported, uncited=0
+[DONE] storm: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] flooding: mode=rag, evidence=2, recall=1.0
+       ↳ citations: 6/7 supported, uncited=0
+         ✗ [1] 안개나 눈보라로 신호 확인이 어려울 때 기관사는 정차 가능한 속도로 주의운전하고, 운전관제는 신호 확인거리가 50m 이하라고 판단하면 필요한 운 — 기관사의 주의운전 내용은 제351조에 있으나, 운전관제가 신호 확인거리 50m 이하로 판단할 때 필요한 명령을 내려야 한다는 내용은 cited_evidence에 없습니다.
+[DONE] fog_or_snowstorm: mode=rag, evidence=3, recall=1.0
+       ↳ citations: 5/6 supported, uncited=0
+         ✗ [1, 2, 3] 이상기후 경보는 운전관제가 통보를 받은 뒤 열차운전에 미치는 영향에 따라 예보·경보·비상경보로 발령하며, 운전 규제는 위험 정도에 따라 감속·일 — 경보의 종류와 발령 기준, 운전 규제의 조치 내용은 근거에 있으나, 운전 규제가 ‘위험 정도에 따라’ 정리된다는 내용은 명시되어 있지 않습니다.
+[DONE] weather_alert: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 12/14 supported, uncited=0
+         ✗ [2] ATC 장치 고장, 차상 TWC 통신고장, 출입문닫힘버튼 고착, 수동열림 위치에서 열림버튼 불량 여부를 확인합니다 — ATC 장치 고장, 차상 TWC 통신고장, 출입문닫힘버튼 고착 및 수동열림 위치의 열림버튼 불량은 근거에 있으나, 이를 점검·확인하라는 조치는 명시되어 있지 않다.
+         ✗ [2] 반대편 출입문이 1개라도 열려 있는지 확인합니다. 출입문이 1개라도 열려 있으면 반대편 열림신호가 출력되지 않습니다. 다만 출입문바이패스(DSB — 반대편 출입문이 1개라도 열려 있는 경우와 DSBS·ADBP 관련 결과는 근거에 있으나, 해당 상태를 확인하라는 조치는 명시되어 있지 않다.
+[DONE] guide_door: mode=rag, evidence=5, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] guide_psd: mode=rag, evidence=3, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 9/9 supported, uncited=0
+[DONE] guide_pantograph: mode=rag, evidence=6, recall=0.5
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] guide_emergency_brake: mode=rag, evidence=5, recall=0.6666666666666666
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 6/7 supported, uncited=0
+         ✗ [1] 3. 리셋 후 복귀되면 ADU에 속도코드가 현시된 뒤 정상운행합니다. 리셋 후에도 복귀되지 않으면 관제센터에 보고하고 지시에 따라 지령식으로 운 — 리셋 후 약 30초 뒤 ADU에 속도코드가 현시된다는 내용과 복귀불능 시 관제 보고 후 지령식 운행 및 운전·출입문 모드 전환 내용은 있으나, 복귀되면 정상운행한다는 사실은 근거에
+[DONE] guide_atc: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_704_bus_failure: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] graph_acm_start_failure: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_single_cm_failure: mode=rag, evidence=1, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 6/6 supported, uncited=0
+[DONE] graph_siv_start_failure: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_master_controller_failure: mode=rag, evidence=3, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 9/10 supported, uncited=0
+         ✗ [2] 2. **구원 요청 후 열차 이동 조건**
+   - 고장열차는 구원 요청 후 구원열차가 도착할 때까지 이동할 수 없습니다 — 근거는 구원열차 도착 전 이동 금지를 명시하면서도 사고 증대 우려 또는 응급작업상 필요 시 예외적으로 이동할 수 있다고 규정합니다. 청구는 이러한 예외 없이 절대적으로 이동할 수 
+[DONE] graph_all_cm_failure: mode=rag, evidence=4, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 8/8 supported, uncited=0
+[DONE] graph_single_door_open_failure: mode=rag, evidence=3, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_all_doors_close_failure: mode=rag, evidence=2, recall=0.5
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 4/6 supported, uncited=0
+         ✗ [2] 4. 회송 시 다음 스위치를 취급합니다 — 인용된 근거 2에는 회송 관련 규정은 있으나 DSBS, AP.CBDO1CC·2CC, ADBP 등 회송 시 취급할 스위치 내용이 없습니다.
+         ✗ [2] 해당차 출입문바이패스(DSBS) 스위치 4개를 취급합니다.  
+   - 인접차 `AP.CBDO1CC(좌측)` 또는 `AP.CBDO2CC(우측)` — 인용된 근거 2에는 출입문 고장 시 보고 및 회송, 마지막 열차의 차량교환역 운행, 출입문안전막 관련 내용은 있으나 DSBS 4개, AP.CBDO1CC·2CC 차단, ADBP 스위
+[DONE] graph_one_car_doors_close_failure: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 6/7 supported, uncited=0
+         ✗ [1] 정거장 외에서 6호선 6300호 M2차의 주공기관 또는 CM 호스가 파열되어 통기불능이 된 경우, 6300호의 AP.CBMC를 차단하고 6400 — 근거에는 6300호 M2차의 주공기관 파열 또는 CM 호스 파열 시 AP.CBMC 차단, 6400호 MR 콕크 차단 및 EBCOS·주차제동 조치가 제시되어 있으나, ‘정거장 외’ 
+[DONE] graph_air_pipe_rupture: mode=rag, evidence=4, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 7/9 supported, uncited=0
+         ✗ [1] 정거장 외 주공기관 파열로 통기불능이고 주차제동이 풀리지 않으며 MR 압력이 3.5kg/㎠ 이하이면, 다음 순서로 주차제동을 해제한 뒤 관제센터 — 근거에는 주공기관 파열로 주차제동 풀림불능 및 MR 압력 3.5kg/㎠ 이하 조건과 조치 순서가 있으나, '정거장 외' 및 '통기불능' 조건은 명시되어 있지 않습니다.
+         ✗ [1] 정거장 외에서 제동관 또는 공기관 고장으로 통기불능이면 원칙적으로 구원을 요구해야 하며, 상황에 따라 안전하다고 인정될 때에만 최근 정거장까지  — 근거에는 길라잡이의 최근 정거장 승객 하차 후 회송 내용만 있으며, 운전취급규정 제327조 제1항부터 제3항의 구원 요구, 주의운전, 잔여운전 조건, 안전조치 및 전동차 교환수배 
+[DONE] graph_parking_brake_release_failure: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 2/4 supported, uncited=0
+         ✗ [1, 2] 6호선 운행 중 인버터장치 출력이 반감되고 VVVF 2개가 NG일 때는 해당 차량의 다음 차단기를 확인한 후, 차단되어 있으면 복귀합니다. 조치 — 차단기 확인·복귀 및 조치 불가 시 보고 후 지시에 따른 수동운전은 근거에 있으나, 자동모드에서 수동모드로 변경할 때 운전관제 승인을 받아야 한다는 내용에는 제330조 제1항 제5
+         ✗ [2] 운전제어장치 고장 등 특별한 사유로 자동모드에서 다른 모드로 변경할 때에는 운전관제의 승인을 받아야 합니다 — 근거는 자동모드에서 다른 모드로 변경할 때 원칙적으로 운전관제 승인을 요구하지만, 제1항 제5호에 따른 수동모드 변경은 예외로 규정합니다. 따라서 예외 없이 승인이 필요하다는 표현
+[DONE] graph_inverter_output_half: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 5/6 supported, uncited=0
+         ✗ [2] 5~8호선에서는 차량기동반 직원이 동승해야 하며, 차량기동반 직원이 승차하기 전까지는 출동 가능한 인접 승무사업소 지도요원이 동승합니다. 해당  — 근거는 5~8호선의 모든 열차가 아니라 ATC 차상장치 고장으로 지령식을 시행하는 열차에 한정하여 차량기동반 직원 등의 동승을 규정하고 있습니다. 청구는 이 조건을 생략하여 범위를
+[DONE] graph_front_tc1_failure: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 6/8 supported, uncited=0
+         ✗ [2] AP.CBBECU**
+   - **AP.CBSU1TC**
+   - **AP.CBSU2TC**
+4. 공기압력계 또는 TCMS 제동장치에서 **보안 — 차단기 명칭과 풀림 확인 후 전부Tc차로 이동하는 내용은 근거에 있으나, ‘전부Tc차 운전실로 이동’이라는 구체적 장소는 근거에 명시되어 있지 않다.
+         ✗ [2] 5. 전부Tc차 운전실에서 다음과 같이 취급합니다 — 전부Tc차에서의 운전모드, 역전기, 주간제어기, 출입문, EBCOS 및 ADBP 취급은 근거에 있으나, ‘전부Tc차 운전실에서’라는 장소는 명시되어 있지 않다.
+[DONE] graph_rear_safety_brake_dispatch: mode=rag, evidence=4, recall=1.0
+       ↳ graph: chat_links=2, probe_links=1, added=1, passed=True
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] graph_front_safety_brake_rescue: mode=rag, evidence=5, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=2, passed=True
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] wind_threshold_report: mode=rag, evidence=2, recall=1.0
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] fog_station_duties: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 6/6 supported, uncited=1
+[DONE] earthquake_warning_threshold: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] earthquake_control_initial_stop: mode=rag, evidence=4, recall=1.0
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] earthquake_driver_speed: mode=rag, evidence=1, recall=1.0
+
+================================================================================
+EVALUATION SUMMARY:
+Run ID: proposed_r1 | Reference Version: v2 | Evaluation Complete: True
+Document Cases Average:
+  - faithfulness        : 0.9897 [PASS]
+  - answer_relevancy    : 0.8352 [FAIL]
+  - answer_correctness  : 0.8045 [FAIL]
+  - context_precision   : 0.9295 [PASS]
+  - context_recall      : 0.9615 [PASS]
+Pilot criteria (docs/rag-pipeline.md):
+  - faithfulness_mean         : 0.9897 (threshold 0.95) [True]
+  - faithfulness_min          : 0.9000 (threshold 0.8) [True]
+  - context_recall_mean       : 0.9615 (threshold 0.9) [True]
+  - context_recall_min        : 0.5000 (threshold 0.67) [False]
+  - context_precision_mean    : 0.9295 (threshold 0.85) [True]
+  - answer_correctness_mean   : 0.8045 (threshold 0.75) [True]
+  - general_correctness_mean  : n/a (threshold 0.9) [None]
+  - abstention_rate           : n/a (threshold 0.9) [None]
+  - latency_p95_seconds       : 18.6300 (threshold 20.0) [True]
+  - citation_accuracy         : 0.9154 (threshold 0.9) [True]
+Pilot met (automatable items): False
+Graph check: 18/20 passed
+Greeting check: FAIL
+Targets met: NO (INCOMPLETE)
+Saved: C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r1\paper\experiments\results\ragas_results.json and C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r1\paper\experiments\results\ragas_results_proposed_r1.json
+EXIT_CODE=0 WALL_TIME_SECONDS=2556.61

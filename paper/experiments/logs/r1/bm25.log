@@ -1,0 +1,57 @@
+START bm25_retrieval_only_r1 2026-10-17T02:48:40.7598483+09:00
+Run ID: bm25_retrieval_only_r1 | Ref Version: v2 | Variant: bm25 | LLM: gpt-5.6-luna | Embedding: openai
+Executing: 37 document cases, 0 general cases
+================================================================================
+[DONE] vehicle_failure: mode=retrieval_only, evidence=5, recall=1.0
+[DONE] brake_pipe: mode=retrieval_only, evidence=5, recall=1.0
+[DONE] door_failure: mode=retrieval_only, evidence=5, recall=1.0
+[DONE] rescue_train_protection: mode=retrieval_only, evidence=5, recall=1.0
+[DONE] adjacent_line_protection: mode=retrieval_only, evidence=5, recall=1.0
+[DONE] automatic_driving: mode=retrieval_only, evidence=5, recall=0.0
+[DONE] front_cab_failure: mode=retrieval_only, evidence=5, recall=1.0
+[DONE] runaway_vehicle: mode=retrieval_only, evidence=5, recall=1.0
+[DONE] storm: mode=retrieval_only, evidence=5, recall=1.0
+[DONE] flooding: mode=retrieval_only, evidence=5, recall=1.0
+[DONE] fog_or_snowstorm: mode=retrieval_only, evidence=5, recall=0.0
+[DONE] weather_alert: mode=retrieval_only, evidence=5, recall=1.0
+[DONE] guide_door: mode=retrieval_only, evidence=5, recall=0.0
+[DONE] guide_psd: mode=retrieval_only, evidence=5, recall=0.6666666666666666
+[DONE] guide_pantograph: mode=retrieval_only, evidence=5, recall=0.5
+[DONE] guide_emergency_brake: mode=retrieval_only, evidence=5, recall=0.3333333333333333
+[DONE] guide_atc: mode=retrieval_only, evidence=5, recall=0.0
+[DONE] graph_704_bus_failure: mode=retrieval_only, evidence=5, recall=0.5
+[DONE] graph_acm_start_failure: mode=retrieval_only, evidence=5, recall=0.5
+[DONE] graph_single_cm_failure: mode=retrieval_only, evidence=5, recall=0.5
+[DONE] graph_siv_start_failure: mode=retrieval_only, evidence=5, recall=0.5
+[DONE] graph_master_controller_failure: mode=retrieval_only, evidence=5, recall=1.0
+[DONE] graph_all_cm_failure: mode=retrieval_only, evidence=5, recall=1.0
+[DONE] graph_single_door_open_failure: mode=retrieval_only, evidence=5, recall=1.0
+[DONE] graph_all_doors_close_failure: mode=retrieval_only, evidence=5, recall=0.5
+[DONE] graph_one_car_doors_close_failure: mode=retrieval_only, evidence=5, recall=0.5
+[DONE] graph_air_pipe_rupture: mode=retrieval_only, evidence=5, recall=0.5
+[DONE] graph_parking_brake_release_failure: mode=retrieval_only, evidence=5, recall=0.5
+[DONE] graph_inverter_output_half: mode=retrieval_only, evidence=5, recall=0.5
+[DONE] graph_front_tc1_failure: mode=retrieval_only, evidence=5, recall=1.0
+[DONE] graph_rear_safety_brake_dispatch: mode=retrieval_only, evidence=5, recall=0.5
+[DONE] graph_front_safety_brake_rescue: mode=retrieval_only, evidence=5, recall=1.0
+[DONE] wind_threshold_report: mode=retrieval_only, evidence=5, recall=1.0
+[DONE] fog_station_duties: mode=retrieval_only, evidence=5, recall=1.0
+[DONE] earthquake_warning_threshold: mode=retrieval_only, evidence=5, recall=1.0
+[DONE] earthquake_control_initial_stop: mode=retrieval_only, evidence=5, recall=0.0
+[DONE] earthquake_driver_speed: mode=retrieval_only, evidence=5, recall=1.0
+
+================================================================================
+EVALUATION SUMMARY:
+Run ID: bm25_retrieval_only_r1 | Reference Version: v2 | Evaluation Complete: True
+Retrieval means (bm25):
+  - recall                    : 0.6892
+  - precision                 : 0.2162
+  - mrr                       : 0.7860
+  - ndcg_at_10                : 0.6757
+  - linked_gold_recall        : 0.2750
+  - special_rule_hit          : 0.0000
+  - evidence_count            : 5.0000
+  - linked_evidence_count     : 0.0000
+  - retrieval_latency_seconds : 0.2168
+Saved: C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r1\paper\experiments\results\ragas_results.json and C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r1\paper\experiments\results\ragas_results_bm25_retrieval_only_r1.json
+EXIT_CODE=0 WALL_TIME_SECONDS=12.2
