@@ -1,0 +1,153 @@
+uv.exe : Using CPython 3.13.14
+위치 줄:2 문자:1054
++ ... oding UTF8; & uv run --extra dev --extra hwp --extra eval python scri ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Using CPython 3.13.14:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Creating virtual environment at: .venv
+Installed 139 packages in 1.70s
+Run ID: proposed_r2 | Ref Version: v2 | Variant: proposed | LLM: gpt-5.6-luna | Embedding: openai
+Executing: 37 document cases, 0 general cases
+================================================================================
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] vehicle_failure: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 6/6 supported, uncited=0
+[DONE] brake_pipe: mode=rag, evidence=3, recall=1.0
+       ↳ citations: 5/7 supported, uncited=0
+         ✗ [5] 6호선 전동차고장조치 길라잡이에서는 1개 출입문 고장 시 출입문 전체 열림·닫힘을 수회 시행한 후 관제센터에 보고하고 안내방송을 실시하며, 인포 — 인용 근거에는 운전취급규정 제46조·제328조만 제시되어 있으며, 6호선 전동차고장조치 길라잡이의 1개 출입문 고장 시 전체 열림·닫힘 수회 시행, 인포3 취급 및 해당 출입문 확
+         ✗ [4] 6호선에서 출입문이 닫히지 않는 경우에는 해당 출입문을 잠그고 출입문안전막을 설치한 후 출입문바이패스(DSBS) S/W를 취급하며, 감시자(역직 — 근거에는 닫히지 않는 출입문에 대한 회송, 출입문 보호막 설치 및 역무원 승차는 있으나, 해당 출입문 잠금과 출입문바이패스(DSBS) S/W 취급이 명시되어 있지 않습니다.
+[DONE] door_failure: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] rescue_train_protection: mode=rag, evidence=4, recall=1.0
+       ↳ citations: 6/6 supported, uncited=0
+[DONE] adjacent_line_protection: mode=rag, evidence=4, recall=1.0
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] automatic_driving: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] front_cab_failure: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] runaway_vehicle: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 1/1 supported, uncited=0
+[DONE] storm: mode=rag, evidence=2, recall=1.0
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] flooding: mode=rag, evidence=2, recall=1.0
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] fog_or_snowstorm: mode=rag, evidence=3, recall=1.0
+       ↳ citations: 2/4 supported, uncited=0
+         ✗ [2] 이상기후 경보는 **예보·통보 상황과 열차운전 영향 정도에 따라 예보·경보·비상경보로 구분하고, 운전관제가 감속·일시중지·운행취소 등을 결정** — 제344조는 관제센터장 또는 통신두절 등 상황에서 역장·소장이 경보를 발령하고 보고하는 내용은 뒷받침하지만, 경보를 예보·경보·비상경보로 구분한다는 내용과 운전관제가 감속·일시중지
+         ✗ [3] 1. **예보**: 열차운전에 주의를 요하는 경우
+  2. **경보**: 열차운전에 지장이 예상되는 경우
+  3. **비상경보**: 열차운전에  — 감속 지시·열차운행 일시중지·운행취소 등의 운전정리와 비상시 안전 관련 내용은 제346조에 있으나, 예보·경보·비상경보의 종류와 기준은 cited_evidence에 없습니다.
+[DONE] weather_alert: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 15/15 supported, uncited=0
+[DONE] guide_door: mode=rag, evidence=5, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 4/5 supported, uncited=0
+         ✗ [2] 역장이 열차를 감시하는 경우에는 역장의 출발지시전호에 따라야 합니다 — 근거는 원칙적으로 역장이 열차를 감시할 때 역장의 출발지시전호에 의하도록 하지만, 제46조제1항제3호(첫차 및 막차)의 경우 역장의 출발지시전호가 없으면 기관사가 운전관제에 보고 
+[DONE] guide_psd: mode=rag, evidence=2, recall=0.6666666666666666
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 7/8 supported, uncited=0
+         ✗ [1] 6호선 전동차 판토그래프 상승불능 시에는 다음 순서로 점검하고, 상승되지 않으면 운전관제에 보고한다.
+
+1. 운전실 제어대에서 **EPANDS( — EPANDS(VC.PBET)와 주간제어기 위치 확인 절차는 근거에 있으나, 상승되지 않으면 항상 운전관제에 보고한다는 내용은 없다. 출고 시 차량교환, 주박지에서는 관제센터 보고 
+[DONE] guide_pantograph: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 8/8 supported, uncited=0
+[DONE] guide_emergency_brake: mode=rag, evidence=5, recall=0.6666666666666666
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 6/7 supported, uncited=0
+         ✗ [1] 리셋 후 약 30초가 지나도 복귀되지 않으면 관제센터에 보고하고 지시에 따릅니다 — 근거에는 리셋 후 약 30초 뒤 ADU에 속도코드가 현시된다는 내용과 복귀불능 시 관제센터에 보고한다는 내용은 있으나, 약 30초가 지나도 복귀되지 않을 때 보고한다는 조건과 순서
+[DONE] guide_atc: mode=rag, evidence=6, recall=0.5
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] graph_704_bus_failure: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] graph_acm_start_failure: mode=rag, evidence=1, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_single_cm_failure: mode=rag, evidence=1, recall=0.5
+       ↳ graph: chat_links=0, probe_links=1, added=1, passed=False
+       ↳ citations: 4/5 supported, uncited=0
+         ✗ [1] 연장급전 및 부하감소는 연장급전 완료 후 약 2분 10초가 소요되며, 부하감소 순서는 송풍기 OFF → 난방기 2/3 → 냉방 1/2 → 객실등 — 근거는 ‘연장급전 완료’에 약 2분 10초가 소요된다고 할 뿐, 연장급전 및 부하감소가 연장급전 완료 후 약 2분 10초가 소요된다고 하지 않는다.
+[DONE] graph_siv_start_failure: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_master_controller_failure: mode=rag, evidence=3, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_all_cm_failure: mode=rag, evidence=3, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 12/12 supported, uncited=0
+[DONE] graph_single_door_open_failure: mode=rag, evidence=3, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=2, passed=True
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] graph_all_doors_close_failure: mode=rag, evidence=2, recall=0.5
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 4/6 supported, uncited=0
+         ✗ [2] 4. 회송 시 다음 스위치를 취급합니다 — 인용된 운전취급규정에는 회송 시 해당 스위치들을 취급한다는 내용이 없고, 스위치 명칭이나 취급 절차가 제시되어 있지 않습니다.
+         ✗ [2] 해당차 출입문바이패스(DSBS) 스위치 4개를 취급합니다.  
+   - 인접차 `AP.CBDO1CC(좌측)` 또는 `AP.CBDO2CC(우측)` — 운전취급규정 근거에는 출입문바이패스(DSBS), AP.CBDO1CC·AP.CBDO2CC, ADBP 스위치 취급 내용이 없습니다. 출입문 1개 이상 고장 시 운전관제 보고 및 지시에
+[DONE] graph_one_car_doors_close_failure: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 6/7 supported, uncited=0
+         ✗ [1] 정거장 외에서 6호선 6300호 M2차의 주공기관 또는 CM 호스가 파열되어 통기불능이 되면, 해당 차의 AP·CBMC를 차단하고 6400호 M — 근거 1에는 6300호 M2차의 주공기관 또는 CM 호스 파열 시 AP·CBMC 차단, 6400호 MR 콕크 차단 및 후속 제동조치가 제시되어 있으나, ‘정거장 외’ 및 ‘통기불능
+[DONE] graph_air_pipe_rupture: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 9/10 supported, uncited=0
+         ✗ [1] 정거장 외 주공기관 파열로 통기불능이고 MR 압력이 3.5 kg/㎠ 이하인 경우, 다음 순서로 주차제동을 풀고 관제센터 보고 및 지시에 따라 최 — MR 압력 3.5 kg/㎠ 이하에서의 조치 순서와 관제센터 보고·최근 정거장 승객 하차·회송은 근거에 있으나, ‘정거장 외’ 및 ‘통기불능’이라는 조건은 해당 근거에 명시되어 있지
+[DONE] graph_parking_brake_release_failure: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 3/5 supported, uncited=0
+         ✗ [1, 2] 6호선 운행 중 인버터장치 출력이 반감되고 VVVF 2개가 NG일 때는 해당 차량의 **AP.CBVVVFIC, AP.CBHBC, AP.CBLBC — AP.CBVVVFIC, AP.CBHBC, AP.CBLBC 확인 및 조치 불가 시 관제센터 보고·지시에 따른 수동운전은 근거에 있으나, 자동모드에서 다른 모드로 변경할 때 운전관제 
+         ✗ [2] 자동모드에서 다른 모드로 변경하려면 **운전관제의 승인을 받아야 합니다.** 5~8호선 본선구간은 자동운전이 원칙이며, 운전제어장치 고장 등 특 — 5~8호선 본선구간의 자동운전 원칙과 특별한 사유로 자동모드에서 다른 모드로 변경할 때 운전관제 승인이 필요하다는 내용은 근거에 있으나, 제1항 제5호에 따른 수동모드 변경 예외가
+[DONE] graph_inverter_output_half: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 7/8 supported, uncited=0
+         ✗ [2] 지령식 시행구간에 열차가 진입하면 운전관제는 기관사에게 지령식 시행요지를 통보하고, 시행구간에 대한 확인 후 출발지시를 해야 합니다 — 근거는 열차가 지령식 시행구간에 진입할 때가 아니라 '지령식을 시행하려는 최초의 정거장에 열차가 진입했을 때' 지령식 시행요지를 통보한다고 규정한다.
+[DONE] graph_front_tc1_failure: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 9/9 supported, uncited=0
+[DONE] graph_rear_safety_brake_dispatch: mode=rag, evidence=4, recall=0.5
+       ↳ graph: chat_links=1, probe_links=2, added=2, passed=True
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] graph_front_safety_brake_rescue: mode=rag, evidence=4, recall=0.5
+       ↳ graph: chat_links=1, probe_links=1, added=2, passed=True
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] wind_threshold_report: mode=rag, evidence=2, recall=1.0
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] fog_station_duties: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 6/6 supported, uncited=1
+[DONE] earthquake_warning_threshold: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] earthquake_control_initial_stop: mode=rag, evidence=4, recall=1.0
+       ↳ citations: 2/3 supported, uncited=0
+         ✗ [1] 지진경보 발령 시에는 **25㎞/h 이하**, 지진비상경보 발령 시에는 **15㎞/h 이하**로 주의운전해야 합니다 — 수치와 경보별 속도는 근거에 있지만, 근거는 이를 ‘정거장간을 운행 중인 열차’에 한정하고 있어 해당 조건이 없는 청구는 적용 범위를 넓혀 다릅니다.
+[DONE] earthquake_driver_speed: mode=rag, evidence=1, recall=1.0
+
+================================================================================
+EVALUATION SUMMARY:
+Run ID: proposed_r2 | Reference Version: v2 | Evaluation Complete: True
+Document Cases Average:
+  - faithfulness        : 0.9879 [PASS]
+  - answer_relevancy    : 0.8383 [FAIL]
+  - answer_correctness  : 0.7917 [FAIL]
+  - context_precision   : 0.9649 [PASS]
+  - context_recall      : 0.9522 [PASS]
+Pilot criteria (docs/rag-pipeline.md):
+  - faithfulness_mean         : 0.9879 (threshold 0.95) [True]
+  - faithfulness_min          : 0.8333 (threshold 0.8) [True]
+  - context_recall_mean       : 0.9522 (threshold 0.9) [True]
+  - context_recall_min        : 0.5000 (threshold 0.67) [False]
+  - context_precision_mean    : 0.9649 (threshold 0.85) [True]
+  - answer_correctness_mean   : 0.7917 (threshold 0.75) [True]
+  - general_correctness_mean  : n/a (threshold 0.9) [None]
+  - abstention_rate           : n/a (threshold 0.9) [None]
+  - latency_p95_seconds       : 14.6300 (threshold 20.0) [True]
+  - citation_accuracy         : 0.9223 (threshold 0.9) [True]
+Pilot met (automatable items): False
+Graph check: 18/20 passed
+Greeting check: FAIL
+Targets met: NO (INCOMPLETE)
+Saved: C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r2\paper\experiments\results\ragas_results.json and C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r2\paper\experiments\results\ragas_results_proposed_r2.json
