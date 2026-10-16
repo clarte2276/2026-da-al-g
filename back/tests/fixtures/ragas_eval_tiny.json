@@ -1,0 +1,23 @@
+{
+  "version": "test-v1",
+  "cases": [
+    {
+      "name": "tiny_article",
+      "question": "What is the test procedure?",
+      "category": "doc",
+      "reference_answer": "Follow the test procedure.",
+      "gold_evidence": [
+        {
+          "document_version_id": "test-version",
+          "article": 1,
+          "page": null,
+          "label": "Test regulation article 1",
+          "via_link": false
+        }
+      ],
+      "special_rule": false,
+      "label_source": "existing_v2",
+      "needs_human_review": false
+    }
+  ]
+}

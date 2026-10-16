@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     embedding_model: str = "text-embedding-3-small"
     embedding_dimensions: int = 1536
     embedding_batch_size: int = 64
+    rag_variant: str = "proposed"
     openai_api_key: str | None = None
     llm_model: str = "gpt-5.6-luna"
     # "medium" lets the model check the grounding rules before answering (fewer omissions and
