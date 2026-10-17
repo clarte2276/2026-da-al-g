@@ -1,0 +1,12 @@
+{
+  "best_jev": {
+    "status": "not_run",
+    "attempted": true,
+    "reason": "first embedding request returned HTTP 429 insufficient_quota (no credits remaining)"
+  },
+  "best_cascade": {
+    "status": "not_run",
+    "attempted": false,
+    "reason": "skipped after best_jev returned HTTP 429 insufficient_quota"
+  }
+}

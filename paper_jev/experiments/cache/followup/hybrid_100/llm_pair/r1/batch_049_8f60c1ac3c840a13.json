@@ -1,0 +1,194 @@
+{
+  "_api_call": true,
+  "provider": "openai",
+  "judge": "llm_pair",
+  "repeat": "r1",
+  "candidate_setting": "hybrid_100",
+  "model": "gpt-5.6-luna",
+  "latency_seconds": 2.8687747000003583,
+  "usage": {
+    "input_tokens": 14486,
+    "cached_input_tokens": 0,
+    "output_tokens": 331
+  },
+  "cost_usd": 0.0032944000000000003,
+  "response": {
+    "id": "chatcmpl-EZqjFFYIn4bYxRRWBg9Ivf3iOrdil",
+    "object": "chat.completion",
+    "created": 1792212877,
+    "model": "gpt-5.6-luna",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "{\"pairs\":[{\"pair_id\":\"p000\",\"decision\":\"no\",\"confidence\":0.99},{\"pair_id\":\"p001\",\"decision\":\"no\",\"confidence\":0.99},{\"pair_id\":\"p002\",\"decision\":\"no\",\"confidence\":0.99},{\"pair_id\":\"p003\",\"decision\":\"no\",\"confidence\":0.99},{\"pair_id\":\"p004\",\"decision\":\"no\",\"confidence\":0.98},{\"pair_id\":\"p005\",\"decision\":\"no\",\"confidence\":0.99},{\"pair_id\":\"p006\",\"decision\":\"yes\",\"confidence\":0.86},{\"pair_id\":\"p007\",\"decision\":\"no\",\"confidence\":0.99},{\"pair_id\":\"p008\",\"decision\":\"no\",\"confidence\":0.99},{\"pair_id\":\"p009\",\"decision\":\"no\",\"confidence\":0.99},{\"pair_id\":\"p010\",\"decision\":\"no\",\"confidence\":0.99},{\"pair_id\":\"p011\",\"decision\":\"yes\",\"confidence\":0.78},{\"pair_id\":\"p012\",\"decision\":\"no\",\"confidence\":0.99},{\"pair_id\":\"p013\",\"decision\":\"no\",\"confidence\":0.99},{\"pair_id\":\"p014\",\"decision\":\"no\",\"confidence\":0.99},{\"pair_id\":\"p015\",\"decision\":\"no\",\"confidence\":0.99},{\"pair_id\":\"p016\",\"decision\":\"no\",\"confidence\":0.99},{\"pair_id\":\"p017\",\"decision\":\"no\",\"confidence\":0.99},{\"pair_id\":\"p018\",\"decision\":\"no\",\"confidence\":0.99},{\"pair_id\":\"p019\",\"decision\":\"no\",\"confidence\":0.99}]}",
+          "refusal": null,
+          "annotations": []
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 14486,
+      "completion_tokens": 331,
+      "total_tokens": 14817,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 14483,
+        "audio_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0,
+        "accepted_prediction_tokens": 0,
+        "rejected_prediction_tokens": 0
+      }
+    },
+    "service_tier": "default",
+    "system_fingerprint": null
+  },
+  "created_at_utc": "2026-10-17T04:54:40.148363+00:00",
+  "parsed_scores": [
+    {
+      "source_id": "slide_61b7c6ec_036",
+      "candidate_id": "article_35315ef6_177",
+      "decision": "no",
+      "confidence": 0.99,
+      "probability": 0.010000000000000009
+    },
+    {
+      "source_id": "slide_61b7c6ec_036",
+      "candidate_id": "article_35315ef6_235",
+      "decision": "no",
+      "confidence": 0.99,
+      "probability": 0.010000000000000009
+    },
+    {
+      "source_id": "slide_61b7c6ec_036",
+      "candidate_id": "article_35315ef6_25",
+      "decision": "no",
+      "confidence": 0.99,
+      "probability": 0.010000000000000009
+    },
+    {
+      "source_id": "slide_61b7c6ec_036",
+      "candidate_id": "article_35315ef6_28",
+      "decision": "no",
+      "confidence": 0.99,
+      "probability": 0.010000000000000009
+    },
+    {
+      "source_id": "slide_61b7c6ec_036",
+      "candidate_id": "article_35315ef6_308",
+      "decision": "no",
+      "confidence": 0.98,
+      "probability": 0.020000000000000018
+    },
+    {
+      "source_id": "slide_61b7c6ec_036",
+      "candidate_id": "article_35315ef6_316",
+      "decision": "no",
+      "confidence": 0.99,
+      "probability": 0.010000000000000009
+    },
+    {
+      "source_id": "slide_61b7c6ec_036",
+      "candidate_id": "article_35315ef6_339",
+      "decision": "yes",
+      "confidence": 0.86,
+      "probability": 0.86
+    },
+    {
+      "source_id": "slide_61b7c6ec_036",
+      "candidate_id": "article_35315ef6_340",
+      "decision": "no",
+      "confidence": 0.99,
+      "probability": 0.010000000000000009
+    },
+    {
+      "source_id": "slide_61b7c6ec_036",
+      "candidate_id": "article_35315ef6_342",
+      "decision": "no",
+      "confidence": 0.99,
+      "probability": 0.010000000000000009
+    },
+    {
+      "source_id": "slide_61b7c6ec_036",
+      "candidate_id": "article_35315ef6_351",
+      "decision": "no",
+      "confidence": 0.99,
+      "probability": 0.010000000000000009
+    },
+    {
+      "source_id": "slide_61b7c6ec_036",
+      "candidate_id": "article_35315ef6_64",
+      "decision": "no",
+      "confidence": 0.99,
+      "probability": 0.010000000000000009
+    },
+    {
+      "source_id": "slide_61b7c6ec_036",
+      "candidate_id": "article_35315ef6_65",
+      "decision": "yes",
+      "confidence": 0.78,
+      "probability": 0.78
+    },
+    {
+      "source_id": "slide_61b7c6ec_036",
+      "candidate_id": "article_35315ef6_67",
+      "decision": "no",
+      "confidence": 0.99,
+      "probability": 0.010000000000000009
+    },
+    {
+      "source_id": "slide_61b7c6ec_036",
+      "candidate_id": "article_35315ef6_69",
+      "decision": "no",
+      "confidence": 0.99,
+      "probability": 0.010000000000000009
+    },
+    {
+      "source_id": "slide_61b7c6ec_036",
+      "candidate_id": "article_35315ef6_74",
+      "decision": "no",
+      "confidence": 0.99,
+      "probability": 0.010000000000000009
+    },
+    {
+      "source_id": "slide_61b7c6ec_036",
+      "candidate_id": "article_35315ef6_79",
+      "decision": "no",
+      "confidence": 0.99,
+      "probability": 0.010000000000000009
+    },
+    {
+      "source_id": "slide_61b7c6ec_036",
+      "candidate_id": "article_35315ef6_8",
+      "decision": "no",
+      "confidence": 0.99,
+      "probability": 0.010000000000000009
+    },
+    {
+      "source_id": "slide_61b7c6ec_036",
+      "candidate_id": "article_35315ef6_82",
+      "decision": "no",
+      "confidence": 0.99,
+      "probability": 0.010000000000000009
+    },
+    {
+      "source_id": "slide_61b7c6ec_036",
+      "candidate_id": "article_35315ef6_85",
+      "decision": "no",
+      "confidence": 0.99,
+      "probability": 0.010000000000000009
+    },
+    {
+      "source_id": "slide_61b7c6ec_036",
+      "candidate_id": "article_35315ef6_9",
+      "decision": "no",
+      "confidence": 0.99,
+      "probability": 0.010000000000000009
+    }
+  ]
+}

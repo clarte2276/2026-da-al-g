@@ -1,0 +1,194 @@
+{
+  "_api_call": true,
+  "provider": "openai",
+  "judge": "llm_pair",
+  "repeat": "r1",
+  "candidate_setting": "hybrid_100",
+  "model": "gpt-5.6-luna",
+  "latency_seconds": 2.410427400005574,
+  "usage": {
+    "input_tokens": 10302,
+    "cached_input_tokens": 0,
+    "output_tokens": 291
+  },
+  "cost_usd": 0.0024096,
+  "response": {
+    "id": "chatcmpl-EZqk4FQ8hZ7cK0Gdo7DqIs3vJrrFP",
+    "object": "chat.completion",
+    "created": 1792212928,
+    "model": "gpt-5.6-luna",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "{\"pairs\":[{\"pair_id\":\"p000\",\"decision\":\"no\",\"confidence\":1},{\"pair_id\":\"p001\",\"decision\":\"no\",\"confidence\":1},{\"pair_id\":\"p002\",\"decision\":\"no\",\"confidence\":1},{\"pair_id\":\"p003\",\"decision\":\"no\",\"confidence\":1},{\"pair_id\":\"p004\",\"decision\":\"no\",\"confidence\":1},{\"pair_id\":\"p005\",\"decision\":\"no\",\"confidence\":1},{\"pair_id\":\"p006\",\"decision\":\"no\",\"confidence\":1},{\"pair_id\":\"p007\",\"decision\":\"no\",\"confidence\":1},{\"pair_id\":\"p008\",\"decision\":\"no\",\"confidence\":1},{\"pair_id\":\"p009\",\"decision\":\"no\",\"confidence\":1},{\"pair_id\":\"p010\",\"decision\":\"no\",\"confidence\":1},{\"pair_id\":\"p011\",\"decision\":\"no\",\"confidence\":1},{\"pair_id\":\"p012\",\"decision\":\"no\",\"confidence\":1},{\"pair_id\":\"p013\",\"decision\":\"no\",\"confidence\":1},{\"pair_id\":\"p014\",\"decision\":\"no\",\"confidence\":1},{\"pair_id\":\"p015\",\"decision\":\"no\",\"confidence\":1},{\"pair_id\":\"p016\",\"decision\":\"no\",\"confidence\":1},{\"pair_id\":\"p017\",\"decision\":\"no\",\"confidence\":1},{\"pair_id\":\"p018\",\"decision\":\"no\",\"confidence\":1},{\"pair_id\":\"p019\",\"decision\":\"no\",\"confidence\":1}]}",
+          "refusal": null,
+          "annotations": []
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 10302,
+      "completion_tokens": 291,
+      "total_tokens": 10593,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 10299,
+        "audio_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0,
+        "accepted_prediction_tokens": 0,
+        "rejected_prediction_tokens": 0
+      }
+    },
+    "service_tier": "default",
+    "system_fingerprint": null
+  },
+  "created_at_utc": "2026-10-17T04:55:30.259147+00:00",
+  "parsed_scores": [
+    {
+      "source_id": "slide_61b7c6ec_039",
+      "candidate_id": "article_35315ef6_233",
+      "decision": "no",
+      "confidence": 1.0,
+      "probability": 0.0
+    },
+    {
+      "source_id": "slide_61b7c6ec_039",
+      "candidate_id": "article_35315ef6_235",
+      "decision": "no",
+      "confidence": 1.0,
+      "probability": 0.0
+    },
+    {
+      "source_id": "slide_61b7c6ec_039",
+      "candidate_id": "article_35315ef6_236",
+      "decision": "no",
+      "confidence": 1.0,
+      "probability": 0.0
+    },
+    {
+      "source_id": "slide_61b7c6ec_039",
+      "candidate_id": "article_35315ef6_238",
+      "decision": "no",
+      "confidence": 1.0,
+      "probability": 0.0
+    },
+    {
+      "source_id": "slide_61b7c6ec_039",
+      "candidate_id": "article_35315ef6_271",
+      "decision": "no",
+      "confidence": 1.0,
+      "probability": 0.0
+    },
+    {
+      "source_id": "slide_61b7c6ec_039",
+      "candidate_id": "article_35315ef6_352",
+      "decision": "no",
+      "confidence": 1.0,
+      "probability": 0.0
+    },
+    {
+      "source_id": "slide_61b7c6ec_039",
+      "candidate_id": "article_35315ef6_353",
+      "decision": "no",
+      "confidence": 1.0,
+      "probability": 0.0
+    },
+    {
+      "source_id": "slide_61b7c6ec_039",
+      "candidate_id": "article_35315ef6_359",
+      "decision": "no",
+      "confidence": 1.0,
+      "probability": 0.0
+    },
+    {
+      "source_id": "slide_61b7c6ec_039",
+      "candidate_id": "article_35315ef6_36",
+      "decision": "no",
+      "confidence": 1.0,
+      "probability": 0.0
+    },
+    {
+      "source_id": "slide_61b7c6ec_039",
+      "candidate_id": "article_35315ef6_360",
+      "decision": "no",
+      "confidence": 1.0,
+      "probability": 0.0
+    },
+    {
+      "source_id": "slide_61b7c6ec_039",
+      "candidate_id": "article_35315ef6_361",
+      "decision": "no",
+      "confidence": 1.0,
+      "probability": 0.0
+    },
+    {
+      "source_id": "slide_61b7c6ec_039",
+      "candidate_id": "article_35315ef6_362",
+      "decision": "no",
+      "confidence": 1.0,
+      "probability": 0.0
+    },
+    {
+      "source_id": "slide_61b7c6ec_039",
+      "candidate_id": "article_35315ef6_363",
+      "decision": "no",
+      "confidence": 1.0,
+      "probability": 0.0
+    },
+    {
+      "source_id": "slide_61b7c6ec_039",
+      "candidate_id": "article_35315ef6_364",
+      "decision": "no",
+      "confidence": 1.0,
+      "probability": 0.0
+    },
+    {
+      "source_id": "slide_61b7c6ec_039",
+      "candidate_id": "article_35315ef6_37",
+      "decision": "no",
+      "confidence": 1.0,
+      "probability": 0.0
+    },
+    {
+      "source_id": "slide_61b7c6ec_039",
+      "candidate_id": "article_35315ef6_40",
+      "decision": "no",
+      "confidence": 1.0,
+      "probability": 0.0
+    },
+    {
+      "source_id": "slide_61b7c6ec_039",
+      "candidate_id": "article_35315ef6_42",
+      "decision": "no",
+      "confidence": 1.0,
+      "probability": 0.0
+    },
+    {
+      "source_id": "slide_61b7c6ec_039",
+      "candidate_id": "article_35315ef6_89",
+      "decision": "no",
+      "confidence": 1.0,
+      "probability": 0.0
+    },
+    {
+      "source_id": "slide_61b7c6ec_039",
+      "candidate_id": "article_35315ef6_90",
+      "decision": "no",
+      "confidence": 1.0,
+      "probability": 0.0
+    },
+    {
+      "source_id": "slide_61b7c6ec_039",
+      "candidate_id": "article_35315ef6_91",
+      "decision": "no",
+      "confidence": 1.0,
+      "probability": 0.0
+    }
+  ]
+}

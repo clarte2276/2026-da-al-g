@@ -1,0 +1,6 @@
+{
+  "status": "projected (partial; insufficient_quota)",
+  "completed_batches": 302,
+  "expected_batches": 800,
+  "error": "HTTP 429 insufficient_quota: no credits remaining"
+}

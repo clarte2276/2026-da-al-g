@@ -29,9 +29,12 @@ from app.services.rag import GraphRAGService, _Corpus, _embedding_values, _searc
 HERE = Path(__file__).resolve().parent
 PAPER_ROOT = HERE.parent
 DATA_DIR, CACHE_DIR = HERE / "data", HERE / "cache"
+COST_CACHE_DIR, CACHE_SETTING = CACHE_DIR, "baseline"
+OPENAI_TOKEN_ESTIMATE_PER_CHAR, OPENAI_PAIR_BATCH_SIZE = 2.0, 80
 SUMMARY_DIR, RUNS_DIR = HERE / "summary", HERE / "runs"
 DB_DIR = PAPER_ROOT / "runtime"
-SEED, K, K_RECALL, BATCH_SIZE, JEV_BATCH_SIZE = 20261017, 10, 20, 8, 1
+SEED, K, K_RECALL, BATCH_SIZE, JEV_BATCH_SIZE = 20261017, 10, 100, 8, 1
+JEV_PAIR_CANDIDATES_PER_REQUEST = 10
 REPEATS = ("r1", "r2", "r3")
 UNCERTAINTY_BAND = (0.2, 0.8)
 OPENAI_CAP_USD, JEV_CAP_USD = 15.0, 5.0
@@ -139,6 +142,8 @@ def prepare(args: argparse.Namespace) -> None:
             raise ValueError(f"Expected one regulation version, found {len(target_versions)}")
         target_version = next(iter(target_versions))
         filenames = {item.id: item.filename for item in db.scalars(select(Document)).all()}
+        regulation_version = db.get(DocumentVersion, target_version)
+        regulation_filename = filenames.get(regulation_version.document_id, "") if regulation_version else ""
         guide_versions = list(db.scalars(
             select(DocumentVersion)
             .join(Document, Document.id == DocumentVersion.document_id)
@@ -267,7 +272,8 @@ def prepare(args: argparse.Namespace) -> None:
                 "source_filename": filenames.get(version, ""), "page": page,
                 "selection": {"kind": "pages", "version_id": version, "pages": [page]},
                 "title": title or "", "text": slide_text,
-                "gold_articles": sorted(gold_by_slide.get(key, set()), key=int), "candidates_20": candidates,
+                "gold_articles": sorted(gold_by_slide.get(key, set()), key=int),
+                "candidates_20": candidates[:20], "candidates_100": candidates,
             })
         if len(positives) != 80 or len(negatives) != 80:
             raise ValueError(f"Unexpected sample size: {len(positives)} positive slides, {len(negatives)} negatives")
@@ -318,6 +324,7 @@ def prepare(args: argparse.Namespace) -> None:
             "seed": SEED, "k": K, "candidate_k_recall": K_RECALL,
             "hybrid_weights": {"dense": 0.6, "bm25": 0.4},
             "embedding_model": "stored DB embeddings (text-embedding-3-small)",
+            "regulation_filename": regulation_filename,
             "guide_slide_count": len(slide_by_key), "positive_slide_count": len(positives),
             "negative_slide_count": len(negatives), "gold_link_record_count": len(gold_links),
             "negative_unique_slide_count": len(set(negatives)),
@@ -363,8 +370,8 @@ def token_count(usage: dict[str, Any], aliases: tuple[str, ...]) -> int:
 
 def cached_call_records() -> list[dict[str, Any]]:
     rows = []
-    if CACHE_DIR.exists():
-        for path in CACHE_DIR.rglob("*.json"):
+    if COST_CACHE_DIR.exists():
+        for path in COST_CACHE_DIR.rglob("*.json"):
             try:
                 item = read_json(path)
             except (OSError, json.JSONDecodeError):
@@ -375,6 +382,10 @@ def cached_call_records() -> list[dict[str, Any]]:
 
 
 def total_spend(provider: str) -> float:
+    if provider == "openai":
+        from tracking_openai import spend_so_far
+
+        return spend_so_far()
     return sum(float(item.get("cost_usd", 0)) for item in cached_call_records() if item.get("provider") == provider)
 
 
@@ -391,7 +402,7 @@ def api_cost(provider: str, usage: dict[str, Any]) -> tuple[dict[str, int], floa
 
 
 def estimate_cost(provider: str, chars: int, max_output: int = 4096) -> float:
-    tokens = chars * 2
+    tokens = chars * (OPENAI_TOKEN_ESTIMATE_PER_CHAR if provider == "openai" else 2)
     return ((tokens * OPENAI_PRICE["input"] + max_output * OPENAI_PRICE["output"]) / 1_000_000
             if provider == "openai" else tokens * JEV_INPUT_PRICE / 1_000_000)
 
@@ -423,6 +434,7 @@ def api_request(provider: str, judge: str, repeat: str, cache_path: Path, payloa
     token_usage, cost = api_cost(provider, raw.get("usage") or {})
     record = {
         "_api_call": True, "provider": provider, "judge": judge, "repeat": repeat,
+        "candidate_setting": CACHE_SETTING,
         "model": "jev-latest" if provider == "jev" else model,
         "latency_seconds": latency, "usage": token_usage, "cost_usd": cost,
         "response": raw, "created_at_utc": datetime.now(UTC).isoformat(),
@@ -443,7 +455,8 @@ def hash_key(value: Any) -> str:
 
 
 def output_sources(data: dict[str, Any]) -> list[dict[str, Any]]:
-    return [{**source, "candidates": source["candidates_20"][:K]} for source in data["sources"]]
+    return [{**source, "candidates": source.get("candidates", source["candidates_20"][:K])}
+            for source in data["sources"]]
 
 
 def pair_batch_content(batch: list[dict[str, Any]], data: dict[str, Any]) -> list[dict[str, Any]]:
@@ -512,29 +525,30 @@ def choice_probabilities(answer: dict[str, Any], candidate_ids: list[str]) -> tu
 
 
 def run_jev_pair(data: dict[str, Any], key: str, repeat: str) -> None:
-    # shortcut: Jev rejected eight-slide batches; keep one slide per request until its limit is documented.
-    for batch_no, batch in enumerate(batches(output_sources(data), size=JEV_BATCH_SIZE)):
-        contents = pair_batch_content(batch, data)
-        questions, q_to_pair, pairs = {}, {}, []
-        q_index = 0
-        for source in contents:
-            for candidate in source["candidates"]:
+    batch_no = 0
+    for source in output_sources(data):
+        for candidate_chunk in batches(source["candidates"], size=JEV_PAIR_CANDIDATES_PER_REQUEST):
+            batch = [{**source, "candidates": candidate_chunk}]
+            contents = pair_batch_content(batch, data)
+            questions, q_to_pair, pairs = {}, {}, []
+            for q_index, candidate in enumerate(contents[0]["candidates"]):
                 qid = f"q{q_index:03d}"
-                q_index += 1
-                q_to_pair[qid] = (source["source_id"], candidate["candidate_id"])
+                q_to_pair[qid] = (contents[0]["source_id"], candidate["candidate_id"])
                 questions[qid] = {"type": "noul", "instructions": f"For pair {qid} in state, {PAIR_INSTRUCTION}"}
                 pairs.append({
-                    "question_id": qid, "source_id": source["source_id"], "candidate_id": candidate["candidate_id"],
-                    "slide_text": source["slide_text"], "article_text": candidate["article_text"],
+                    "question_id": qid, "source_id": contents[0]["source_id"],
+                    "candidate_id": candidate["candidate_id"], "slide_text": contents[0]["slide_text"],
+                    "article_text": candidate["article_text"],
                 })
-        payload = {"model": "jev-latest",
-                   "state": {"relation_question": RELATION_QUESTION, "decision_rule": RELATION_RULE, "pairs": pairs},
-                   "questions": questions}
-        cache = CACHE_DIR / "jev_pair" / repeat / f"batch_{batch_no:03d}_{hash_key(list(q_to_pair.values()))}.json"
-        record = api_request("jev", "jev_pair", repeat, cache, payload, key, "jev-latest")
-        if not record.get("parsed_scores"):
-            record["parsed_scores"] = parse_jev_pair(record, q_to_pair)
-            write_json(cache, record)
+            payload = {"model": "jev-latest",
+                       "state": {"relation_question": RELATION_QUESTION, "decision_rule": RELATION_RULE, "pairs": pairs},
+                       "questions": questions}
+            cache = CACHE_DIR / "jev_pair" / repeat / f"batch_{batch_no:03d}_{hash_key(list(q_to_pair.values()))}.json"
+            record = api_request("jev", "jev_pair", repeat, cache, payload, key, "jev-latest")
+            if not record.get("parsed_scores"):
+                record["parsed_scores"] = parse_jev_pair(record, q_to_pair)
+                write_json(cache, record)
+            batch_no += 1
 
 
 def run_jev_choice(data: dict[str, Any], key: str, repeat: str) -> None:
@@ -637,8 +651,8 @@ def openai_pairs(
     pair_rows: list[dict[str, Any]],
 ) -> list[dict[str, Any]]:
     result = []
-    for batch_no, start in enumerate(range(0, len(pair_rows), 80)):
-        pending = pair_rows[start:start + 80]
+    for batch_no, start in enumerate(range(0, len(pair_rows), OPENAI_PAIR_BATCH_SIZE)):
+        pending = pair_rows[start:start + OPENAI_PAIR_BATCH_SIZE]
         for attempt in range(4):
             expected = {(p["source_id"], p["candidate_id"]) for p in pending}
             pair_ids = {f"p{index:03d}": pair for index, pair in enumerate(sorted(expected))}
@@ -971,8 +985,9 @@ def fmt(avg: float | None, sd: float | None, digits: int = 3) -> str:
     return f"{avg:.{digits}f}" if sd is None else f"{avg:.{digits}f} +/- {sd:.{digits}f}"
 
 
-def call_summary(judge_names: set[str]) -> dict[str, Any]:
-    records = [row for row in cached_call_records() if row.get("judge") in judge_names]
+def call_summary(judge_names: set[str], setting: str = "baseline") -> dict[str, Any]:
+    records = [row for row in cached_call_records() if row.get("judge") in judge_names
+               and row.get("candidate_setting", "baseline") == setting]
     latencies = sorted(float(row.get("latency_seconds", 0)) for row in records)
     percentile = lambda q: latencies[min(len(latencies) - 1, max(0, math.ceil(q * len(latencies)) - 1))] if latencies else None
     wall = sum(latencies)

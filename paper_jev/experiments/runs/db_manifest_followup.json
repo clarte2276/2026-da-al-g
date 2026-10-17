@@ -1,0 +1,14 @@
+{
+  "best_jev": {
+    "judge": "jev_choice",
+    "setting": "hybrid_50",
+    "database": "runtime\\links_best_jev.sqlite",
+    "document_links": 16
+  },
+  "best_cascade": {
+    "judge": "cascade",
+    "setting": "hybrid_50",
+    "database": "runtime\\links_best_cascade.sqlite",
+    "document_links": 264
+  }
+}
