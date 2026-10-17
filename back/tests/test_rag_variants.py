@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from types import SimpleNamespace
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
@@ -92,6 +93,41 @@ def test_retrieval_variants_use_their_expected_paths(tmp_path):
         (item.fragment.id, item.score, item.hop, item.link_id) for item in outputs["proposed"]
     ]
     assert expansion_calls == ["link_all", "proposed", "proposed"]
+
+
+def test_rerank_min_keep_is_opt_in_and_fills_from_hybrid_order(tmp_path, monkeypatch):
+    response = SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(content="[4]"))])
+    monkeypatch.setattr(
+        "openai.OpenAI",
+        lambda **kwargs: SimpleNamespace(
+            chat=SimpleNamespace(
+                completions=SimpleNamespace(create=lambda **kwargs: response)
+            )
+        ),
+    )
+    units = [
+        Fragment(id=f"p{index}", version_id="v", kind="paragraph", text="text", locator_json={})
+        for index in range(6)
+    ]
+    scored = [(unit, float(index)) for index, unit in enumerate(units)]
+    default = GraphRAGService(
+        Settings(storage_root=tmp_path, embedding_dimensions=2, openai_api_key="test"),
+        _FixedEmbedding(),
+    )
+    matched_budget = GraphRAGService(
+        Settings(
+            storage_root=tmp_path,
+            embedding_dimensions=2,
+            openai_api_key="test",
+            rag_rerank_min_keep=3,
+        ),
+        _FixedEmbedding(),
+    )
+
+    assert [item[0].id for item in default._rerank("q", scored, 5, {})] == ["p4"]
+    assert [item[0].id for item in matched_budget._rerank("q", scored, 5, {})] == [
+        "p4", "p0", "p1"
+    ]
 
 
 def test_tiny_dataset_fixture_uses_the_paper_contract():

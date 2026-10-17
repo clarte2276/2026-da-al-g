@@ -680,6 +680,12 @@ class GraphRAGService:
             logging.getLogger(__name__).debug("Reranking failed", exc_info=exc)
             return fallback
         picked = [pool[n] for n in dict.fromkeys(numbers) if n < len(pool)][:top_k]
+        minimum = min(max(self.settings.rag_rerank_min_keep, 0), top_k)
+        if len(picked) < minimum:
+            selected_ids = {fragment.id for fragment, _ in picked}
+            picked += [
+                item for item in pool if item[0].id not in selected_ids
+            ][: minimum - len(picked)]
         return picked or fallback
 
     def _full_corpus(self, db: Session) -> _Corpus:
