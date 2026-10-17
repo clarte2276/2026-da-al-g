@@ -1,0 +1,140 @@
+﻿
+[RUN START bm25_r2 2026-10-17T12:04:23.2231567+09:00]
+Run ID: bm25_r2 | Ref Version: v2 | Variant: bm25 | LLM: gpt-5.6-luna | Embedding: openai
+Executing: 37 document cases, 0 general cases
+================================================================================
+       ↳ citations: 2/3 supported, uncited=0
+         ✗ [3] 무동력 또는 그 밖의 사유로 열차가 구를 우려가 있으면 구름방지 조치를 해야 합니다 — 구름방지 조치 의무는 제326조 제1항의 경우라는 전제가 붙어 있으나, claim에는 해당 조건이 누락되어 일반적인 경우로 확대되어 있습니다.
+[DONE] vehicle_failure: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 9/9 supported, uncited=0
+[DONE] brake_pipe: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 6/6 supported, uncited=0
+[DONE] door_failure: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 1/2 supported, uncited=0
+         ✗ [2] 정거장과 정거장 사이에서 사고로 정차한 열차가 구원열차 운전 통보를 받으면, 열차의 앞 또는 뒤쪽에서 접근 열차가 보기 쉬운 곳에 **제2종 방 — 제305조 제2항 제1호에는 정거장과 정거장 사이에서 정차한 열차가 구원열차 운전 통보를 받은 경우와 제2종 방호 장소가 규정되어 있으나, 해당 정차가 사고로 인한 것이라는 사실은
+[DONE] rescue_train_protection: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] adjacent_line_protection: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] automatic_driving: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 2/2 supported, uncited=1
+[DONE] front_cab_failure: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] runaway_vehicle: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 1/1 supported, uncited=0
+[DONE] storm: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 2/2 supported, uncited=1
+[DONE] flooding: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] fog_or_snowstorm: mode=rag, evidence=5, recall=0.5
+       ↳ citations: 2/3 supported, uncited=0
+         ✗ [1] 이상기후 경보의 **종류와 발령 기준은 확인되지 않지만**, 열차 운전 규제는 재해 발생 여부와 운전 위험성을 기준으로 운전관제가 정합니다.
+ — 제346조는 재해 발생·예상 시 운전관제가 운전정리를 하고, 이상기후로 운전 위험이 발생하거나 우려될 때 안전 최우선 조치를 한다는 내용은 뒷받침하지만, 이상기후 경보의 종류와 발
+[DONE] weather_alert: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 9/9 supported, uncited=0
+[DONE] guide_door: mode=rag, evidence=5, recall=0.3333333333333333
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] guide_psd: mode=rag, evidence=5, recall=0.6666666666666666
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 6/6 supported, uncited=0
+[DONE] guide_pantograph: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] guide_emergency_brake: mode=rag, evidence=5, recall=0.3333333333333333
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 3/3 supported, uncited=1
+[DONE] guide_atc: mode=rag, evidence=5, recall=0.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] graph_704_bus_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_acm_start_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_single_cm_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] graph_siv_start_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/5 supported, uncited=0
+         ✗ [1] 구원열차 도착 전 이동 제한:** 구원 요구 후에는 구원열차가 도착할 때까지 고장열차를 그 위치에서 이동할 수 없습니다 — 근거는 구원 요구 후 구원열차 도착 전 이동할 수 없다고 규정하면서도 사고 증대 우려 또는 응급작업상 필요 시 예외를 인정한다. 주장은 이러한 예외 없이 절대적으로 이동할 수 없다
+[DONE] graph_master_controller_failure: mode=rag, evidence=5, recall=1.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 2/3 supported, uncited=0
+         ✗ [2] 전체 차량의 주공기압축기(CM)가 구동불능이고 정거장 도중에 정차하여 구원을 요청한 경우, MR 압력은 8.0kg/㎠ 이하로 저하되며 6.5kg — MR 압력 수치와 주공기압축기 전체 구동불능 시 구원요청 조치는 근거에 있으나, ‘정거장 도중에 정차하여 구원을 요청한 경우’라는 조건 전체가 해당 근거에 명시되어 있지 않습니다.
+[DONE] graph_all_cm_failure: mode=rag, evidence=5, recall=1.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 14/14 supported, uncited=0
+[DONE] graph_single_door_open_failure: mode=rag, evidence=5, recall=1.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_all_doors_close_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_one_car_doors_close_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/5 supported, uncited=0
+         ✗ [1] 6호선 6300호 M2차에서 주공기관 또는 CM 호스가 파열해 정거장 외에서 통기불능이 된 경우, 길라잡이에 따른 취급은 다음과 같습니다. 다만 — 6호선 6300호 M2차의 주공기관 또는 CM 호스 파열과 압력 기준은 근거에 있으나, ‘정거장 외’ 및 ‘통기불능’이라는 조건과 해당 상황의 규정상 운전 방법이 확인되지 않는다는
+[DONE] graph_air_pipe_rupture: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 6/8 supported, uncited=1
+         ✗ [1] 정거장 외에서 주공기관이 파열되어 통기불능이고 MR 압력이 3.5 kg/㎠ 이하로 주차제동이 풀리지 않을 때에는 다음 순서로 조치합니다.
+
+1. — 근거에는 MR 압력 3.5 kg/㎠ 이하 및 주차제동 풀림불능 조건은 있으나, '정거장 외'와 '통기불능'은 명시되어 있지 않습니다.
+         ✗ [1] 4. 주차제동당김고리를 좌우 2개씩 당깁니다. 후부 Tc차까지 포함하면 4개입니다 — 근거는 주차제동당김고리를 '좌우 2개(후부Tc차 포함 4개)'라고만 하며, '좌우 2개씩'이라는 수량은 명시하지 않습니다.
+[DONE] graph_parking_brake_release_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] graph_inverter_output_half: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_front_tc1_failure: mode=rag, evidence=5, recall=1.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 7/8 supported, uncited=0
+         ✗ [2] 4. 전부Tc차 운전실에서 **운전모드 비상, 역전기 전진, 주간제어기 중립, 출입문 수/수**로 하고, **EBCOS**를 취급하여 비상제동을 — 근거에는 전부Tc차에서 운전모드, 역전기, 주간제어기, 출입문을 설정하고 EBCOS 및 ADBP S/W를 취급하는 내용은 있으나, 이를 '전부Tc차 운전실에서' 수행한다는 장소가
+[DONE] graph_rear_safety_brake_dispatch: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 6/6 supported, uncited=0
+[DONE] graph_front_safety_brake_rescue: mode=rag, evidence=5, recall=1.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] wind_threshold_report: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 6/6 supported, uncited=0
+[DONE] fog_station_duties: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 6/6 supported, uncited=0
+[DONE] earthquake_warning_threshold: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 4/5 supported, uncited=0
+         ✗ [3] 문서에는 지진 발생 시 별도의 경보 명칭이나 경보 발령 방식은 규정되어 있지 않으며, 운행 중인 모든 열차에 지진 발생 상황을 신속히 통보하도록 — 운행 중인 모든 열차에 지진 발생 상황을 신속히 통보한다는 내용은 근거에 있으나, 문서에 별도의 경보 명칭이나 경보 발령 방식이 규정되어 있지 않다는 부재 사실은 인용된 제68조
+[DONE] earthquake_control_initial_stop: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 6/6 supported, uncited=0
+[DONE] earthquake_driver_speed: mode=rag, evidence=5, recall=1.0
+
+================================================================================
+EVALUATION SUMMARY:
+Run ID: bm25_r2 | Reference Version: v2 | Evaluation Complete: True
+Document Cases Average:
+  - faithfulness        : 0.9769 [PASS]
+  - answer_relevancy    : 0.8145 [FAIL]
+  - answer_correctness  : 0.7383 [FAIL]
+  - context_precision   : 0.7273 [FAIL]
+  - context_recall      : 0.8374 [FAIL]
+Pilot criteria (docs/rag-pipeline.md):
+  - faithfulness_mean         : 0.9769 (threshold 0.95) [True]
+  - faithfulness_min          : 0.8182 (threshold 0.8) [True]
+  - context_recall_mean       : 0.8374 (threshold 0.9) [False]
+  - context_recall_min        : 0.3333 (threshold 0.67) [False]
+  - context_precision_mean    : 0.7273 (threshold 0.85) [False]
+  - answer_correctness_mean   : 0.7383 (threshold 0.75) [False]
+  - general_correctness_mean  : n/a (threshold 0.9) [None]
+  - abstention_rate           : n/a (threshold 0.9) [None]
+  - latency_p95_seconds       : 9.2700 (threshold 20.0) [True]
+  - citation_accuracy         : 0.9451 (threshold 0.9) [True]
+Pilot met (automatable items): False
+Graph check: 0/20 passed
+Greeting check: FAIL
+Targets met: NO (INCOMPLETE)
+Saved: C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-resume-r2\paper\experiments\results\ragas_results.json and C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-resume-r2\paper\experiments\results\ragas_results_bm25_r2.json
+
+[RUN END bm25_r2 exit=0 wall_seconds=2349.5 2026-10-17T12:43:32.7031311+09:00]

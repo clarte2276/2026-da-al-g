@@ -1,0 +1,3526 @@
+{
+  "run_id": "hybrid_rerank_r2",
+  "llm_model": "gpt-5.6-luna",
+  "reference_version": "v2",
+  "dataset_version": "2026.10.17-v3",
+  "rag_variant": "hybrid_rerank",
+  "repeat_tag": "r2",
+  "updated_at_utc": "2026-10-17T01:46:08.968412+00:00",
+  "document_cases": [
+    {
+      "case": "vehicle_failure",
+      "question": "열차 운전 중 차량고장으로 자력운전이 곤란하면 어떤 조치를 해야 하나요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 326,
+          "page": null,
+          "label": "운전취급규정 제326조",
+          "via_link": false
+        }
+      ],
+      "reference": "열차 운전 중 차량고장 등으로 자력운전이 곤란하다고 인정될 때는 운전관제에게 보고하고 구원열차를 요구하여야 합니다. 또한 무동력 또는 기타 사유로 구름의 우려가 있을 때에는 반드시 구름방지 조치를 시행하여야 합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "열차 운전 중 차량고장으로 응급조치를 하여도 자력운전을 계속하기 곤란하다고 인정되면, 운전관제에게 보고하고 구원열차를 요구해야 합니다. [근거 1]\n\n무동력 또는 기타 사유로 열차가 구를 우려가 있을 때에는 구름방지 조치를 해야 합니다. [근거 1]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 1,
+      "evidence_count": 1,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.4467,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제326조",
+          "locator": {
+            "chunk": 64,
+            "article": "제326조"
+          },
+          "text_snippet": "제326조(차량고장인 경우) ① 열차운전 중 차량고장 기타의 사유로 응급조치를 하여도 자력으로 운전을 계속함이 곤란하다고 인정하였을 때는 운전관제에게 보고하고 구원열차를 요구하여야"
+        }
+      ],
+      "latency_seconds": 7.72,
+      "retrieval_latency_seconds": 3.8382,
+      "answer_latency_seconds": 2.1953,
+      "recall": 1.0,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.8685852891369265,
+      "answer_correctness": 0.975212415539099,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 2790,
+        "completion_tokens": 224,
+        "total_tokens": 3014
+      },
+      "citation_check": {
+        "claims": 2,
+        "supported": 2,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      }
+    },
+    {
+      "case": "brake_pipe",
+      "question": "정거장 외에서 제동관 또는 공기관 고장으로 통기불능이면 구원과 운전을 어떻게 처리하나요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 327,
+          "page": null,
+          "label": "운전취급규정 제327조",
+          "via_link": false
+        }
+      ],
+      "reference": "정거장 외에서 제동관 또는 공기관 고장으로 통기불능일 때는 구원을 요구하여야 합니다. 다만 상황에 따라 안전하다고 인정될 때에는 최근정거장까지 주의운전할 수 있으며, 여객열차인 경우 최근정거장까지 운전하고 잔여운전에 대하여 운전관제의 지시를 받아 열차를 교환수배하여야 합니다. 운전 시에는 정차 시 수동제동기 또는 주차제동기를 걸고 출발 시 푸는 적당한 조치를 취하여야 합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "정거장 외에서 제동관 또는 공기관 고장으로 통기불능이면 원칙적으로 구원을 요구하고, 열차로 운전할 수 없습니다. [근거 1]\n\n다만 다음과 같이 처리합니다.\n\n- 상황에 따라 안전하다고 인정될 때에는 최근정거장까지 주의운전할 수 있습니다. [근거 1]\n- 여객열차는 최근정거장까지 운전할 수 있으며, 잔여운전은 운전관제의 지시를 받아야 합니다. 운전관제는 잔여운전을 지시할 때 운전상 상당한 안전조치를 지시하고 신속히 전동차를 교환수배하여야 합니다. [근거 1]\n- 위와 같이 운전할 때에는 차장 또는 제동기 취급자가 열차 정차 시 수동제동기 또는 주차제동기를 걸고, 출발할 때 이를 푸는 등 운전상 적당한 조치를 하여야 합니다. [근거 1]\n- 구원을 요구할 때 후속열차가 있으면 운전관제에 보고한 후 그 지시에 따라 차장이 후속열차와 협의하여 유도 합병으로 구원을 받습니다. 1인승무열차는 기관사가 후부운전실로 이동하여 후속열차와 협의한 후 유도 합병으로 구원을 받습니다. 후속열차가 없으면 승무원이 운전관제에 보고하고 그 지시를 받아야 합니다. [근거 2]\n- 구원열차 도착 전에 고장이 복구되어 운전을 계속할 수 있게 된 경우에도 기관사 또는 차장은 운전관제의 지시를 받아야 합니다. [근거 2]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 2,
+      "evidence_count": 2,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.5143,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제327조",
+          "locator": {
+            "chunk": 64,
+            "article": "제327조"
+          },
+          "text_snippet": "제327조(제동관 및 공기관 고장인 경우의 조치) ① 정거장외에서 열차의 제동관 또는 공기관 고장으로 통기불능일 때는 구원을 요구하여야 한다. 다만, 상황에 따라 안전하다고 인정될"
+        },
+        {
+          "hop": 0,
+          "score": 0.4306,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제315조",
+          "locator": {
+            "chunk": 62,
+            "article": "제315조"
+          },
+          "text_snippet": "제315조(구원열차를 요구한 경우의 조치) ① 고장으로 인하여 정거장 도중에 정차한 열차 또는 차량이 구원을 요구할 때에는 다음 각 호의 1에 의한다.  1. 후속열차가 있을 때에"
+        }
+      ],
+      "latency_seconds": 9.48,
+      "retrieval_latency_seconds": 1.4677,
+      "answer_latency_seconds": 6.094,
+      "recall": 1.0,
+      "precision": 0.5,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.9050185283825355,
+      "answer_correctness": 0.5662381402981876,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 3488,
+        "completion_tokens": 866,
+        "total_tokens": 4354
+      },
+      "citation_check": {
+        "claims": 6,
+        "supported": 6,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      }
+    },
+    {
+      "case": "door_failure",
+      "question": "열차 운전 중 출입문 고장이 발생하면 보고, 방송, 응급조치와 회송은 어떻게 하나요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 328,
+          "page": null,
+          "label": "운전취급규정 제328조",
+          "via_link": false
+        }
+      ],
+      "reference": "열차 운전 중 출입문 고장이 발생하면 운전관제에 보고하고 승객 대상 안내방송을 실시하며, 출입문이 정상작동하기 위한 응급조치를 시행합니다. 출입문 1개 이상 고장 발생으로 정상작동 불가 시 운전관제에 보고하고 지시에 의하여 회송 조치하여야 합니다(단, 마지막열차는 출입문안전막 설치 조치 후 차량교환역까지 운행 가능).",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "열차 운전 중 출입문 고장이 발생하면 운전관제에 보고한 후 안내방송과 정상 작동을 위한 응급조치를 시행하고, 출입문 1개 이상이 정상 작동하지 않으면 운전관제의 지시에 따라 회송합니다. [근거 1]\n\n1. **보고·방송·응급조치**  \n   출입문 고장 발생 시 운전관제에 보고하고, 안내방송을 실시한 뒤 출입문이 정상 작동하도록 응급조치를 시행합니다. [근거 1]\n\n2. **정상 작동이 불가능한 경우**  \n   출입문 1개 이상이 고장 나 정상 작동이 불가능하면 운전관제에 보고하고, 운전관제의 지시에 따라 회송조치합니다. [근거 1]\n\n3. **막차인 경우**  \n   마지막 열차는 전동차승무원업무예규 제85조의 조치 후 차량교환역까지 운행할 수 있습니다. [근거 1]\n\n4. **운전관제의 조치**  \n   운전관제는 해당 열차를 회송조치하고, 출입문안전막(출입문보호막)을 설치한 상태로 운행하는 열차의 차량교환을 위해 조치합니다. [근거 1]\n\n5. **6호선 길라잡이의 출입문 닫힘불능 절차**  \n   6호선에서 1개 출입문이 닫히지 않는 경우에는 출입문 전체 열림·닫힘을 수회 시행한 후 관제센터에 보고하고 안내방송을 실시하며, 인포3을 취급합니다. 이후 해당 출입문을 잠그고 출입문안전막을 설치한 뒤 출입문바이패스(DSBS) S/W를 취급하고 감시자(역직원)를 승차시킵니다. 잠금이 불가능하면 회송조치하며, 관제센터의 지시에 따라 차량교환역까지 운행합니다. [근거 2]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 5,
+      "evidence_count": 5,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.5138,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제328조",
+          "locator": {
+            "chunk": 64,
+            "article": "제328조"
+          },
+          "text_snippet": "제328조(열차의 출입문 고장인 경우) ① 열차운전 중 출입문 고장이 발생 되었을 경우 운전관제에 보고하고 다음 각 호의 취급을 하여야 한다.  1. 안내방송을 실시한다.  2. "
+        },
+        {
+          "hop": 0,
+          "score": 0.4352,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 62 · 1개 출입문 닫힘불능 시",
+          "locator": {
+            "slide": 62
+          },
+          "text_snippet": "현 상  (1) 출입문대표등 소등 (2) TCMS 화면에 해당출입문 열림표시  - 출입문S/W(DS) 접점 불량시는 닫힘으로 표시 (3) TCMS 화면하단에 관련 고장내용 현시  "
+        },
+        {
+          "hop": 0,
+          "score": 0.4246,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 54 · 1개 출입문 열림불능 시",
+          "locator": {
+            "slide": 54
+          },
+          "text_snippet": "현 상  (1) TCMS 화면의 해당차 출입문 닫힘상태( ) 유지 (2) TCMS 화면 하단에 관련고장 현시  - 6210호 F/N 623. 3번 출입문 열리지 않음, 왼쪽  조 "
+        },
+        {
+          "hop": 0,
+          "score": 0.487,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "df60a06c-71bf-49cc-8b93-bde500b5436c",
+          "location": "제54조",
+          "locator": {
+            "document": true,
+            "chunk": 9,
+            "article": "제54조"
+          },
+          "text_snippet": "제54조(차량고장에 대한 조치) 차량고장의 발생 통보가 있을 때의 조치 방법은 다음 각 호에 의한다.  1. 차량고장으로 정차 후 계속운전이 불가능하다고 판단될 때에는 후속 열차와"
+        },
+        {
+          "hop": 0,
+          "score": 0.4178,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제46조",
+          "locator": {
+            "chunk": 6,
+            "article": "제46조"
+          },
+          "text_snippet": "제46조(열차감시) ① 역장(역장이 지정하는 자를 포함한다.)은 다음 각 호에 해당하는 경우에는 열차의 도착, 출발 및 승객의 상태를 감시하여야 한다. 다만, 제3호의 경우로서 1"
+        }
+      ],
+      "latency_seconds": 10.3,
+      "retrieval_latency_seconds": 1.6842,
+      "answer_latency_seconds": 7.3671,
+      "recall": 1.0,
+      "precision": 0.2,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.8470325710530867,
+      "answer_correctness": 0.6689432064582626,
+      "faithfulness": 1.0,
+      "context_precision": 0.999999999975,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 5316,
+        "completion_tokens": 1032,
+        "total_tokens": 6348
+      },
+      "citation_check": {
+        "claims": 6,
+        "supported": 6,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      }
+    },
+    {
+      "case": "rescue_train_protection",
+      "question": "정거장 외에서 사고로 정차한 열차가 구원열차를 요구했을 때 열차방호는 어떻게 하나요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 321,
+          "page": null,
+          "label": "운전취급규정 제321조",
+          "via_link": false
+        }
+      ],
+      "reference": "정거장 외에서 열차사고 기타 등으로 정차한 열차가 구원열차를 요구하였거나 구원열차 운전 통보가 있었을 때에는 제2종 방호를 하여야 합니다. 다만 구원열차가 오지 않음이 확실한 방향은 방호를 생략할 수 있습니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "정거장 외에서 사고로 정차한 열차가 구원열차를 요구하거나 구원열차 운전 통보를 받았을 때에는 **제2종 방호**를 하여야 합니다. 다만, 구원열차가 오지 않음이 확실한 방향은 생략할 수 있습니다. [근거 1]\n\n제2종 방호는 지장개소에서 정지수신호를 현시하면서, 접근하는 열차가 확인하기 쉬운 지점까지 진행하여 그곳에 정지수신호를 현시하는 방법입니다. 야간 또는 터널 안에서는 후부에 있는 전조등을 깜박이는 것으로 정지수신호를 대신할 수 있습니다. [근거 4]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 4,
+      "evidence_count": 4,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.4383,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제321조",
+          "locator": {
+            "chunk": 63,
+            "article": "제321조"
+          },
+          "text_snippet": "제321조(구원열차에 대한 정차열차의 방호) 정거장외에서 열차사고 기타 등으로 정차한 경우 구원열차를 요구 또는 구원열차 운전의 통보가 있었을 때에는 제2종 방호를 하여야 한다. "
+        },
+        {
+          "hop": 0,
+          "score": 0.5196,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제315조",
+          "locator": {
+            "chunk": 62,
+            "article": "제315조"
+          },
+          "text_snippet": "제315조(구원열차를 요구한 경우의 조치) ① 고장으로 인하여 정거장 도중에 정차한 열차 또는 차량이 구원을 요구할 때에는 다음 각 호의 1에 의한다.  1. 후속열차가 있을 때에"
+        },
+        {
+          "hop": 0,
+          "score": 0.5202,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제305조",
+          "locator": {
+            "chunk": 60,
+            "article": "제305조"
+          },
+          "text_snippet": "제305조(열차방호를 하는 경우) ① 선로 또는 전차선로의 고장 및 장애발생으로 급히 열차를 정차시킬 사유가 있을 때에는 신속히 제1종 방호를 하여야 한다. <개정 2024.12."
+        },
+        {
+          "hop": 0,
+          "score": 0.4458,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제304조",
+          "locator": {
+            "chunk": 59,
+            "article": "제304조"
+          },
+          "text_snippet": "제304조(열차방호) ① 열차 또는 선로에 고장으로 인하여 관계열차를 급히 정차시킬 필요가 있을 때에는 지체없이 열차방호를 하여야 한다. <개정 2019.02.01.>  ② 정거장"
+        }
+      ],
+      "latency_seconds": 7.24,
+      "retrieval_latency_seconds": 1.6469,
+      "answer_latency_seconds": 4.1051,
+      "recall": 1.0,
+      "precision": 0.25,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.852837656226734,
+      "answer_correctness": 0.7146704556466993,
+      "faithfulness": 1.0,
+      "context_precision": 0.8333333332916666,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 4309,
+        "completion_tokens": 526,
+        "total_tokens": 4835
+      },
+      "citation_check": {
+        "claims": 2,
+        "supported": 2,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      }
+    },
+    {
+      "case": "adjacent_line_protection",
+      "question": "정거장 외에서 인접 선로를 지장한 경우 어떤 방호와 보고를 해야 하나요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 323,
+          "page": null,
+          "label": "운전취급규정 제323조",
+          "via_link": false
+        }
+      ],
+      "reference": "정거장 외에서 탈선·전복 등으로 인접 선로를 지장하였을 때에는 후속열차 방호를 하기 전에 그 인접선로를 운전하는 열차에 대하여 지장지점 전후 양방향에 제1종 방호를 시행하여야 합니다. 자동폐색식 또는 차내신호폐색식 구간인 경우 즉시 단락용 동선으로 궤도회로를 단락하여야 합니다. 운전 중 인접선로 장애 발견 시 신속히 열차를 정차시키고 운전관제에게 보고 및 지장지역 전후 양방향에 제1종 방호를 시행하며, 보고를 받은 운전관제는 접근 열차에 비상정차 조치를 취합니다. 열차가 진행해 오지 않는 방향에 대한 방호는 생략할 수 있습니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "정거장 외에서 인접 선로를 지장한 경우에는 상황에 따라 인접 선로 전후 양방향에 제1종 방호를 하고 운전관제에 보고해야 합니다.\n\n- **탈선·전복으로 인접 선로를 지장한 경우**: 후속열차에 대한 방호에 앞서, 인접 선로를 운전하는 열차에 대하여 지장 지점의 전후 양방향에 제1종 방호를 해야 합니다. 지장 선로가 자동폐색식 또는 차내신호폐색식 구간이면 즉시 단락용 동선으로 궤도회로를 단락해야 합니다. [근거 1]\n- **운전 중 인접 선로에 장애가 발생하여 열차운전에 지장을 주는 경우**: 신속히 열차를 정차시키고 운전관제에 보고한 후, 지장지역의 전후 양방향에 제1종 방호를 해야 합니다. [근거 1]\n- **방호 수배 주체**: 기관사와 차장이 방호를 수배하며, 전부는 기관사, 후부는 차장이 담당합니다. 1인승무열차는 전·후부 모두 기관사가 방호 수배를 해야 합니다. [근거 2]\n- **제1종 방호 방법**: 지장개소 바깥쪽 200m 이상의 지점에 정지수신호를 현시합니다. 전차량 탈선 등으로 궤도회로를 단락시킬 필요가 있을 때에는 단락용 동선으로 궤도회로를 단락해야 합니다. [근거 4]\n- **방호 방향의 예외**: 열차가 진행하여 오지 않는 방향에 대한 방호는 생략할 수 있습니다. [근거 1]\n- **운전관제 조치**: 탈선·전복으로 인접 선로를 지장한 경우 그 보고를 받은 운전관제는 지장개소로 접근하는 열차에 대하여 신속히 비상정차 조치를 해야 합니다. [근거 1]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 4,
+      "evidence_count": 4,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.4374,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제323조",
+          "locator": {
+            "chunk": 63,
+            "article": "제323조"
+          },
+          "text_snippet": "제323조(인접선로를 지장한 경우의 방호) ① 정거장외에서 탈선전복으로 인접선로를 지장하였을 경우에는 후속열차에 대한 방호를 하기 전에 그 인접선로를 운전하는 열차에 대하여 지장지"
+        },
+        {
+          "hop": 0,
+          "score": 0.3955,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제322조",
+          "locator": {
+            "chunk": 63,
+            "article": "제322조"
+          },
+          "text_snippet": "제322조(기관사 및 차장의 방호 협조) ① 정거장외에서 사고 기타로 열차가 정차한 경우 또는 차량을 남겨놓은 경우 방호를 요할 때는 차장 또는 1인승무열차의 기관사는 이를 수배하"
+        },
+        {
+          "hop": 0,
+          "score": 0.3762,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제307조",
+          "locator": {
+            "chunk": 60,
+            "article": "제307조"
+          },
+          "text_snippet": "제307조(사고의 보고) 승무원은 사고, 장애, 기타의 사유로 인하여 열차가 정차하였을 때에는 그 사실을 운전관제 또는 인근 역, 소장에게 다음 각 호의 방법에 따라 보고하여야 한"
+        },
+        {
+          "hop": 0,
+          "score": 0.3617,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제304조",
+          "locator": {
+            "chunk": 59,
+            "article": "제304조"
+          },
+          "text_snippet": "제304조(열차방호) ① 열차 또는 선로에 고장으로 인하여 관계열차를 급히 정차시킬 필요가 있을 때에는 지체없이 열차방호를 하여야 한다. <개정 2019.02.01.>  ② 정거장"
+        }
+      ],
+      "latency_seconds": 9.51,
+      "retrieval_latency_seconds": 1.7449,
+      "answer_latency_seconds": 6.3647,
+      "recall": 1.0,
+      "precision": 0.25,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.7438769960306842,
+      "answer_correctness": 0.7084951145210273,
+      "faithfulness": 0.9333333333333333,
+      "context_precision": 0.9999999999,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 4148,
+        "completion_tokens": 929,
+        "total_tokens": 5077
+      },
+      "citation_check": {
+        "claims": 6,
+        "supported": 5,
+        "accuracy": 0.8333333333333334,
+        "unsupported": [
+          {
+            "claim": "운전 중 인접 선로에 장애가 발생하여 열차운전에 지장을 주는 경우**: 신속히 열차를 정차시키고 운전관제에 보고한 후, 지장지역의 전후 양방향에 제1종 방호를 해야 합니다",
+            "cited": [
+              1
+            ],
+            "reason": "정차 후 운전관제 보고 및 양방향 방호는 규정에 있으나, ‘보고한 후 방호’라는 순서는 cited_evidence에 명시되어 있지 않다."
+          }
+        ],
+        "uncited": []
+      }
+    },
+    {
+      "case": "automatic_driving",
+      "question": "5~8호선 본선 구간의 운전 방식은 자동운전인가요? 수동운전 예외는 무엇인가요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 330,
+          "page": null,
+          "label": "운전취급규정 제330조",
+          "via_link": false
+        }
+      ],
+      "reference": "5~8호선 본선 구간의 운전 방식은 자동운전을 원칙으로 합니다. 다만 1) 서행 운전명령 구간 진입, 2) 정지신호로 승강장 중간 정차 후 정차위치 이동, 3) ATO 기능이상 등으로 운전관제의 수동운전 지시, 4) 수동운전 적용시간 운영, 5) 회송열차 운전 등의 경우에는 수동운전에 의합니다. 운전방식 변경을 위해 자동모드에서 다른 모드로 변경하고자 할 때에는 운전관제의 승인을 받아야 합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "5~8호선 본선 구간의 운전은 자동운전을 원칙으로 하며, 다음 경우에는 수동운전으로 합니다. [근거 1]\n\n1. 운전명령에 따라 서행을 실시하는 구간에 진입하는 열차 [근거 1]  \n2. 정거장 진입 중 정지신호에 의해 승강장 중간에 정차한 열차를 정차위치까지 이동시키는 경우 [근거 1]  \n3. ATO 기능이상 등으로 운전관제의 수동운전 지시에 따르는 경우 [근거 1]  \n4. 수동운전 기능 유지 및 능력 향상 등을 위해 수동운전 적용시간을 따로 정한 경우 [근거 1]  \n5. 회송열차를 운전하는 경우 [근거 1]\n\n운전제어장치 고장 등 특별한 사유로 자동모드에서 다른 모드로 변경할 때에는 운전관제의 승인을 받아야 하며, 수동운전 적용시간에 따라 수동모드로 변경하는 경우에는 승인이 필요하지 않습니다. [근거 1] 운전취급규정 제330조「5~8호선 구간에서의 운전방식」",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 1,
+      "evidence_count": 1,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.5054,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제330조",
+          "locator": {
+            "chunk": 64,
+            "article": "제330조"
+          },
+          "text_snippet": "제330조(5~8호선 구간에서의 운전방식) ① 본선구간에서의 운전방식은 자동운전을 원칙으로 한다. 다만 다음 각 호의 경우에는 수동운전에 의한다.  1. 운전명령에 의하여 서행을 "
+        }
+      ],
+      "latency_seconds": 5.61,
+      "retrieval_latency_seconds": 1.2581,
+      "answer_latency_seconds": 2.9695,
+      "recall": 1.0,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": false,
+      "answer_relevancy": 0.8170277267397954,
+      "answer_correctness": 0.881841700550764,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 3019,
+        "completion_tokens": 384,
+        "total_tokens": 3403
+      },
+      "citation_check": {
+        "claims": 7,
+        "supported": 7,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": [
+          "운전취급규정 제330조「5~8호선 구간에서의 운전방식」"
+        ]
+      }
+    },
+    {
+      "case": "front_cab_failure",
+      "question": "전동차 전부 운전실이 고장 나면 어떤 속도로 어디까지 운전할 수 있나요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 331,
+          "page": null,
+          "label": "운전취급규정 제331조",
+          "via_link": false
+        }
+      ],
+      "reference": "전동차 전부 운전실 고장으로 전부운전실에서 운전할 수 없을 때에는 후부운전실에서 25km/h 이하의 속도로 운전할 수 있으며, 최근정거장까지만 운전하여야 합니다. 이때 차장 또는 1인승무열차의 기관사(지도요원 포함)는 최전부 운전실에 승차하여 전방 신호 및 진로를 확인하여야 합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "전동차 전부 운전실에서 운전할 수 없을 경우, 후부운전실에서 **25㎞/h 이하**로 **최근정거장까지** 운전할 수 있습니다. [근거 1]\n\n이 경우 차장 또는 1인승무열차의 기관사(지도요원 포함)는 최전부 운전실에 승차하여 전방의 신호 및 진로를 확인해야 합니다. [근거 1]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 1,
+      "evidence_count": 1,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.4758,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제331조",
+          "locator": {
+            "chunk": 65,
+            "article": "제331조"
+          },
+          "text_snippet": "제331조(전동차의 전부 운전실이 고장인 경우의 조치) ① 전동차의 전부 운전실에 고장 발생으로 전부운전실에서 운전할 수 없을 경우 후부운전실에서 열차를 25㎞/h이하의 속도로 운"
+        }
+      ],
+      "latency_seconds": 6.1,
+      "retrieval_latency_seconds": 1.2397,
+      "answer_latency_seconds": 2.5793,
+      "recall": 1.0,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.7452287886534852,
+      "answer_correctness": 0.9735506456189758,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 2847,
+        "completion_tokens": 264,
+        "total_tokens": 3111
+      },
+      "citation_check": {
+        "claims": 2,
+        "supported": 2,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      }
+    },
+    {
+      "case": "runaway_vehicle",
+      "question": "유치 중인 차량이 자동으로 굴렀을 때 누구에게 보고하고 어떻게 정차시키나요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 332,
+          "page": null,
+          "label": "운전취급규정 제332조",
+          "via_link": false
+        }
+      ],
+      "reference": "유치 중인 차량이 자동으로 굴렀을 경우 역·소장은 즉시 상대역·소장 및 운전관제에게 그 요지를 급보하고 정차시킬 조치를 하여야 합니다. 급보를 받은 운전관제, 역, 소장은 차량 정차에 노력하고 필요한 경우 인접 정거장 역·소장에게 통보하며 관계 선로 및 인접선로 운행 열차의 기관사에게 주의를 환기시킵니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "유치 중인 차량이 자동으로 굴렀을 때에는 역·소장이 즉시 상대역·소장 및 운전관제에 그 요지를 급보하고, 차량을 정차시킬 조치를 하여야 합니다. [근거 1]\n\n급보를 받은 운전관제·역·소장은 굴러가는 차량의 정차에 노력하고, 필요한 경우 인접 정거장 역·소장에게 통보하여야 합니다. 관계 선로 및 인접선로를 운행하는 열차가 있을 때에는 기관사에게 주의시켜야 합니다. [근거 1]\n\n(운전취급규정 제332조)",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 1,
+      "evidence_count": 1,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.4546,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제332조",
+          "locator": {
+            "chunk": 65,
+            "article": "제332조"
+          },
+          "text_snippet": "제332조(차량이 자동으로 굴렀을 경우의 조치) ① 역, 소장은 유치중인 차량이 자동으로 굴렀을 경우 즉시 상대역, 소장 및 운전관제에게 그 요지를 급보하고 이를 정차시킬 조치를 "
+        }
+      ],
+      "latency_seconds": 5.75,
+      "retrieval_latency_seconds": 1.4177,
+      "answer_latency_seconds": 2.8508,
+      "recall": 1.0,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.8201543780362415,
+      "answer_correctness": 0.975221270912812,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 2819,
+        "completion_tokens": 308,
+        "total_tokens": 3127
+      },
+      "citation_check": {
+        "claims": 2,
+        "supported": 2,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": [
+          "(운전취급규정 제332조)"
+        ]
+      }
+    },
+    {
+      "case": "storm",
+      "question": "열차 운전 중 폭풍을 만나 운전에 위험하다고 판단되면 기관사는 어떻게 해야 하나요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 348,
+          "page": null,
+          "label": "운전취급규정 제348조",
+          "via_link": false
+        }
+      ],
+      "reference": "열차 운전 중 폭풍을 만났을 때 기관사는 열차속도에 급격한 변화를 주지 않도록 하고, 열차운전에 위험하다고 판단될 때에는 안전한 장소에 열차를 정차시켜야 합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "열차 운전 중 폭풍을 만나 운전에 위험하다고 판단되면, 기관사는 열차속도에 급격한 변화를 주지 않도록 하고 안전한 장소에 열차를 정차시켜야 합니다. [근거 1]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 1,
+      "evidence_count": 1,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.5201,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제348조",
+          "locator": {
+            "chunk": 68,
+            "article": "제348조"
+          },
+          "text_snippet": "제348조(폭풍에 대한 기관사의 조치) 기관사는 열차운전 중 폭풍을 만났을 때에는 열차속도에 급격한 변화를 주지 않도록 하고 열차운전에 위험 하다고 판단될 때에는 안전한 장소에 열"
+        }
+      ],
+      "latency_seconds": 4.32,
+      "retrieval_latency_seconds": 1.3536,
+      "answer_latency_seconds": 1.2885,
+      "recall": 1.0,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.987521262195786,
+      "answer_correctness": 0.9778223740216302,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 2756,
+        "completion_tokens": 116,
+        "total_tokens": 2872
+      },
+      "citation_check": {
+        "claims": 1,
+        "supported": 1,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      }
+    },
+    {
+      "case": "flooding",
+      "question": "터널 내 침수로 정전이나 운전 지장이 우려될 때 승무원과 역은 어떻게 조치하나요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 349,
+          "page": null,
+          "label": "운전취급규정 제349조",
+          "via_link": false
+        }
+      ],
+      "reference": "터널 내 침수로 정전이나 운전 지장 우려가 있을 때 승무원은 지체 없이 운전관제에 보고하고 지시를 받아야 합니다. 역장 또는 소장은 운전관제의 명령에 의하여 승객을 정거장에 하차시킨 후 전동차를 침수되지 않을 장소로 회송하여야 하며, 관제 지시를 받을 수 없을 때에는 정거장에 승객을 하차시킨 후 지체 없이 운전관제에게 보고합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "터널 내 침수로 정전이나 운전에 지장이 우려되면 승무원은 운전관제에 지체 없이 보고하고 지시를 받아야 하며, 역장 또는 소장은 운전관제의 명령에 따라 승객을 정거장에 하차시킨 후 전동차를 침수되지 않을 장소로 회송해야 합니다. [근거 1]\n\n- 승무원은 운전관제의 지시를 받을 수 없을 때에는 정거장에 승객을 하차시킨 후 지체 없이 운전관제에 보고해야 합니다. [근거 1]\n- 선로가 침수된 경우 수위가 레일면 이하이면 전방에 일단 정차하고 선로 상태를 확인한 후, 통과 가능하다고 인정될 때에는 시속 15km 이하로 주의운전하여 통과합니다. [근거 1]\n- 수위가 레일면 위이면 열차운전을 중지하고 침수지점 전방에 정차한 다음 운전관제에 급보하고 운전관제의 지시에 따라야 합니다. [근거 1]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 3,
+      "evidence_count": 3,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.4283,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제349조",
+          "locator": {
+            "chunk": 68,
+            "article": "제349조"
+          },
+          "text_snippet": "제349조(침수시의 열차 운전취급) ① 터널내에 침수로 인하여 정전, 기타 운전에 지장을 줄 우려가 있다고 인정 될 때에는 다음 각 호에 의한 조치를 하여야 한다.  1. 승무원은"
+        },
+        {
+          "hop": 0,
+          "score": 0.3743,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "df60a06c-71bf-49cc-8b93-bde500b5436c",
+          "location": "제64조",
+          "locator": {
+            "chunk": 11,
+            "article": "제64조"
+          },
+          "text_snippet": "제64조(선로 침수 시 조치) 운전관제는 선로가 침수된 사실을 인지하였을 경우 다음 각 호에 의한 조치를 하여야 한다.  1. 침수구간을 운행하는 모든 열차에 침수된 상황을 통보한"
+        },
+        {
+          "hop": 0,
+          "score": 0.3638,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "df60a06c-71bf-49cc-8b93-bde500b5436c",
+          "location": "제64조",
+          "locator": {
+            "document": true,
+            "chunk": 11,
+            "article": "제64조"
+          },
+          "text_snippet": "제64조(선로 침수 시 조치) 운전관제는 선로가 침수된 사실을 인지하였을 경우 다음 각 호에 의한 조치를 하여야 한다.  1. 침수구간을 운행하는 모든 열차에 침수된 상황을 통보한"
+        }
+      ],
+      "latency_seconds": 10.03,
+      "retrieval_latency_seconds": 2.2536,
+      "answer_latency_seconds": 6.1416,
+      "recall": 1.0,
+      "precision": 0.3333333333333333,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.7629320158795384,
+      "answer_correctness": 0.5169340033779699,
+      "faithfulness": 0.9230769230769231,
+      "context_precision": 0.9999999999,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 3585,
+        "completion_tokens": 823,
+        "total_tokens": 4408
+      },
+      "citation_check": {
+        "claims": 4,
+        "supported": 4,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      }
+    },
+    {
+      "case": "fog_or_snowstorm",
+      "question": "안개나 눈보라로 신호 확인이 어려울 때 기관사와 운전관제는 어떻게 조치하나요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 351,
+          "page": null,
+          "label": "운전취급규정 제351조",
+          "via_link": false
+        },
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 352,
+          "page": null,
+          "label": "운전취급규정 제352조",
+          "via_link": false
+        }
+      ],
+      "reference": "안개나 눈보라로 신호 확인이 어려울 때 기관사는 신호 확인거리 범위 내에서 정차할 수 있는 속도로 주의운전을 하여야 합니다. 신호기 현시 확인 불능 시 일단 정차하고 출발신호기 확인 불능 시 관제/역장 구두통보에 의하여 진행하며, 관제에게 상황을 통보합니다. 운전관제는 신호 확인거리가 50m 이하일 때 장내신호기에 주의 또는 경계신호를 현시하고 필요 시 열차 운전중지 명령을 내리며, 기관사는 운전중지 명령이 없는 한 15km/h 이하의 속도로 운전하여야 합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "안개나 눈보라로 신호 확인이 어려울 때 기관사는 확인거리 안에서 정차할 수 있는 속도로 주의운전하고, 운전관제는 신호 확인거리 등에 따라 주의·경계신호 현시 또는 운전중지 명령을 하여야 합니다.\n\n- **기관사**\n  1. 운전 중 안개 또는 눈보라를 만나면 신호의 확인거리 범위 안에서 정차할 수 있는 속도로 주의운전하여야 합니다. [근거 1]\n  2. 신호기의 신호현시를 확인할 수 없으면 일단 정차하여야 합니다. [근거 1]\n  3. 출발신호기의 신호현시를 확인할 수 없으면 운전관제, 역장 또는 소장으로부터 열차무선 또는 구두통보로 열차를 진행시켜야 합니다. [근거 1]\n  4. 안개 또는 눈보라의 상황을 운전관제에게 통보하여야 합니다. [근거 1]\n\n- **운전관제**\n  1. 역장, 소장 또는 기관사의 보고에 따라 신호의 확인거리가 **50m 이하**라고 인정되면 장내신호기에 주의 또는 경계신호를 현시하여야 합니다. [근거 2]\n  2. 필요하다고 인정하면 열차 운전중지 명령을 하고, 그 필요가 없어지면 해제 명령을 하여야 합니다. [근거 2]\n  3. 운전중지 명령이 없으면 기관사는 **15㎞/h 이하**의 속도로 운전하여야 합니다. [근거 2]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 3,
+      "evidence_count": 3,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.4793,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제351조",
+          "locator": {
+            "chunk": 69,
+            "article": "제351조"
+          },
+          "text_snippet": "제351조(안개 또는 눈보라시의 기관사의 조치) ① 기관사가 운전도중 안개 또는 눈보라를 만났을 때에는 신호의 확인거리의 범위내에서 정차할 수 있는 속도로 주의운전을 하여야 한다."
+        },
+        {
+          "hop": 0,
+          "score": 0.4443,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제352조",
+          "locator": {
+            "chunk": 69,
+            "article": "제352조"
+          },
+          "text_snippet": "제352조(안개 또는 눈보라시의 운전관제의 명령) 운전관제는 역장, 소장 또는 기관사의 보고에 의하여 신호의 확인거리가 50m이하라고 인정될 때에는 장내신호기에 주의 또는 경계신호"
+        },
+        {
+          "hop": 0,
+          "score": 0.4793,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제350조",
+          "locator": {
+            "chunk": 69,
+            "article": "제350조"
+          },
+          "text_snippet": "제350조(안개 또는 눈보라시의 역장 또는 소장의 조치) ① 역장 또는 소장은 안개 또는 눈보라시 에는 다음 각 호에 의한 조치를 하여야 한다.  1. 안개 또는 눈보라에 의해 시"
+        }
+      ],
+      "latency_seconds": 8.01,
+      "retrieval_latency_seconds": 1.5532,
+      "answer_latency_seconds": 4.9947,
+      "recall": 1.0,
+      "precision": 0.6666666666666666,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.9668555207832185,
+      "answer_correctness": 0.9737169658039634,
+      "faithfulness": 1.0,
+      "context_precision": 0.49999999995,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 3545,
+        "completion_tokens": 657,
+        "total_tokens": 4202
+      },
+      "citation_check": {
+        "claims": 7,
+        "supported": 6,
+        "accuracy": 0.8571428571428571,
+        "unsupported": [
+          {
+            "claim": "안개나 눈보라로 신호 확인이 어려울 때 기관사는 확인거리 안에서 정차할 수 있는 속도로 주의운전하고, 운전관제는 신호 확인거리 등에 따라 주의·경계신호 현시 또는 운전중지 명령을 하여야 합니다.\n\n- **기관사**\n  1. 운전 중 안개 또는 눈보라를 만나면 신호의 확인거리 범위 안에서 정차할 수 있는 속도로 주의운전하여야 합니다",
+            "cited": [
+              1
+            ],
+            "reason": "기관사가 확인거리 내 정차 가능한 속도로 주의운전해야 한다는 내용은 근거 1에 있으나, 운전관제가 주의·경계신호를 현시하거나 운전중지 명령을 해야 한다는 내용은 근거 1에 없고 근거 2의 내용까지 포함되어 있어 cited_evidence 전체로는 claim이 뒷받침되지 않습니다."
+          }
+        ],
+        "uncited": []
+      }
+    },
+    {
+      "case": "weather_alert",
+      "question": "이상기후 경보의 종류와 열차 운전 규제는 어떻게 정하나요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 345,
+          "page": null,
+          "label": "운전취급규정 제345조",
+          "via_link": false
+        },
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 346,
+          "page": null,
+          "label": "운전취급규정 제346조",
+          "via_link": false
+        }
+      ],
+      "reference": "이상기후 경보의 종류는 주의를 요하는 예보, 열차운전에 지장이 예상되는 경보, 지장 또는 피해발생으로 계속 잔여운전이 위험한 비상경보로 구분 발령합니다. 운전관제는 재해 발생 또는 예상 시 운전속도 감속지시, 열차운행 일시중지 또는 운행취소 등의 운전정리를 시행하며, 안전을 최우선으로 하여 운전을 규제합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "이상기후 경보는 운전 지장 및 피해 발생 여부에 따라 **예보·경보·비상경보**로 구분하고, 운전관제가 그에 맞춰 운전 규제를 정합니다. [근거 1]\n\n1. **예보**: 열차 운전에 주의를 요하는 경우  \n2. **경보**: 열차 운전에 지장이 예상되는 경우  \n3. **비상경보**: 열차 운전에 지장이 있거나 피해가 발생하여 계속 잔여 운전이 위험한 경우  \n   ※ 규정상 혹한은 외기온도 **영하 15℃ 이하**입니다. [근거 1]\n\n관제센터장은 이상기후 또는 생화학물질에 대한 통보를 받으면 위 경보를 발령합니다. 다만 통신두절 등으로 관제센터장이 발령할 수 없을 때에는 해당 역장 또는 소장이 발령하고 관제센터장에게 보고합니다. [근거 3]\n\n천재지변·이상기후 등으로 재해가 발생했거나 발생이 예상될 때에는 운전관제가 **운전속도 감속 지시, 열차운행 일시중지 또는 운행취소** 등의 운전정리를 하여야 하며, 열차 또는 차량 운전에 위험이 발생하거나 발생할 우려가 있을 때에는 안전을 최우선으로 조치합니다. [근거 2]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 5,
+      "evidence_count": 5,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.396,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제345조",
+          "locator": {
+            "chunk": 67,
+            "article": "제345조"
+          },
+          "text_snippet": "제345조(경보구분) 이상기후 및 생화학물질에 대한 통보를 받았을 경우 운전관제는 다음 각 호의 경보를 발령한다.  1. 예 보：열차운전에 주의를 요하는 경우  2. 경 보：열차운"
+        },
+        {
+          "hop": 0,
+          "score": 0.4308,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제346조",
+          "locator": {
+            "chunk": 67,
+            "article": "제346조"
+          },
+          "text_snippet": "제346조(운전의 규제) ① 운전관제는 천재지변, 이상기후 또는 기타 사유로 재해가 발생되었거나 재해의 발생이 예상될 때에는 운전속도의 감속지시 열차운행 일시중지 또는 운행취소 등"
+        },
+        {
+          "hop": 0,
+          "score": 0.3931,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제344조",
+          "locator": {
+            "chunk": 67,
+            "article": "제344조"
+          },
+          "text_snippet": "제344조(경보발령) 관제센터장은 이상기후 또는 생화학물질에 대한 통보를 받았을 경우 제345조에 의한 경보를 발령하여야 한다. 다만, 통신두절 기타사정으로 관제센터장이 경보발령 "
+        },
+        {
+          "hop": 0,
+          "score": 0.3665,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제343조",
+          "locator": {
+            "chunk": 67,
+            "article": "제343조"
+          },
+          "text_snippet": "제343조(이상기후 또는 생화학물질 수보 및 통보) ① 이상기후에 대비하기 위하여 기상청에서 이상기후에 대한 예보가 있을 때 관제센터장은 매일 2회이상 시간을 지정하여 기상상태를 "
+        },
+        {
+          "hop": 0,
+          "score": 0.3381,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제360조",
+          "locator": {
+            "chunk": 71,
+            "article": "제360조"
+          },
+          "text_snippet": "제360조(조치 및 확인) 이상기후 경보발령이 있을 때는 다음 각 호에 의하여 조치를 취하여야 한다.  1. 사장은 이상기후 발령이 있을 때 그 상황에 적응하는 조치를 지시하고 별"
+        }
+      ],
+      "latency_seconds": 7.97,
+      "retrieval_latency_seconds": 1.6522,
+      "answer_latency_seconds": 4.9786,
+      "recall": 1.0,
+      "precision": 0.4,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.6821232883597359,
+      "answer_correctness": 0.8367237165057658,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 3878,
+        "completion_tokens": 603,
+        "total_tokens": 4481
+      },
+      "citation_check": {
+        "claims": 4,
+        "supported": 3,
+        "accuracy": 0.75,
+        "unsupported": [
+          {
+            "claim": "이상기후 경보는 운전 지장 및 피해 발생 여부에 따라 **예보·경보·비상경보**로 구분하고, 운전관제가 그에 맞춰 운전 규제를 정합니다",
+            "cited": [
+              1
+            ],
+            "reason": "제345조는 예보·경보·비상경보의 구분 기준을 제시하지만, 이를 ‘운전 지장 및 피해 발생 여부에 따라’ 구분한다고 명시하지 않으며, 운전관제가 그에 맞춰 운전 규제를 정한다는 내용도 해당 근거에 없습니다."
+          }
+        ],
+        "uncited": []
+      }
+    },
+    {
+      "case": "guide_door",
+      "question": "6호선 전동차 출입문 전체 열림불능 시 점검사항과 조치는 무엇인가요?",
+      "category": "graph",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 328,
+          "page": null,
+          "label": "운전취급규정 제328조",
+          "via_link": true
+        },
+        {
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "article": null,
+          "page": 48,
+          "label": "6호선 전동차고장조치 길라잡이-1.pptx 슬라이드 48",
+          "via_link": false
+        },
+        {
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "article": null,
+          "page": 50,
+          "label": "6호선 전동차고장조치 길라잡이-1.pptx 슬라이드 50",
+          "via_link": false
+        }
+      ],
+      "reference": "6호선 전동차 출입문 전체 열림불능 시 먼저 정위치 정차 미달·진과정차, Dwell Light 소등, ODL/ODR 미수신 여부를 확인합니다. 진과정차 시에는 운전모드 비상, 역전기 후진, 출입문 수/수로 정위치 조정운전을 시행합니다. 점검사항으로 전부Tc차 AP.CB1KPHL/R(1Km/h 계전기 전원) 차단 여부를 확인하여 차단 시 복귀하고, 1Km/h 계전기(CE.RL1KPHL/R)를 가볍게 두드려 보며, 전부Tc차 AP.CBDO4TC 차단 여부를 점검하여 차단 시 복귀합니다. 조치사항으로 ATC 정상 시에는 운전모드 수동 및 출입문 수/수 전환 후 측면 출입문열림버튼을 취급하고, ATC 고장 시에는 운전모드 비상 및 출입문 수/수 전환 후 측면 버튼을 취급합니다. 개방 불능 시 승객안내방송 후 운전관제에 보고하여 지시를 받으며, 후부Tc차에서 출입문 취급 후 회송 조치합니다(규정 제328조).",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "6호선 전동차 출입문 전체 열림불능 시에는 TCMS와 정위치·지상신호 상태를 확인한 후, 다음 순서로 조치합니다. [근거 1]\n\n**점검사항**\n\n- TCMS 화면에 차량 전체 출입문 닫힘이 현시되는지 확인합니다. [근거 1]\n- 출입문 모드가 수/수인지 확인합니다. [근거 1]\n- 정위치 미달 또는 진과정차 여부를 확인합니다. [근거 1]\n- Dwell Light 점등 여부와 지상신호 ODL/ODR 수신 여부를 확인합니다. [근거 1]\n\n**조치사항**\n\n1. 미달·진과정차 또는 지상신호 ODL/ODR 미수신 시 관제센터에 보고하고 지시에 따릅니다. [근거 1]\n2. 진과정차 시 운전모드를 비상으로 전환하고, 역전기를 후진으로 취급한 후 출입문모드를 수/수로 하여 정위치조정운전을 합니다. 이후 운전모드를 수동, 출입문모드를 수/수로 전환하고 CCTV를 확인한 후 승강장 쪽 측면 출입문열림버튼을 취급합니다. [근거 1]\n3. 전부Tc차에서 다음을 순서대로 확인·조치합니다.  \n   1) AP.CB1KPHL/R을 확인하고 차단되어 있으면 복귀합니다. [근거 1]  \n   2) 1Km/h계전기(CE.RL1KPHL/R)를 가볍게 두드려 봅니다. [근거 1]  \n   3) AP.CBDO4TC를 확인하고 차단되어 있으면 복귀합니다. [근거 1]\n4. ATC 정상 시 운전모드를 수동, 출입문모드를 수/수로 전환한 후 측면 출입문열림버튼을 취급합니다. [근거 1]\n5. ATC 고장 시 운전모드를 비상, 출입문모드를 수/수로 전환한 후 측면 출입문열림버튼을 취급합니다. [근거 1]\n6. 그래도 개방되지 않으면 승객안내방송을 시행하고 관제센터에 보고한 후 지시에 따릅니다. 이후 후부Tc차에서 출입문을 취급하고 회송합니다. [근거 1]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 4,
+      "evidence_count": 4,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.52,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 48 · 전체 출입문 열림불능 시",
+          "locator": {
+            "slide": 48
+          },
+          "text_snippet": "현 상  (1) TCMS 화면에 차량 전체출입문 닫힘 현시  조 치 사 항  ※ 미달, 진과정차 또는 지상신호(ODL / ODR) 미수신 시 관제센터 보고 후 지시에 따른다  - "
+        },
+        {
+          "hop": 0,
+          "score": 0.5174,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 49 · 전체 출입문 열림불능 시",
+          "locator": {
+            "slide": 49
+          },
+          "text_snippet": "1 ) 전체 출입문 열림불능 시 ̶ 점검사항  1054  DS1  CE.RLDIL  AP.CBDO1CC  차측등(좌측)  전자변  L1  L2  L3  L4  1033  L1출입문"
+        },
+        {
+          "hop": 0,
+          "score": 0.5078,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 50 · 전체 출입문 열림불능 시",
+          "locator": {
+            "slide": 50
+          },
+          "text_snippet": "원 인  (1) 전부Tc차 AP.CB1KPHL/R 차단 시(1Km/h계전기 전원 차단)   - 출입문 전자변 여자 불능 (2) 미달, 진과정차로 인해 출입문열림신호(ODL / OD"
+        },
+        {
+          "hop": 0,
+          "score": 0.4657,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 54 · 1개 출입문 열림불능 시",
+          "locator": {
+            "slide": 54
+          },
+          "text_snippet": "현 상  (1) TCMS 화면의 해당차 출입문 닫힘상태( ) 유지 (2) TCMS 화면 하단에 관련고장 현시  - 6210호 F/N 623. 3번 출입문 열리지 않음, 왼쪽  조 "
+        }
+      ],
+      "latency_seconds": 11.24,
+      "retrieval_latency_seconds": 1.4101,
+      "answer_latency_seconds": 8.419,
+      "recall": 0.6666666666666666,
+      "precision": 0.5,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.7039180890341347,
+      "linked_gold_recall": 0.0,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.7691072793434869,
+      "answer_correctness": 0.8615281733699041,
+      "faithfulness": 1.0,
+      "context_precision": 0.8333333332916666,
+      "context_recall": 0.9473684210526315,
+      "token_usage": {
+        "prompt_tokens": 5150,
+        "completion_tokens": 1120,
+        "total_tokens": 6270
+      },
+      "citation_check": {
+        "claims": 13,
+        "supported": 13,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      },
+      "graph_check": {
+        "base_evidence_count": 3,
+        "expanded_evidence_count": 3,
+        "base_link_count": 0,
+        "expanded_link_count": 0,
+        "expanded_hop_count": 0,
+        "added_evidence_count": 0,
+        "approved_links_only": true,
+        "used": false,
+        "chat_used": false,
+        "passed": false
+      }
+    },
+    {
+      "case": "guide_psd",
+      "question": "승강장안전문 PSD 무선 닫힘불능으로 수동닫힘을 여러 역에서 취급할 때 조치는 무엇인가요?",
+      "category": "graph",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 46,
+          "page": null,
+          "label": "운전취급규정 제46조",
+          "via_link": true
+        },
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 242,
+          "page": null,
+          "label": "운전취급규정 제242조",
+          "via_link": true
+        },
+        {
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "article": null,
+          "page": 28,
+          "label": "6호선 전동차고장조치 길라잡이-1.pptx 슬라이드 28",
+          "via_link": false
+        }
+      ],
+      "reference": "승강장안전문(PSD) 무선(RF) 닫힘불능 시 차상 PSD 무선(RF) 장치의 노선모드에서 운행 방향(상선 또는 하선)이 맞게 선택되었는지 확인 후 출입문 닫힘을 취급합니다. 복귀되지 않을 경우 차상 PSD 무선 장치 우측면 전원 스위치를 RESET한 후 출입문 닫힘을 취급합니다. 기관사조작반 수동닫힘을 2개역 이상 연속 취급할 때에는 운전관제에 상황을 보고하여 지시를 받고, 규정 제46조 및 제242조에 따라 역장에게 열차감시 및 출발지시전호를 의뢰하며, 승강장안전문 전체닫힘 상태를 철저히 확인한 후 출발합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "6호선에서 승강장안전문(PSD) 무선(RF) 닫힘불능으로 기관사조작반 수동닫힘을 2개 역 이상 취급할 때에는 노선모드에서 운행 방향(상선 또는 하선)을 선택한 후 출입문 닫힘을 취급합니다. 복귀불능이면 차상 PSD 무선(RF) 장치 우측면의 전원 S/W를 RESET한 후 출입문 닫힘을 취급합니다. [근거 1]\n\n승강장안전문 고장으로 열림·닫힘이 불능일 때에는 역장 또는 역장이 지정하는 자가 열차의 도착·출발 및 승객 상태를 감시해야 하며, 운전관제의 지시가 있으면 PSD 고장 조치 중인 기술직원이 대신할 수 있습니다. [근거 2]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 2,
+      "evidence_count": 2,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.6798,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 28",
+          "locator": {
+            "slide": 28
+          },
+          "text_snippet": "승강장안전문(PSD) 무선(RF) 닫힘불능으로 기관사조작반 수동닫힘 2개역 이상 취급 시  ① 승강장안전문 (PSD) 무선(RF) 닫힘불능 시 조치방법  27  ☞ PSD 무선(R"
+        },
+        {
+          "hop": 0,
+          "score": 0.2707,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제46조",
+          "locator": {
+            "chunk": 6,
+            "article": "제46조"
+          },
+          "text_snippet": "제46조(열차감시) ① 역장(역장이 지정하는 자를 포함한다.)은 다음 각 호에 해당하는 경우에는 열차의 도착, 출발 및 승객의 상태를 감시하여야 한다. 다만, 제3호의 경우로서 1"
+        }
+      ],
+      "latency_seconds": 8.02,
+      "retrieval_latency_seconds": 1.49,
+      "answer_latency_seconds": 5.2812,
+      "recall": 0.6666666666666666,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.7653606369886217,
+      "linked_gold_recall": 0.5,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.6989741426425312,
+      "answer_correctness": 0.6329421098950185,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 0.4,
+      "token_usage": {
+        "prompt_tokens": 3541,
+        "completion_tokens": 764,
+        "total_tokens": 4305
+      },
+      "citation_check": {
+        "claims": 2,
+        "supported": 2,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      },
+      "graph_check": {
+        "base_evidence_count": 1,
+        "expanded_evidence_count": 1,
+        "base_link_count": 0,
+        "expanded_link_count": 0,
+        "expanded_hop_count": 0,
+        "added_evidence_count": 0,
+        "approved_links_only": true,
+        "used": false,
+        "chat_used": false,
+        "passed": false
+      }
+    },
+    {
+      "case": "guide_pantograph",
+      "question": "6호선 전동차 판토그래프 상승불능 시 점검과 운전관제 보고는 어떻게 하나요?",
+      "category": "graph",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 35,
+          "page": null,
+          "label": "운전취급규정 제35조",
+          "via_link": false
+        },
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 74,
+          "page": null,
+          "label": "운전취급규정 제74조",
+          "via_link": true
+        },
+        {
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "article": null,
+          "page": 35,
+          "label": "6호선 전동차고장조치 길라잡이-1.pptx 슬라이드 35",
+          "via_link": false
+        },
+        {
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "article": null,
+          "page": 36,
+          "label": "6호선 전동차고장조치 길라잡이-1.pptx 슬라이드 36",
+          "via_link": false
+        }
+      ],
+      "reference": "6호선 전동차 판토그래프 상승불능 시 운전실 제어대 EPANDS(비상전원차단스위치) 상태 및 주간제어기 역행 이외 위치를 확인하고, 6100호차 운전실 AP.CBET(비상전원차단회로) 및 M1차(2호, 6호)의 AP.CBSUCC, AP.CBDO5CC, AP.CBLBC 차단기 차단 여부를 확인하여 차단 시 복귀합니다. 조치 후에도 판토상승 스위치 취급 시 상승불능이면 지체 없이 운전관제에 상황을 보고합니다(규정 제35조). 출고 시에는 차량교환을 요청하고, 본선 운행 중에는 최근 정거장까지 타행운행 후 정차하여 재기동 불능 시 관제 임시운전명령(규정 제74조)에 따라 구원운전 조치를 시행합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "6호선 전동차 판토그래프 상승불능 시에는 운전실과 M1차의 관련 차단기 상태를 점검하고, 조치 후에도 상승하지 않으면 관제센터에 보고해야 합니다. [근거 1]\n\n1. 운전실 제어대에서 EPANDS(VC.PBET) 상태를 확인하고, 주간제어기가 역행 이외의 위치에 있는지 확인합니다. [근거 1]\n\n2. 6100호차의 AP.CBET를 확인하여 차단되어 있으면 복귀합니다. [근거 1]\n\n3. M1차(2호, 6호)의 AP.CBSUCC, AP.CBDO5CC, AP.CBLBC를 확인하여 차단되어 있으면 복귀합니다. [근거 1]\n\n4. 위 조치 후 판토상승 스위치를 취급해도 상승하지 않으면 다음과 같이 합니다. [근거 1]  \n   - 출고 시에는 차량을 교환합니다. [근거 1]  \n   - 주박지에서는 관제센터에 보고하고 차량기동반 출동을 요청합니다. [근거 1]  \n   - 본선 운행 중에는 최근 정거장까지 타행운행하고, 정차 후 재기동이 불가능하면 구원운전을 조치합니다. [근거 1]\n\n5. 운행 중 전 차량 판토하강 상황에서는 최근 정거장까지 타력운행하고, 정차 후 판토상승 스위치를 취급합니다. 판토그래프가 계속 상승하지 않으면 관제센터에 보고하고 지시에 따라 구원조치합니다. 판토상승 스위치는 반드시 정차 후 취급합니다. [근거 2]\n\n이례상황이 발생하면 선 보고 후 조치하며, 승객안내방송을 수시로 실시합니다. [근거 3]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 4,
+      "evidence_count": 4,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.4621,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 36 · 판토그래프 상승불능 시",
+          "locator": {
+            "slide": 36
+          },
+          "text_snippet": "현 상  (1) 전차선 전압계 “0” V 현시 (2) 비상전원차단 표시등 점등(객실 AC형광등 소등) (3)TCMS화면에 판토하강, 보조전원장치(SIV) OFF 현시  원 인  ("
+        },
+        {
+          "hop": 0,
+          "score": 0.4019,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "location": "슬라이드 22 · 전 차량 역행불능 시",
+          "locator": {
+            "slide": 22
+          },
+          "text_snippet": "전 차량 역행불능 시 관련원인 및 조치 해설도  전 차량 역행 차단 발생  주간제어기 고장 시  ※ AP.CBSU1TC • 2TC  OFF ON (TC 리셋)  전 차량 VVVF "
+        },
+        {
+          "hop": 0,
+          "score": 0.3863,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 1",
+          "locator": {
+            "slide": 1
+          },
+          "text_snippet": "- 신규(전입) 기관사 교육용 - 6호선 전동차고장조치 길라잡이  ♣. 이례상황 발생 시 선 보고 후 조치(승객안내방송(인포3번) 수시 실시)  신내승무사업소"
+        },
+        {
+          "hop": 0,
+          "score": 0.3824,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "df60a06c-71bf-49cc-8b93-bde500b5436c",
+          "location": "제28조",
+          "locator": {
+            "document": true,
+            "chunk": 4,
+            "article": "제28조"
+          },
+          "text_snippet": "제28조(검수관제의 임무) 검수관제의 임무는 다음 각 호와 같다. <개정 2023.03.17.>  1. 전동차에 고장이 발생하였을 때 승무원에 대한 응급조치 기술지원 및 조치상태 "
+        }
+      ],
+      "latency_seconds": 7.32,
+      "retrieval_latency_seconds": 1.4551,
+      "answer_latency_seconds": 4.5905,
+      "recall": 0.25,
+      "precision": 0.25,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.3903800499921017,
+      "linked_gold_recall": 0.0,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.8102165165420967,
+      "answer_correctness": 0.7411575080771193,
+      "faithfulness": 1.0,
+      "context_precision": 0.99999999995,
+      "context_recall": 0.7777777777777778,
+      "token_usage": {
+        "prompt_tokens": 4140,
+        "completion_tokens": 702,
+        "total_tokens": 4842
+      },
+      "citation_check": {
+        "claims": 10,
+        "supported": 9,
+        "accuracy": 0.9,
+        "unsupported": [
+          {
+            "claim": "6호선 전동차 판토그래프 상승불능 시에는 운전실과 M1차의 관련 차단기 상태를 점검하고, 조치 후에도 상승하지 않으면 관제센터에 보고해야 합니다",
+            "cited": [
+              1
+            ],
+            "reason": "운전실과 M1차 관련 차단기 점검 및 조치 내용은 있으나, 조치 후에도 상승하지 않을 때 관제센터에 보고한다는 내용은 주박지 또는 특정 운행 조건에서만 제시되어 claim처럼 일반적으로 보고해야 한다고 하지는 않습니다."
+          }
+        ],
+        "uncited": []
+      },
+      "graph_check": {
+        "base_evidence_count": 2,
+        "expanded_evidence_count": 2,
+        "base_link_count": 0,
+        "expanded_link_count": 0,
+        "expanded_hop_count": 0,
+        "added_evidence_count": 0,
+        "approved_links_only": true,
+        "used": false,
+        "chat_used": false,
+        "passed": false
+      }
+    },
+    {
+      "case": "guide_emergency_brake",
+      "question": "6호선 전동차 비상제동 풀림불능 시 점검과 조치는 무엇인가요?",
+      "category": "graph",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 25,
+          "page": null,
+          "label": "운전취급규정 제25조",
+          "via_link": true
+        },
+        {
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "article": null,
+          "page": 3,
+          "label": "6호선 전동차고장조치 길라잡이-2.pptx 슬라이드 3",
+          "via_link": false
+        },
+        {
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "article": null,
+          "page": 5,
+          "label": "6호선 전동차고장조치 길라잡이-2.pptx 슬라이드 5",
+          "via_link": false
+        }
+      ],
+      "reference": "6호선 전동차 비상제동 풀림불능 시 우선 운전모드 수동 전환 후 제동7단에서 역행을 시도하고, 비상제동차단(EBCOS) 스위치 취급 후 역행 시도, 운전모드 비상 전환 후 역행 시도를 단계별로 시행합니다. 점검사항으로 MR 압력이 6.5 kg/㎠ 이하인 경우 MRPS OFF를 확인하고 주공기압축기(CM) 구동 상태 및 공기배관 누설·파열을 점검하며, 비상제동(EBS) 스위치 및 구원운전(ROS) 스위치 취급 상태를 확인하여 복귀합니다. 또한 전·후부Tc차 AP.CBEMBR 및 AP.CBSU1TC·2TC 차단기를 확인하여 복귀합니다. TC1·TC2 동시 고장 시에는 비상전원차단스위치(EPANDS)로 판토하강 후 약 5초 뒤 재기동을 시도하며, 최종 풀림불능 시 관제센터에 구원을 요청합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "6호선 전동차의 비상제동 풀림불능 시에는 운행 가능 조치를 우선 시행한 뒤 관련 압력·스위치·차단기·TC 상태를 점검하고, 해소되지 않으면 관제센터에 구원을 요청합니다. [근거 1]\n\n1. **우선 조치**\n   - 운전모드를 수동으로 전환한 후 주간제어기를 제동 7단으로 하고 역행을 시도합니다.\n   - 해소되지 않으면 비상제동차단(EBCOS) S/W를 취급한 후 역행을 시도하고, 이후 운전모드를 비상으로 전환하여 역행을 시도합니다. [근거 1]\n\n2. **MR 압력 점검**\n   - MR 압력이 **6.5 kg/㎠ 이하**이면 MRPS를 OFF로 합니다.\n   - 주공기압축기(CM) 구동을 확인하고, 정상 구동 중이면 주공기관 파열 및 공기라인 공기 누설 여부를 확인하여 조치합니다. [근거 1]\n\n3. **관련 스위치 점검**\n   - 비상제동(EBS) S/W 및 구원운전(ROS) S/W의 취급 상태를 확인한 후 복귀합니다. [근거 1]\n\n4. **관련 차단기 점검**\n   - 전·후부 Tc차의 AP.CBEMBR, AP.CBSU1TC·2TC를 확인하고, 차단되어 있으면 복귀합니다.\n   - AP.CBEMBR은 전·후부에 병렬 설치되어 있으므로 전·후부 Tc차가 모두 차단되어야 비상제동이 체결됩니다. [근거 1][근거 2]\n\n5. **TC1·TC2 동시 고장 시**\n   - 비상전원차단스위치(EPANDS)를 취급하여 판토를 하강시킵니다.\n   - 약 5초 후 재기동을 시도합니다. [근거 1]\n\n6. **조치 후에도 풀림불능인 경우**\n   - 관제센터에 구원을 요청한 후 재기동을 실시합니다. [근거 1]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 3,
+      "evidence_count": 3,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.4893,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "location": "슬라이드 3 · 비상제동 풀림불능 시",
+          "locator": {
+            "slide": 3
+          },
+          "text_snippet": "조 치 사 항  ♣ 우선조치(운행이 가능하게 조치하고 원인은 나중에 찾는다)  ▶ 운전모드 수동 전환 후 주간제어기 제동7단 후 역행 시도  → 비상제동차단(EBCOS) S/W 취"
+        },
+        {
+          "hop": 0,
+          "score": 0.5047,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "location": "슬라이드 2 · 비상제동 풀림불능 시",
+          "locator": {
+            "slide": 2
+          },
+          "text_snippet": "1 ) 비상제동 풀림불능 시 ̶ 점검사항  ⑥  ⑤  비상제동 풀림 제어 해설도  66  ※ AP.CBEMBR은 전•후부 병렬설치 되어  전•후부Tc차 모두 차단되어야 비상제동  "
+        },
+        {
+          "hop": 0,
+          "score": 0.3939,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "location": "슬라이드 5 · 비상제동 풀림불능 시",
+          "locator": {
+            "slide": 5
+          },
+          "text_snippet": "원 인  (1) 주간제어기 『비상제동(EB)』 위치 시 (2) 구원운전(VC.SWREO-ROS) S/W – 구원위치 시 (3) 비상제동(VC.PBEMBR-EBS) S/W 취급 시 "
+        }
+      ],
+      "latency_seconds": 9.59,
+      "retrieval_latency_seconds": 1.5592,
+      "answer_latency_seconds": 6.6976,
+      "recall": 0.6666666666666666,
+      "precision": 0.6666666666666666,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.7039180890341347,
+      "linked_gold_recall": 0.0,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.7883153072391558,
+      "answer_correctness": 0.722365283251884,
+      "faithfulness": 0.9375,
+      "context_precision": 0.8333333332916666,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 3878,
+        "completion_tokens": 1049,
+        "total_tokens": 4927
+      },
+      "citation_check": {
+        "claims": 7,
+        "supported": 7,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      },
+      "graph_check": {
+        "base_evidence_count": 3,
+        "expanded_evidence_count": 3,
+        "base_link_count": 0,
+        "expanded_link_count": 0,
+        "expanded_hop_count": 0,
+        "added_evidence_count": 0,
+        "approved_links_only": true,
+        "used": false,
+        "chat_used": false,
+        "passed": false
+      }
+    },
+    {
+      "case": "guide_atc",
+      "question": "6호선 전동차 ATC 장치 고장 시 운전과 회송 조치는 어떻게 하나요?",
+      "category": "graph",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 34,
+          "page": null,
+          "label": "운전취급규정 제34조",
+          "via_link": true
+        },
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 144,
+          "page": null,
+          "label": "운전취급규정 제144조",
+          "via_link": true
+        },
+        {
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "article": null,
+          "page": 46,
+          "label": "6호선 전동차고장조치 길라잡이-2.pptx 슬라이드 46",
+          "via_link": false
+        },
+        {
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "article": null,
+          "page": 47,
+          "label": "6호선 전동차고장조치 길라잡이-2.pptx 슬라이드 47",
+          "via_link": false
+        }
+      ],
+      "reference": "6호선 전동차 ATC 장치 고장 시 운전실 RESET S/W1·2 또는 ATC 제어차단기(AP.CBATC1·2)를 동시 차단 후 복귀하여 리셋을 시행합니다(출입문 개방 중일 때는 닫은 후 실시). ATC1 고장 시 ATC2로 자동 절체되지 않으면 S/W1 또는 AP.CBATC1을 차단합니다. 복귀불능 시 운전관제에 즉시 보고하고 관제 지시에 따라 지령식 운행(운전모드 비상, 출입문모드 수/수 전환)을 시행합니다. 규정 제144조에 따라 차상 ATC 고장으로 지령식을 시행하는 영업열차는 승객을 하차시키고 해당 역부터 회송 조치하며, 5~8호선에서는 차량기동반 또는 승무 지도요원이 동승하여 운전합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "6호선 전동차 ATC 장치 고장 시에는 우선 ATC 리셋을 실시하고, 복귀되지 않으면 관제센터 지시에 따라 지령식 운행을 하며, 계속운전에 지장이 있을 우려가 있으면 회송 등의 조치를 한다.\n\n1. **ATC 리셋**\n   - `RESET S/W1·2` 또는 `ATC 제어차단기(AP.CBATC1·2)`를 동시에 차단한 후 복귀한다.\n   - 승강장에서 출입문을 개방 중 ATC 고장이 발생했거나 ATC 리셋을 실시하는 경우에는 출입문을 닫은 후 실시한다.\n   - 리셋 후 약 30초가 지나면 ADU에 속도코드가 현시된다. [근거 1]\n\n2. **리셋 후에도 복귀되지 않는 경우**\n   - 관제센터에 보고하고, 관제센터의 지시에 따라 지령식 운행을 한다.\n   - 이때 운전모드는 비상, 출입문모드는 수/수로 전환한다. [근거 1]\n\n3. **회송 조치**\n   - 차량고장으로 계속운전에 지장을 초래할 염려가 있을 때에는 검수원의 출장 및 차량교환, 회송 또는 운행취소 조치를 한다. [근거 4]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 5,
+      "evidence_count": 5,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.4604,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "location": "슬라이드 47 · ATC 장치 고장 시",
+          "locator": {
+            "slide": 47
+          },
+          "text_snippet": "현 상  1) TCMS 화면에 고장메세지 현시 2) ADU 주 • 보조 ATC 고장 등 점등 3) 비상제동체결(주 • 보조 ATC 모두 고장 시) 및 표시등 점등 4) 공기압력계 "
+        },
+        {
+          "hop": 0,
+          "score": 0.4488,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "location": "슬라이드 80 (1부)",
+          "locator": {
+            "slide": 80,
+            "chunk": 0
+          },
+          "text_snippet": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법 F/N 101\u000b (132) | 제어 ATC 통신고장\u000b(비 제어 ATC 고장) | 1. ATC에 의한 FSB 체결 정차"
+        },
+        {
+          "hop": 0,
+          "score": 0.4437,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "location": "슬라이드 80 (2부)",
+          "locator": {
+            "slide": 80,
+            "chunk": 1
+          },
+          "text_snippet": "보조ATC로 자동절체 | 역전기를 재 취급 후 고장유지시 보조 ATC로 절체 수동운전 F/N 132 | ATC-속도센서 입력 고장 | 101번 참고 |  F/N 134\u000b (156)"
+        },
+        {
+          "hop": 0,
+          "score": 0.4114,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "df60a06c-71bf-49cc-8b93-bde500b5436c",
+          "location": "제54조",
+          "locator": {
+            "document": true,
+            "chunk": 9,
+            "article": "제54조"
+          },
+          "text_snippet": "제54조(차량고장에 대한 조치) 차량고장의 발생 통보가 있을 때의 조치 방법은 다음 각 호에 의한다.  1. 차량고장으로 정차 후 계속운전이 불가능하다고 판단될 때에는 후속 열차와"
+        },
+        {
+          "hop": 0,
+          "score": 0.4148,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "4116526b-b97e-48a2-b76a-2050eb838bdc",
+          "location": "「6」 부분",
+          "locator": {
+            "chunk": 35
+          },
+          "text_snippet": " 6  ATC개방시는 신호직원 승차하여 유도  기관사, 신호직원  제47조에 의거  7  운전속도 25km/h이하(건널선 20km/h이하)  기관사  8  #4 또는 #2입환신호기"
+        }
+      ],
+      "latency_seconds": 8.23,
+      "retrieval_latency_seconds": 1.6554,
+      "answer_latency_seconds": 5.0301,
+      "recall": 0.25,
+      "precision": 0.2,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.3903800499921017,
+      "linked_gold_recall": 0.0,
+      "special_rule_hit": false,
+      "answer_relevancy": 0.899221745434783,
+      "answer_correctness": 0.6924833515956367,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 0.6666666666666666,
+      "token_usage": {
+        "prompt_tokens": 7308,
+        "completion_tokens": 688,
+        "total_tokens": 7996
+      },
+      "citation_check": {
+        "claims": 3,
+        "supported": 2,
+        "accuracy": 0.6666666666666666,
+        "unsupported": [
+          {
+            "claim": "6호선 전동차 ATC 장치 고장 시에는 우선 ATC 리셋을 실시하고, 복귀되지 않으면 관제센터 지시에 따라 지령식 운행을 하며, 계속운전에 지장이 있을 우려가 있으면 회송 등의 조치를 한다.\n\n1. **ATC 리셋**\n   - `RESET S/W1·2` 또는 `ATC 제어차단기(AP.CBATC1·2)`를 동시에 차단한 후 복귀한다.\n   - 승강장에서 출입문을 개방 중 ATC 고장이 발생했거나 ATC 리셋을 실시하는 경우에는 출입문을 닫은 후 실시한다.\n   - 리셋 후 약 30초가 지나면 ADU에 속도코드가 현시된다",
+            "cited": [
+              1
+            ],
+            "reason": "ATC 리셋, 복귀불능 시 관제센터 보고 및 지령식 운행, 출입문을 닫은 후 리셋, 리셋 후 약 30초 뒤 속도코드 현시는 근거에 있다. 그러나 계속운전에 지장이 있을 우려가 있을 때 회송 등의 조치를 한다는 내용은 cited_evidence에 없다."
+          }
+        ],
+        "uncited": []
+      },
+      "graph_check": {
+        "base_evidence_count": 3,
+        "expanded_evidence_count": 3,
+        "base_link_count": 0,
+        "expanded_link_count": 0,
+        "expanded_hop_count": 0,
+        "added_evidence_count": 0,
+        "approved_links_only": true,
+        "used": false,
+        "chat_used": false,
+        "passed": false
+      }
+    },
+    {
+      "case": "graph_704_bus_failure",
+      "question": "6호선 전동차의 직류모선 704선 가압불능 시 재기동 절차와 전부Tc차 기동불능 상황의 보고 방법은 무엇인가요?",
+      "category": "graph",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "article": null,
+          "page": 32,
+          "label": "6호선 전동차고장조치 길라잡이-1.pptx 슬라이드 32",
+          "via_link": false
+        },
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 35,
+          "page": null,
+          "label": "운전취급규정 제35조",
+          "via_link": true
+        }
+      ],
+      "reference": "차량 또는 운전설비의 결함으로 열차운행에 지장이 염려될 때 승무원은 지체없이 운전관제에 보고하여야 합니다(제35조). 직류모선 704선 가압불능 시 역전기를 중립으로 약 5초 둔 뒤 재차 전·후진해 보고, 전·후부Tc차 AP.CBBCC를 확인하여 차단 시 복귀합니다. 복귀 후 반드시 재기동 또는 AP.CBSU1TC RESET(차단 후 복귀)을 시도합니다. 전부Tc차 기동불능 시 후부Tc차 기동을 시도하고, 불능이면 비상열차무선으로 관제센터에 보고하며 축전지 전압상태 및 차량기동반 출동을 요청합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "6호선 전동차의 직류모선 704선 가압불능 시에는 역전기를 중립에 둔 뒤 재기동하고, 전부Tc차가 기동불능이면 후부Tc차를 기동한 후에도 불능일 때 비상열차무선으로 관제센터에 보고합니다. [근거 1]\n\n1. 역전기를 중립에 두고 약 5초가 경과한 후 다시 전·후진으로 조작합니다. [근거 1]  \n2. 전·후부Tc차의 AP.CBBCC 차단 여부를 확인하고, 차단된 경우 복귀합니다. 복귀 후 반드시 재기동 또는 AP.CBSU1TC RESET(차단 후 복귀)을 시도합니다. [근거 1]  \n3. 전부Tc차가 기동불능이면 후부Tc차의 기동을 시도합니다. 후부Tc차도 기동불능이면 비상열차무선으로 관제센터에 보고하고, 축전지 전압상태와 차량기동반 출동 요청을 전달합니다. [근거 1]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 1,
+      "evidence_count": 1,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.5583,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 32 · 직류모선 704선 가압불능 시",
+          "locator": {
+            "slide": 32
+          },
+          "text_snippet": "현 상  (1) 역전기 전·후진 위치에서 전차선 및 축전지전압계 “0” V 현시 (2) TCMS 모니터 현시 불능 (3) 운전실 내 각종 표시등 소등 (4) ADU 무현시 및 열차"
+        }
+      ],
+      "latency_seconds": 6.8,
+      "retrieval_latency_seconds": 1.5523,
+      "answer_latency_seconds": 3.8894,
+      "recall": 0.5,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.6131471927654584,
+      "linked_gold_recall": 0.0,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.8264097489890289,
+      "answer_correctness": 0.8292701723527809,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 0.8571428571428571,
+      "token_usage": {
+        "prompt_tokens": 3212,
+        "completion_tokens": 513,
+        "total_tokens": 3725
+      },
+      "citation_check": {
+        "claims": 4,
+        "supported": 3,
+        "accuracy": 0.75,
+        "unsupported": [
+          {
+            "claim": "6호선 전동차의 직류모선 704선 가압불능 시에는 역전기를 중립에 둔 뒤 재기동하고, 전부Tc차가 기동불능이면 후부Tc차를 기동한 후에도 불능일 때 비상열차무선으로 관제센터에 보고합니다",
+            "cited": [
+              1
+            ],
+            "reason": "근거에는 역전기를 중립에 두고 약 5초 후 다시 전·후진 조작한다고 되어 있으나, 해당 단계에서 ‘재기동’한다고 되어 있지 않습니다. 재기동은 AP.CBBCC 복귀 후 조치로 제시되어 있어 주장된 순서와 다릅니다."
+          }
+        ],
+        "uncited": []
+      },
+      "graph_check": {
+        "base_evidence_count": 1,
+        "expanded_evidence_count": 1,
+        "base_link_count": 0,
+        "expanded_link_count": 0,
+        "expanded_hop_count": 0,
+        "added_evidence_count": 0,
+        "approved_links_only": true,
+        "used": false,
+        "chat_used": false,
+        "passed": false
+      }
+    },
+    {
+      "case": "graph_acm_start_failure",
+      "question": "M1차(2호, 6호) 보조공기압축기(ACM)가 구동불능이면 어떤 차단기와 접촉기를 확인하고, 복귀되지 않으면 어떻게 해야 하나요?",
+      "category": "graph",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "article": null,
+          "page": 34,
+          "label": "6호선 전동차고장조치 길라잡이-1.pptx 슬라이드 34",
+          "via_link": false
+        },
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 35,
+          "page": null,
+          "label": "운전취급규정 제35조",
+          "via_link": true
+        }
+      ],
+      "reference": "열차운행에 지장이 염려되는 차량 또는 운전설비 결함은 승무원이 지체없이 운전관제에 보고하여야 합니다(제35조). M1차(2호, 6호)의 AP.CBSUCC, AP.CBDO5CC, AP.CBACO를 확인하고 차단 시 복귀하며, ACM접촉기(BC.CRACO)의 동작(투입) 여부를 확인합니다. 복귀불능 시 관제센터 보고 및 차량기동반 출동을 요청합니다. 축전지저전압 시에는 전원소비 최소화를 위해 객실DC등을 소등하고 각종 서비스 NFB를 차단하며, 1개 UNIT AP.CBACO는 차단시켜 1개 UNIT 보조공기압축기(ACM)만 기동합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "M1차(2호·6호) 보조공기압축기(ACM)가 구동불능이면 다음 차단기와 접촉기를 확인하고, 조치 후에도 복귀되지 않으면 관제센터에 보고한 뒤 차량기동반 출동을 요청해야 합니다. [근거 1]\n\n1. **차단기 확인**\n   - `AP.CBSUCC`\n   - `AP.CBDO5CC`\n   - `AP.CBACO`  \n   차단되어 있으면 복귀합니다. [근거 1]\n\n2. **접촉기 확인**\n   - `ACM 접촉기(BC.CRACO)`의 동작(투입) 여부를 확인합니다. [근거 1]\n\n3. **복귀되지 않을 때**\n   - 관제센터에 보고하고 차량기동반 출동을 요청합니다. [근거 1]\n\n축전지 저전압 시에는 전원소비를 최소화하기 위해 객실 DC등을 소등하고 각종 서비스 NFB를 차단하며, `AP.CBACO`는 1개 UNIT만 차단하여 보조공기압축기(ACM) 1개 UNIT만 기동합니다. [근거 1]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 1,
+      "evidence_count": 1,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.5725,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 34 · 보조공기압축기(ACM) 구동불능 시",
+          "locator": {
+            "slide": 34
+          },
+          "text_snippet": "현 상  (1) 판토상승 S/W를 취급 하였으나 TCMS화면 M1차(2호, 6호) ACM“NG＂ (2) 비상전원차단 표시등(RED) 점등상태 유지 (3) M1차(2호, 6호차) A"
+        }
+      ],
+      "latency_seconds": 5.81,
+      "retrieval_latency_seconds": 1.176,
+      "answer_latency_seconds": 3.2034,
+      "recall": 0.5,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.6131471927654584,
+      "linked_gold_recall": 0.0,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.9125227419575456,
+      "answer_correctness": 0.9126704645016777,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 0.9,
+      "token_usage": {
+        "prompt_tokens": 3212,
+        "completion_tokens": 459,
+        "total_tokens": 3671
+      },
+      "citation_check": {
+        "claims": 5,
+        "supported": 5,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      },
+      "graph_check": {
+        "base_evidence_count": 1,
+        "expanded_evidence_count": 1,
+        "base_link_count": 0,
+        "expanded_link_count": 0,
+        "expanded_hop_count": 0,
+        "added_evidence_count": 0,
+        "approved_links_only": true,
+        "used": false,
+        "chat_used": false,
+        "passed": false
+      }
+    },
+    {
+      "case": "graph_single_cm_failure",
+      "question": "M2차(3호, 7호) 1개 UNIT 주공기압축기(CM) 구동불능 시 과열 기준과 차단기 확인, 운행 조치는 무엇인가요?",
+      "category": "graph",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "article": null,
+          "page": 40,
+          "label": "6호선 전동차고장조치 길라잡이-1.pptx 슬라이드 40",
+          "via_link": false
+        },
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 35,
+          "page": null,
+          "label": "운전취급규정 제35조",
+          "via_link": true
+        }
+      ],
+      "reference": "열차운행에 지장이 염려되는 차량 또는 운전설비 결함은 승무원이 지체없이 운전관제에 보고하여야 합니다(제35조). M2차(3호, 7호)의 AP.CBSUCC, AP.CBDO5CC, AP.CBMCMC, AP.CBMC를 확인하여 차단 시 복귀합니다. 주공기압축기(CM)가 오일온도 115 °C 이상으로 과열된 경우 100 °C 이하가 되면 자동 구동됩니다. 조치 후 1개 UNIT 주공기압축기(CM)가 계속 구동불능이면 관제센터에 보고하고 MR 압력을 확인하며 차량교환역까지 운행합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "M2차(3호·7호) 1개 UNIT 주공기압축기(CM) 구동불능 시, 과열 기준은 오일온도 115°C 이상이며 관련 차단기를 확인·복귀한 뒤에도 구동불능이면 관제센터 보고 후 MR 압력을 확인하며 차량교환역까지 운행합니다. [근거 1]\n\n- **과열 기준:** 주공기압축기(CM)는 오일온도 **115°C 이상**이면 과열로 판단하며, 오일온도가 **100°C 이하가 되면 자동 구동**됩니다. [근거 1]\n- **차단기 확인:** M2차(3호·7호) 관련 차단기를 확인하고, 차단되어 있으면 복귀합니다. 확인 대상은 다음과 같습니다. [근거 1]  \n  ① **AP.CBSUCC**: CC전원  \n  ② **AP.CBDO5CC**: CMG ON신호  \n  ③ **AP.CBMCMC**: CMSB제어전원  \n  ④ **AP.CBMC**: CM기동전원\n- **운행 조치:** 위 조치 후에도 1개 UNIT 주공기압축기(CM)가 구동불능이면 **관제센터에 보고한 후 MR 압력을 확인하며 차량교환역까지 운행**합니다. [근거 1]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 1,
+      "evidence_count": 1,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.7535,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 40 · 1개 UNIT 주공기압축기(CM) 구동불능 시",
+          "locator": {
+            "slide": 40
+          },
+          "text_snippet": "현 상  (1) TCMS 일반화면의 하단 메시지란에 M2차(3호, 7호) 해당차 주공기압축기(CM) 고장 현시  - 1개 UNIT 구동불능시에도 M2차(3호, 7호) 주공기압축기("
+        }
+      ],
+      "latency_seconds": 7.17,
+      "retrieval_latency_seconds": 1.3379,
+      "answer_latency_seconds": 4.4752,
+      "recall": 0.5,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.6131471927654584,
+      "linked_gold_recall": 0.0,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.9120160100665746,
+      "answer_correctness": 0.8713016352389553,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 0.75,
+      "token_usage": {
+        "prompt_tokens": 3255,
+        "completion_tokens": 656,
+        "total_tokens": 3911
+      },
+      "citation_check": {
+        "claims": 4,
+        "supported": 4,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      },
+      "graph_check": {
+        "base_evidence_count": 1,
+        "expanded_evidence_count": 1,
+        "base_link_count": 0,
+        "expanded_link_count": 0,
+        "expanded_hop_count": 0,
+        "added_evidence_count": 0,
+        "approved_links_only": true,
+        "used": false,
+        "chat_used": false,
+        "passed": false
+      }
+    },
+    {
+      "case": "graph_siv_start_failure",
+      "question": "보조전원장치(SIV) 기동불능 때 관제 보고 후 연장급전 여부에 따라 어떤 순서로 조치하나요?",
+      "category": "graph",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "article": null,
+          "page": 42,
+          "label": "6호선 전동차고장조치 길라잡이-1.pptx 슬라이드 42",
+          "via_link": false
+        },
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 35,
+          "page": null,
+          "label": "운전취급규정 제35조",
+          "via_link": true
+        }
+      ],
+      "reference": "열차운행에 지장이 염려되는 차량 또는 운전설비 결함은 승무원이 지체없이 운전관제에 보고하여야 합니다(제35조). SIV 기동불능 시 관제센터 보고 후 차량기동반을 요청하고 TCMS 화면으로 연장급전 상태를 확인합니다. 불능이면 안내방송을 실시합니다. 연장급전 불능 시 고장 Tc차의 AP.CBSIVC를 차단하며, 후부 UNIT인 경우 차량기동반에 요청합니다. 연장급전은 약 2분 10초가 소요되며 부하감소 순서는 송풍기 OFF, 난방기 2/3, 냉방 1/2, 객실등 및 안내표시기 1/2 OFF입니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "보조전원장치(SIV) 기동불능 시에는 관제센터에 보고한 후 차량기동반을 요청하고, 연장급전 가능 여부를 확인한 뒤 다음 순서로 조치합니다. [근거 1]\n\n1. **연장급전 상태 확인**: TCMS 화면으로 연장급전 상태를 확인합니다. 연장급전이 불능이면 안내방송을 시행합니다. [근거 1]\n2. **연장급전 불능 시**: 고장 Tc차의 **AP.CBSIVC를 차단**합니다. 후부 UNIT인 경우에는 차량기동반에 요청합니다. [근거 1]\n3. **연장급전 및 부하감소 순서**: 연장급전 완료에는 약 2분 10초가 소요되며, 송풍기 OFF → 난방기 2/3 → 냉방 1/2 → 객실등 및 안내표시기 1/2 OFF 순으로 시행합니다. [근거 1]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 1,
+      "evidence_count": 1,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.5711,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 42 · 보조전원장치(SIV) 기동불능 시",
+          "locator": {
+            "slide": 42
+          },
+          "text_snippet": "현 상  (1) TCMS 화면에 “SIV 기동고장” 메시지 현시 → 판토상승 시 (2) TCMS 화면에 “SIV 차단“ 현시 (3) TCMS 화면 보조전원장치(SIV)에 『OFF』"
+        }
+      ],
+      "latency_seconds": 6.4,
+      "retrieval_latency_seconds": 1.3339,
+      "answer_latency_seconds": 3.7986,
+      "recall": 0.5,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.6131471927654584,
+      "linked_gold_recall": 0.0,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.8027926320911098,
+      "answer_correctness": 0.8665971447905256,
+      "faithfulness": 0.8333333333333334,
+      "context_precision": 0.9999999999,
+      "context_recall": 0.9090909090909091,
+      "token_usage": {
+        "prompt_tokens": 3145,
+        "completion_tokens": 535,
+        "total_tokens": 3680
+      },
+      "citation_check": {
+        "claims": 4,
+        "supported": 4,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      },
+      "graph_check": {
+        "base_evidence_count": 1,
+        "expanded_evidence_count": 1,
+        "base_link_count": 0,
+        "expanded_link_count": 0,
+        "expanded_hop_count": 0,
+        "added_evidence_count": 0,
+        "approved_links_only": true,
+        "used": false,
+        "chat_used": false,
+        "passed": false
+      }
+    },
+    {
+      "case": "graph_master_controller_failure",
+      "question": "정거장 도중에 정차한 열차의 주간제어기 출력전압 이상이 RESET으로 복구되지 않아 구원운전할 때 후부Tc차 운전과 구원열차 도착까지의 이동 제한은 무엇인가요?",
+      "category": "graph",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "article": null,
+          "page": 44,
+          "label": "6호선 전동차고장조치 길라잡이-1.pptx 슬라이드 44",
+          "via_link": false
+        },
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 315,
+          "page": null,
+          "label": "운전취급규정 제315조",
+          "via_link": true
+        }
+      ],
+      "reference": "주간제어기 출력전압 이상 시 관제센터에 보고한 후 AP.CBSU1TC•2TC RESET(동시 차단 후 복귀)을 시도합니다. 복귀불능 시 후부Tc차 자력운전(후부운전실 밀기운전, 전부운전실 감시자 승차) 또는 구원운전(고장차의 주간제어기 불량으로 구원차 운전실에서 밀기운전)을 합니다. 정거장 도중에 정차한 열차가 구원을 요구한 경우 제315조에 따라 구원열차가 도착할 때까지 그 위치를 이동할 수 없습니다. 다만 사고 증대의 염려 또는 응급작업상 필요가 있으면 예외이며, 이동 시 기관사 또는 차장은 그 사유를 운전관제에 급보하고 상당거리를 이동시켰을 때는 방호를 이동시키는 동시에 제1종 방호를 하여야 합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "주간제어기 출력전압 이상이 RESET으로 복구되지 않으면 후부Tc차 자력운전 또는 구원운전을 시행하며, 후부Tc차 자력운전은 후부운전실에서 밀기운전하고 전부운전실에 감시자가 승차하는 방식입니다. [근거 1]\n\n구원을 요구한 후에는 구원열차가 도착할 때까지 고장열차를 그 위치에서 이동할 수 없습니다. 다만 사고 증대의 염려가 있거나 응급작업상 필요하다고 인정된 경우에는 예외로 이동할 수 있습니다. [근거 2][근거 1]\n\n예외적으로 이동할 때에는 기관사 또는 차장이 운전관제에 그 사유를 급보해야 하며, 상당거리를 이동시켰을 때는 이동 방향으로 방호를 이동시키는 동시에 제1종 방호를 해야 합니다. [근거 2]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 2,
+      "evidence_count": 2,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.4616,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 44 · 주간제어기 고장 시",
+          "locator": {
+            "slide": 44
+          },
+          "text_snippet": "현 상  (1) 주간제어기가 P(역행), N(중립), B(제동) 위치에서 차가 움직이지 않는다. (2) TCMS 화면에 “주간제어기 출력 또는 입력 이상“ 현시  원 인  (1) "
+        },
+        {
+          "hop": 0,
+          "score": 0.4051,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제315조",
+          "locator": {
+            "chunk": 62,
+            "article": "제315조"
+          },
+          "text_snippet": "제315조(구원열차를 요구한 경우의 조치) ① 고장으로 인하여 정거장 도중에 정차한 열차 또는 차량이 구원을 요구할 때에는 다음 각 호의 1에 의한다.  1. 후속열차가 있을 때에"
+        }
+      ],
+      "latency_seconds": 7.88,
+      "retrieval_latency_seconds": 1.3406,
+      "answer_latency_seconds": 5.0643,
+      "recall": 1.0,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0,
+      "linked_gold_recall": 1.0,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.7759572196810881,
+      "answer_correctness": 0.8460814285559511,
+      "faithfulness": 1.0,
+      "context_precision": 0.49999999995,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 3801,
+        "completion_tokens": 688,
+        "total_tokens": 4489
+      },
+      "citation_check": {
+        "claims": 3,
+        "supported": 3,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      },
+      "graph_check": {
+        "base_evidence_count": 3,
+        "expanded_evidence_count": 3,
+        "base_link_count": 0,
+        "expanded_link_count": 0,
+        "expanded_hop_count": 0,
+        "added_evidence_count": 0,
+        "approved_links_only": true,
+        "used": false,
+        "chat_used": false,
+        "passed": false
+      }
+    },
+    {
+      "case": "graph_all_cm_failure",
+      "question": "전체 차량의 주공기압축기(CM) 구동불능으로 정거장 도중에 정차해 구원을 요청했을 때 MR 압력 기준과 운행 조치, 열차 이동 조건은 무엇인가요?",
+      "category": "graph",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "article": null,
+          "page": 38,
+          "label": "6호선 전동차고장조치 길라잡이-1.pptx 슬라이드 38",
+          "via_link": false
+        },
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 315,
+          "page": null,
+          "label": "운전취급규정 제315조",
+          "via_link": true
+        }
+      ],
+      "reference": "TCMS 일반화면에서 M2차(3호, 7호) 주공기압축기(CM)가 모두 OFF이고 MR 압력이 8.0 kg/㎠ 이하로 떨어질 수 있으며, 6.5 kg/㎠ 이하에서는 비상제동, 3.5 kg/㎠ 이하에서는 주차제동이 체결됩니다. 조치 후에도 구동불능이면 관제센터 보고 및 지시에 따라 승객하차 후 구원운전을 합니다. 단거리이면 운전모드를 수동 전환하여 가능한 타력으로 종착역 또는 대피선까지 자력운전하고, 가까운 곳에 유치선이 없으면 신속히 구원을 요청합니다. 제315조에 따라 구원을 요구한 열차는 구원열차 도착 전까지 위치를 이동할 수 없습니다. 다만 사고 증대 염려 또는 응급작업상 필요가 있으면 예외입니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "전체 차량의 주공기압축기(CM) 구동불능으로 정거장 도중 정차 후 구원을 요청한 경우, MR 압력은 8.0kg/㎠ 이하로 떨어지며, 6.5kg/㎠ 이하에서는 비상제동, 3.5kg/㎠ 이하에서는 주차제동이 체결됩니다. [근거 1]\n\n관련 차단기 확인·복귀 등 조치 후에도 구동불능이면 관제센터에 보고하고 지시에 따라 승객 하차 후 구원운전 조치를 합니다. 운전모드를 수동으로 전환하여 단거리인 경우 가능한 타력으로 종착역 또는 대피선까지 자력운전할 수 있으며, 가까운 곳에 유치선이 없으면 신속히 구원을 요청합니다. [근거 1]\n\n구원을 요청한 후에는 구원열차가 도착할 때까지 고장열차를 이동할 수 없습니다. 다만 사고 증대의 염려가 있거나 응급작업상 필요하다고 인정되는 경우에는 예외적으로 이동할 수 있으며, 이때 기관사 또는 차장은 운전관제에 그 사유를 급보해야 합니다. [근거 2]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 2,
+      "evidence_count": 2,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.5435,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 38 · 전체 차량 주공기압축기(CM) 구동불능 시",
+          "locator": {
+            "slide": 38
+          },
+          "text_snippet": "현 상  (1) TCMS 일반화면의 M2차(3호, 7호) 주공기압축기(CM) 모두 OFF 현시 (2) MR 압력이 8.0 kg/㎠ 이하로 떨어짐   - 6.5 kg/㎠ 이하 시 비"
+        },
+        {
+          "hop": 0,
+          "score": 0.3942,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제315조",
+          "locator": {
+            "chunk": 62,
+            "article": "제315조"
+          },
+          "text_snippet": "제315조(구원열차를 요구한 경우의 조치) ① 고장으로 인하여 정거장 도중에 정차한 열차 또는 차량이 구원을 요구할 때에는 다음 각 호의 1에 의한다.  1. 후속열차가 있을 때에"
+        }
+      ],
+      "latency_seconds": 8.49,
+      "retrieval_latency_seconds": 1.565,
+      "answer_latency_seconds": 5.3829,
+      "recall": 1.0,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0,
+      "linked_gold_recall": 1.0,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.8146201130288276,
+      "answer_correctness": 0.8719082140076008,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 3871,
+        "completion_tokens": 705,
+        "total_tokens": 4576
+      },
+      "citation_check": {
+        "claims": 3,
+        "supported": 3,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      },
+      "graph_check": {
+        "base_evidence_count": 2,
+        "expanded_evidence_count": 2,
+        "base_link_count": 0,
+        "expanded_link_count": 0,
+        "expanded_hop_count": 0,
+        "added_evidence_count": 0,
+        "approved_links_only": true,
+        "used": false,
+        "chat_used": false,
+        "passed": false
+      }
+    },
+    {
+      "case": "graph_single_door_open_failure",
+      "question": "6호선에서 한 개 출입문 열림불능일 때 현장 점검과 잠금·안전막·감시자·차량교환역 운행은 어떻게 하며, 제328조는 어떤 일반 조치를 정하나요?",
+      "category": "graph",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "article": null,
+          "page": 54,
+          "label": "6호선 전동차고장조치 길라잡이-1.pptx 슬라이드 54",
+          "via_link": false
+        },
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 328,
+          "page": null,
+          "label": "운전취급규정 제328조",
+          "via_link": true
+        }
+      ],
+      "reference": "제328조는 출입문 고장 시 운전관제 보고, 안내방송 및 정상작동을 위한 응급조치를 정하고, 1개 이상 고장으로 정상작동이 불가하면 관제 지시에 따른 회송을 규정합니다. 길라잡이는 전체 열림·닫힘을 수회 시행한 뒤 관제센터 보고 및 승객안내방송을 하고 인포3을 취급하도록 합니다. 미개방 출입문 위치를 확인·메모하고 안전막을 휴대해 현장 확인합니다. 열림불능 시 미개방 출입문을 잠그고 출입문안전막 설치 후 DSBS S/W 취급 및 감시자(역직원) 승차, 관제센터 보고 및 승객안내방송을 하고 관제 지시에 따라 차량교환역까지 운행합니다. 길라잡이는 2개 이상 열림불능이면 관제보고 및 지시에 따라 승객하차 및 회송조치한다고 구분합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "6호선에서 한 개 출입문이 열림불능이면 현장 점검 후 해당 출입문을 잠그고 출입문안전막을 설치하며, 출입문바이패스(DSBS) 스위치를 취급하고 감시자(역직원)를 승차시켜 관제센터 지시에 따라 차량교환역까지 운행한다. [근거 1]\n\n- 출입문 전체 열림·닫힘을 수회 시행한 후 관제센터에 보고하고 승객안내방송을 시행한 뒤 인포3을 취급한다. TCMS 화면에서 미개방 출입문 위치를 확인·메모하고 출입문안전막을 휴대하여 현장을 확인한다. [근거 1]\n- 현장에서는 출입문 개별콕크의 공기 누설 또는 개방 여부, 출입문 포켓 내부의 이물질, 출입문 벨트 간섭·절손, 도어엔진·전자변의 공기 누설, 출입문 전자변 수동레버 및 바이패스(DSBS) 스위치의 동작 상태를 확인한다. 1Km/h계전기(CE.RL1KPHL/R) 접점 불량이면 가볍게 두드려 본다. [근거 1]\n- 개방불능이면 미개방 출입문을 잠가 운행 중 열림을 방지하고 출입문안전막을 설치한 후 출입문바이패스(DSBS) 스위치를 취급하며 감시자(역직원)를 승차시킨다. [근거 1]\n- 관제센터에 보고하고 차량기동반 출동을 요청하며, 좌·우 정상 출입문을 이용하도록 승객안내방송을 시행한다. 이후 관제센터 지시에 따라 차량교환역까지 운행한다. [근거 1]\n\n운전취급규정 제328조 제1항은 열차 운전 중 출입문 고장이 발생하면 운전관제에 보고하고, 안내방송과 출입문 정상작동을 위한 응급조치를 시행하도록 정한다. [근거 2]\n\n운전취급규정 제328조 제1항제3호는 출입문 1개 이상이 고장 나 정상작동이 불가능하면 운전관제에 보고하고 지시에 따라 회송하도록 하며, 마지막 열차인 경우 전동차승무원업무예규 제85조의 조치 후 차량교환역까지 운행할 수 있도록 정한다. [근거 2]\n\n운전취급규정 제328조 제1항제4호는 운전관제가 해당 열차를 회송조치하고, 출입문안전막(출입문보호막)을 설치한 상태로 운행하는 열차의 차량교환을 위해 조치하도록 정한다. [근거 2]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 2,
+      "evidence_count": 2,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.5103,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 54 · 1개 출입문 열림불능 시",
+          "locator": {
+            "slide": 54
+          },
+          "text_snippet": "현 상  (1) TCMS 화면의 해당차 출입문 닫힘상태( ) 유지 (2) TCMS 화면 하단에 관련고장 현시  - 6210호 F/N 623. 3번 출입문 열리지 않음, 왼쪽  조 "
+        },
+        {
+          "hop": 0,
+          "score": 0.4537,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제328조",
+          "locator": {
+            "chunk": 64,
+            "article": "제328조"
+          },
+          "text_snippet": "제328조(열차의 출입문 고장인 경우) ① 열차운전 중 출입문 고장이 발생 되었을 경우 운전관제에 보고하고 다음 각 호의 취급을 하여야 한다.  1. 안내방송을 실시한다.  2. "
+        }
+      ],
+      "latency_seconds": 10.64,
+      "retrieval_latency_seconds": 1.5961,
+      "answer_latency_seconds": 7.4084,
+      "recall": 1.0,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0,
+      "linked_gold_recall": 1.0,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.7572272782051083,
+      "answer_correctness": 0.6836074046458673,
+      "faithfulness": 1.0,
+      "context_precision": 0.99999999995,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 3723,
+        "completion_tokens": 1211,
+        "total_tokens": 4934
+      },
+      "citation_check": {
+        "claims": 8,
+        "supported": 8,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      },
+      "graph_check": {
+        "base_evidence_count": 2,
+        "expanded_evidence_count": 2,
+        "base_link_count": 0,
+        "expanded_link_count": 0,
+        "expanded_hop_count": 0,
+        "added_evidence_count": 0,
+        "approved_links_only": true,
+        "used": false,
+        "chat_used": false,
+        "passed": false
+      }
+    },
+    {
+      "case": "graph_all_doors_close_failure",
+      "question": "전체 출입문 닫힘불능으로 출입문대표등이 소등되면 닫힘 제어 순서와 계속 불능일 때의 회송 조치는 무엇인가요?",
+      "category": "graph",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "article": null,
+          "page": 58,
+          "label": "6호선 전동차고장조치 길라잡이-1.pptx 슬라이드 58",
+          "via_link": false
+        },
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 328,
+          "page": null,
+          "label": "운전취급규정 제328조",
+          "via_link": true
+        }
+      ],
+      "reference": "제328조에 따라 열차운전 중 출입문 고장이 발생하면 운전관제에 보고하고 안내방송 및 응급조치를 하며, 1개 이상 고장으로 정상작동이 불가하면 관제 지시에 따라 회송합니다. 길라잡이의 전체 출입문 닫힘 제어는 출입문닫힘 S/W → TC → CC(열림출력 차단) → 전자변 소자 → 출입문 닫힘 순입니다. Tc차 AP.CB1KPHL/R를 차단하고 출입문모드 자/자로 전환한 뒤 15초 후 전체 출입문 닫힘상태를 확인합니다. 그래도 닫힘불능이고 출입문대표등이 소등되면 관제센터 보고 및 지시에 따라 승객하차 후 전체출입문바이패스(ADBP) S/W를 취급하고 회송합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "전체 출입문 닫힘불능으로 출입문대표등이 소등되면, 출입문닫힘 S/W에서 TC를 거쳐 CC의 열림출력을 차단하고 전자변을 소자시켜 출입문을 닫습니다. [근거 1]\n\n길라잡이에 따르면 닫힘 제어 순서는 다음과 같습니다.\n\n1. 출입문닫힘 S/W를 취급합니다.\n2. TC를 거칩니다.\n3. CC에서 열림출력을 차단합니다.\n4. 전자변을 소자합니다.\n5. 출입문이 닫힙니다. [근거 1]\n\n그래도 닫힘불능이고 출입문대표등이 소등된 경우에는 다음과 같이 조치합니다.\n\n1. TC차의 `AP.CB1KPHL/R`을 차단하여 모든 출입문 전자변 공급전원을 차단합니다.\n2. 출입문모드를 자/자로 전환하고 15초 후 전체 출입문 닫힘상태를 확인합니다.\n3. 위 조치 후에도 닫힘불능이면 관제센터에 보고하고, 지시에 따라 승객을 하차시킨 후 전체출입문바이패스(ADBP) S/W를 취급하여 회송 조치합니다. [근거 1]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 1,
+      "evidence_count": 1,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.5196,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 58 · 전체 출입문 닫힘불능 시",
+          "locator": {
+            "slide": 58
+          },
+          "text_snippet": "원 인  (1) 출입문 열림 S/W(VC.PBDO) 고착 시 (2) 출입문 재개방 S/W 고착 시 (3) 출입문모드 자/자 위치에서 출입문열림 신호가 계속 수신될 때  조 치 사 "
+        }
+      ],
+      "latency_seconds": 6.27,
+      "retrieval_latency_seconds": 1.2991,
+      "answer_latency_seconds": 3.8939,
+      "recall": 0.5,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.6131471927654584,
+      "linked_gold_recall": 0.0,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.8263754278706568,
+      "answer_correctness": 0.7769390055865337,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 0.7272727272727273,
+      "token_usage": {
+        "prompt_tokens": 3129,
+        "completion_tokens": 541,
+        "total_tokens": 3670
+      },
+      "citation_check": {
+        "claims": 3,
+        "supported": 3,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      },
+      "graph_check": {
+        "base_evidence_count": 1,
+        "expanded_evidence_count": 1,
+        "base_link_count": 0,
+        "expanded_link_count": 0,
+        "expanded_hop_count": 0,
+        "added_evidence_count": 0,
+        "approved_links_only": true,
+        "used": false,
+        "chat_used": false,
+        "passed": false
+      }
+    },
+    {
+      "case": "graph_one_car_doors_close_failure",
+      "question": "한 량의 출입문 닫힘불능이 발생하면 해당차와 인접차를 어떻게 RESET하고, 계속 불능일 때 어떤 회송 조치를 하나요?",
+      "category": "graph",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "article": null,
+          "page": 60,
+          "label": "6호선 전동차고장조치 길라잡이-1.pptx 슬라이드 60",
+          "via_link": false
+        },
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 328,
+          "page": null,
+          "label": "운전취급규정 제328조",
+          "via_link": true
+        }
+      ],
+      "reference": "제328조는 열차운전 중 출입문 고장 시 관제 보고, 안내방송 및 응급조치를 하고, 1개 이상 고장으로 정상작동이 불가하면 관제 지시에 따라 회송하도록 합니다. 길라잡이는 출입문이 열림상태에서 해당차 또는 인접차 CC 고장으로 닫힘제어가 불능이면 해당차와 인접차 2량의 CC를 RESET(AP.CBSUCC 차단 후 복귀)하도록 합니다. 해당차 출입문 대표콕크의 공기누설 및 개방을 확인하고, 닫힘불능이면 관제센터 보고 및 지시에 따라 승객하차 후 회송합니다. 이때 해당차 DSBS S/W(4개), 인접차 AP.CBDO1CC(좌측) 또는 2CC(우측), 운전실 전체출입문바이패스(ADBP) S/W를 취급합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "한 량의 출입문 닫힘불능 시 해당차와 인접차 2량의 CC를 RESET하고, 계속 닫힘불능이면 관제센터 보고 및 지시에 따라 승객하차 후 회송조치합니다. [근거 1]\n\n1. 해당차와 인접차 2량의 CC를 RESET합니다.  \n   - AP.CBSUCC(CC전원공급기)를 차단한 후 복귀합니다. [근거 1]\n\n2. 해당차 차내 출입문 대표콕크의 공기 누설 및 개방 여부를 확인하고, 개방 시 복귀합니다. [근거 1]\n\n3. 해당차 출입문이 계속 닫힘불능이면 관제센터에 보고하고, 지시에 따라 승객하차 후 회송조치합니다. 회송 시 다음 스위치를 취급합니다. [근거 1]\n   - 해당차 출입문바이패스(DSBS) S/W 4개\n   - 인접차 AP.CBDO1CC(좌측) 또는 2CC(우측) 차단\n   - 운전실 전체출입문바이패스(ADBP) S/W 취급",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 1,
+      "evidence_count": 1,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.542,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 60 · 1량 출입문 닫힘불능 시",
+          "locator": {
+            "slide": 60
+          },
+          "text_snippet": "5 ) 1량 출입문 닫힘불능 시 ̶ 길라잡이  현 상  (1) 출입문대표등 소등 (2) TCMS에 해당차 출입문 열림표시 및 고장내용 현시  - CC고장 또는 통신고장시는 여닫힘 "
+        }
+      ],
+      "latency_seconds": 6.8,
+      "retrieval_latency_seconds": 2.2227,
+      "answer_latency_seconds": 3.2106,
+      "recall": 0.5,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.6131471927654584,
+      "linked_gold_recall": 0.0,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.7099618554560143,
+      "answer_correctness": 0.7538924023045852,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 0.8,
+      "token_usage": {
+        "prompt_tokens": 3210,
+        "completion_tokens": 466,
+        "total_tokens": 3676
+      },
+      "citation_check": {
+        "claims": 4,
+        "supported": 4,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": [
+          "해당차 출입문바이패스(DSBS) S/W 4개\n   - 인접차 AP.CBDO1CC(좌측) 또는 2CC(우측) 차단\n   - 운전실 전체출입문바이패스(ADBP) S/W 취급"
+        ]
+      },
+      "graph_check": {
+        "base_evidence_count": 1,
+        "expanded_evidence_count": 1,
+        "base_link_count": 0,
+        "expanded_link_count": 0,
+        "expanded_hop_count": 0,
+        "added_evidence_count": 0,
+        "approved_links_only": true,
+        "used": false,
+        "chat_used": false,
+        "passed": false
+      }
+    },
+    {
+      "case": "graph_air_pipe_rupture",
+      "question": "정거장 외에서 통기불능이 된 6호선 6300호 M2차 주공기관 또는 CM 호스 파열 시 MR 콕크와 제동장치 취급, 규정상 운전은 어떻게 하나요?",
+      "category": "graph",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "article": null,
+          "page": 9,
+          "label": "6호선 전동차고장조치 길라잡이-2.pptx 슬라이드 9",
+          "via_link": false
+        },
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 327,
+          "page": null,
+          "label": "운전취급규정 제327조",
+          "via_link": true
+        }
+      ],
+      "reference": "정거장 외에서 제동관 또는 공기관 고장으로 통기불능일 때는 구원을 요구하여야 합니다. 다만 상황에 따라 안전하다고 인정될 때에는 최근정거장까지 주의운전할 수 있습니다. 제동관 또는 공기관 고장으로 통기불능일 때에는 열차로 운전할 수 없습니다. 다만 여객열차인 경우 최근정거장까지 운전하고 잔여운전에 대하여 운전관제의 지시를 받아야 합니다. 운전관제는 잔여운전 지시 시 운전상 상당한 안전조치를 지시하고 신속히 전동차를 교환수배하여야 합니다. 운전 시에는 정차 때 수동제동기 또는 주차제동기를 걸고 출발할 때 이를 푸는 등 적당한 조치를 합니다. 길라잡이에 따르면 M2차(6300호, 6700호) 파손 시 해당차 AP.CBMC를 차단하여 CM을 정지합니다. 6300호 파손 시 6400호 MR 콕크를 차단하고, Tc차 파손 항목의 비상제동차단(EBCOS) S/W와 주차제동당김고리, 주차제동바이패스(VC.PBBP) S/W를 취급합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "6호선 6300호 M2차의 주공기관 또는 CM 호스 파열 시에는 해당 차량의 AP.CBMC를 차단하고, 6400호 MR 콕크를 차단한 뒤 제동장치를 취급합니다. [근거 1]\n\n1. 해당차 AP.CBMC를 차단하여 CM을 정지합니다. [근거 1]  \n2. 6300호 파손 시 6400호 MR 콕크를 차단합니다. [근거 1]  \n3. 비상제동차단(EBCOS) S/W를 취급하고, 주차제동당김고리(전·후 각 2개)를 취급한 후 주차제동바이패스(VC.PBBP) S/W를 취급합니다. [근거 1]\n\n질문한 상황에서 위 조치 후 규정상 운전 방법·속도·운전 허용 조건은 제시된 문서에서 확인되지 않습니다.",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 3,
+      "evidence_count": 3,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.5315,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "location": "슬라이드 9 · 주공기관(Air Filter 포함) 파열 시",
+          "locator": {
+            "slide": 9
+          },
+          "text_snippet": "현 상  (1) MR 압력 급 강하  - 6.5 kg/㎠ 이하 시 비상제동 체결, 3.5 kg/㎠ 이하 시 주차제동 체결  조 치 사 항  (1) 주공기관 파열 시에는 인접차(파손"
+        },
+        {
+          "hop": 0,
+          "score": 0.4646,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "location": "슬라이드 11 · 주공기관 파열로 주차제동 풀림불능 시",
+          "locator": {
+            "slide": 11
+          },
+          "text_snippet": "현 상  1) 주차제동 표시등(YELLOW) 점등 2) TCMS 화면표시  - F/N. 080 역행차단, 주차제동  4 ) 주공기관 파열로 주차제동 풀림불능 시 ̶ 길라잡이  조 "
+        },
+        {
+          "hop": 0,
+          "score": 0.3617,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "4116526b-b97e-48a2-b76a-2050eb838bdc",
+          "location": "「6」 부분",
+          "locator": {
+            "chunk": 35
+          },
+          "text_snippet": " 6  ATC개방시는 신호직원 승차하여 유도  기관사, 신호직원  제47조에 의거  7  운전속도 25km/h이하(건널선 20km/h이하)  기관사  8  #4 또는 #2입환신호기"
+        }
+      ],
+      "latency_seconds": 7.5,
+      "retrieval_latency_seconds": 1.3746,
+      "answer_latency_seconds": 4.6874,
+      "recall": 0.5,
+      "precision": 0.3333333333333333,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.6131471927654584,
+      "linked_gold_recall": 0.0,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.7671671465840567,
+      "answer_correctness": 0.5626330632357288,
+      "faithfulness": 0.875,
+      "context_precision": 0.9999999999,
+      "context_recall": 0.5454545454545454,
+      "token_usage": {
+        "prompt_tokens": 5377,
+        "completion_tokens": 719,
+        "total_tokens": 6096
+      },
+      "citation_check": {
+        "claims": 4,
+        "supported": 4,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": [
+          "질문한 상황에서 위 조치 후 규정상 운전 방법·속도·운전 허용 조건은 제시된 문서에서 확인되지 않습니다"
+        ]
+      },
+      "graph_check": {
+        "base_evidence_count": 1,
+        "expanded_evidence_count": 1,
+        "base_link_count": 0,
+        "expanded_link_count": 0,
+        "expanded_hop_count": 0,
+        "added_evidence_count": 0,
+        "approved_links_only": true,
+        "used": false,
+        "chat_used": false,
+        "passed": false
+      }
+    },
+    {
+      "case": "graph_parking_brake_release_failure",
+      "question": "정거장 외 주공기관 파열로 통기불능이고 주차제동이 풀리지 않으며 MR 압력이 3.5 kg/㎠ 이하일 때 어떤 순서로 풀고, 운전·회송은 어떻게 결정하나요?",
+      "category": "graph",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "article": null,
+          "page": 11,
+          "label": "6호선 전동차고장조치 길라잡이-2.pptx 슬라이드 11",
+          "via_link": false
+        },
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 327,
+          "page": null,
+          "label": "운전취급규정 제327조",
+          "via_link": true
+        }
+      ],
+      "reference": "정거장 외에서 제동관 또는 공기관 고장으로 통기불능일 때는 구원을 요구하여야 합니다. 다만 상황에 따라 안전하다고 인정될 때에는 최근정거장까지 주의운전할 수 있습니다. 여객열차인 경우 최근정거장까지 운전하고 잔여운전에 대하여 운전관제의 지시를 받아야 하며, 운전관제는 운전상 상당한 안전조치를 지시하고 신속히 전동차를 교환수배하여야 합니다. 운전 시에는 정차 때 수동제동기 또는 주차제동기를 걸고 출발할 때 이를 푸는 등 적당한 조치를 합니다. 길라잡이는 MR 압력 3.5 kg/㎠ 이하 시 주차제동 풀림 S/W, 임펄스 전자변 수동풀림, 주공기관 파열 시 Tc차와 연결된 M차의 MR콕크 차단, 전·후부Tc차 주차제동당김고리 좌우 각 2개(모두 4개), 전부Tc차 주차제동바이패스(VC.PBBP) S/W, AP.CBSCPABR을 취급하도록 합니다. 관제센터 보고 및 지시에 따라 최근 정거장에서 승객하차 후 회송합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "정거장 외 주공기관 파열로 주차제동이 풀리지 않고 MR 압력이 3.5 kg/㎠ 이하이면 다음 순서로 취급한 후, 관제센터 지시에 따라 회송합니다.\n\n1. 주차제동 풀림 S/W를 취급합니다. [근거 1]  \n2. 임펄스 전자변 수동풀림을 취급합니다. [근거 1]  \n3. 주공기관 파열 시 Tc차와 연결된 M차의 MR콕크를 차단합니다. [근거 1]  \n4. 주차제동당김고리를 좌우 2개 당깁니다. 후부 Tc차는 4개를 당깁니다. [근거 1]  \n5. 전부 Tc차 제어분전함 내 주차제동바이패스(VC.PBBP) S/W를 취급합니다. [근거 1]  \n6. 전부 Tc차 제어분전함 내 AP.CBSCPABR을 확인하고, 차단되어 있으면 복귀합니다. [근거 1]  \n\n운전·회송은 관제센터에 보고하고 지시에 따라 결정하며, 최근 정거장에서 승객을 하차시킨 후 회송합니다. [근거 1]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 1,
+      "evidence_count": 1,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.5455,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "location": "슬라이드 11 · 주공기관 파열로 주차제동 풀림불능 시",
+          "locator": {
+            "slide": 11
+          },
+          "text_snippet": "현 상  1) 주차제동 표시등(YELLOW) 점등 2) TCMS 화면표시  - F/N. 080 역행차단, 주차제동  4 ) 주공기관 파열로 주차제동 풀림불능 시 ̶ 길라잡이  조 "
+        }
+      ],
+      "latency_seconds": 8.34,
+      "retrieval_latency_seconds": 1.3097,
+      "answer_latency_seconds": 5.5542,
+      "recall": 0.5,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.6131471927654584,
+      "linked_gold_recall": 0.0,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.8709305337377563,
+      "answer_correctness": 0.6827187245624728,
+      "faithfulness": 0.7272727272727273,
+      "context_precision": 0.9999999999,
+      "context_recall": 0.5833333333333334,
+      "token_usage": {
+        "prompt_tokens": 3238,
+        "completion_tokens": 767,
+        "total_tokens": 4005
+      },
+      "citation_check": {
+        "claims": 7,
+        "supported": 5,
+        "accuracy": 0.7142857142857143,
+        "unsupported": [
+          {
+            "claim": "정거장 외 주공기관 파열로 주차제동이 풀리지 않고 MR 압력이 3.5 kg/㎠ 이하이면 다음 순서로 취급한 후, 관제센터 지시에 따라 회송합니다.\n\n1. 주차제동 풀림 S/W를 취급합니다",
+            "cited": [
+              1
+            ],
+            "reason": "MR 압력 3.5 kg/㎠ 이하, 주공기관 파열, 주차제동 풀림불능 및 조치 순서는 근거에 있으나, ‘정거장 외’라는 조건은 근거에 없고 승객 하차 후 회송이라는 조건도 claim에 완전히 포함되지 않았습니다."
+          },
+          {
+            "claim": "운전·회송은 관제센터에 보고하고 지시에 따라 결정하며, 최근 정거장에서 승객을 하차시킨 후 회송합니다",
+            "cited": [
+              1
+            ],
+            "reason": "근거에는 관제센터에 보고하고 지시에 따라 최근 정거장에서 승객 하차 후 회송한다고 되어 있으나, ‘운전’과 운전·회송을 관제센터가 결정한다는 표현은 없습니다."
+          }
+        ],
+        "uncited": []
+      },
+      "graph_check": {
+        "base_evidence_count": 1,
+        "expanded_evidence_count": 1,
+        "base_link_count": 0,
+        "expanded_link_count": 0,
+        "expanded_hop_count": 0,
+        "added_evidence_count": 0,
+        "approved_links_only": true,
+        "used": false,
+        "chat_used": false,
+        "passed": false
+      }
+    },
+    {
+      "case": "graph_inverter_output_half",
+      "question": "6호선 운행 중 인버터장치 출력이 반감(1/2)되고 VVVF 2개가 NG일 때 점검할 차단기와 수동운전 전환 승인은 무엇인가요?",
+      "category": "graph",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "article": null,
+          "page": 25,
+          "label": "6호선 전동차고장조치 길라잡이-2.pptx 슬라이드 25",
+          "via_link": false
+        },
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 330,
+          "page": null,
+          "label": "운전취급규정 제330조",
+          "via_link": true
+        }
+      ],
+      "reference": "해당차량 AP.CBVVVFIC, AP.CBHBC, AP.CBLBC를 확인하여 차단 시 복귀하고, AP.CBSUCC도 추가 확인합니다. 조치불가 시 관제센터에 보고하고 지시에 따라 수동운전합니다. 제330조에 따라 5~8호선 본선구간의 운전방식은 자동운전을 원칙으로 하며, ATO 기능이상 등으로 운전관제의 수동운전 지시에 따르는 경우 수동운전에 의합니다. 운전제어장치 고장 등 특별한 사유로 자동모드에서 다른 모드로 변경할 때에는 운전관제의 승인을 받아야 합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "6호선 운행 중 인버터장치 출력이 반감(1/2)되고 VVVF 2개가 NG일 때는 해당 차량의 다음 차단기를 확인하고, 차단되어 있으면 복귀합니다. [근거 1]\n\n1. AP.CBVVVFIC  \n2. AP.CBHBC  \n3. AP.CBLBC  \n4. 추가로 AP.CBSUCC  \n\n조치가 불가능하면 관제센터에 보고하고 지시에 따라 수동운전으로 전환합니다. [근거 1]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 1,
+      "evidence_count": 1,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.5589,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "location": "슬라이드 25 · 인버터장치 출력 반감(1/2) 시",
+          "locator": {
+            "slide": 25
+          },
+          "text_snippet": "현 상  1) TCMS 화면에 고장내용 현시 2) TCMS 화면에 1개 UNIT 판토하강 현시(판토하강 시) 3) TCMS 화면에 VVVF 2개 “ ̶ “, “NG” 현시 4) T"
+        }
+      ],
+      "latency_seconds": 5.36,
+      "retrieval_latency_seconds": 1.8842,
+      "answer_latency_seconds": 1.7434,
+      "recall": 0.5,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.6131471927654584,
+      "linked_gold_recall": 0.0,
+      "special_rule_hit": false,
+      "answer_relevancy": 0.8937848422907183,
+      "answer_correctness": 0.797803648003743,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 0.6666666666666666,
+      "token_usage": {
+        "prompt_tokens": 3179,
+        "completion_tokens": 184,
+        "total_tokens": 3363
+      },
+      "citation_check": {
+        "claims": 2,
+        "supported": 2,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      },
+      "graph_check": {
+        "base_evidence_count": 1,
+        "expanded_evidence_count": 1,
+        "base_link_count": 0,
+        "expanded_link_count": 0,
+        "expanded_hop_count": 0,
+        "added_evidence_count": 0,
+        "approved_links_only": true,
+        "used": false,
+        "chat_used": false,
+        "passed": false
+      }
+    },
+    {
+      "case": "graph_front_tc1_failure",
+      "question": "전부 TC1 고장이 RESET으로 복구되지 않아 TC2로 비상운전하고 지령식을 시행할 때 어떤 조치와 확인을 하나요?",
+      "category": "graph",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "article": null,
+          "page": 29,
+          "label": "6호선 전동차고장조치 길라잡이-2.pptx 슬라이드 29",
+          "via_link": false
+        },
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 142,
+          "page": null,
+          "label": "운전취급규정 제142조",
+          "via_link": true
+        }
+      ],
+      "reference": "전부Tc차 AP.CBSU1TC를 차단 후 복귀하여 TC1 RESET을 합니다. 복귀불능이면 관제센터 보고 및 지시에 따라 TC2로 비상운전하고, 운전모드 비상 및 출입문모드 수/수로 전환한 후 지령식을 시행합니다. 제142조에 따라 지령식은 복선운전 구간에서 주신호기 고장 또는 기타 사유로 상용폐색방식을 시행할 수 없고, 열차무선 통화가 가능하며 TTC 표시반으로 열차 점유상태를 확인할 수 있을 때 운전관제가 시행합니다. 지령식 시행 전 해당구간에 열차 또는 차량이 없음을 확인하고, 폐색방식 변경·시행구간·제한속도 운전 중 주의사항을 열차무선으로 통보한 뒤 출발지시를 하여야 합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "전부 TC1 고장이 RESET으로 복구되지 않으면 관제센터에 보고하고 지시에 따라 TC2로 비상운전하며, 운전모드를 「비상」으로 하고 출입문모드를 「수/수」로 전환한 후 지령식을 시행합니다. [근거 1]\n\n구체적으로 전부 TC1차의 AP.CBSU1TC 차단기를 차단한 후 복귀하여 TC1 RESET 기능을 수행하고, 이 조치로 복귀되지 않을 때 위 절차를 시행합니다. [근거 1]\n\n별도의 확인 항목이나 확인 방법은 해당 문서에서 확인되지 않습니다.",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 1,
+      "evidence_count": 1,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.4899,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "location": "슬라이드 29 · 전부 TC1 고장 시",
+          "locator": {
+            "slide": 29
+          },
+          "text_snippet": "현 상  1) TCMS 모니터 제어 불능(터치 시 무반응) 2) ADU상 주•보조 ATC 고장 등 점등, ADU상 속도코드 무현시 3) 운전모드 “비상＂이외의 위치에서 역행 시 “"
+        }
+      ],
+      "latency_seconds": 6.68,
+      "retrieval_latency_seconds": 1.8516,
+      "answer_latency_seconds": 3.5731,
+      "recall": 0.5,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.6131471927654584,
+      "linked_gold_recall": 0.0,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.8688797576186259,
+      "answer_correctness": 0.637705984436576,
+      "faithfulness": 0.8,
+      "context_precision": 0.9999999999,
+      "context_recall": 0.5555555555555556,
+      "token_usage": {
+        "prompt_tokens": 2992,
+        "completion_tokens": 423,
+        "total_tokens": 3415
+      },
+      "citation_check": {
+        "claims": 2,
+        "supported": 2,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": [
+          "별도의 확인 항목이나 확인 방법은 해당 문서에서 확인되지 않습니다"
+        ]
+      },
+      "graph_check": {
+        "base_evidence_count": 1,
+        "expanded_evidence_count": 1,
+        "base_link_count": 0,
+        "expanded_link_count": 0,
+        "expanded_hop_count": 0,
+        "added_evidence_count": 0,
+        "approved_links_only": true,
+        "used": false,
+        "chat_used": false,
+        "passed": false
+      }
+    },
+    {
+      "case": "graph_rear_safety_brake_dispatch",
+      "question": "후부Tc차 보안제동 S/W 풀림불능을 자력운전할 때 확인 순서와 지령식 운전 속도·시행 조건은 무엇인가요?",
+      "category": "graph",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "article": null,
+          "page": 19,
+          "label": "6호선 전동차고장조치 길라잡이-2.pptx 슬라이드 19",
+          "via_link": false
+        },
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 142,
+          "page": null,
+          "label": "운전취급규정 제142조",
+          "via_link": true
+        }
+      ],
+      "reference": "길라잡이는 후부Tc차 보안제동 S/W를 수회 당긴 뒤 TCMS 검수메뉴의 인터페이스 신호(TC 4/14)에서 보안제동 체결 차호를 확인하도록 합니다. 후부Tc차 제어분전함의 BECU, 1TC, 2TC NFB를 차단하고 전부Tc차 운전실의 운전모드 비상, 역전기 전진, 주간제어기 중립, 출입문 수/수, EBCOS 및 ADBP를 취급합니다. 자력운행 시 관제지시에 따라 지령식 45Km/h 이하로 운행합니다. 제142조에 따라 지령식은 복선구간에서 상용폐색방식을 시행할 수 없는 등 규정된 경우 관제가 시행하며, 시행 전에 해당 구간에 열차 또는 차량이 없음을 확인하고, 폐색방식·시행구간·제한속도 운전 중 주의사항을 열차무선으로 통보한 뒤 출발지시를 합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "후부Tc차 보안제동 S/W가 풀림불능이면 다음 순서로 자력운전 조치를 시행하며, 관제 지시에 따라 지령식으로 45km/h 이하 운행합니다. [근거 1][근거 2]\n\n1. TCMS 검수메뉴에서 **인터페이스 신호(TC 4/14)**를 선택하여 보안제동 체결 차호가 후부Tc차인지 확인합니다. [근거 2]  \n2. 승객안내방송 후 관제센터에 보고하고, 관제센터 지시에 따라 **인포3번**을 취급하여 후부Tc차 고장 조치를 합니다. [근거 2]  \n3. 후부Tc차 보안제동 S/W 풀림 취급을 수회 시도합니다. [근거 2]  \n4. 그래도 풀림불능이면 후부Tc차의 **① AP.CBBECU ② AP.CBSU1TC ③ AP.CBSU2TC**를 차단합니다. [근거 2]  \n5. 공기압력계 또는 TCMS 제동장치에서 보안제동 풀림을 확인한 후 전부Tc차 운전실로 이동합니다. [근거 2]  \n6. 전부Tc차에서 **운전모드 비상, 역전기 전진, 주간제어기 중립, 출입문 수/수**로 하고, **EBCOS**를 취급하여 비상제동을 풉니다. 이어 **ADBP S/W**를 취급하여 출입문대표등을 점등합니다. [근거 2]  \n7. 관제센터에 보고하고 지시에 따라 역행시험 및 승객안내방송 후 자력운전으로 회송합니다. [근거 2]\n\n**지령식 운전 속도와 시행 조건**\n\n- 이 고장의 자력운전은 **관제 지시에 따라 지령식으로 45km/h 이하** 운행합니다. [근거 1][근거 2]  \n- 운전취급규정상 지령식 운전의 제한속도는 **45km/h**이며, **운전관제 승인 후 ATC 개방운전**을 시행합니다. [근거 3]  \n- 5~8호선에서 신호장치 또는 선로의 고장으로 비상운전하는 경우에는 **15km/h 이하로 특히 주의운전**해야 합니다. [근거 3]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 3,
+      "evidence_count": 3,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.6214,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "location": "슬라이드 19",
+          "locator": {
+            "slide": 19
+          },
+          "text_snippet": "후부Tc차 보안제동 S/W 수회당김  TCMS 검수메뉴 선택  인터페이스 신호(TC 4/14) 선택  보안제동체결 차호 확인  후부Tc차 제어분전함 BECU,  1TC, 2TC N"
+        },
+        {
+          "hop": 0,
+          "score": 0.5244,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "location": "슬라이드 17 · - 2. 후부Tc차 보안제동(S/W) 풀림불능 시",
+          "locator": {
+            "slide": 17
+          },
+          "text_snippet": "현 상  (1) 보안제동 표시등(YELLOW) 점등 (2) BC압력계 4.0 kg/㎠ 현시  (3) TCMS 화면 현시  - F/N. 078 역행차단, 보안제동  원 인  (1) "
+        },
+        {
+          "hop": 0,
+          "score": 0.4114,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제104조",
+          "locator": {
+            "chunk": 20,
+            "article": "제104조"
+          },
+          "text_snippet": "제104조(각종 속도의 제한) ① 열차 또는 차량은 다음 각 호의 제한을 넘는 속도로 운전을 하여서는 아니된다. <개정 2017.12.21., 2019.02.01.>  속도를 제한"
+        }
+      ],
+      "latency_seconds": 10.33,
+      "retrieval_latency_seconds": 1.6101,
+      "answer_latency_seconds": 7.4434,
+      "recall": 0.5,
+      "precision": 0.3333333333333333,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.6131471927654584,
+      "linked_gold_recall": 0.0,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.8841358841003704,
+      "answer_correctness": 0.7242623637675745,
+      "faithfulness": 0.9615384615384616,
+      "context_precision": 0.99999999995,
+      "context_recall": 0.7142857142857143,
+      "token_usage": {
+        "prompt_tokens": 5017,
+        "completion_tokens": 1121,
+        "total_tokens": 6138
+      },
+      "citation_check": {
+        "claims": 11,
+        "supported": 11,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      },
+      "graph_check": {
+        "base_evidence_count": 3,
+        "expanded_evidence_count": 3,
+        "base_link_count": 0,
+        "expanded_link_count": 0,
+        "expanded_hop_count": 0,
+        "added_evidence_count": 0,
+        "approved_links_only": true,
+        "used": false,
+        "chat_used": false,
+        "passed": false
+      }
+    },
+    {
+      "case": "graph_front_safety_brake_rescue",
+      "question": "정거장 도중에 정차한 전동차에서 전부Tc차 보안제동 S/W 풀림불능으로 구원열차를 요구할 때 연결 준비, 양쪽 운전실 취급, 구원 도착 전 이동 제한은 무엇인가요?",
+      "category": "graph",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "article": null,
+          "page": 18,
+          "label": "6호선 전동차고장조치 길라잡이-2.pptx 슬라이드 18",
+          "via_link": false
+        },
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 315,
+          "page": null,
+          "label": "운전취급규정 제315조",
+          "via_link": true
+        }
+      ],
+      "reference": "길라잡이는 전부Tc차 보안제동 S/W를 수회 당긴 후 구원차를 연결하고 MR관을 관통시켜 12핀 점퍼선을 연결한 뒤 방송시험을 하도록 합니다. 전부Tc차로 이동 시 BC1·2콕크는 개방하지 않습니다. 고장차 전부Tc차 운전실은 운전모드 비상, 역전기 전진, 주간제어기 중립, 출입문 수/수 및 EBCOS 취급으로 하고, 구원차 전부Tc차 운전실은 운전모드 비상, 출입문 수/수, 밀기운전(25Km/h)으로 합니다. 제315조에 따라 구원 요구 후 구원열차 도착까지 고장열차는 그 위치를 이동할 수 없습니다. 다만 사고 증대 염려 또는 응급작업상 필요가 있으면 예외입니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "정거장 도중 정차한 전동차에서 전부Tc차 보안제동 S/W가 풀리지 않아 구원열차를 요구할 때에는 다음과 같이 취급합니다.\n\n1. **연결 준비**\n   - 전부Tc차 보안제동 S/W 풀림 취급을 수회 시도한 후에도 풀림불능이면 승객안내방송 후 관제센터에 구원을 요청하고, 구원 준비 시 인포 3번을 누릅니다.\n   - 마스콘키를 제거하고 후부Tc차에서 2종 방호를 합니다.\n   - 구원 연결 전에 충격에 대비한 승객안내방송을 실시합니다.\n   - 구원 연결 후 연락처를 교환하고, MR관통 및 12핀 점퍼선을 연결한 다음 운전실 간 방송시험을 합니다. 이때 역전기는 취급하지 않습니다.\n   - 전부Tc차로 이동할 때 BC1·2 콕크는 개방하지 않습니다. [근거 1]\n\n2. **양쪽 운전실 취급**\n   - **고장차 전부Tc차:** ① AP.CBBECU ② AP.CBSU1TC ③ AP.CBSU2TC를 차단하고, ④ 운전모드를 비상으로, ⑤ 역전기를 전진으로, 주간제어기를 중립으로, ⑥ 출입문모드를 수/수로 취급한 후 ⑦ EBCOS를 취급합니다.\n   - **구원차 전부Tc차:** 운전모드를 비상으로, 출입문모드를 수/수로 전환한 후 제동시험을 합니다. [근거 1]\n\n3. **구원열차 도착 전 이동 제한**\n   - 고장열차는 구원을 요구한 후 구원열차가 도착할 때까지 그 위치를 이동할 수 없습니다.\n   - 다만 사고 증대의 염려가 있거나 응급작업상 필요하다고 인정된 경우에는 예외로 이동할 수 있습니다.\n   - 예외적으로 이동할 때에는 기관사 또는 차장이 운전관제에 그 사유를 급보해야 하며, 상당거리를 이동했을 때는 그 방향으로 방호를 이동시키는 동시에 제1종 방호를 해야 합니다. [근거 2]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 2,
+      "evidence_count": 2,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.4283,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "location": "슬라이드 15 · - 1. 전부Tc차 보안제동(S/W) 풀림불능 시",
+          "locator": {
+            "slide": 15
+          },
+          "text_snippet": "현 상  (1) 보안제동 표시등(YELLOW) 점등 (2) BC압력계 4.0 kg/㎠ 현시  (3) TCMS 화면 현시  - F/N. 078 역행차단, 보안제동  원 인  (1) "
+        },
+        {
+          "hop": 0,
+          "score": 0.4584,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제315조",
+          "locator": {
+            "chunk": 62,
+            "article": "제315조"
+          },
+          "text_snippet": "제315조(구원열차를 요구한 경우의 조치) ① 고장으로 인하여 정거장 도중에 정차한 열차 또는 차량이 구원을 요구할 때에는 다음 각 호의 1에 의한다.  1. 후속열차가 있을 때에"
+        }
+      ],
+      "latency_seconds": 10.03,
+      "retrieval_latency_seconds": 1.702,
+      "answer_latency_seconds": 6.7052,
+      "recall": 0.5,
+      "precision": 0.5,
+      "mrr": 0.5,
+      "ndcg_at_10": 0.38685280723454163,
+      "linked_gold_recall": 1.0,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.9106729527498901,
+      "answer_correctness": 0.6910389833762125,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 3985,
+        "completion_tokens": 991,
+        "total_tokens": 4976
+      },
+      "citation_check": {
+        "claims": 3,
+        "supported": 3,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      },
+      "graph_check": {
+        "base_evidence_count": 3,
+        "expanded_evidence_count": 3,
+        "base_link_count": 0,
+        "expanded_link_count": 0,
+        "expanded_hop_count": 0,
+        "added_evidence_count": 0,
+        "approved_links_only": true,
+        "used": false,
+        "chat_used": false,
+        "passed": false
+      }
+    },
+    {
+      "case": "wind_threshold_report",
+      "question": "폭풍 풍속이 매초 20m 이상으로 판단되면 누가 관제에 보고하고, 풍속 구간별 지상열차 운전은 어떻게 규제하나요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 347,
+          "page": null,
+          "label": "운전취급규정 제347조",
+          "via_link": false
+        }
+      ],
+      "reference": "풍속이 매초 20m 이상이 되었다고 판단될 때 역장 또는 소장은 운전관제에게 그 사실을 보고하여야 합니다. 운전관제는 지상구간 열차에 대해 풍속이 매초 20m 이상 25m 미만이면 40km/h 이하 속도의 주의운전을 지시하고, 25m 이상 30m 미만이면 상황에 따라 정차지시를 하며 정거장 정차 열차는 일시 출발을 보류시켜야 합니다. 30m 이상이면 일시 열차운전을 중지시키고 필요한 경우 열차 또는 차량을 안전한 장소로 대피시켜야 합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "풍속이 매초 20m 이상으로 판단되면 역장 또는 소장이 운전관제에 보고하고, 운전관제는 풍속 구간별로 지상구간 운전 열차를 다음과 같이 조치합니다. [근거 1]\n\n- **매초 20m 이상 25m 미만:** 40km/h 이하의 속도로 주의운전할 것을 지시합니다. [근거 1]\n- **매초 25m 이상 30m 미만:** 상황에 따라서 정차지시를 하고, 정거장에 정차 중인 열차는 일시 출발을 보류시켜야 합니다. [근거 1]\n- **매초 30m 이상:** 일시 열차의 운전을 중지시키고, 필요한 경우 열차 또는 차량을 안전한 장소로 대피시켜야 합니다. [근거 1]\n\n위 내용은 **운전취급규정 제347조(폭풍에 대한 조치)**에 따른 것입니다. [근거 1]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 2,
+      "evidence_count": 2,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.4705,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제347조",
+          "locator": {
+            "chunk": 67,
+            "article": "제347조"
+          },
+          "text_snippet": "제347조(폭풍에 대한 조치) ① 풍속이 매초 20m이상이 되었다고 판단될 때에 역장 또는 소장은 운전관제에게 그 사실을 보고하여야 한다.  ② 풍속의 측정은 다음 기준에 의하여 "
+        },
+        {
+          "hop": 0,
+          "score": 0.3938,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제346조",
+          "locator": {
+            "chunk": 67,
+            "article": "제346조"
+          },
+          "text_snippet": "제346조(운전의 규제) ① 운전관제는 천재지변, 이상기후 또는 기타 사유로 재해가 발생되었거나 재해의 발생이 예상될 때에는 운전속도의 감속지시 열차운행 일시중지 또는 운행취소 등"
+        }
+      ],
+      "latency_seconds": 5.6,
+      "retrieval_latency_seconds": 1.3913,
+      "answer_latency_seconds": 2.8791,
+      "recall": 1.0,
+      "precision": 0.5,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.7748363205146512,
+      "answer_correctness": 0.9195187817335435,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 3666,
+        "completion_tokens": 371,
+        "total_tokens": 4037
+      },
+      "citation_check": {
+        "claims": 5,
+        "supported": 5,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      }
+    },
+    {
+      "case": "fog_station_duties",
+      "question": "안개나 눈보라로 시계가 나쁘고 통신기능까지 불통일 때 역장 또는 소장은 어떤 보고·선로·열차진입 조치를 해야 하나요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 350,
+          "page": null,
+          "label": "운전취급규정 제350조",
+          "via_link": false
+        }
+      ],
+      "reference": "역장 또는 소장은 안개 또는 눈보라에 의해 시계가 불량하다고 인정하면 그 상황을 수시 운전관제에게 보고하여야 합니다. 눈보라가 심할 경우 선로전환기 등에 제설조치를 하여 기능확보에 노력하고, 폐색승인 후에는 열차 진로에 지장을 주지 말아야 합니다. 열차 출발 시에는 출발신호기에 진행을 지시하는 신호가 현시된 것을 확인한 후 기관사에게 통보합니다. 통신기능 불통으로 정거장 구내 열차·차량 진입을 금지할 사유가 있으면 열차 진입시각 5분 전에 단락용 동선으로 궤도회로를 단락하고, 바깥쪽 200m 이상의 지점에 정지수신호를 현시하며 관계열차 기관사에게 사유를 통보하여야 합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "안개·눈보라로 시계가 불량하거나 통신기능이 불통인 경우, 역장 또는 소장은 다음 조치를 해야 합니다.\n\n- 안개 또는 눈보라로 시계가 불량하다고 인정되면 그 상황을 수시 운전관제에 보고해야 합니다. [근거 1]\n- 눈보라가 심하면 선로전환기 등에 제설조치를 하여 기능확보에 노력해야 합니다. [근거 1]\n- 폐색승인한 후에는 열차의 진로에 지장을 주지 않아야 합니다. [근거 1]\n- 열차를 출발시킬 때에는 해당 열차의 출발신호기에 진행을 지시하는 신호가 현시된 것을 확인한 후 기관사에게 통보해야 합니다. [근거 1]\n- 통신기능 불통으로 정거장 구내에 열차 또는 차량의 진입을 금지할 사유가 발생하면, 열차 진입시각 5분 전에 장내신호기 또는 장내경계표지 바깥쪽에 단락용 동선으로 궤도회로를 단락하고, 그 바깥쪽 200m 이상의 지점에 정지수신호를 현시해야 합니다. [근거 1]\n- 위 진입 금지 사유를 관계 열차 기관사에게 통보해야 합니다. [근거 1] 운전취급규정 제350조제1항제1호부터 제4호, 제2항",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 1,
+      "evidence_count": 1,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.6468,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제350조",
+          "locator": {
+            "chunk": 69,
+            "article": "제350조"
+          },
+          "text_snippet": "제350조(안개 또는 눈보라시의 역장 또는 소장의 조치) ① 역장 또는 소장은 안개 또는 눈보라시 에는 다음 각 호에 의한 조치를 하여야 한다.  1. 안개 또는 눈보라에 의해 시"
+        }
+      ],
+      "latency_seconds": 6.71,
+      "retrieval_latency_seconds": 1.2821,
+      "answer_latency_seconds": 3.9153,
+      "recall": 1.0,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.8789429671275805,
+      "answer_correctness": 0.8735336570510075,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 3035,
+        "completion_tokens": 541,
+        "total_tokens": 3576
+      },
+      "citation_check": {
+        "claims": 6,
+        "supported": 5,
+        "accuracy": 0.8333333333333334,
+        "unsupported": [
+          {
+            "claim": "안개·눈보라로 시계가 불량하거나 통신기능이 불통인 경우, 역장 또는 소장은 다음 조치를 해야 합니다.\n\n- 안개 또는 눈보라로 시계가 불량하다고 인정되면 그 상황을 수시 운전관제에 보고해야 합니다",
+            "cited": [
+              1
+            ],
+            "reason": "근거는 시계 불량 시 운전관제 보고 의무와 통신기능 불통 시 별도의 진입 방지·통보 조치를 각각 규정하고 있습니다. 따라서 통신기능 불통인 경우에도 시계 불량 보고 조치를 해야 한다는 포괄적 의미까지는 근거에 없습니다."
+          }
+        ],
+        "uncited": [
+          "운전취급규정 제350조제1항제1호부터 제4호, 제2항"
+        ]
+      }
+    },
+    {
+      "case": "earthquake_warning_threshold",
+      "question": "지진 진도 3부터 7까지의 예보·경보·비상경보 발령 기준과 현상은 어떻게 구분하나요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 354,
+          "page": null,
+          "label": "운전취급규정 제354조",
+          "via_link": false
+        }
+      ],
+      "reference": "지진 진도 3은 예보(약진)로, 가옥과 창문 및 형광등처럼 매달린 물건이 흔들리는 현상입니다. 진도 4는 경보(중진)로, 가옥의 전등이 심하게 흔들리고 그릇의 물이 넘치며 걷는 사람이 느끼고 많은 사람들이 집 밖으로 뛰어 나옵니다. 진도 5는 비상경보(강진)로 벽에 금이 생기고 비석이 넘어지며 굴뚝·돌담·축대 등이 파손됩니다. 진도 6은 비상경보(열진)로 가옥파괴가 30% 이하이고 산사태와 땅의 금이 발생하며 대부분 사람이 서 있을 수 없습니다. 진도 7은 비상경보(격진)로 가옥파괴가 30% 이상이고 땅이 갈라지며 산사태가 발생합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "지진 진도 3은 예보, 진도 4는 경보, 진도 5~7은 비상경보로 구분합니다. [근거 1]\n\n| 진도 | 발령 구분 | 현상 |\n|---|---|---|\n| 3 | 예보·약진 | 가옥이 흔들리고, 창문이 소리를 내며 흔들리며, 형광등처럼 매달린 물건이 흔들린다. [근거 1] |\n| 4 | 경보·중진 | 가옥의 전등이 심하게 흔들리고, 그릇의 물이 넘치며, 걷고 있는 사람이 느끼고, 많은 사람들이 집밖으로 뛰어 나온다. [근거 1] |\n| 5 | 비상경보·강진 | 벽에 금이 생기고, 비석이 넘어지며, 굴뚝·돌담·축대 등이 파손된다. [근거 1] |\n| 6 | 비상경보·열진 | 가옥파괴가 30% 이하이며 산사태가 발생하고 땅에 금이 가며, 대부분 사람이 서 있을 수 없다. [근거 1] |\n| 7 | 비상경보·격진 | 가옥파괴가 30% 이상이며 땅이 갈라지고 산사태가 발생한다. [근거 1] |",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 1,
+      "evidence_count": 1,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.4031,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제354조",
+          "locator": {
+            "chunk": 69,
+            "article": "제354조"
+          },
+          "text_snippet": "제354조(지진경보 발령때 기준) 지진경보 발령기준은 다음에 의한다.  종 별 구 분 현 상 진도 3 예 보 약 진 - 가옥이 흔들린다. - 창문이 소리를 내며 흔들린다. - 형광"
+        }
+      ],
+      "latency_seconds": 5.48,
+      "retrieval_latency_seconds": 1.269,
+      "answer_latency_seconds": 2.8942,
+      "recall": 1.0,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.7342076578635349,
+      "answer_correctness": 0.9696886119106551,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 3255,
+        "completion_tokens": 420,
+        "total_tokens": 3675
+      },
+      "citation_check": {
+        "claims": 6,
+        "supported": 6,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": [
+          "|"
+        ]
+      }
+    },
+    {
+      "case": "earthquake_control_initial_stop",
+      "question": "지진이 발생했을 때 운전관제는 운행 중인 열차를 어떻게 취급하고 어떤 경보를 발령해야 하나요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 355,
+          "page": null,
+          "label": "운전취급규정 제355조",
+          "via_link": false
+        }
+      ],
+      "reference": "운전관제는 지진발생 시 운행중인 모든 열차를 일단 정차시키고 제354조에 의한 지진경보를 발령하여야 합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "지진이 발생하면 운전관제는 운행 중인 모든 열차를 일단 정차시키고 지진경보를 발령해야 합니다. [근거 1]\n\n또한 운행 중인 모든 열차에 지진 발생 상황을 신속히 통보하고, 지진의 영향을 받는 구간의 열차에는 2차 피해가 발생하지 않도록 일단 정차하도록 지시해야 합니다. [근거 2]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 4,
+      "evidence_count": 4,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.4523,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제355조",
+          "locator": {
+            "chunk": 70,
+            "article": "제355조"
+          },
+          "text_snippet": "제355조(운전관제의 명령) 운전관제는 지진발생시 운행중인 모든 열차를 일단 정차시키고 제354조에 의한 지진경보를 발령하여야 한다."
+        },
+        {
+          "hop": 0,
+          "score": 0.4296,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "df60a06c-71bf-49cc-8b93-bde500b5436c",
+          "location": "제68조",
+          "locator": {
+            "document": true,
+            "chunk": 12,
+            "article": "제68조"
+          },
+          "text_snippet": "제68조(지진 발생 시 조치) 관제는 지진발생을 통보 받았거나 지진발생을 감지하였을 경우 다음 각 호에 의한 조치를 하여야 한다.  1. 운전관제는 운행 중인 모든 열차에게 신속히"
+        },
+        {
+          "hop": 0,
+          "score": 0.4172,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제345조",
+          "locator": {
+            "chunk": 67,
+            "article": "제345조"
+          },
+          "text_snippet": "제345조(경보구분) 이상기후 및 생화학물질에 대한 통보를 받았을 경우 운전관제는 다음 각 호의 경보를 발령한다.  1. 예 보：열차운전에 주의를 요하는 경우  2. 경 보：열차운"
+        },
+        {
+          "hop": 0,
+          "score": 0.4615,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제356조",
+          "locator": {
+            "chunk": 70,
+            "article": "제356조"
+          },
+          "text_snippet": "제356조(기관사의 조치) 기관사는 지진을 감지하였거나 통보를 받았을 때에는 일단 정차 후 다음 각 호에 의한 조치를 하여야 한다.  1. 지진예보 또는 경보해제 후 이상유무를 확"
+        }
+      ],
+      "latency_seconds": 6.39,
+      "retrieval_latency_seconds": 1.4766,
+      "answer_latency_seconds": 3.4245,
+      "recall": 1.0,
+      "precision": 0.25,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.8191119888535568,
+      "answer_correctness": 0.6999473666105679,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 3806,
+        "completion_tokens": 415,
+        "total_tokens": 4221
+      },
+      "citation_check": {
+        "claims": 2,
+        "supported": 2,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      }
+    },
+    {
+      "case": "earthquake_driver_speed",
+      "question": "지진을 감지하거나 통보받은 기관사의 정차 후 주의운전 속도와 다음 정거장 진입 기준은 무엇인가요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 356,
+          "page": null,
+          "label": "운전취급규정 제356조",
+          "via_link": false
+        }
+      ],
+      "reference": "기관사는 지진을 감지하였거나 통보받았을 때 일단 정차하여야 합니다. 지진예보 또는 경보해제 후 이상유무를 확인할 때까지는 25km/h 이하로 주의운전합니다. 지진경보 발령 시 정거장간 열차는 25km/h 이하, 지진비상경보 발령 시에는 15km/h 이하로 주의운전합니다. 다음 정거장에 앞열차가 정차 중이면 승객을 하차시키기 적당한 구간에 정차할 수 있고 경보해제 때까지 그 장소에서 대기합니다. 관제지시에 따라 다음 정거장에 진입할 때에는 전방 이상이 없음을 확인하며 즉시 정차할 수 있는 속도로 주의운전합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "지진을 감지했거나 통보받은 기관사는 일단 정차한 후, 지진예보 또는 경보가 해제되고 이상 유무를 확인할 때까지 **25㎞/h 이하**로 주의운전해야 합니다. [근거 1]\n\n지진경보 발령 시 정거장 사이를 운행하는 열차는 **25㎞/h 이하**, 지진비상경보 발령 시에는 **15㎞/h 이하**로 주의운전해야 합니다. [근거 1]\n\n일단 정차한 열차가 **관제지시에 의하여** 다음 정거장에 진입할 때에는 전방에 이상이 없음을 확인하면서, **즉시 정차할 수 있는 속도**로 주의운전해야 합니다. [근거 1]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 1,
+      "evidence_count": 1,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.5619,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제356조",
+          "locator": {
+            "chunk": 70,
+            "article": "제356조"
+          },
+          "text_snippet": "제356조(기관사의 조치) 기관사는 지진을 감지하였거나 통보를 받았을 때에는 일단 정차 후 다음 각 호에 의한 조치를 하여야 한다.  1. 지진예보 또는 경보해제 후 이상유무를 확"
+        }
+      ],
+      "latency_seconds": 6.7,
+      "retrieval_latency_seconds": 1.2545,
+      "answer_latency_seconds": 3.8145,
+      "recall": 1.0,
+      "precision": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.7459394434138016,
+      "answer_correctness": 0.7148969457710468,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 1.0,
+      "token_usage": {
+        "prompt_tokens": 3007,
+        "completion_tokens": 488,
+        "total_tokens": 3495
+      },
+      "citation_check": {
+        "claims": 3,
+        "supported": 3,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      }
+    }
+  ],
+  "general_cases": []
+}
