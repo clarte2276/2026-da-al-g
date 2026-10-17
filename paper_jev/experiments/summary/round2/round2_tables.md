@@ -1,6 +1,7 @@
 # Round 2 cached re-analysis
 
-All values below are recomputed from `paper_jev/experiments/cache/`; the script imports no API client and makes no network calls. P/R/F1 and ECE use the current approved-link labels as positives; an unapproved candidate is not independently confirmed irrelevant.
+All values below are recomputed from `paper_jev/experiments/cache/`; the script imports no API client and makes no network calls. Jev pair, LLM pair, and cascade share the candidate-level yes/no event and are compared on probability/ranking metrics. Jev choice and LLM list use their native selected edges and are reported as discrete selection outputs; their one-of-N or multi-label scores are not compared with pair-level ECE.
+P/R/F1 and false-positive counts measure agreement with the current approved graph; an unapproved candidate is not independently confirmed irrelevant.
 
 ## Evaluation units and denominators
 
@@ -26,21 +27,18 @@ The 36 link records and 77 unique negative slides are resampled as separate clus
 | 10 | 26/96 | 0.271 | 42/209 | 0.201 |
 | 50 | 49/96 | 0.510 | 103/209 | 0.493 |
 
-## End-to-end metrics with sample uncertainty
+## Pair-level yes/no results with sample uncertainty
 
-Each cell is `mean ± repeat SD; [95% cluster-bootstrap CI]`, over 3 repeats. PR-AUC is stepwise average precision with tied candidate scores grouped and all gold edges in the recall denominator; candidate-missing gold stays unranked, matching the existing aggregate. ECE includes candidate-missing gold at p=0 and uses 10 equal-width bins. These are agreement metrics against the approved graph, not verified relevance accuracy.
+The primary unit is the slide-article edge: each page in an approved selection is crossed with each target article, and each negative-slide draw contributes candidate edges. Each cell is `mean ± repeat SD; [95% cluster-bootstrap CI]`, over 3 repeats. Candidate-missing gold is p=0 in end-to-end metrics; candidate-covered metrics exclude only those missing gold edges. PR-AUC ranks candidate-scored edges with all gold positives in the recall denominator. ECE is 10-bin equal-width and only compares pair-level yes/no probabilities. Values measure agreement with the approved graph, not verified relevance accuracy.
 
 ### Slide-article edge unit
 
 | K | Judge | P@0.5 | R@0.5 | F1@0.5 | PR-AUC | ECE |
 |---:|---|---|---|---|---|---|
 | 10 | jev_pair | 0.203 ± 0.007; [0.073, 0.363] | 0.078 ± 0.003; [0.027, 0.142] | 0.113 ± 0.004; [0.040, 0.203] | 0.050 ± 0.001; [0.015, 0.119] | 0.121 ± 0.001; [0.090, 0.152] |
-| 10 | jev_choice | 0.421 ± 0.019; [0.155, 0.641] | 0.067 ± 0.000; [0.019, 0.129] | 0.116 ± 0.001; [0.034, 0.213] | 0.071 ± 0.001; [0.022, 0.150] | 0.111 ± 0.000; [0.093, 0.132] |
 | 10 | llm_pair | 0.175 ± 0.009; [0.098, 0.271] | 0.152 ± 0.007; [0.084, 0.231] | 0.162 ± 0.008; [0.091, 0.244] | 0.044 ± 0.001; [0.012, 0.111] | 0.172 ± 0.003; [0.143, 0.201] |
-| 10 | llm_list | 0.132 ± 0.014; [0.069, 0.209] | 0.085 ± 0.006; [0.045, 0.129] | 0.103 ± 0.008; [0.054, 0.158] | 0.028 ± 0.002; [0.009, 0.067] | 0.149 ± 0.005; [0.125, 0.175] |
 | 10 | cascade | 0.235 ± 0.054; [0.120, 0.369] | 0.159 ± 0.007; [0.077, 0.261] | 0.188 ± 0.013; [0.093, 0.296] | 0.043 ± 0.013; [0.012, 0.104] | 0.140 ± 0.024; [0.109, 0.172] |
 | 50 | jev_pair | 0.199 ± 0.001; [0.119, 0.308] | 0.179 ± 0.003; [0.115, 0.244] | 0.188 ± 0.001; [0.118, 0.265] | 0.086 ± 0.000; [0.039, 0.165] | 0.064 ± 0.000; [0.056, 0.073] |
-| 50 | jev_choice | 0.750 ± 0.017; [0.501, 0.935] | 0.091 ± 0.000; [0.047, 0.141] | 0.162 ± 0.000; [0.086, 0.242] | 0.162 ± 0.003; [0.076, 0.268] | 0.020 ± 0.000; [0.017, 0.024] |
 | 50 | cascade | 0.153 ± 0.040; [0.101, 0.221] | 0.244 ± 0.068; [0.171, 0.319] | 0.188 ± 0.050; [0.129, 0.256] | 0.066 ± 0.025; [0.031, 0.124] | 0.068 ± 0.003; [0.059, 0.077] |
 
 ### Link-record unit
@@ -48,114 +46,119 @@ Each cell is `mean ± repeat SD; [95% cluster-bootstrap CI]`, over 3 repeats. PR
 | K | Judge | P@0.5 | R@0.5 | F1@0.5 | PR-AUC | ECE |
 |---:|---|---|---|---|---|---|
 | 10 | jev_pair | 0.123 ± 0.009; [0.046, 0.230] | 0.087 ± 0.006; [0.033, 0.154] | 0.102 ± 0.007; [0.038, 0.181] | 0.060 ± 0.001; [0.021, 0.132] | 0.079 ± 0.001; [0.054, 0.104] |
-| 10 | jev_choice | 0.247 ± 0.015; [0.091, 0.436] | 0.062 ± 0.000; [0.020, 0.115] | 0.100 ± 0.001; [0.033, 0.179] | 0.080 ± 0.001; [0.030, 0.163] | 0.064 ± 0.001; [0.051, 0.081] |
 | 10 | llm_pair | 0.146 ± 0.010; [0.088, 0.221] | 0.222 ± 0.006; [0.130, 0.337] | 0.176 ± 0.009; [0.107, 0.260] | 0.043 ± 0.002; [0.016, 0.103] | 0.122 ± 0.005; [0.096, 0.148] |
-| 10 | llm_list | 0.126 ± 0.012; [0.065, 0.202] | 0.160 ± 0.006; [0.078, 0.257] | 0.140 ± 0.010; [0.073, 0.225] | 0.042 ± 0.003; [0.014, 0.104] | 0.101 ± 0.006; [0.077, 0.128] |
 | 10 | cascade | 0.177 ± 0.047; [0.103, 0.268] | 0.205 ± 0.012; [0.109, 0.322] | 0.187 ± 0.023; [0.106, 0.283] | 0.043 ± 0.016; [0.015, 0.098] | 0.096 ± 0.026; [0.071, 0.122] |
 | 50 | jev_pair | 0.133 ± 0.004; [0.081, 0.203] | 0.215 ± 0.006; [0.137, 0.298] | 0.164 ± 0.004; [0.103, 0.235] | 0.083 ± 0.001; [0.040, 0.164] | 0.077 ± 0.000; [0.069, 0.085] |
-| 50 | jev_choice | 0.674 ± 0.023; [0.441, 0.901] | 0.115 ± 0.000; [0.061, 0.175] | 0.196 ± 0.001; [0.107, 0.286] | 0.150 ± 0.004; [0.075, 0.250] | 0.011 ± 0.000; [0.009, 0.015] |
 | 50 | cascade | 0.106 ± 0.025; [0.074, 0.146] | 0.295 ± 0.071; [0.218, 0.380] | 0.156 ± 0.037; [0.112, 0.207] | 0.059 ± 0.021; [0.031, 0.111] | 0.080 ± 0.002; [0.072, 0.089] |
 
+Candidate-covered metrics below use the same slide-article unit and available pair-level yes/no judges:
+
+| K | Judge | Covered P@0.5 | Covered R@0.5 | Covered F1@0.5 | Covered PR-AUC |
+|---:|---|---|---|---|---|
+| 10 | jev_pair | 0.203 ± 0.007; [0.073, 0.363] | 0.389 ± 0.014; [0.191, 0.552] | 0.266 ± 0.009; [0.106, 0.419] | 0.248 ± 0.006; [0.112, 0.425] |
+| 10 | llm_pair | 0.175 ± 0.009; [0.098, 0.271] | 0.754 ± 0.036; [0.621, 0.881] | 0.284 ± 0.014; [0.172, 0.402] | 0.218 ± 0.007; [0.097, 0.387] |
+| 10 | cascade | 0.235 ± 0.054; [0.120, 0.369] | 0.794 ± 0.036; [0.600, 0.917] | 0.360 ± 0.061; [0.201, 0.513] | 0.213 ± 0.067; [0.096, 0.357] |
+| 50 | jev_pair | 0.199 ± 0.001; [0.119, 0.308] | 0.362 ± 0.006; [0.276, 0.444] | 0.257 ± 0.001; [0.169, 0.347] | 0.175 ± 0.001; [0.098, 0.284] |
+| 50 | cascade | 0.153 ± 0.040; [0.101, 0.221] | 0.495 ± 0.138; [0.402, 0.581] | 0.233 ± 0.062; [0.164, 0.310] | 0.135 ± 0.052; [0.077, 0.219] |
+
+K=50 LLM pair has no complete cached run and is omitted; incomplete K=100 runs have no performance estimates.
+
+## Native selection outputs
+
+Selection precision/recall/F1 and FP counts use the same slide-article edge labels as the pair-level table. Top-1 accuracy is the fraction of 80 positive source pages whose Jev choice or highest-confidence selected LLM-list item matches any approved target article; an empty output is incorrect. No selection ECE is calculated.
+
+| K | Judge | End-to-end P/R/F1 | Candidate-covered P/R/F1 | FP edges | Positive-page top-1 accuracy |
+|---:|---|---|---|---:|---:|
+| 10 | jev_choice | 0.343 ± 0.004; [0.139, 0.535] / 0.073 ± 0.003; [0.025, 0.132] / 0.121 ± 0.004; [0.042, 0.210] | 0.343 ± 0.004; [0.139, 0.535] / 0.365 ± 0.014; [0.193, 0.490] / 0.354 ± 0.009; [0.165, 0.493] | 29.3 ± 0.6 | 0.192 ± 0.007 |
+| 10 | llm_list | 0.137 ± 0.009; [0.071, 0.221] / 0.081 ± 0.005; [0.044, 0.125] / 0.102 ± 0.006; [0.054, 0.156] | 0.137 ± 0.009; [0.071, 0.221] / 0.405 ± 0.024; [0.288, 0.567] / 0.205 ± 0.013; [0.118, 0.295] | 107.0 ± 6.1 | 0.150 ± 0.022 |
+| 50 | jev_choice | 0.440 ± 0.009; [0.254, 0.618] / 0.105 ± 0.000; [0.055, 0.161] / 0.170 ± 0.001; [0.091, 0.253] | 0.440 ± 0.009; [0.254, 0.618] / 0.214 ± 0.000; [0.132, 0.288] / 0.288 ± 0.002; [0.176, 0.384] | 28.0 ± 1.0 | 0.275 ± 0.000 |
 At p≥0.5, false positives are split between wrong candidate articles on positive pages and candidate links from unlinked negative-slide draws:
 
 | K | Judge | FP on positive pages (mean ± repeat SD) | FP from negative draws (mean ± repeat SD) | Total FP |
 |---:|---|---:|---:|---:|
 | 10 | jev_pair | 46.7 ± 1.5 | 17.7 ± 1.5 | 64.3 |
-| 10 | jev_choice | 9.3 ± 0.6 | 10.0 ± 1.0 | 19.3 |
+| 10 | jev_choice | 15.3 ± 0.6 | 14.0 ± 0.0 | 29.3 |
 | 10 | llm_pair | 108.0 ± 8.9 | 41.7 ± 10.8 | 149.7 |
-| 10 | llm_list | 80.0 ± 7.2 | 37.0 ± 5.3 | 117.0 |
+| 10 | llm_list | 75.0 ± 4.6 | 32.0 ± 4.4 | 107.0 |
 | 10 | cascade | 90.3 ± 19.2 | 24.3 ± 21.5 | 114.7 |
 | 50 | jev_pair | 111.0 ± 4.0 | 39.3 ± 2.5 | 150.3 |
-| 50 | jev_choice | 3.3 ± 0.6 | 3.0 ± 0.0 | 6.3 |
+| 50 | jev_choice | 17.0 ± 0.0 | 11.0 ± 1.0 | 28.0 |
 | 50 | cascade | 198.0 ± 26.2 | 84.7 ± 16.0 | 282.7 |
 
 ## Paired cluster-bootstrap differences
 
-Delta is first method minus second, paired on the same resampled link and negative-slide clusters and averaged over repeats. Negative ΔECE means lower ECE for the first method.
+Delta is first method minus second, paired on the same resampled link and negative-slide clusters and averaged over repeats. ECE differences are limited to the shared pair-level yes/no event.
 
 | Unit | Comparison | Metric | Mean Δ ± repeat SD | 95% paired cluster-bootstrap CI |
 |---|---|---|---:|---:|
-| slide_edge | jev_choice − llm_pair (K=10) | precision | 0.246 ± 0.012 | [0.044, 0.392] |
-| slide_edge | jev_choice − llm_pair (K=10) | recall | -0.085 ± 0.007 | [-0.126, -0.049] |
-| slide_edge | jev_choice − llm_pair (K=10) | f1 | -0.047 ± 0.007 | [-0.091, -0.006] |
-| slide_edge | jev_choice − llm_pair (K=10) | pr_auc | 0.028 ± 0.002 | [0.004, 0.057] |
-| slide_edge | jev_choice − llm_pair (K=10) | ece | -0.061 ± 0.003 | [-0.080, -0.040] |
+| slide_edge | jev_pair − llm_pair (K=10) | precision | 0.028 ± 0.005 | [-0.050, 0.124] |
+| slide_edge | jev_pair − llm_pair (K=10) | recall | -0.073 ± 0.006 | [-0.115, -0.034] |
+| slide_edge | jev_pair − llm_pair (K=10) | f1 | -0.049 ± 0.006 | [-0.092, -0.008] |
+| slide_edge | jev_pair − llm_pair (K=10) | pr_auc | 0.006 ± 0.000 | [-0.009, 0.028] |
+| slide_edge | jev_pair − llm_pair (K=10) | ece | -0.051 ± 0.003 | [-0.067, -0.035] |
 | slide_edge | cascade − llm_pair (K=10) | precision | 0.061 ± 0.061 | [0.012, 0.115] |
 | slide_edge | cascade − llm_pair (K=10) | recall | 0.008 ± 0.003 | [-0.028, 0.046] |
 | slide_edge | cascade − llm_pair (K=10) | f1 | 0.026 ± 0.020 | [-0.013, 0.067] |
 | slide_edge | cascade − llm_pair (K=10) | pr_auc | -0.001 ± 0.015 | [-0.020, 0.015] |
 | slide_edge | cascade − llm_pair (K=10) | ece | -0.031 ± 0.025 | [-0.043, -0.019] |
-| slide_edge | jev_choice − jev_choice K=10 (K=50) | precision | 0.330 ± 0.034 | [0.160, 0.547] |
-| slide_edge | jev_choice − jev_choice K=10 (K=50) | recall | 0.024 ± 0.000 | [-0.014, 0.058] |
-| slide_edge | jev_choice − jev_choice K=10 (K=50) | f1 | 0.047 ± 0.001 | [-0.013, 0.103] |
-| slide_edge | jev_choice − jev_choice K=10 (K=50) | pr_auc | 0.091 ± 0.002 | [0.040, 0.149] |
-| slide_edge | jev_choice − jev_choice K=10 (K=50) | ece | -0.091 ± 0.000 | [-0.108, -0.077] |
-| link_record | jev_choice − llm_pair (K=10) | precision | 0.102 ± 0.019 | [-0.022, 0.243] |
-| link_record | jev_choice − llm_pair (K=10) | recall | -0.160 ± 0.006 | [-0.246, -0.092] |
-| link_record | jev_choice − llm_pair (K=10) | f1 | -0.076 ± 0.009 | [-0.130, -0.026] |
-| link_record | jev_choice − llm_pair (K=10) | pr_auc | 0.037 ± 0.003 | [0.007, 0.075] |
-| link_record | jev_choice − llm_pair (K=10) | ece | -0.058 ± 0.005 | [-0.077, -0.037] |
+| slide_edge | cascade − jev_pair (K=10) | precision | 0.033 ± 0.061 | [-0.057, 0.103] |
+| slide_edge | cascade − jev_pair (K=10) | recall | 0.081 ± 0.005 | [0.033, 0.139] |
+| slide_edge | cascade − jev_pair (K=10) | f1 | 0.075 ± 0.017 | [0.026, 0.129] |
+| slide_edge | cascade − jev_pair (K=10) | pr_auc | -0.007 ± 0.015 | [-0.030, 0.007] |
+| slide_edge | cascade − jev_pair (K=10) | ece | 0.020 ± 0.025 | [0.009, 0.031] |
+| slide_edge | jev_pair − jev_pair K=10 (K=50) | precision | -0.004 ± 0.007 | [-0.094, 0.090] |
+| slide_edge | jev_pair − jev_pair K=10 (K=50) | recall | 0.100 ± 0.005 | [0.054, 0.147] |
+| slide_edge | jev_pair − jev_pair K=10 (K=50) | f1 | 0.075 ± 0.005 | [0.022, 0.132] |
+| slide_edge | jev_pair − jev_pair K=10 (K=50) | pr_auc | 0.036 ± 0.001 | [0.007, 0.077] |
+| slide_edge | jev_pair − jev_pair K=10 (K=50) | ece | -0.057 ± 0.001 | [-0.086, -0.029] |
+| link_record | jev_pair − llm_pair (K=10) | precision | -0.023 ± 0.016 | [-0.084, 0.053] |
+| link_record | jev_pair − llm_pair (K=10) | recall | -0.135 ± 0.010 | [-0.221, -0.063] |
+| link_record | jev_pair − llm_pair (K=10) | f1 | -0.074 ± 0.014 | [-0.133, -0.016] |
+| link_record | jev_pair − llm_pair (K=10) | pr_auc | 0.016 ± 0.002 | [-0.005, 0.046] |
+| link_record | jev_pair − llm_pair (K=10) | ece | -0.043 ± 0.005 | [-0.058, -0.029] |
 | link_record | cascade − llm_pair (K=10) | precision | 0.031 ± 0.044 | [-0.007, 0.072] |
 | link_record | cascade − llm_pair (K=10) | recall | -0.017 ± 0.016 | [-0.079, 0.042] |
 | link_record | cascade − llm_pair (K=10) | f1 | 0.011 ± 0.023 | [-0.033, 0.054] |
 | link_record | cascade − llm_pair (K=10) | pr_auc | -0.000 ± 0.017 | [-0.025, 0.024] |
 | link_record | cascade − llm_pair (K=10) | ece | -0.026 ± 0.023 | [-0.038, -0.014] |
-| link_record | jev_choice − jev_choice K=10 (K=50) | precision | 0.427 ± 0.036 | [0.248, 0.637] |
-| link_record | jev_choice − jev_choice K=10 (K=50) | recall | 0.052 ± 0.000 | [0.011, 0.096] |
-| link_record | jev_choice − jev_choice K=10 (K=50) | f1 | 0.096 ± 0.002 | [0.035, 0.163] |
-| link_record | jev_choice − jev_choice K=10 (K=50) | pr_auc | 0.070 ± 0.004 | [0.024, 0.126] |
-| link_record | jev_choice − jev_choice K=10 (K=50) | ece | -0.053 ± 0.001 | [-0.067, -0.041] |
-
-## Format parity at K=10
-
-| Judge | Output format | Source | P@0.5 | R@0.5 | F1@0.5 |
-|---|---|---|---:|---:|---:|
-| Jev | pair | jev_pair cache; raw | 0.203 ± 0.007 | 0.078 ± 0.003 | 0.113 ± 0.004 |
-| Jev | top-1 choice derived from pair | jev_pair cache; top1 | 0.315 ± 0.014 | 0.073 ± 0.003 | 0.119 ± 0.004 |
-| Jev | native single choice decision | jev_choice cache; choice_decision | 0.343 ± 0.004 | 0.073 ± 0.003 | 0.121 ± 0.004 |
-| Jev | choice option probabilities as candidate p | jev_choice cache; raw | 0.421 ± 0.019 | 0.067 ± 0.000 | 0.116 ± 0.001 |
-| LLM | pair | llm_pair cache; raw | 0.175 ± 0.009 | 0.152 ± 0.007 | 0.162 ± 0.008 |
-| LLM | top-1 choice derived from pair | llm_pair cache; top1 | 0.227 ± 0.018 | 0.080 ± 0.006 | 0.118 ± 0.008 |
-| LLM | native multi-label list | llm_list cache; raw | 0.132 ± 0.014 | 0.085 ± 0.006 | 0.103 ± 0.008 |
-
-Within-judge format effects are pair versus pair-derived top-1 for Jev and LLM. Pair-format judge comparisons are Jev pair versus LLM pair; derived top-1 comparisons use the same pair outputs after the identical argmax/none rule. Jev choice option scores are a one-of-N distribution, not independent Bernoulli probabilities. No native LLM single-choice output is cached, so LLM choice itself cannot be matched; the cached LLM list remains multi-label. Derived variants require no API calls and have no separately measured cost or latency.
+| link_record | cascade − jev_pair (K=10) | precision | 0.054 ± 0.055 | [-0.012, 0.112] |
+| link_record | cascade − jev_pair (K=10) | recall | 0.118 ± 0.006 | [0.055, 0.203] |
+| link_record | cascade − jev_pair (K=10) | f1 | 0.085 ± 0.030 | [0.033, 0.146] |
+| link_record | cascade − jev_pair (K=10) | pr_auc | -0.016 ± 0.016 | [-0.050, 0.008] |
+| link_record | cascade − jev_pair (K=10) | ece | 0.017 ± 0.027 | [0.007, 0.027] |
+| link_record | jev_pair − jev_pair K=10 (K=50) | precision | 0.011 ± 0.006 | [-0.059, 0.072] |
+| link_record | jev_pair − jev_pair K=10 (K=50) | recall | 0.128 ± 0.006 | [0.063, 0.200] |
+| link_record | jev_pair − jev_pair K=10 (K=50) | f1 | 0.063 ± 0.004 | [0.006, 0.120] |
+| link_record | jev_pair − jev_pair K=10 (K=50) | pr_auc | 0.024 ± 0.002 | [-0.008, 0.067] |
+| link_record | jev_pair − jev_pair K=10 (K=50) | ece | -0.002 ± 0.001 | [-0.024, 0.018] |
 
 ## ECE denominator alignment
 
-Each row gives 3-repeat mean ± SD, with identical denominators across judges within K and unit. End-to-end includes missed gold at p=0; candidate-covered excludes only target edges absent from that unit's candidate set. Equal-mass ECE uses 10 probability-rank bins, splitting tied-score mass fractionally at bin boundaries.
+Only pair-level yes/no judges are reported. Each row gives 3-repeat mean ± SD; end-to-end includes missed gold at p=0 and candidate-covered excludes only target edges absent from that unit's candidate set. Equal-mass ECE uses 10 probability-rank bins, splitting tied-score mass fractionally at bin boundaries.
 
 | K | Unit | Judge | End-to-end n | Covered n | ECE equal-width, end-to-end | ECE equal-mass, end-to-end | ECE equal-width, covered | ECE equal-mass, covered |
 |---:|---|---|---:|---:|---:|---:|---:|---:|
 | 10 | slide_edge | jev_pair | 1767 | 1600 | 0.121 ± 0.001 | 0.182 ± 0.000 | 0.097 ± 0.000 | 0.097 ± 0.000 |
-| 10 | slide_edge | jev_choice | 1767 | 1600 | 0.111 ± 0.000 | 0.109 ± 0.001 | 0.018 ± 0.001 | 0.017 ± 0.001 |
 | 10 | slide_edge | llm_pair | 1767 | 1600 | 0.172 ± 0.003 | 0.177 ± 0.005 | 0.088 ± 0.002 | 0.090 ± 0.005 |
-| 10 | slide_edge | llm_list | 1767 | 1600 | 0.149 ± 0.005 | 0.152 ± 0.005 | 0.062 ± 0.005 | 0.063 ± 0.006 |
 | 10 | slide_edge | cascade | 1767 | 1600 | 0.140 ± 0.024 | 0.200 ± 0.024 | 0.115 ± 0.028 | 0.117 ± 0.026 |
 | 50 | slide_edge | jev_pair | 8106 | 8000 | 0.064 ± 0.000 | 0.085 ± 0.000 | 0.078 ± 0.000 | 0.078 ± 0.000 |
-| 50 | slide_edge | jev_choice | 8106 | 8000 | 0.020 ± 0.000 | 0.018 ± 0.000 | 0.007 ± 0.000 | 0.005 ± 0.000 |
 | 50 | slide_edge | cascade | 8106 | 8000 | 0.068 ± 0.003 | 0.094 ± 0.003 | 0.082 ± 0.003 | 0.083 ± 0.001 |
 | 10 | link_record | jev_pair | 1477 | 1407 | 0.079 ± 0.001 | 0.142 ± 0.000 | 0.103 ± 0.000 | 0.103 ± 0.000 |
-| 10 | link_record | jev_choice | 1477 | 1407 | 0.064 ± 0.001 | 0.063 ± 0.000 | 0.018 ± 0.001 | 0.017 ± 0.001 |
 | 10 | link_record | llm_pair | 1477 | 1407 | 0.122 ± 0.005 | 0.132 ± 0.005 | 0.087 ± 0.004 | 0.088 ± 0.005 |
-| 10 | link_record | llm_list | 1477 | 1407 | 0.101 ± 0.006 | 0.116 ± 0.005 | 0.072 ± 0.005 | 0.072 ± 0.006 |
 | 10 | link_record | cascade | 1477 | 1407 | 0.096 ± 0.026 | 0.159 ± 0.026 | 0.116 ± 0.029 | 0.119 ± 0.026 |
 | 50 | link_record | jev_pair | 6711 | 6664 | 0.077 ± 0.000 | 0.085 ± 0.000 | 0.084 ± 0.000 | 0.084 ± 0.000 |
-| 50 | link_record | jev_choice | 6711 | 6664 | 0.011 ± 0.000 | 0.011 ± 0.000 | 0.004 ± 0.000 | 0.004 ± 0.000 |
 | 50 | link_record | cascade | 6711 | 6664 | 0.080 ± 0.002 | 0.091 ± 0.002 | 0.088 ± 0.002 | 0.088 ± 0.002 |
 
 ## Threshold selection
 
-Fixed 0.5 is the pre-specified operating point in the cached experiment. Best-F1 uses the same labels and is post-hoc descriptive. The 5-fold threshold CV groups all pages/articles in a link record and keeps duplicate negative draws from the same unique slide in one fold; thresholds are selected on four folds and scored on the held-out fold. CV rows are link-record-level and pooled out-of-fold predictions, with API repeat SD separate.
+Fixed 0.5 is the pre-specified operating point for pair-level probabilities in the cached experiment. Best-F1 uses the same labels and is post-hoc descriptive. The 5-fold threshold CV groups all pages/articles in a link record and keeps duplicate negative draws from the same unique slide in one fold; thresholds are selected on four folds and scored on the held-out fold. CV rows are link-record-level and pooled out-of-fold predictions, with API repeat SD separate.
 
 | K | Judge | Fixed P/R/F1@0.5 (mean) | Post-hoc best F1 (mean) | Post-hoc threshold (mean ± SD) | CV threshold median [min,max] | CV OOF P | CV OOF R | CV OOF F1 |
 |---:|---|---|---:|---:|---:|---:|---:|---:|
 | 10 | jev_pair | 0.123 ± 0.009 / 0.087 ± 0.006 / 0.102 ± 0.007 | 0.180 | 0.260 ± 0.010 | 0.260 [0.250, 0.270] | 0.123 ± 0.009 | 0.087 ± 0.006 | 0.102 ± 0.007 |
-| 10 | jev_choice | 0.247 ± 0.015 / 0.062 ± 0.000 / 0.100 ± 0.001 | 0.187 | 0.153 ± 0.012 | 0.160 [0.140, 0.220] | 0.247 ± 0.015 | 0.062 ± 0.000 | 0.100 ± 0.001 |
 | 10 | llm_pair | 0.146 ± 0.010 / 0.222 ± 0.006 / 0.176 ± 0.009 | 0.179 | 0.287 ± 0.427 | 0.050 [0.030, 0.850] | 0.144 ± 0.007 | 0.219 ± 0.000 | 0.174 ± 0.005 |
-| 10 | llm_list | 0.126 ± 0.012 / 0.160 ± 0.006 / 0.140 ± 0.010 | 0.167 | 0.173 ± 0.110 | 0.120 [0.100, 0.350] | 0.126 ± 0.012 | 0.160 ± 0.006 | 0.140 ± 0.010 |
 | 10 | cascade | 0.177 ± 0.047 / 0.205 ± 0.012 / 0.187 ± 0.023 | 0.191 | 0.830 ± 0.026 | 0.840 [0.800, 0.980] | 0.181 ± 0.060 | 0.191 ± 0.012 | 0.183 ± 0.038 |
 | 50 | jev_pair | 0.133 ± 0.004 / 0.215 ± 0.006 / 0.164 ± 0.004 | 0.178 | 0.700 ± 0.030 | 0.670 [0.440, 0.770] | 0.138 ± 0.011 | 0.132 ± 0.006 | 0.135 ± 0.005 |
-| 50 | jev_choice | 0.674 ± 0.023 / 0.115 ± 0.000 / 0.196 ± 0.001 | 0.222 | 0.123 ± 0.055 | 0.150 [0.060, 0.490] | 0.674 ± 0.023 | 0.115 ± 0.000 | 0.196 ± 0.001 |
 | 50 | cascade | 0.106 ± 0.025 / 0.295 ± 0.071 / 0.156 ± 0.037 | 0.168 | 0.777 ± 0.197 | 0.880 [0.550, 0.990] | 0.110 ± 0.022 | 0.236 ± 0.074 | 0.150 ± 0.035 |
 
 ## False-positive review sample

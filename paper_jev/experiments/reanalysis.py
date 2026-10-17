@@ -26,6 +26,8 @@ FP_SEED = 20261020
 REPEATS = ("r1", "r2", "r3")
 K10_JUDGES = ("jev_pair", "jev_choice", "llm_pair", "llm_list", "cascade")
 K50_JUDGES = ("jev_pair", "jev_choice", "cascade")
+PAIR_JUDGES = ("jev_pair", "llm_pair", "cascade")
+SELECTION_JUDGES = ("jev_choice", "llm_list")
 METRICS = ("precision", "recall", "f1", "pr_auc", "ece")
 PRICE = {
     "openai_input": 0.20,
@@ -369,48 +371,54 @@ def fmt_metric(result: dict[str, Any], name: str) -> str:
     return f"{mean:.3f} ± {sd:.3f}; [{low:.3f}, {high:.3f}]"
 
 
-def transform_top1(k: int, source_scores: dict[tuple[str, str], float]) -> dict[tuple[str, str], float]:
-    transformed = {}
-    for source in DATA["sources"]:
-        s_id = source["source_id"]
-        candidates = candidates_for(source, k)
-        if not candidates:
-            continue
-        best = max(candidates, key=lambda candidate: source_scores[(s_id, candidate["article_id"])])
-        best_id = best["article_id"] if source_scores[(s_id, best["article_id"])] >= 0.5 else None
-        for candidate in candidates:
-            cid = candidate["article_id"]
-            transformed[(s_id, cid)] = float(cid == best_id)
-    return transformed
+def transform_native_selection(k: int, judge: str,
+                                rows: dict[tuple[str, str], dict[str, Any]]) -> dict[tuple[str, str], float]:
+    if judge not in SELECTION_JUDGES:
+        raise ValueError(f"Not a native selection output: {judge}")
+    expected = expected_pairs(k)
+    by_source: dict[str, list[tuple[tuple[str, str], dict[str, Any]]]] = defaultdict(list)
+    for pair, row in rows.items():
+        if pair in expected:
+            by_source[pair[0]].append((pair, row))
+    selected: dict[tuple[str, str], float] = {}
+    for source_id, candidates in by_source.items():
+        if judge == "jev_choice":
+            choices = {str(row.get("choice", "none")) for _, row in candidates}
+            if len(choices) != 1:
+                raise AssertionError(f"Inconsistent Jev choices for {source_id}: {choices}")
+            choice = next(iter(choices))
+            candidate_ids = {pair[1] for pair, _ in candidates}
+            if choice != "none" and choice not in candidate_ids:
+                raise AssertionError(f"Jev selected a candidate outside K={k} for {source_id}: {choice}")
+            selected.update({pair: float(pair[1] == choice) for pair, _ in candidates})
+        else:
+            selected.update({pair: float(bool(row.get("selected"))) for pair, row in candidates})
+    if selected.keys() != expected:
+        raise AssertionError(f"Incomplete native selection cache: {len(selected)} of {len(expected)} pairs")
+    return selected
 
 
-def transform_native_choice(k: int, rows: dict[tuple[str, str], dict[str, Any]]) -> dict[tuple[str, str], float]:
-    return {pair: float(row.get("choice") == pair[1]) for pair, row in rows.items() if pair in expected_pairs(k)}
-
-
-def format_rows_for_scores(k: int, score_map: dict[tuple[str, str], float]) -> list[dict[str, Any]]:
-    rows = build_rows(k, score_map, "slide_edge")
-    return rows
-
-
-def format_metric_rows(k: int, maps: list[dict[tuple[str, str], dict[str, Any]]], mode: str) -> list[list[dict[str, Any]]]:
-    converted = []
-    for raw in maps:
-        probabilities = candidate_score_map(k, raw)
-        if mode == "top1":
-            probabilities = transform_top1(k, probabilities)
-        elif mode == "choice_decision":
-            probabilities = transform_native_choice(k, raw)
-        rows = format_rows_for_scores(k, probabilities)
-        converted.append(rows)
-    return converted
-
-
-def summarize_format(rows_by_repeat: list[list[dict[str, Any]]]) -> dict[str, tuple[float, float]]:
-    metrics = [direct_metric(rows) for rows in rows_by_repeat]
-    return {name: (statistics.mean(row[name] for row in metrics),
-                   statistics.stdev(row[name] for row in metrics) if len(metrics) > 1 else 0.0)
-            for name in ("precision", "recall", "f1")}
+def selection_top1_accuracy(judge: str, rows: dict[tuple[str, str], dict[str, Any]]) -> float:
+    _, by_slide = relation_maps()
+    positive_sources = [source for source in DATA["sources"] if source["role"] == "positive"]
+    correct = 0
+    for source in positive_sources:
+        sid = source["source_id"]
+        candidates = [(pair, row) for pair, row in rows.items() if pair[0] == sid]
+        if judge == "jev_choice":
+            choices = {str(row.get("choice", "none")) for _, row in candidates}
+            if len(choices) != 1:
+                raise AssertionError(f"Inconsistent Jev choices for {sid}: {choices}")
+            top = next(iter(choices))
+            top = None if top == "none" else top
+        else:
+            selected = [(pair[1], row) for pair, row in candidates if row.get("selected")]
+            top = max(selected, key=lambda item: (float(item[1]["probability"]), item[0]))[0] if selected else None
+        gold = {article_id(number) for link in by_slide.get(sid, []) for number in link["target_articles"]}
+        correct += int(top in gold)
+    if len(positive_sources) != DATA["positive_slide_count"]:
+        raise AssertionError("Positive-slide top-1 denominator changed")
+    return correct / len(positive_sources)
 
 
 def cache_call_records() -> list[dict[str, Any]]:
@@ -670,19 +678,15 @@ def generate() -> None:
         raise AssertionError("Unexpected source sampling metadata")
 
     models: dict[tuple[int, str], list[dict[tuple[str, str], dict[str, Any]]]] = {}
-    score_data: dict[tuple[int, str, str], list[tuple[tuple[str, str], dict[str, Any]]]] = {}
     row_data: dict[tuple[int, str, str, str], list[list[dict[str, Any]]]] = {}
     available_judges = {10: K10_JUDGES, 50: K50_JUDGES}
     for k, judges in available_judges.items():
         for judge in judges:
             maps, _ = score_maps(k, judge)
             models[(k, judge)] = maps
-            for repeat, scores in zip(REPEATS, maps, strict=True):
-                score_data[(k, judge, repeat)] = list(scores.items())
             for unit in ("link_record", "slide_edge"):
-                row_data[(k, unit, judge, "all")] = [
-                    build_rows(k, candidate_score_map(k, scores), unit) for scores in maps
-                ]
+                row_maps = [transform_native_selection(k, judge, raw) for raw in maps] if judge in SELECTION_JUDGES else [candidate_score_map(k, raw) for raw in maps]
+                row_data[(k, unit, judge, "all")] = [build_rows(k, score_map, unit) for score_map in row_maps]
 
     first_rows = row_data[(10, "link_record", K10_JUDGES[0], "all")][0]
     clusters, weights = cluster_weights(first_rows, BOOT_SEED)
@@ -702,7 +706,8 @@ def generate() -> None:
     result_lines = [
         "# Round 2 cached re-analysis", "",
         "All values below are recomputed from `paper_jev/experiments/cache/`; the script imports no API client and makes no network calls. "
-        "P/R/F1 and ECE use the current approved-link labels as positives; an unapproved candidate is not independently confirmed irrelevant.", "",
+        "Jev pair, LLM pair, and cascade share the candidate-level yes/no event and are compared on probability/ranking metrics. Jev choice and LLM list use their native selected edges and are reported as discrete selection outputs; their one-of-N or multi-label scores are not compared with pair-level ECE.",
+        "P/R/F1 and false-positive counts measure agreement with the current approved graph; an unapproved candidate is not independently confirmed irrelevant.", "",
         "## Evaluation units and denominators", "",
         "| Quantity | Count / mapping |", "|---|---:|",
         f"| Approved link records | {len(DATA['gold_links'])} |",
@@ -735,16 +740,45 @@ def generate() -> None:
                     page_cover += int(cid in {c["article_id"] for c in candidates_for(source_map[sid], k)})
         result_lines.append(f"| {k} | {link_cover}/96 | {link_cover / 96:.3f} | {page_cover}/{page_total} | {page_cover / page_total:.3f} |")
     result_lines += [
-        "", "## End-to-end metrics with sample uncertainty", "",
-        "Each cell is `mean ± repeat SD; [95% cluster-bootstrap CI]`, over 3 repeats. PR-AUC is stepwise average precision with tied candidate scores grouped and all gold edges in the recall denominator; candidate-missing gold stays unranked, matching the existing aggregate. ECE includes candidate-missing gold at p=0 and uses 10 equal-width bins. These are agreement metrics against the approved graph, not verified relevance accuracy.", "",
+        "", "## Pair-level yes/no results with sample uncertainty", "",
+        "The primary unit is the slide-article edge: each page in an approved selection is crossed with each target article, and each negative-slide draw contributes candidate edges. Each cell is `mean ± repeat SD; [95% cluster-bootstrap CI]`, over 3 repeats. Candidate-missing gold is p=0 in end-to-end metrics; candidate-covered metrics exclude only those missing gold edges. PR-AUC ranks candidate-scored edges with all gold positives in the recall denominator. ECE is 10-bin equal-width and only compares pair-level yes/no probabilities. Values measure agreement with the approved graph, not verified relevance accuracy.", "",
     ]
     for unit, title in (("slide_edge", "Slide-article edge unit"), ("link_record", "Link-record unit")):
         result_lines += [f"### {title}", "", "| K | Judge | P@0.5 | R@0.5 | F1@0.5 | PR-AUC | ECE |", "|---:|---|---|---|---|---|---|"]
         for k, judges in available_judges.items():
             for judge in judges:
+                if judge not in PAIR_JUDGES:
+                    continue
                 result = all_results[(k, unit, judge)]
                 result_lines.append("| " + " | ".join([str(k), judge] + [fmt_metric(result, metric) for metric in METRICS]) + " |")
         result_lines.append("")
+    result_lines += [
+        "Candidate-covered metrics below use the same slide-article unit and available pair-level yes/no judges:", "",
+        "| K | Judge | Covered P@0.5 | Covered R@0.5 | Covered F1@0.5 | Covered PR-AUC |", "|---:|---|---|---|---|---|",
+    ]
+    for k, judges in available_judges.items():
+        for judge in judges:
+            if judge not in PAIR_JUDGES:
+                continue
+            covered = repeat_histograms(all_rows[(k, "slide_edge", judge)], clusters, weights, covered_only=True)
+            result_lines.append("| " + " | ".join([str(k), judge] + [fmt_metric(covered, metric) for metric in ("precision", "recall", "f1", "pr_auc")]) + " |")
+    result_lines += [
+        "", "K=50 LLM pair has no complete cached run and is omitted; incomplete K=100 runs have no performance estimates.", "",
+        "## Native selection outputs", "",
+        "Selection precision/recall/F1 and FP counts use the same slide-article edge labels as the pair-level table. Top-1 accuracy is the fraction of 80 positive source pages whose Jev choice or highest-confidence selected LLM-list item matches any approved target article; an empty output is incorrect. No selection ECE is calculated.", "",
+        "| K | Judge | End-to-end P/R/F1 | Candidate-covered P/R/F1 | FP edges | Positive-page top-1 accuracy |", "|---:|---|---|---|---:|---:|",
+    ]
+    for k in (10, 50):
+        for judge in (("jev_choice", "llm_list") if k == 10 else ("jev_choice",)):
+            result = all_results[(k, "slide_edge", judge)]
+            rows_by_repeat = all_rows[(k, "slide_edge", judge)]
+            covered = repeat_histograms(rows_by_repeat, clusters, weights, covered_only=True)
+            fp_counts = [sum(row["label"] == 0 and row["p"] >= 0.5 for row in rows) for rows in rows_by_repeat]
+            top1_values = [selection_top1_accuracy(judge, rows) for rows in models[(k, judge)]]
+            end_to_end = " / ".join(fmt_metric(result, metric) for metric in ("precision", "recall", "f1"))
+            conditional = " / ".join(fmt_metric(covered, metric) for metric in ("precision", "recall", "f1"))
+            result_lines.append(f"| {k} | {judge} | {end_to_end} | {conditional} | {statistics.mean(fp_counts):.1f} ± {statistics.stdev(fp_counts):.1f} | "
+                                f"{statistics.mean(top1_values):.3f} ± {statistics.stdev(top1_values):.3f} |")
     result_lines += [
         "At p≥0.5, false positives are split between wrong candidate articles on positive pages and candidate links from unlinked negative-slide draws:", "",
         "| K | Judge | FP on positive pages (mean ± repeat SD) | FP from negative draws (mean ± repeat SD) | Total FP |", "|---:|---|---:|---:|---:|",
@@ -763,9 +797,9 @@ def generate() -> None:
             result_lines.append(f"| {k} | {judge} | {statistics.mean(pos):.1f} ± {statistics.stdev(pos):.1f} | "
                                 f"{statistics.mean(neg):.1f} ± {statistics.stdev(neg):.1f} | {statistics.mean(total):.1f} |")
     result_lines += ["", "## Paired cluster-bootstrap differences", "",
-                     "Delta is first method minus second, paired on the same resampled link and negative-slide clusters and averaged over repeats. Negative ΔECE means lower ECE for the first method.", "",
+                     "Delta is first method minus second, paired on the same resampled link and negative-slide clusters and averaged over repeats. ECE differences are limited to the shared pair-level yes/no event.", "",
                      "| Unit | Comparison | Metric | Mean Δ ± repeat SD | 95% paired cluster-bootstrap CI |", "|---|---|---|---:|---:|"]
-    comparisons = [(10, "jev_choice", "llm_pair"), (10, "cascade", "llm_pair"), (50, "jev_choice", "jev_choice@10")]
+    comparisons = [(10, "jev_pair", "llm_pair"), (10, "cascade", "llm_pair"), (10, "cascade", "jev_pair"), (50, "jev_pair", "jev_pair@10")]
     for unit in ("slide_edge", "link_record"):
         for k, first, second in comparisons:
             left = all_results[(k, unit, first)]
@@ -779,32 +813,16 @@ def generate() -> None:
                 label = f"{first} − {second.replace('@10', ' K=10')}" if second.endswith("@10") else f"{first} − {second}"
                 result_lines.append(f"| {unit} | {label} (K={k}) | {metric} | {statistics.mean(repeat_delta):.3f} ± {sd:.3f} | "
                                     f"[{np.percentile(delta_boot, 2.5):.3f}, {np.percentile(delta_boot, 97.5):.3f}] |")
-    result_lines += ["", "## Format parity at K=10", "",
-                     "| Judge | Output format | Source | P@0.5 | R@0.5 | F1@0.5 |", "|---|---|---|---:|---:|---:|"]
-    format_specs = [
-        ("Jev", "pair", "jev_pair", "raw"),
-        ("Jev", "top-1 choice derived from pair", "jev_pair", "top1"),
-        ("Jev", "native single choice decision", "jev_choice", "choice_decision"),
-        ("Jev", "choice option probabilities as candidate p", "jev_choice", "raw"),
-        ("LLM", "pair", "llm_pair", "raw"),
-        ("LLM", "top-1 choice derived from pair", "llm_pair", "top1"),
-        ("LLM", "native multi-label list", "llm_list", "raw"),
-    ]
-    for family, output_format, judge, mode in format_specs:
-        maps = models[(10, judge)]
-        rows_by_repeat = format_metric_rows(10, maps, mode)
-        metric = summarize_format(rows_by_repeat)
-        result_lines.append(f"| {family} | {output_format} | {judge} cache; {mode} | {fmt_mean_sd(metric['precision'])} | "
-                            f"{fmt_mean_sd(metric['recall'])} | {fmt_mean_sd(metric['f1'])} |")
     result_lines += [
-        "", "Within-judge format effects are pair versus pair-derived top-1 for Jev and LLM. Pair-format judge comparisons are Jev pair versus LLM pair; derived top-1 comparisons use the same pair outputs after the identical argmax/none rule. Jev choice option scores are a one-of-N distribution, not independent Bernoulli probabilities. No native LLM single-choice output is cached, so LLM choice itself cannot be matched; the cached LLM list remains multi-label. Derived variants require no API calls and have no separately measured cost or latency.", "",
-        "## ECE denominator alignment", "",
-        "Each row gives 3-repeat mean ± SD, with identical denominators across judges within K and unit. End-to-end includes missed gold at p=0; candidate-covered excludes only target edges absent from that unit's candidate set. Equal-mass ECE uses 10 probability-rank bins, splitting tied-score mass fractionally at bin boundaries.", "",
+        "", "## ECE denominator alignment", "",
+        "Only pair-level yes/no judges are reported. Each row gives 3-repeat mean ± SD; end-to-end includes missed gold at p=0 and candidate-covered excludes only target edges absent from that unit's candidate set. Equal-mass ECE uses 10 probability-rank bins, splitting tied-score mass fractionally at bin boundaries.", "",
         "| K | Unit | Judge | End-to-end n | Covered n | ECE equal-width, end-to-end | ECE equal-mass, end-to-end | ECE equal-width, covered | ECE equal-mass, covered |", "|---:|---|---|---:|---:|---:|---:|---:|---:|",
     ]
     for unit in ("slide_edge", "link_record"):
         for k, judges in available_judges.items():
             for judge in judges:
+                if judge not in PAIR_JUDGES:
+                    continue
                 maps = models[(k, judge)]
                 all_repeat_rows = all_rows[(k, unit, judge)]
                 e2e = all_results[(k, unit, judge)]
@@ -816,12 +834,14 @@ def generate() -> None:
                                     f"{fmt_mean_sd(covered['point']['ece'])} | {fmt_mean_sd(covered['point']['ece_equal_mass'])} |")
     result_lines += [
         "", "## Threshold selection", "",
-        "Fixed 0.5 is the pre-specified operating point in the cached experiment. Best-F1 uses the same labels and is post-hoc descriptive. The 5-fold threshold CV groups all pages/articles in a link record and keeps duplicate negative draws from the same unique slide in one fold; thresholds are selected on four folds and scored on the held-out fold. CV rows are link-record-level and pooled out-of-fold predictions, with API repeat SD separate.", "",
+        "Fixed 0.5 is the pre-specified operating point for pair-level probabilities in the cached experiment. Best-F1 uses the same labels and is post-hoc descriptive. The 5-fold threshold CV groups all pages/articles in a link record and keeps duplicate negative draws from the same unique slide in one fold; thresholds are selected on four folds and scored on the held-out fold. CV rows are link-record-level and pooled out-of-fold predictions, with API repeat SD separate.", "",
         "| K | Judge | Fixed P/R/F1@0.5 (mean) | Post-hoc best F1 (mean) | Post-hoc threshold (mean ± SD) | CV threshold median [min,max] | CV OOF P | CV OOF R | CV OOF F1 |", "|---:|---|---|---:|---:|---:|---:|---:|---:|",
     ]
     cv_fold_rows: dict[tuple[int, str], dict[str, Any]] = {}
     for k, judges in available_judges.items():
         for judge in judges:
+            if judge not in PAIR_JUDGES:
+                continue
             rows_by_repeat = all_rows[(k, "link_record", judge)]
             fixed = [direct_metric(rows) for rows in rows_by_repeat]
             bests = [best_threshold(rows) for rows in rows_by_repeat]
@@ -853,7 +873,8 @@ def generate() -> None:
     for setting, judge in cost_specs:
         rollup = cost_rollup(records, setting, judge)
         cost_rows[(setting, judge)] = rollup
-    fp_count = write_checklist(score_data)
+    with (PAPER / "data" / "fp_review_checklist.csv").open(encoding="utf-8", newline="") as handle:
+        fp_count = sum(1 for _ in csv.DictReader(handle))
     result_lines += [f"Checklist rows: {fp_count}.", "", "## Reproducibility and cost appendix", "",
                      "| API family | Requested model id | Returned model id(s) in response cache |", "|---|---|---|"]
     all_returned: dict[str, set[str]] = defaultdict(set)

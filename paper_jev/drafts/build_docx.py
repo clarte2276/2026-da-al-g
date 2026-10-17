@@ -187,7 +187,7 @@ def _insert_blocks(doc, cursor, parent, blocks, image_dir: Path, *, before: bool
                         if part_index:
                             p.add_run().add_break()
                         run = p.add_run(part)
-                        _set_run(run, size=9, bold=row_index == 0)
+                        _set_run(run, size=8 if len(rows[0]) == 4 else 9, bold=row_index == 0)
             continue
 
         p, element = (
