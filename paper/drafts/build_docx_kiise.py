@@ -109,15 +109,29 @@ def _table(doc, rows, total_cm: float):
         b.set(qn("w:color"), "000000")
         borders.append(b)
     table._tbl.tblPr.append(borders)
+    margins = OxmlElement("w:tblCellMar")  # narrow padding so 9pt numbers fit a single column
+    for edge in ("left", "right"):
+        m = OxmlElement(f"w:{edge}")
+        m.set(qn("w:w"), "57")
+        m.set(qn("w:type"), "dxa")
+        margins.append(m)
+    table._tbl.tblPr.append(margins)
     # First column (labels) gets a bit more room; the rest share evenly.
     n = len(rows[0])
-    first = total_cm * (0.30 if n == 4 else 0.25)
+    first = total_cm * (0.22 if n == 4 else 0.28)
     widths = [Cm(first)] + [Cm((total_cm - first) / (n - 1))] * (n - 1)
     for column, width in zip(table.columns, widths):  # tblGrid; LibreOffice ignores cell widths alone
         column.width = width
     for row_index, cells in enumerate(rows):
         row = table.rows[row_index]
         row._tr.get_or_add_trPr().append(OxmlElement("w:cantSplit"))
+        if row_index and not any(cells[1:]):  # group row: one merged, left-aligned label
+            merged = row.cells[0].merge(row.cells[-1])
+            p = merged.paragraphs[0]
+            _form_spacing(p, exact=False)
+            p.paragraph_format.keep_with_next = True
+            _fonts(p.add_run(cells[0]), SMALL_PT, bold=True)
+            continue
         for col, text in enumerate(cells):
             cell = row.cells[col]
             cell.width = widths[col]
