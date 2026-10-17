@@ -2,6 +2,8 @@
 
 This folder contains the evaluation cases, a database-backed label validator, and the manual review checklist.
 
+The per-case `needs_human_review` flags in `eval_set_v3.json` are superseded by the recorded review outcome in [human_review_record.md](human_review_record.md). The checklist records the status of each reviewed case.
+
 ## Counts
 
 | Category | Existing v2 | Drafted | Total |
@@ -21,7 +23,7 @@ This folder contains the evaluation cases, a database-backed label validator, an
 
 ## Known limitations
 
-All 20 `llm_drafted` labels and answers need human review. This includes the five document-only cases added to reconcile the source-case count with the acceptance count. For graph cases, verify that both cited endpoints are needed; for all drafted cases, check source wording and evidence labels. The database currently exposes 36 approved links, one fewer than the count in the task brief.
+The 20 `llm_drafted` cases were reviewed by one expert using the checklist; all were marked OK with no edits or deletions. This includes the five document-only cases added to reconcile the source-case count with the acceptance count. The reviewer was not blind to the link structure, and a single review provides no inter-annotator agreement measure. The 15 link-derived graph cases remain conditional on the links used to draft them, so review does not remove that sampling limitation. The database currently exposes 36 approved links, one fewer than the count in the task brief.
 
 Run the validator from `back/` with the supplied database environment:
 
