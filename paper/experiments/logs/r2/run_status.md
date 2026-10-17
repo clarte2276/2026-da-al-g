@@ -4,10 +4,10 @@ Full mode includes answer generation and RAGAS. Dataset size: 37 cases, includin
 
 | Variant | Status | Cases | Wall time | Graph Recall | Graph Precision | Graph Context Precision | Graph Faithfulness | Graph Answer Correctness |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| link_all | Stopped after resumed run error; graph cases complete | 35/37 (20/20 graph) | 13.9s | 0.866667 | 0.718333 | 0.868611 | 0.984244 | 0.766269 |
-| hybrid_rerank | Not run after link_all error | 0/37 | 0.0s | n/a | n/a | n/a | n/a | n/a |
-| hybrid | Not run after link_all error | 0/37 | 0.0s | n/a | n/a | n/a | n/a | n/a |
-| dense | Not run after link_all error | 0/37 | 0.0s | n/a | n/a | n/a | n/a | n/a |
-| bm25 | Not run after link_all error | 0/37 | 0.0s | n/a | n/a | n/a | n/a | n/a |
+| link_all | Complete | 37/37 | 103.0s | 0.866667 | 0.718333 | 0.868611 | 0.984244 | 0.766269 |
+| hybrid_rerank | Complete | 37/37 | 2166.8s | 0.575000 | 0.789167 | 0.958333 | 0.956732 | 0.757945 |
+| hybrid | Complete | 37/37 | 2366.5s | 0.520833 | 0.230000 | 0.799167 | 0.971456 | 0.659194 |
+| dense | Complete | 37/37 | 2202.5s | 0.383333 | 0.170000 | 0.476667 | 0.974799 | 0.656534 |
+| bm25 | Complete | 37/37 | 2349.5s | 0.591667 | 0.260000 | 0.763056 | 0.969053 | 0.730918 |
 
-The link_all checkpoint remains under checkpoints/link_all_r2.json; it contains 35 cases. The missing cases are earthquake_control_initial_stop and earthquake_driver_speed. The resumed process exited 1 with a Python traceback after 13.9 seconds; PowerShell truncated the current stderr details. The prior r2 log records 429 insufficient_quota / credit_balance_exhausted, so all remaining runs were stopped pending coordinator direction. No final *_r2.json result was produced.
+All five completed result JSONs are in results/, and their checkpoints are under checkpoints/ here. link_all graph_check passed 19/20. hybrid_rerank, hybrid, dense, and bm25 graph_check passed 0/20 as expected for variants without graph expansion. Dense graph recall was nonzero in 16/20 graph cases (aggregate 0.383333); bm25 graph recall was nonzero in 19/20 (aggregate 0.591667). The first link_all command omitted the documented eval extra and failed at import; adding --extra eval allowed the resume to complete. The old 429 lines in link_all.log belong to the earlier run; the coordinator verified current API calls return 200.
