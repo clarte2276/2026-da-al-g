@@ -17,3 +17,132 @@ Executing: 37 document cases, 0 general cases
        ↳ citations: 0/0 supported, uncited=1
 [DONE] automatic_driving: mode=rag, evidence=5, recall=0.0
 ===== RUN dense_r1 attempt 1 exit=-1 wall_seconds=314.9 =====
+Resumed checkpoint from ..\paper\experiments\results\checkpoints\dense_r1.json (6 doc, 0 gen)
+Run ID: dense_r1 | Ref Version: v2 | Variant: dense | LLM: gpt-5.6-luna | Embedding: openai
+Executing: 37 document cases, 0 general cases
+================================================================================
+[REUSED] vehicle_failure: mode=rag, faithfulness=1.0000, correctness=0.1592
+[REUSED] brake_pipe: mode=rag, faithfulness=1.0000, correctness=0.1893
+[REUSED] door_failure: mode=rag, faithfulness=1.0000, correctness=0.9002
+[REUSED] rescue_train_protection: mode=rag, faithfulness=0.9000, correctness=0.1926
+[REUSED] adjacent_line_protection: mode=rag, faithfulness=1.0000, correctness=0.1393
+[REUSED] automatic_driving: mode=rag, faithfulness=1.0000, correctness=0.1784
+       ↳ citations: 2/2 supported, uncited=1
+[DONE] front_cab_failure: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 0/0 supported, uncited=1
+[DONE] runaway_vehicle: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 1/1 supported, uncited=0
+[DONE] storm: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 0/0 supported, uncited=1
+[DONE] flooding: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 8/8 supported, uncited=0
+[DONE] fog_or_snowstorm: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] weather_alert: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 3/4 supported, uncited=1
+         ✗ [5] 출입문 열림 스위치를 누릅니다 — 인용 근거는 1개 출입문 열림불능 시 점검사항을 제시하지만, 출입문 열림 스위치를 누르라는 조치는 포함하지 않습니다.
+[DONE] guide_door: mode=rag, evidence=5, recall=0.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] guide_psd: mode=rag, evidence=5, recall=0.3333333333333333
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 9/9 supported, uncited=0
+[DONE] guide_pantograph: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 8/8 supported, uncited=0
+[DONE] guide_emergency_brake: mode=rag, evidence=5, recall=0.3333333333333333
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 5/5 supported, uncited=1
+[DONE] guide_atc: mode=rag, evidence=5, recall=0.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 6/6 supported, uncited=0
+[DONE] graph_704_bus_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] graph_acm_start_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_single_cm_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 3/4 supported, uncited=0
+         ✗ [1] 보조전원장치(SIV) 기동불능 시에는 **관제센터에 보고하고 차량기동반을 요청한 뒤, TCMS 화면에서 연장급전 상태를 확인**합니다 — 근거에는 관제센터 보고와 재기동 조치는 있으나, 차량기동반 요청 및 그 후 TCMS 화면에서 연장급전 상태를 확인한다는 내용이 없다.
+[DONE] graph_siv_start_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 1/2 supported, uncited=1
+         ✗ [2] 정거장 도중 정차한 열차의 주간제어기 출력전압 이상이 RESET으로 복구되지 않으면, 관제센터 보고 후 후부Tc차 자력운전 또는 구원운전을 시행 — 출력전압 이상에 대해서는 관제센터 보고 후 RESET을 시도하고 복귀불능 시 후부Tc차 자력운전 또는 구원운전을 한다는 내용은 있으나, 이를 '정거장 도중 정차한 열차'의 조건으로
+[DONE] graph_master_controller_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/5 supported, uncited=0
+         ✗ [1] 전체 차량의 주공기압축기(CM)가 구동불능으로 정거장 도중 정차한 경우, MR 압력은 **8.0 kg/㎠ 이하**로 떨어지며, **6.5 kg/ — MR 압력이 8.0 kg/㎠ 이하로 떨어지고 6.5 kg/㎠ 이하에서 비상제동, 3.5 kg/㎠ 이하에서 주차제동이 체결된다는 내용은 근거에 있으나, ‘정거장 도중 정차한 경우’라
+[DONE] graph_all_cm_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 8/8 supported, uncited=0
+[DONE] graph_single_door_open_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] graph_all_doors_close_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/5 supported, uncited=0
+         ✗ [1] 한 량의 출입문 닫힘불능이 발생하면 해당차와 인접차 2량의 CC를 RESET하고, 계속 닫힘불능이면 관제센터 보고 및 지시에 따라 승객 하차 후 — 근거는 출입문이 열림 상태이고 해당차 및 인접차 CC 고장으로 닫힘 제어가 불능인 경우를 조건으로 하며, RESET 후에도 계속 닫힘불능인 경우라고 명시하지 않는다. 청구는 이러한
+[DONE] graph_one_car_doors_close_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 9/10 supported, uncited=1
+         ✗ [5] 6호선 6300호 M2차에서 정거장 외 주공기관 파열로 주차제동이 풀리지 않는 경우, MR 압력이 3.5 kg/㎠ 이하이면 다음과 같이 취급하고 — 근거에는 6호선, 주공기관 파열로 주차제동 풀림불능, MR 압력 3.5 kg/㎠ 이하 조건 및 최근 정거장 승객하차 후 회송은 있으나, '6300호 M2차'와 '정거장 외'라는 사
+[DONE] graph_air_pipe_rupture: mode=rag, evidence=5, recall=0.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 7/9 supported, uncited=0
+         ✗ [2] 정거장 외에서 주공기관 파열로 통기불능이고 MR 압력이 3.5 kg/㎠ 이하인 경우, 다음 순서로 주차제동을 해제한 뒤 관제센터 지시에 따라 회 — 근거에는 MR 압력 3.5 kg/㎠ 이하 조건과 주공기관 파열 상황은 있으나, '정거장 외' 및 '통기불능'은 명시되어 있지 않습니다. 또한 주차제동 해제 후 관제센터 지시에 따른
+         ✗ [2] 4. 주차제동당김고리 좌우 2개를 당깁니다. 후부Tc차는 4개를 당깁니다 — 근거는 '주차제동당김고리 좌우 2개(후부Tc차 포함 4개)'라고 하여 후부Tc차를 포함한 총 4개를 의미하며, 후부Tc차만 4개라고 명시하지 않습니다.
+[DONE] graph_parking_brake_release_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] graph_inverter_output_half: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 0/0 supported, uncited=1
+[DONE] graph_front_tc1_failure: mode=rag, evidence=5, recall=0.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 10/10 supported, uncited=0
+[DONE] graph_rear_safety_brake_dispatch: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 2/3 supported, uncited=1
+         ✗ [1] 정거장 도중 정차한 전동차에서 전부Tc차 보안제동 S/W가 풀리지 않아 구원열차를 요구할 때는 다음과 같이 취급합니다.
+
+1. **연결 준비** — 열거된 연결 준비 절차는 근거에 모두 있으나, ‘정거장 도중 정차한 전동차’ 및 ‘구원열차를 요구할 때’라는 적용 조건은 cited_evidence에 명시되어 있지 않습니다.
+[DONE] graph_front_safety_brake_rescue: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 0/0 supported, uncited=1
+[DONE] wind_threshold_report: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] fog_station_duties: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 6/6 supported, uncited=1
+[DONE] earthquake_warning_threshold: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 1/1 supported, uncited=1
+[DONE] earthquake_control_initial_stop: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] earthquake_driver_speed: mode=rag, evidence=5, recall=1.0
+
+================================================================================
+EVALUATION SUMMARY:
+Run ID: dense_r1 | Reference Version: v2 | Evaluation Complete: True
+Document Cases Average:
+  - faithfulness        : 0.9838 [PASS]
+  - answer_relevancy    : 0.6558 [FAIL]
+  - answer_correctness  : 0.5916 [FAIL]
+  - context_precision   : 0.4655 [FAIL]
+  - context_recall      : 0.5783 [FAIL]
+Pilot criteria (docs/rag-pipeline.md):
+  - faithfulness_mean         : 0.9838 (threshold 0.95) [True]
+  - faithfulness_min          : 0.8462 (threshold 0.8) [True]
+  - context_recall_mean       : 0.5783 (threshold 0.9) [False]
+  - context_recall_min        : 0.0000 (threshold 0.67) [False]
+  - context_precision_mean    : 0.4655 (threshold 0.85) [False]
+  - answer_correctness_mean   : 0.5916 (threshold 0.75) [False]
+  - general_correctness_mean  : n/a (threshold 0.9) [None]
+  - abstention_rate           : n/a (threshold 0.9) [None]
+  - latency_p95_seconds       : 9.1900 (threshold 20.0) [True]
+  - citation_accuracy         : 0.9333 (threshold 0.9) [True]
+Pilot met (automatable items): False
+Graph check: 0/20 passed
+Greeting check: FAIL
+Targets met: NO (INCOMPLETE)
+Saved: C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-resume-r1\paper\experiments\results\ragas_results.json and C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-resume-r1\paper\experiments\results\ragas_results_dense_r1.json
