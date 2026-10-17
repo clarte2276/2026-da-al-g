@@ -1,6 +1,6 @@
 # Aggregation notes
 
-Expected input is 18 complete result JSONs: six variants × r1–r3, each with 37 cases. Between-repeat SD ≥ 0.10 is flagged below.
+Expected input is 21 complete result JSONs: seven variants × r1–r3, each with 37 retrieval cases; hybrid_rerank_k3 r2/r3 may be retrieval-only. Between-repeat SD ≥ 0.10 is flagged below.
 
 - High between-repeat variation: bm25/doc/answer_latency_seconds SD=0.280 across 3 repeats.
 - High between-repeat variation: bm25/all/answer_latency_seconds SD=0.128 across 3 repeats.
@@ -16,6 +16,9 @@ Expected input is 18 complete result JSONs: six variants × r1–r3, each with 3
 - High between-repeat variation: hybrid_rerank/doc/answer_latency_seconds SD=0.274 across 3 repeats.
 - High between-repeat variation: hybrid_rerank/graph/answer_latency_seconds SD=0.173 across 3 repeats.
 - High between-repeat variation: hybrid_rerank/all/answer_latency_seconds SD=0.179 across 3 repeats.
+- High between-repeat variation: hybrid_rerank_k3/doc/evidence_count SD=0.156 across 3 repeats.
+- High between-repeat variation: hybrid_rerank_k3/doc/retrieval_latency_seconds SD=0.265 across 3 repeats.
+- High between-repeat variation: hybrid_rerank_k3/all/retrieval_latency_seconds SD=0.160 across 3 repeats.
 - High between-repeat variation: link_all/doc/evidence_count SD=0.136 across 3 repeats.
 - High between-repeat variation: link_all/doc/answer_latency_seconds SD=0.134 across 3 repeats.
 - High between-repeat variation: link_all/graph/retrieval_latency_seconds SD=0.388 across 3 repeats.
@@ -29,7 +32,8 @@ Expected input is 18 complete result JSONs: six variants × r1–r3, each with 3
 - Generation and evaluation judge model: `gpt-5.6-luna` (result metadata).
 - Search embedding model: `text-embedding-3-small` (result metadata).
 - Evaluation embedding model: `text-embedding-3-large` (result metadata).
-- Paired comparisons cover the 20 graph cases and separately report the 5-case development and 15-case held-out groups. Each case is averaged over all three repeats. Bootstrap intervals are percentile intervals over cases; exact Wilcoxon p-values are unadjusted. Cases can share regulations or links, and the held-out labels remain unreviewed.
+- Paired comparisons cover the 20 graph cases and separately report the 5-case development and 15-case held-out groups. Each case is averaged over all three repeats. Bootstrap intervals are percentile intervals over cases; exact Wilcoxon p-values are unadjusted. Cluster bootstrap IDs are connected components of cases sharing a linked gold endpoint (`document_version_id`, `article`): 10 overall, 5 development, 6 held-out. These small counts support descriptive sensitivity only; held-out labels remain unreviewed.
+- `hybrid_rerank_k3` uses one full RAGAS repeat (r1) and two retrieval-only repeats (r2/r3); matched answer-metric comparisons use r1 from both variants.
 - New graph cases cover 15/36 distinct approved links, based on the human-review checklist.
 
 ## Input coverage
@@ -46,6 +50,9 @@ Expected input is 18 complete result JSONs: six variants × r1–r3, each with 3
 - `hybrid_rerank r1`: doc 17/17, graph 20/20, all 37/37 (`results\hybrid_rerank_r1.json`).
 - `hybrid_rerank r2`: doc 17/17, graph 20/20, all 37/37 (`results\hybrid_rerank_r2.json`).
 - `hybrid_rerank r3`: doc 17/17, graph 20/20, all 37/37 (`results\hybrid_rerank_r3.json`).
+- `hybrid_rerank_k3 r1`: doc 17/17, graph 20/20, all 37/37 (`results\hybrid_rerank_k3_r1.json`).
+- `hybrid_rerank_k3 r2`: doc 17/17, graph 20/20, all 37/37 (`results\hybrid_rerank_k3_r2.json`).
+- `hybrid_rerank_k3 r3`: doc 17/17, graph 20/20, all 37/37 (`results\hybrid_rerank_k3_r3.json`).
 - `link_all r1`: doc 17/17, graph 20/20, all 37/37 (`results\link_all_r1.json`).
 - `link_all r2`: doc 17/17, graph 20/20, all 37/37 (`results\link_all_r2.json`).
 - `link_all r3`: doc 17/17, graph 20/20, all 37/37 (`results\link_all_r3.json`).

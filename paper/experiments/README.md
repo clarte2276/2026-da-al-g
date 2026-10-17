@@ -10,8 +10,11 @@ Run commands from `back/`. Each run writes `ragas_results.json`, a run archive, 
 | `dense` | Embedding cosine score only; no reranking or graph/link expansion. |
 | `hybrid` | Current 0.6 dense + 0.4 BM25 score; no reranking or graph/link expansion. |
 | `hybrid_rerank` | Hybrid scoring followed by the first LLM rerank; no graph/link expansion. |
+| `hybrid_rerank_k3` | `hybrid_rerank` with opt-in `RAG_RERANK_MIN_KEEP=3`; if the LLM selects fewer than three passages, fill from hybrid order up to `top_k`. The default setting is `0`, preserving the previous behavior. This is a minimum, not an exact evidence-count cap. |
 | `link_all` | Hybrid scoring and first rerank, then legacy broad expansion: direct evidence first, followed by hop and descending score, capped at `top_k × 3`; linked evidence is not reranked. |
 | `proposed` | Production path: hybrid scoring, first rerank, expansion, keep all direct evidence, then rerank linked evidence (up to `top_k × 2`). This is the default. |
+
+`hybrid_rerank_k3` is the Round 4 minimum-3 evidence-count sensitivity baseline. Its r1 run includes RAGAS; r2 and r3 use `--skip-ragas`, so retrieval metrics aggregate over three repeats and matched answer metrics use r1 only. Snapshot and prompt hashes are recorded in `provenance.md`.
 
 ## Matching and metrics
 
@@ -37,6 +40,12 @@ This command runs the proposed variant for repeat `r1` using the evaluation cont
 
 ```bash
 PYTHONPATH=. PYTHONIOENCODING=utf-8 uv run --extra eval python scripts/ragas_eval.py --dataset ../paper/data/eval_set_v3.json --variant proposed --repeat-tag r1 --output-dir runtime/paper-exp/proposed-r1
+```
+
+For the Round 4 minimum-3 sensitivity baseline, set the minimum explicitly and retain the run ID:
+
+```bash
+RAG_RERANK_MIN_KEEP=3 PYTHONPATH=. PYTHONIOENCODING=utf-8 uv run --extra hwp --extra eval python scripts/ragas_eval.py --dataset ../paper/data/eval_set_v3.json --variant hybrid_rerank --repeat-tag r1 --run-id hybrid_rerank_k3_r1 --output-dir ../paper/experiments/results/.run_hybrid_rerank_k3_r1
 ```
 
 For retrieval metrics only, add `--skip-ragas`; it skips answer generation and all judging calls.

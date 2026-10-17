@@ -1,0 +1,1155 @@
+{
+  "snapshot_date": "2026-10-17",
+  "source": "document_links rows with status=approved in the read-only evaluation database",
+  "link_count": 36,
+  "links": [
+    {
+      "id": "01743119-db72-4c3e-8304-19ff915262dc",
+      "source": {
+        "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+        "kind": "pages",
+        "pages": [
+          31,
+          32
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 7860,
+            "end": 7963
+          },
+          {
+            "start": 91224,
+            "end": 91354
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.374780",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "04a41d45-8649-4dae-ad47-498c1675929f",
+      "source": {
+        "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+        "kind": "pages",
+        "pages": [
+          26,
+          27
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 21180,
+            "end": 21714
+          },
+          {
+            "start": 95984,
+            "end": 96655
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.317702",
+      "approved_at": "2026-10-07 11:22:18.684479"
+    },
+    {
+      "id": "0a47f811-f0be-458b-94d4-e613f27e318d",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          19
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 7392,
+            "end": 7858
+          },
+          {
+            "start": 19753,
+            "end": 20890
+          },
+          {
+            "start": 44049,
+            "end": 44448
+          },
+          {
+            "start": 44450,
+            "end": 44750
+          },
+          {
+            "start": 44752,
+            "end": 45234
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.906856",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "0adb32f7-1330-40a6-a3df-84b8a5c42c91",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          44,
+          45
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 7860,
+            "end": 7963
+          },
+          {
+            "start": 91224,
+            "end": 91354
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:10.185430",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "118d5371-d8b4-491a-bcef-4094b612d2ef",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          30,
+          31
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 7860,
+            "end": 7963
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:10.007822",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "17bbef3c-7b0d-41c7-8115-61068753089a",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          24,
+          25
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 100026,
+            "end": 100518
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.958180",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "239c13c1-1374-4dc7-b54f-9117a78f220d",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          32,
+          33
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 21180,
+            "end": 21714
+          },
+          {
+            "start": 95984,
+            "end": 96655
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:10.034887",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "23f28262-5a4f-4ac7-9ba1-494f7baa70d7",
+      "source": {
+        "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+        "kind": "pages",
+        "pages": [
+          47,
+          48,
+          49,
+          50
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 10487,
+            "end": 11150
+          },
+          {
+            "start": 99615,
+            "end": 100000
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.568415",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "2512743e-51d4-4e67-a920-792cc9f5f800",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          22,
+          23
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 21180,
+            "end": 21714
+          },
+          {
+            "start": 95984,
+            "end": 96655
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.933830",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "30cb64b0-a721-414d-8a84-2e1044dec5eb",
+      "source": {
+        "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+        "kind": "pages",
+        "pages": [
+          37,
+          38
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 21180,
+            "end": 21714
+          },
+          {
+            "start": 93740,
+            "end": 93982
+          },
+          {
+            "start": 95984,
+            "end": 96655
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.459814",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "3224a724-c969-4c71-8cd6-1509dfc6218d",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          16,
+          17
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 5184,
+            "end": 5460
+          },
+          {
+            "start": 5511,
+            "end": 5961
+          },
+          {
+            "start": 99194,
+            "end": 99613
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.853416",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "359403f2-b9d8-4344-83ac-6c0ed94eb52d",
+      "source": {
+        "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+        "kind": "pages",
+        "pages": [
+          43,
+          44
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 21180,
+            "end": 21714
+          },
+          {
+            "start": 95984,
+            "end": 96655
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.541678",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "3ca1ba21-69c8-4fb9-8195-b5464339ba0c",
+      "source": {
+        "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+        "kind": "pages",
+        "pages": [
+          53,
+          54,
+          55,
+          56
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 10487,
+            "end": 11150
+          },
+          {
+            "start": 99615,
+            "end": 100000
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.621482",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "5dda2382-f596-4854-862c-34bca6b39c48",
+      "source": {
+        "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+        "kind": "pages",
+        "pages": [
+          33,
+          34
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 7860,
+            "end": 7963
+          },
+          {
+            "start": 91224,
+            "end": 91354
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.401958",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "698c77ee-04e9-429d-87cd-ab3612fe2586",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          28,
+          29
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 7392,
+            "end": 7858
+          },
+          {
+            "start": 19753,
+            "end": 20890
+          },
+          {
+            "start": 44049,
+            "end": 44448
+          },
+          {
+            "start": 44450,
+            "end": 44750
+          },
+          {
+            "start": 44752,
+            "end": 45234
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.983721",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "785c801d-70be-4a16-9898-9f12996687ba",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          6,
+          7
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 5184,
+            "end": 5460
+          },
+          {
+            "start": 5511,
+            "end": 5961
+          },
+          {
+            "start": 99194,
+            "end": 99613
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.751048",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "7d4336a2-09e8-457b-a1bd-03f48c38fdca",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          40,
+          41
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 7860,
+            "end": 7963
+          },
+          {
+            "start": 91224,
+            "end": 91354
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:10.136340",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "8130d459-9650-4329-8abe-4c6932e2be4c",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          10,
+          11,
+          12,
+          13
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 5184,
+            "end": 5460
+          },
+          {
+            "start": 5511,
+            "end": 5961
+          },
+          {
+            "start": 99194,
+            "end": 99613
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.802334",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "86be0452-728f-4c3e-ba34-d27c51908975",
+      "source": {
+        "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+        "kind": "pages",
+        "pages": [
+          41,
+          42
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 7860,
+            "end": 7963
+          },
+          {
+            "start": 91224,
+            "end": 91354
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.512106",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "8cae355e-7cb4-466b-848d-678c85484962",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          46,
+          47
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 7392,
+            "end": 7858
+          },
+          {
+            "start": 17771,
+            "end": 18289
+          },
+          {
+            "start": 18291,
+            "end": 18541
+          },
+          {
+            "start": 19753,
+            "end": 20890
+          },
+          {
+            "start": 44049,
+            "end": 44448
+          },
+          {
+            "start": 44450,
+            "end": 44750
+          },
+          {
+            "start": 44752,
+            "end": 45234
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:10.212436",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "8e1ba701-d868-4f3d-89bb-14f536ab8034",
+      "source": {
+        "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+        "kind": "pages",
+        "pages": [
+          28,
+          29
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 10487,
+            "end": 11150
+          },
+          {
+            "start": 71379,
+            "end": 71795
+          },
+          {
+            "start": 71797,
+            "end": 72178
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.347270",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "972f8b6c-bbae-4bb5-bee8-c2e1ce70ce68",
+      "source": {
+        "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+        "kind": "pages",
+        "pages": [
+          61,
+          62,
+          63,
+          64
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 10487,
+            "end": 11150
+          },
+          {
+            "start": 99615,
+            "end": 100000
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.700036",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "9870c1d8-fa69-414b-b360-0e929b3efac8",
+      "source": {
+        "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+        "kind": "pages",
+        "pages": [
+          39,
+          40
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 7860,
+            "end": 7963
+          },
+          {
+            "start": 91224,
+            "end": 91354
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.486258",
+      "approved_at": "2026-10-07 11:20:58.130301"
+    },
+    {
+      "id": "9e6fb05b-9a69-426a-9a1f-ecb7823239ed",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          38,
+          39
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 7860,
+            "end": 7963
+          },
+          {
+            "start": 91224,
+            "end": 91354
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:10.111217",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "9f04d2cc-d053-4361-bbbc-83457b0f65d3",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          14,
+          15
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 5184,
+            "end": 5460
+          },
+          {
+            "start": 5511,
+            "end": 5961
+          },
+          {
+            "start": 99194,
+            "end": 99613
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.827512",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "a3219067-c8a7-46b5-9cd5-fd923ce33116",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          18
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 21180,
+            "end": 21714
+          },
+          {
+            "start": 95984,
+            "end": 96655
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.880005",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "a3bb9c16-cc1f-411f-a26d-aef044e409fa",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 5184,
+            "end": 5460
+          },
+          {
+            "start": 5511,
+            "end": 5961
+          },
+          {
+            "start": 99194,
+            "end": 99613
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.725021",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "a5284ad3-3f49-4879-a4b8-c9859c0b1a74",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          36,
+          37
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 7392,
+            "end": 7858
+          },
+          {
+            "start": 19753,
+            "end": 20890
+          },
+          {
+            "start": 44049,
+            "end": 44448
+          },
+          {
+            "start": 44450,
+            "end": 44750
+          },
+          {
+            "start": 44752,
+            "end": 45234
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:10.087050",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "a9ec9af7-9d02-424f-a52e-0857cf10026e",
+      "source": {
+        "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+        "kind": "pages",
+        "pages": [
+          57,
+          58
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 10487,
+            "end": 11150
+          },
+          {
+            "start": 99615,
+            "end": 100000
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.647204",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "af436d5a-daa7-406f-93ec-963f2614bc3f",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          48,
+          49
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 7392,
+            "end": 7858
+          },
+          {
+            "start": 19753,
+            "end": 20890
+          },
+          {
+            "start": 44049,
+            "end": 44448
+          },
+          {
+            "start": 44450,
+            "end": 44750
+          },
+          {
+            "start": 44752,
+            "end": 45234
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:10.239504",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "b7076091-3dd9-4892-b423-8a1ffb937af2",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          8,
+          9
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 5184,
+            "end": 5460
+          },
+          {
+            "start": 5511,
+            "end": 5961
+          },
+          {
+            "start": 99194,
+            "end": 99613
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.776320",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "bc49faf9-3458-4b72-8d54-168e51d7b609",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          42,
+          43
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 7860,
+            "end": 7963
+          },
+          {
+            "start": 91224,
+            "end": 91354
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:10.160373",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "bdf45ae9-cd00-47f4-890a-68a34ae0ef99",
+      "source": {
+        "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+        "kind": "pages",
+        "pages": [
+          51,
+          52
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 10487,
+            "end": 11150
+          },
+          {
+            "start": 99615,
+            "end": 100000
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.594907",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "c5e82f80-36f5-4309-a831-d5a00204f4c3",
+      "source": {
+        "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+        "kind": "pages",
+        "pages": [
+          35,
+          36
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 7860,
+            "end": 7963
+          },
+          {
+            "start": 21180,
+            "end": 21714
+          },
+          {
+            "start": 95984,
+            "end": 96655
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.430200",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "d7d11e9c-6b9d-4b49-93d6-c8c9fa01a8c1",
+      "source": {
+        "version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+        "kind": "pages",
+        "pages": [
+          59,
+          60
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 10487,
+            "end": 11150
+          },
+          {
+            "start": 99615,
+            "end": 100000
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:09.673229",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    },
+    {
+      "id": "e3e64e04-4ef6-404e-8009-c483b673caaf",
+      "source": {
+        "version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+        "kind": "pages",
+        "pages": [
+          34,
+          35
+        ]
+      },
+      "target": {
+        "version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+        "kind": "text",
+        "ranges": [
+          {
+            "start": 7860,
+            "end": 7963
+          },
+          {
+            "start": 91224,
+            "end": 91354
+          }
+        ]
+      },
+      "relation": "REFERENCES",
+      "status": "approved",
+      "created_at": "2026-09-08 04:06:10.060452",
+      "approved_at": "2026-09-08 07:00:33.050171"
+    }
+  ]
+}

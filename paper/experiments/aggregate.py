@@ -17,14 +17,14 @@ SUMMARY = ROOT / "summary"
 EVAL_SET = ROOT.parent / "data" / "eval_set_v3.json"
 DATA_README = ROOT.parent / "data" / "README.md"
 HUMAN_CHECKLIST = ROOT.parent / "data" / "human_review_checklist.md"
-VARIANTS = ("bm25", "dense", "hybrid", "hybrid_rerank", "link_all", "proposed")
+VARIANTS = ("bm25", "dense", "hybrid", "hybrid_rerank", "hybrid_rerank_k3", "link_all", "proposed")
 REPEATS = ("r1", "r2", "r3")
 CATEGORIES = ("doc", "graph", "all")
 EXPECTED_CASES = {"doc": 17, "graph": 20, "all": 37}
 SOURCE_GROUPS = ("existing_v2", "llm_drafted")
 SOURCE_METRICS = (
-    "precision", "recall", "linked_gold_recall", "mrr", "context_precision", "context_recall",
-    "answer_correctness", "retrieval_latency_seconds",
+    "precision", "recall", "linked_gold_recall", "mrr", "evidence_count", "context_precision",
+    "context_recall", "answer_correctness", "retrieval_latency_seconds",
 )
 RETRIEVAL_METRICS = (
     "recall",
@@ -58,14 +58,32 @@ PAIRED_METRICS = (
     "answer_relevancy",
     "context_recall",
 )
-COMPARISONS = (("link_all", "hybrid_rerank"), ("proposed", "hybrid_rerank"), ("proposed", "link_all"))
+COMPARISONS = (
+    ("link_all", "hybrid_rerank"),
+    ("proposed", "hybrid_rerank"),
+    ("proposed", "link_all"),
+    ("link_all", "hybrid_rerank_k3"),
+    ("proposed", "hybrid_rerank_k3"),
+)
+CLUSTER_COMPARISONS = (
+    ("link_all", "hybrid_rerank_k3"),
+    ("proposed", "hybrid_rerank_k3"),
+    ("proposed", "link_all"),
+)
+CLUSTER_METRICS = (
+    "recall", "linked_gold_recall", "context_precision", "evidence_count", "answer_correctness",
+    "retrieval_latency_seconds",
+)
 BOOTSTRAPS = 10_000
 
 
 def _load(path: Path, source: str) -> dict[str, Any]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     stem = path.stem
-    variant = str(payload.get("rag_variant") or re.sub(r"_r\d+$", "", stem))
+    run_id = str(payload.get("run_id") or "")
+    variant = "hybrid_rerank_k3" if run_id.startswith("hybrid_rerank_k3_") else str(
+        payload.get("rag_variant") or re.sub(r"_r\d+$", "", stem)
+    )
     repeat = str(payload.get("repeat_tag") or (re.search(r"r\d+$", stem) or [""])[0])
     rows = payload.get("document_cases", [])
     if not isinstance(rows, list):
@@ -98,7 +116,10 @@ def _load_runs(notes: list[str]) -> list[dict[str, Any]]:
         cases = [row.get("case") for row in run["rows"]]
         if len(cases) != EXPECTED_CASES["all"] or len(set(cases)) != len(cases):
             raise ValueError(f"{run['path'].name} must contain 37 unique cases")
-        if not run["payload"].get("evaluation_complete") or run["payload"].get("ragas_skipped"):
+        allowed_retrieval_only = run["variant"] == "hybrid_rerank_k3" and run["repeat"] in {"r2", "r3"}
+        if not run["payload"].get("evaluation_complete") or (
+            run["payload"].get("ragas_skipped") and not allowed_retrieval_only
+        ):
             raise ValueError(f"{run['path'].name} is not a complete full evaluation")
     return runs
 
@@ -132,6 +153,40 @@ def _source_graph_cases() -> dict[str, set[str]]:
     if len(cases) != 37 or {source: len(names) for source, names in groups.items()} != {"existing_v2": 5, "llm_drafted": 15}:
         raise ValueError("Unexpected eval_set_v3 graph source split")
     return groups
+
+
+def _graph_cluster_ids() -> dict[str, str]:
+    cases = [
+        case for case in json.loads(EVAL_SET.read_text(encoding="utf-8"))["cases"]
+        if case.get("category") == "graph"
+    ]
+    parent = {case["name"]: case["name"] for case in cases}
+
+    def root(name: str) -> str:
+        while parent[name] != name:
+            parent[name] = parent[parent[name]]
+            name = parent[name]
+        return name
+
+    def union(first: str, second: str) -> None:
+        first_root, second_root = root(first), root(second)
+        if first_root != second_root:
+            parent[second_root] = first_root
+
+    endpoint_owner: dict[tuple[str, int], str] = {}
+    for case in cases:
+        linked_endpoints = {
+            (item["document_version_id"], item["article"])
+            for item in case.get("gold_evidence", [])
+            if item.get("via_link") and item.get("article") is not None
+        }
+        for endpoint in linked_endpoints:
+            if endpoint in endpoint_owner:
+                union(case["name"], endpoint_owner[endpoint])
+            else:
+                endpoint_owner[endpoint] = case["name"]
+
+    return {case["name"]: root(case["name"]) for case in cases}
 
 
 def _link_coverage() -> tuple[int, int]:
@@ -231,6 +286,29 @@ def _bootstrap_ci(differences: list[float], seed: str) -> tuple[float | None, fl
     return percentile(0.025), percentile(0.975)
 
 
+def _cluster_bootstrap_ci(
+    differences: dict[str, float], cluster_ids: dict[str, str], seed: str
+) -> tuple[float | None, float | None, int]:
+    grouped: dict[str, list[float]] = defaultdict(list)
+    for case, difference in differences.items():
+        grouped[cluster_ids[case]].append(difference)
+    clusters = sorted(grouped)
+    if len(clusters) < 2:
+        return None, None, len(clusters)
+    rng = random.Random(seed)
+    samples = sorted(
+        mean(value for cluster in (rng.choice(clusters) for _ in clusters) for value in grouped[cluster])
+        for _ in range(BOOTSTRAPS)
+    )
+
+    def percentile(p: float) -> float:
+        position = (len(samples) - 1) * p
+        lower, upper = math.floor(position), math.ceil(position)
+        return samples[lower] + (samples[upper] - samples[lower]) * (position - lower)
+
+    return percentile(0.025), percentile(0.975), len(clusters)
+
+
 def _summaries(runs: list[dict[str, Any]]) -> dict[tuple[str, str, str], dict[str, Any]]:
     summaries: dict[tuple[str, str, str], dict[str, Any]] = {}
     for variant in VARIANTS:
@@ -278,7 +356,8 @@ def _comparison_rows(
             for metric in PAIRED_METRICS:
                 case_values: dict[str, dict[str, list[float]]] = {first: defaultdict(list), second: defaultdict(list)}
                 for variant in (first, second):
-                    for repeat in REPEATS:
+                    repeats = ("r1",) if second == "hybrid_rerank_k3" and metric in ANSWER_METRICS else REPEATS
+                    for repeat in repeats:
                         run = by_variant[variant].get(repeat)
                         run_values = _metric_values(run, "graph", metric) if run else {}
                         for case, value in run_values.items():
@@ -310,6 +389,47 @@ def _comparison_rows(
     return rows
 
 
+def _cluster_comparison_rows(
+    runs: list[dict[str, Any]], graph_cases: dict[str, set[str]], cluster_ids: dict[str, str]
+) -> list[dict[str, Any]]:
+    by_variant = {
+        variant: {run["repeat"]: run for run in runs if run["variant"] == variant}
+        for variant in VARIANTS
+    }
+    groups = {"all_graph": set.union(*graph_cases.values()), **graph_cases}
+    rows: list[dict[str, Any]] = []
+    for source, names in groups.items():
+        for first, second in CLUSTER_COMPARISONS:
+            for metric in CLUSTER_METRICS:
+                values: dict[str, dict[str, list[float]]] = {first: defaultdict(list), second: defaultdict(list)}
+                for variant in (first, second):
+                    repeats = ("r1",) if second == "hybrid_rerank_k3" and metric in ANSWER_METRICS else REPEATS
+                    for repeat in repeats:
+                        run = by_variant[variant].get(repeat)
+                        for case, value in (_metric_values(run, "graph", metric) if run else {}).items():
+                            if case in names:
+                                values[variant][case].append(value)
+                common = sorted(values[first].keys() & values[second].keys())
+                differences = {
+                    case: mean(values[first][case]) - mean(values[second][case])
+                    for case in common
+                }
+                lower, upper, clusters = _cluster_bootstrap_ci(
+                    differences, cluster_ids, f"cluster|{source}|{first}-{second}|{metric}"
+                )
+                rows.append({
+                    "source_group": source,
+                    "comparison": f"{first} - {second}",
+                    "metric": metric,
+                    "mean_difference": mean(differences.values()) if differences else None,
+                    "ci_lower": lower,
+                    "ci_upper": upper,
+                    "clusters": clusters,
+                    "n": len(differences),
+                })
+    return rows
+
+
 def _coverage_notes(runs: list[dict[str, Any]]) -> list[str]:
     lines = ["## Input coverage", ""]
     if not runs:
@@ -332,12 +452,14 @@ def _write_markdown(
     summaries: dict[tuple[str, str, str], dict[str, Any]],
     source_summaries: dict[tuple[str, str, str], dict[str, Any]],
     comparisons: list[dict[str, Any]],
+    cluster_comparisons: list[dict[str, Any]],
 ) -> None:
     lines = [
         "# Aggregated experiment results",
         "",
         "Variant metrics are means of repeat-level case means ± sample SD across r1–r3; `n` is the number "
-        "of repeats. All six variants have complete 37-case runs. Unavailable case-level metrics are omitted.",
+        "of repeats. All seven variants have complete 37-case retrieval runs. The k3 r2/r3 runs skip RAGAS; "
+        "its answer metrics and matched answer comparisons use r1 only. Unavailable case-level metrics are omitted.",
         "",
         *_coverage_notes(runs),
         "",
@@ -394,6 +516,24 @@ def _write_markdown(
             f"| {item['source_group']} (graph) | {item['comparison']} | {item['metric']} | "
             f"{_format(item['mean_difference'])} {ci} | {_format(item['p_value'])} | {n} |"
         )
+    lines += [
+        "",
+        "## Link-endpoint cluster bootstrap (descriptive only)",
+        "",
+        "Cluster IDs are connected components of graph cases that share a `via_link` gold regulation endpoint "
+        "(`document_version_id`, `article`); the dataset does not store approved link IDs. The five development "
+        "cases form 5 clusters and the 15 drafted cases form 6; because these counts are small, intervals below "
+        "are descriptive sensitivity estimates and no cluster-level p-values are reported.",
+        "",
+        "| Source group | Comparison | Metric | Mean difference [95% cluster bootstrap CI] | Clusters | Cases |",
+        "|---|---|---|---:|---:|---:|",
+    ]
+    for item in cluster_comparisons:
+        ci = f"[{_format(item['ci_lower'])}, {_format(item['ci_upper'])}]"
+        lines.append(
+            f"| {item['source_group']} (graph) | {item['comparison']} | {item['metric']} | "
+            f"{_format(item['mean_difference'])} {ci} | {item['clusters']} | {item['n']} |"
+        )
     (SUMMARY / "main_table.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -401,10 +541,12 @@ def _write_csv(
     summaries: dict[tuple[str, str, str], dict[str, Any]],
     source_summaries: dict[tuple[str, str, str], dict[str, Any]],
     comparisons: list[dict[str, Any]],
+    cluster_comparisons: list[dict[str, Any]],
 ) -> None:
     columns = (
         "record_type", "variant", "comparison", "source_group", "category", "metric", "mean", "std",
-        "repeat_count", "case_counts", "mean_difference", "ci_lower", "ci_upper", "p_value", "n", "n_nonzero",
+        "repeat_count", "case_counts", "mean_difference", "ci_lower", "ci_upper", "p_value", "n",
+        "n_nonzero", "clusters",
     )
     with (SUMMARY / "main_table.csv").open("w", encoding="utf-8-sig", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=columns)
@@ -446,6 +588,19 @@ def _write_csv(
                 "n": item["n"],
                 "n_nonzero": item["n_nonzero"],
             })
+        for item in cluster_comparisons:
+            writer.writerow({
+                "record_type": "cluster_bootstrap",
+                "comparison": item["comparison"],
+                "source_group": item["source_group"],
+                "category": "graph",
+                "metric": item["metric"],
+                "mean_difference": item["mean_difference"],
+                "ci_lower": item["ci_lower"],
+                "ci_upper": item["ci_upper"],
+                "n": item["n"],
+                "clusters": item["clusters"],
+            })
 
 
 def _variance_notes(summaries: dict[tuple[str, str, str], dict[str, Any]], notes: list[str]) -> None:
@@ -462,16 +617,21 @@ def main() -> None:
     notes = [
         "# Aggregation notes",
         "",
-        "Expected input is 18 complete result JSONs: six variants × r1–r3, each with 37 cases. "
+        "Expected input is 21 complete result JSONs: seven variants × r1–r3, each with 37 retrieval cases; "
+        "hybrid_rerank_k3 r2/r3 may be retrieval-only. "
         "Between-repeat SD ≥ 0.10 is flagged below.",
         "",
     ]
     runs = _load_runs(notes)
     source_graph_cases = _source_graph_cases()
+    graph_cluster_ids = _graph_cluster_ids()
     summaries = _summaries(runs)
     source_summaries = _source_summaries(runs, source_graph_cases)
     comparisons = _comparison_rows(runs, source_graph_cases)
+    cluster_comparisons = _cluster_comparison_rows(runs, source_graph_cases, graph_cluster_ids)
     assert len(comparisons) == 3 * len(COMPARISONS) * len(PAIRED_METRICS)
+    assert len(cluster_comparisons) == 3 * len(CLUSTER_COMPARISONS) * len(CLUSTER_METRICS)
+    assert set(graph_cluster_ids) == set.union(*source_graph_cases.values())
     assert _exact_wilcoxon([1.0, -1.0]) == (1.0, 2)
     assert _bootstrap_ci([0.25, 0.25], "self-check") == (0.25, 0.25)
     _variance_notes(summaries, notes)
@@ -488,15 +648,23 @@ def main() -> None:
     notes.append(
         "- Paired comparisons cover the 20 graph cases and separately report the 5-case development and "
         "15-case held-out groups. Each case is averaged over all three repeats. Bootstrap intervals are "
-        "percentile intervals over cases; exact Wilcoxon p-values are unadjusted. Cases can share regulations "
-        "or links, and the held-out labels remain unreviewed."
+        "percentile intervals over cases; exact Wilcoxon p-values are unadjusted. Cluster bootstrap IDs are "
+        "connected components of cases sharing a linked gold endpoint (`document_version_id`, `article`): "
+        f"{len(set(graph_cluster_ids.values()))} overall, "
+        f"{len({graph_cluster_ids[name] for name in source_graph_cases['existing_v2']})} development, "
+        f"{len({graph_cluster_ids[name] for name in source_graph_cases['llm_drafted']})} held-out. "
+        "These small counts support descriptive sensitivity only; held-out labels remain unreviewed."
+    )
+    notes.append(
+        "- `hybrid_rerank_k3` uses one full RAGAS repeat (r1) and two retrieval-only repeats (r2/r3); "
+        "matched answer-metric comparisons use r1 from both variants."
     )
     used_links, approved_links = _link_coverage()
     notes.append(f"- New graph cases cover {used_links}/{approved_links} distinct approved links, based on the human-review checklist.")
     notes += ["", *_coverage_notes(runs)]
     (SUMMARY / "notes.md").write_text("\n".join(notes) + "\n", encoding="utf-8")
-    _write_markdown(runs, summaries, source_summaries, comparisons)
-    _write_csv(summaries, source_summaries, comparisons)
+    _write_markdown(runs, summaries, source_summaries, comparisons, cluster_comparisons)
+    _write_csv(summaries, source_summaries, comparisons, cluster_comparisons)
     print(f"Wrote {SUMMARY / 'main_table.md'}, {SUMMARY / 'main_table.csv'}, and {SUMMARY / 'notes.md'}")
 
 

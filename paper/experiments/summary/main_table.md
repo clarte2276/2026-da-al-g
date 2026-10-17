@@ -1,6 +1,6 @@
 # Aggregated experiment results
 
-Variant metrics are means of repeat-level case means ± sample SD across r1–r3; `n` is the number of repeats. All six variants have complete 37-case runs. Unavailable case-level metrics are omitted.
+Variant metrics are means of repeat-level case means ± sample SD across r1–r3; `n` is the number of repeats. All seven variants have complete 37-case retrieval runs. The k3 r2/r3 runs skip RAGAS; its answer metrics and matched answer comparisons use r1 only. Unavailable case-level metrics are omitted.
 
 ## Input coverage
 
@@ -16,6 +16,9 @@ Variant metrics are means of repeat-level case means ± sample SD across r1–r3
 - `hybrid_rerank r1`: doc 17/17, graph 20/20, all 37/37 (`results\hybrid_rerank_r1.json`).
 - `hybrid_rerank r2`: doc 17/17, graph 20/20, all 37/37 (`results\hybrid_rerank_r2.json`).
 - `hybrid_rerank r3`: doc 17/17, graph 20/20, all 37/37 (`results\hybrid_rerank_r3.json`).
+- `hybrid_rerank_k3 r1`: doc 17/17, graph 20/20, all 37/37 (`results\hybrid_rerank_k3_r1.json`).
+- `hybrid_rerank_k3 r2`: doc 17/17, graph 20/20, all 37/37 (`results\hybrid_rerank_k3_r2.json`).
+- `hybrid_rerank_k3 r3`: doc 17/17, graph 20/20, all 37/37 (`results\hybrid_rerank_k3_r3.json`).
 - `link_all r1`: doc 17/17, graph 20/20, all 37/37 (`results\link_all_r1.json`).
 - `link_all r2`: doc 17/17, graph 20/20, all 37/37 (`results\link_all_r2.json`).
 - `link_all r3`: doc 17/17, graph 20/20, all 37/37 (`results\link_all_r3.json`).
@@ -203,6 +206,50 @@ Variant metrics are means of repeat-level case means ± sample SD across r1–r3
 | hybrid_rerank | all | answer_correctness | 0.7850 ± 0.0023 (n=3) | 37, 37, 37 |
 | hybrid_rerank | all | context_precision | 0.9572 ± 0.0215 (n=3) | 37, 37, 37 |
 | hybrid_rerank | all | context_recall | 0.8806 ± 0.0090 (n=3) | 37, 37, 37 |
+| hybrid_rerank_k3 | doc | recall | 1.0000 ± 0.0000 (n=3) | 17, 17, 17 |
+| hybrid_rerank_k3 | doc | precision | 0.3493 ± 0.0191 (n=3) | 17, 17, 17 |
+| hybrid_rerank_k3 | doc | mrr | 1.0000 ± 0.0000 (n=3) | 17, 17, 17 |
+| hybrid_rerank_k3 | doc | ndcg_at_10 | 0.9984 ± 0.0027 (n=3) | 17, 17, 17 |
+| hybrid_rerank_k3 | doc | special_rule_hit | 0.0000 ± 0.0000 (n=3) | 17, 17, 17 |
+| hybrid_rerank_k3 | doc | evidence_count | 3.2353 ± 0.1556 (n=3) | 17, 17, 17 |
+| hybrid_rerank_k3 | doc | linked_evidence_count | 0.0000 ± 0.0000 (n=3) | 17, 17, 17 |
+| hybrid_rerank_k3 | doc | retrieval_latency_seconds | 1.6971 ± 0.2650 (n=3) | 17, 17, 17 |
+| hybrid_rerank_k3 | doc | answer_latency_seconds | 3.9163 ± — (n=1) | 17, 17, 17 |
+| hybrid_rerank_k3 | doc | faithfulness | 0.9877 ± — (n=1) | 17, 17, 17 |
+| hybrid_rerank_k3 | doc | answer_relevancy | 0.8398 ± — (n=1) | 17, 17, 17 |
+| hybrid_rerank_k3 | doc | answer_correctness | 0.8503 ± — (n=1) | 17, 17, 17 |
+| hybrid_rerank_k3 | doc | context_precision | 0.9706 ± — (n=1) | 17, 17, 17 |
+| hybrid_rerank_k3 | doc | context_recall | 0.9902 ± — (n=1) | 17, 17, 17 |
+| hybrid_rerank_k3 | graph | recall | 0.6181 ± 0.0168 (n=3) | 20, 20, 20 |
+| hybrid_rerank_k3 | graph | precision | 0.4508 ± 0.0063 (n=3) | 20, 20, 20 |
+| hybrid_rerank_k3 | graph | mrr | 0.9750 ± 0.0000 (n=3) | 20, 20, 20 |
+| hybrid_rerank_k3 | graph | ndcg_at_10 | 0.6888 ± 0.0136 (n=3) | 20, 20, 20 |
+| hybrid_rerank_k3 | graph | linked_gold_recall | 0.2250 ± 0.0433 (n=3) | 20, 20, 20 |
+| hybrid_rerank_k3 | graph | special_rule_hit | 0.0000 ± 0.0000 (n=3) | 20, 20, 20 |
+| hybrid_rerank_k3 | graph | evidence_count | 3.1500 ± 0.0500 (n=3) | 20, 20, 20 |
+| hybrid_rerank_k3 | graph | linked_evidence_count | 0.0000 ± 0.0000 (n=3) | 20, 20, 20 |
+| hybrid_rerank_k3 | graph | retrieval_latency_seconds | 1.4460 ± 0.0709 (n=3) | 20, 20, 20 |
+| hybrid_rerank_k3 | graph | answer_latency_seconds | 6.0396 ± — (n=1) | 20, 20, 20 |
+| hybrid_rerank_k3 | graph | faithfulness | 0.9595 ± — (n=1) | 20, 20, 20 |
+| hybrid_rerank_k3 | graph | answer_relevancy | 0.8257 ± — (n=1) | 20, 20, 20 |
+| hybrid_rerank_k3 | graph | answer_correctness | 0.7512 ± — (n=1) | 20, 20, 20 |
+| hybrid_rerank_k3 | graph | context_precision | 0.9458 ± — (n=1) | 20, 20, 20 |
+| hybrid_rerank_k3 | graph | context_recall | 0.8078 ± — (n=1) | 20, 20, 20 |
+| hybrid_rerank_k3 | all | recall | 0.7935 ± 0.0091 (n=3) | 37, 37, 37 |
+| hybrid_rerank_k3 | all | precision | 0.4042 ± 0.0061 (n=3) | 37, 37, 37 |
+| hybrid_rerank_k3 | all | mrr | 0.9865 ± 0.0000 (n=3) | 37, 37, 37 |
+| hybrid_rerank_k3 | all | ndcg_at_10 | 0.8311 ± 0.0061 (n=3) | 37, 37, 37 |
+| hybrid_rerank_k3 | all | linked_gold_recall | 0.2250 ± 0.0433 (n=3) | 37, 37, 37 |
+| hybrid_rerank_k3 | all | special_rule_hit | 0.0000 ± 0.0000 (n=3) | 37, 37, 37 |
+| hybrid_rerank_k3 | all | evidence_count | 3.1892 ± 0.0974 (n=3) | 37, 37, 37 |
+| hybrid_rerank_k3 | all | linked_evidence_count | 0.0000 ± 0.0000 (n=3) | 37, 37, 37 |
+| hybrid_rerank_k3 | all | retrieval_latency_seconds | 1.5614 ± 0.1596 (n=3) | 37, 37, 37 |
+| hybrid_rerank_k3 | all | answer_latency_seconds | 5.0640 ± — (n=1) | 37, 37, 37 |
+| hybrid_rerank_k3 | all | faithfulness | 0.9725 ± — (n=1) | 37, 37, 37 |
+| hybrid_rerank_k3 | all | answer_relevancy | 0.8322 ± — (n=1) | 37, 37, 37 |
+| hybrid_rerank_k3 | all | answer_correctness | 0.7968 ± — (n=1) | 37, 37, 37 |
+| hybrid_rerank_k3 | all | context_precision | 0.9572 ± — (n=1) | 37, 37, 37 |
+| hybrid_rerank_k3 | all | context_recall | 0.8916 ± — (n=1) | 37, 37, 37 |
 | link_all | doc | recall | 1.0000 ± 0.0000 (n=3) | 17, 17, 17 |
 | link_all | doc | precision | 0.6618 ± 0.0291 (n=3) | 17, 17, 17 |
 | link_all | doc | mrr | 0.9118 ± 0.0170 (n=3) | 17, 17, 17 |
@@ -302,6 +349,7 @@ Variant metrics are means of repeat-level case means ± sample SD across r1–r3
 | existing_v2 (graph) | bm25 | recall | 0.3667 ± 0.0000 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | bm25 | linked_gold_recall | 0.1000 ± 0.0000 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | bm25 | mrr | 0.5067 ± 0.0000 (n=3) | 5, 5, 5 |
+| existing_v2 (graph) | bm25 | evidence_count | 5.0000 ± 0.0000 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | bm25 | context_precision | 0.5067 ± 0.0601 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | bm25 | context_recall | 0.6735 ± 0.0106 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | bm25 | answer_correctness | 0.6710 ± 0.0343 (n=3) | 5, 5, 5 |
@@ -310,6 +358,7 @@ Variant metrics are means of repeat-level case means ± sample SD across r1–r3
 | existing_v2 (graph) | dense | recall | 0.2333 ± 0.0000 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | dense | linked_gold_recall | 0.0000 ± 0.0000 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | dense | mrr | 0.4500 ± 0.0000 (n=3) | 5, 5, 5 |
+| existing_v2 (graph) | dense | evidence_count | 5.0000 ± 0.0000 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | dense | context_precision | 0.3000 ± 0.1641 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | dense | context_recall | 0.4564 ± 0.0149 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | dense | answer_correctness | 0.5642 ± 0.0940 (n=3) | 5, 5, 5 |
@@ -318,6 +367,7 @@ Variant metrics are means of repeat-level case means ± sample SD across r1–r3
 | existing_v2 (graph) | hybrid | recall | 0.2833 ± 0.0000 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | hybrid | linked_gold_recall | 0.0000 ± 0.0000 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | hybrid | mrr | 0.5133 ± 0.0058 (n=3) | 5, 5, 5 |
+| existing_v2 (graph) | hybrid | evidence_count | 5.0000 ± 0.0000 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | hybrid | context_precision | 0.4089 ± 0.0975 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | hybrid | context_recall | 0.5277 ± 0.0130 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | hybrid | answer_correctness | 0.5521 ± 0.0286 (n=3) | 5, 5, 5 |
@@ -326,14 +376,25 @@ Variant metrics are means of repeat-level case means ± sample SD across r1–r3
 | existing_v2 (graph) | hybrid_rerank | recall | 0.4778 ± 0.0385 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | hybrid_rerank | linked_gold_recall | 0.0667 ± 0.0577 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | hybrid_rerank | mrr | 1.0000 ± 0.0000 (n=3) | 5, 5, 5 |
+| existing_v2 (graph) | hybrid_rerank | evidence_count | 3.4667 ± 0.4163 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | hybrid_rerank | context_precision | 0.9167 ± 0.0601 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | hybrid_rerank | context_recall | 0.7469 ± 0.0114 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | hybrid_rerank | answer_correctness | 0.7381 ± 0.0159 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | hybrid_rerank | retrieval_latency_seconds | 1.5329 ± 0.0456 (n=3) | 5, 5, 5 |
+| existing_v2 (graph) | hybrid_rerank_k3 | precision | 0.5478 ± 0.0184 (n=3) | 5, 5, 5 |
+| existing_v2 (graph) | hybrid_rerank_k3 | recall | 0.5389 ± 0.0096 (n=3) | 5, 5, 5 |
+| existing_v2 (graph) | hybrid_rerank_k3 | linked_gold_recall | 0.0333 ± 0.0577 (n=3) | 5, 5, 5 |
+| existing_v2 (graph) | hybrid_rerank_k3 | mrr | 1.0000 ± 0.0000 (n=3) | 5, 5, 5 |
+| existing_v2 (graph) | hybrid_rerank_k3 | evidence_count | 3.4000 ± 0.2000 (n=3) | 5, 5, 5 |
+| existing_v2 (graph) | hybrid_rerank_k3 | context_precision | 1.0000 ± — (n=1) | 5, 5, 5 |
+| existing_v2 (graph) | hybrid_rerank_k3 | context_recall | 0.7667 ± — (n=1) | 5, 5, 5 |
+| existing_v2 (graph) | hybrid_rerank_k3 | answer_correctness | 0.7904 ± — (n=1) | 5, 5, 5 |
+| existing_v2 (graph) | hybrid_rerank_k3 | retrieval_latency_seconds | 1.5329 ± 0.0917 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | link_all | precision | 0.6190 ± 0.0545 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | link_all | recall | 0.6667 ± 0.0000 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | link_all | linked_gold_recall | 0.4000 ± 0.0000 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | link_all | mrr | 0.8667 ± 0.0577 (n=3) | 5, 5, 5 |
+| existing_v2 (graph) | link_all | evidence_count | 4.1333 ± 0.4163 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | link_all | context_precision | 0.6811 ± 0.0647 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | link_all | context_recall | 0.8845 ± 0.0211 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | link_all | answer_correctness | 0.7418 ± 0.0202 (n=3) | 5, 5, 5 |
@@ -342,6 +403,7 @@ Variant metrics are means of repeat-level case means ± sample SD across r1–r3
 | existing_v2 (graph) | proposed | recall | 0.6889 ± 0.0385 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | proposed | linked_gold_recall | 0.4333 ± 0.0577 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | proposed | mrr | 1.0000 ± 0.0000 (n=3) | 5, 5, 5 |
+| existing_v2 (graph) | proposed | evidence_count | 4.6000 ± 0.2000 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | proposed | context_precision | 0.7896 ± 0.0737 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | proposed | context_recall | 0.8335 ± 0.0189 (n=3) | 5, 5, 5 |
 | existing_v2 (graph) | proposed | answer_correctness | 0.7392 ± 0.0259 (n=3) | 5, 5, 5 |
@@ -350,6 +412,7 @@ Variant metrics are means of repeat-level case means ± sample SD across r1–r3
 | llm_drafted (graph) | bm25 | recall | 0.6667 ± 0.0000 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | bm25 | linked_gold_recall | 0.3333 ± 0.0000 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | bm25 | mrr | 1.0000 ± 0.0000 (n=3) | 15, 15, 15 |
+| llm_drafted (graph) | bm25 | evidence_count | 5.0000 ± 0.0000 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | bm25 | context_precision | 0.8898 ± 0.0217 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | bm25 | context_recall | 0.8128 ± 0.0139 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | bm25 | answer_correctness | 0.7548 ± 0.0033 (n=3) | 15, 15, 15 |
@@ -358,6 +421,7 @@ Variant metrics are means of repeat-level case means ± sample SD across r1–r3
 | llm_drafted (graph) | dense | recall | 0.4333 ± 0.0000 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | dense | linked_gold_recall | 0.0000 ± 0.0000 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | dense | mrr | 0.5444 ± 0.0000 (n=3) | 15, 15, 15 |
+| llm_drafted (graph) | dense | evidence_count | 5.0000 ± 0.0000 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | dense | context_precision | 0.5811 ± 0.0150 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | dense | context_recall | 0.6806 ± 0.0058 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | dense | answer_correctness | 0.6940 ± 0.0045 (n=3) | 15, 15, 15 |
@@ -366,6 +430,7 @@ Variant metrics are means of repeat-level case means ± sample SD across r1–r3
 | llm_drafted (graph) | hybrid | recall | 0.6000 ± 0.0000 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | hybrid | linked_gold_recall | 0.2000 ± 0.0000 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | hybrid | mrr | 0.9481 ± 0.0231 (n=3) | 15, 15, 15 |
+| llm_drafted (graph) | hybrid | evidence_count | 5.0000 ± 0.0000 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | hybrid | context_precision | 0.8763 ± 0.0390 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | hybrid | context_recall | 0.7766 ± 0.0045 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | hybrid | answer_correctness | 0.7262 ± 0.0288 (n=3) | 15, 15, 15 |
@@ -374,14 +439,25 @@ Variant metrics are means of repeat-level case means ± sample SD across r1–r3
 | llm_drafted (graph) | hybrid_rerank | recall | 0.6222 ± 0.0385 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | hybrid_rerank | linked_gold_recall | 0.2889 ± 0.0385 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | hybrid_rerank | mrr | 0.9222 ± 0.0509 (n=3) | 15, 15, 15 |
+| llm_drafted (graph) | hybrid_rerank | evidence_count | 1.6222 ± 0.1018 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | hybrid_rerank | context_precision | 0.9556 ± 0.0509 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | hybrid_rerank | context_recall | 0.7974 ± 0.0221 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | hybrid_rerank | answer_correctness | 0.7470 ± 0.0260 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | hybrid_rerank | retrieval_latency_seconds | 1.5191 ± 0.0414 (n=3) | 15, 15, 15 |
+| llm_drafted (graph) | hybrid_rerank_k3 | precision | 0.4185 ± 0.0128 (n=3) | 15, 15, 15 |
+| llm_drafted (graph) | hybrid_rerank_k3 | recall | 0.6444 ± 0.0192 (n=3) | 15, 15, 15 |
+| llm_drafted (graph) | hybrid_rerank_k3 | linked_gold_recall | 0.2889 ± 0.0385 (n=3) | 15, 15, 15 |
+| llm_drafted (graph) | hybrid_rerank_k3 | mrr | 0.9667 ± 0.0000 (n=3) | 15, 15, 15 |
+| llm_drafted (graph) | hybrid_rerank_k3 | evidence_count | 3.0667 ± 0.0000 (n=3) | 15, 15, 15 |
+| llm_drafted (graph) | hybrid_rerank_k3 | context_precision | 0.9278 ± — (n=1) | 15, 15, 15 |
+| llm_drafted (graph) | hybrid_rerank_k3 | context_recall | 0.8215 ± — (n=1) | 15, 15, 15 |
+| llm_drafted (graph) | hybrid_rerank_k3 | answer_correctness | 0.7382 ± — (n=1) | 15, 15, 15 |
+| llm_drafted (graph) | hybrid_rerank_k3 | retrieval_latency_seconds | 1.4170 ± 0.0675 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | link_all | precision | 0.7548 ± 0.0206 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | link_all | recall | 0.9111 ± 0.0192 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | link_all | linked_gold_recall | 0.8667 ± 0.0000 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | link_all | mrr | 0.9889 ± 0.0192 (n=3) | 15, 15, 15 |
+| llm_drafted (graph) | link_all | evidence_count | 2.7333 ± 0.1333 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | link_all | context_precision | 0.9427 ± 0.0314 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | link_all | context_recall | 0.9561 ± 0.0123 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | link_all | answer_correctness | 0.7628 ± 0.0319 (n=3) | 15, 15, 15 |
@@ -390,6 +466,7 @@ Variant metrics are means of repeat-level case means ± sample SD across r1–r3
 | llm_drafted (graph) | proposed | recall | 0.8889 ± 0.0509 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | proposed | linked_gold_recall | 0.8000 ± 0.0667 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | proposed | mrr | 0.9667 ± 0.0000 (n=3) | 15, 15, 15 |
+| llm_drafted (graph) | proposed | evidence_count | 2.4667 ± 0.1764 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | proposed | context_precision | 0.9679 ± 0.0204 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | proposed | context_recall | 0.9438 ± 0.0205 (n=3) | 15, 15, 15 |
 | llm_drafted (graph) | proposed | answer_correctness | 0.7613 ± 0.0096 (n=3) | 15, 15, 15 |
@@ -431,6 +508,26 @@ Each graph case is averaged over r1–r3, then paired by case name. Mean differe
 | all_graph (graph) | proposed - link_all | faithfulness | 0.0037 [-0.0003, 0.0081] | 0.1309 | 20 (10) |
 | all_graph (graph) | proposed - link_all | answer_relevancy | 0.0178 [0.0061, 0.0315] | 0.0073 | 20 (20) |
 | all_graph (graph) | proposed - link_all | context_recall | -0.0220 [-0.0619, 0.0091] | 0.3828 | 20 (8) |
+| all_graph (graph) | link_all - hybrid_rerank_k3 | recall | 0.2319 [0.1222, 0.3389] | 0.0011 | 20 (14) |
+| all_graph (graph) | link_all - hybrid_rerank_k3 | linked_gold_recall | 0.5250 [0.3250, 0.7167] | 0.0005 | 20 (12) |
+| all_graph (graph) | link_all - hybrid_rerank_k3 | context_precision | -0.0608 [-0.1667, 0.0375] | 0.2129 | 20 (11) |
+| all_graph (graph) | link_all - hybrid_rerank_k3 | answer_correctness | -0.0258 [-0.0903, 0.0493] | 0.1429 | 20 (20) |
+| all_graph (graph) | link_all - hybrid_rerank_k3 | precision | 0.2700 [0.1281, 0.4117] | 0.0040 | 20 (19) |
+| all_graph (graph) | link_all - hybrid_rerank_k3 | mrr | -0.0167 [-0.0833, 0.0417] | 0.7500 | 20 (3) |
+| all_graph (graph) | link_all - hybrid_rerank_k3 | ndcg_at_10 | 0.1622 [0.0752, 0.2468] | 0.0025 | 20 (17) |
+| all_graph (graph) | link_all - hybrid_rerank_k3 | faithfulness | 0.0216 [-0.0071, 0.0547] | 0.2637 | 20 (10) |
+| all_graph (graph) | link_all - hybrid_rerank_k3 | answer_relevancy | 0.0118 [-0.0239, 0.0441] | 0.5217 | 20 (20) |
+| all_graph (graph) | link_all - hybrid_rerank_k3 | context_recall | 0.1227 [0.0330, 0.2184] | 0.0251 | 20 (13) |
+| all_graph (graph) | proposed - hybrid_rerank_k3 | recall | 0.2208 [0.1208, 0.3208] | 0.0010 | 20 (13) |
+| all_graph (graph) | proposed - hybrid_rerank_k3 | linked_gold_recall | 0.4833 [0.2917, 0.6750] | 0.0005 | 20 (12) |
+| all_graph (graph) | proposed - hybrid_rerank_k3 | context_precision | -0.0512 [-0.1445, 0.0252] | 0.4231 | 20 (13) |
+| all_graph (graph) | proposed - hybrid_rerank_k3 | answer_correctness | 0.0179 [-0.0525, 0.0937] | 0.7285 | 20 (20) |
+| all_graph (graph) | proposed - hybrid_rerank_k3 | precision | 0.2911 [0.1408, 0.4406] | 0.0062 | 20 (17) |
+| all_graph (graph) | proposed - hybrid_rerank_k3 | mrr | 0.0000 [0.0000, 0.0000] | 1.0000 | 20 (0) |
+| all_graph (graph) | proposed - hybrid_rerank_k3 | ndcg_at_10 | 0.1542 [0.0772, 0.2345] | 0.0032 | 20 (16) |
+| all_graph (graph) | proposed - hybrid_rerank_k3 | faithfulness | 0.0264 [-0.0003, 0.0593] | 0.1309 | 20 (10) |
+| all_graph (graph) | proposed - hybrid_rerank_k3 | answer_relevancy | 0.0262 [-0.0004, 0.0557] | 0.1650 | 20 (20) |
+| all_graph (graph) | proposed - hybrid_rerank_k3 | context_recall | 0.1210 [0.0474, 0.2066] | 0.0020 | 20 (12) |
 | existing_v2 (graph) | link_all - hybrid_rerank | recall | 0.1889 [0.0722, 0.2833] | 0.1250 | 5 (4) |
 | existing_v2 (graph) | link_all - hybrid_rerank | linked_gold_recall | 0.3333 [0.0333, 0.7000] | 0.2500 | 5 (3) |
 | existing_v2 (graph) | link_all - hybrid_rerank | context_precision | -0.2356 [-0.3189, -0.1522] | 0.0625 | 5 (5) |
@@ -461,6 +558,26 @@ Each graph case is averaged over r1–r3, then paired by case name. Mean differe
 | existing_v2 (graph) | proposed - link_all | faithfulness | -0.0039 [-0.0099, 0.0000] | 0.5000 | 5 (2) |
 | existing_v2 (graph) | proposed - link_all | answer_relevancy | 0.0067 [-0.0059, 0.0180] | 0.4375 | 5 (5) |
 | existing_v2 (graph) | proposed - link_all | context_recall | -0.0510 [-0.1276, -0.0049] | 0.1250 | 5 (4) |
+| existing_v2 (graph) | link_all - hybrid_rerank_k3 | recall | 0.1278 [0.0167, 0.2444] | 0.2500 | 5 (3) |
+| existing_v2 (graph) | link_all - hybrid_rerank_k3 | linked_gold_recall | 0.3667 [0.0667, 0.7000] | 0.2500 | 5 (3) |
+| existing_v2 (graph) | link_all - hybrid_rerank_k3 | context_precision | -0.3933 [-0.5000, -0.2467] | 0.0625 | 5 (5) |
+| existing_v2 (graph) | link_all - hybrid_rerank_k3 | answer_correctness | -0.0687 [-0.1402, -0.0121] | 0.0625 | 5 (5) |
+| existing_v2 (graph) | link_all - hybrid_rerank_k3 | precision | 0.0713 [-0.1454, 0.3422] | 1.0000 | 5 (5) |
+| existing_v2 (graph) | link_all - hybrid_rerank_k3 | mrr | -0.1333 [-0.3333, 0.0000] | 0.5000 | 5 (2) |
+| existing_v2 (graph) | link_all - hybrid_rerank_k3 | ndcg_at_10 | 0.0055 [-0.1309, 0.1398] | 1.0000 | 5 (5) |
+| existing_v2 (graph) | link_all - hybrid_rerank_k3 | faithfulness | 0.0451 [-0.0382, 0.1500] | 0.7500 | 5 (3) |
+| existing_v2 (graph) | link_all - hybrid_rerank_k3 | answer_relevancy | 0.0167 [-0.0092, 0.0426] | 0.3125 | 5 (5) |
+| existing_v2 (graph) | link_all - hybrid_rerank_k3 | context_recall | 0.1289 [0.0111, 0.2778] | 0.2500 | 5 (3) |
+| existing_v2 (graph) | proposed - hybrid_rerank_k3 | recall | 0.1500 [0.0167, 0.2833] | 0.2500 | 5 (3) |
+| existing_v2 (graph) | proposed - hybrid_rerank_k3 | linked_gold_recall | 0.4000 [0.1000, 0.7000] | 0.2500 | 5 (3) |
+| existing_v2 (graph) | proposed - hybrid_rerank_k3 | context_precision | -0.2656 [-0.4778, -0.0989] | 0.1250 | 5 (4) |
+| existing_v2 (graph) | proposed - hybrid_rerank_k3 | answer_correctness | -0.0222 [-0.1203, 0.0768] | 0.8125 | 5 (5) |
+| existing_v2 (graph) | proposed - hybrid_rerank_k3 | precision | 0.0211 [-0.1911, 0.2936] | 0.8125 | 5 (5) |
+| existing_v2 (graph) | proposed - hybrid_rerank_k3 | mrr | 0.0000 [0.0000, 0.0000] | 1.0000 | 5 (0) |
+| existing_v2 (graph) | proposed - hybrid_rerank_k3 | ndcg_at_10 | 0.0581 [-0.0681, 0.1864] | 0.6250 | 5 (5) |
+| existing_v2 (graph) | proposed - hybrid_rerank_k3 | faithfulness | 0.0421 [-0.0289, 0.1500] | 0.7500 | 5 (3) |
+| existing_v2 (graph) | proposed - hybrid_rerank_k3 | answer_relevancy | 0.0062 [-0.0187, 0.0256] | 0.6250 | 5 (5) |
+| existing_v2 (graph) | proposed - hybrid_rerank_k3 | context_recall | 0.0483 [-0.0133, 0.1183] | 0.5000 | 5 (3) |
 | llm_drafted (graph) | link_all - hybrid_rerank | recall | 0.2889 [0.1556, 0.4222] | 0.0039 | 15 (10) |
 | llm_drafted (graph) | link_all - hybrid_rerank | linked_gold_recall | 0.5778 [0.3333, 0.8000] | 0.0039 | 15 (9) |
 | llm_drafted (graph) | link_all - hybrid_rerank | context_precision | -0.0128 [-0.0737, 0.0484] | 1.0000 | 15 (8) |
@@ -491,3 +608,84 @@ Each graph case is averaged over r1–r3, then paired by case name. Mean differe
 | llm_drafted (graph) | proposed - link_all | faithfulness | 0.0062 [0.0020, 0.0113] | 0.0156 | 15 (8) |
 | llm_drafted (graph) | proposed - link_all | answer_relevancy | 0.0216 [0.0068, 0.0391] | 0.0125 | 15 (15) |
 | llm_drafted (graph) | proposed - link_all | context_recall | -0.0123 [-0.0603, 0.0205] | 1.0000 | 15 (4) |
+| llm_drafted (graph) | link_all - hybrid_rerank_k3 | recall | 0.2667 [0.1222, 0.4000] | 0.0049 | 15 (11) |
+| llm_drafted (graph) | link_all - hybrid_rerank_k3 | linked_gold_recall | 0.5778 [0.3333, 0.8000] | 0.0039 | 15 (9) |
+| llm_drafted (graph) | link_all - hybrid_rerank_k3 | context_precision | 0.0500 [-0.0000, 0.1333] | 0.4375 | 15 (6) |
+| llm_drafted (graph) | link_all - hybrid_rerank_k3 | answer_correctness | -0.0115 [-0.0974, 0.0836] | 0.4887 | 15 (15) |
+| llm_drafted (graph) | link_all - hybrid_rerank_k3 | precision | 0.3363 [0.1815, 0.4948] | 0.0027 | 15 (14) |
+| llm_drafted (graph) | link_all - hybrid_rerank_k3 | mrr | 0.0222 [0.0000, 0.0667] | 1.0000 | 15 (1) |
+| llm_drafted (graph) | link_all - hybrid_rerank_k3 | ndcg_at_10 | 0.2145 [0.1167, 0.3036] | 0.0024 | 15 (12) |
+| llm_drafted (graph) | link_all - hybrid_rerank_k3 | faithfulness | 0.0138 [-0.0092, 0.0367] | 0.2656 | 15 (7) |
+| llm_drafted (graph) | link_all - hybrid_rerank_k3 | answer_relevancy | 0.0101 [-0.0365, 0.0540] | 0.8040 | 15 (15) |
+| llm_drafted (graph) | link_all - hybrid_rerank_k3 | context_recall | 0.1206 [0.0095, 0.2402] | 0.0996 | 15 (10) |
+| llm_drafted (graph) | proposed - hybrid_rerank_k3 | recall | 0.2444 [0.1222, 0.3667] | 0.0059 | 15 (10) |
+| llm_drafted (graph) | proposed - hybrid_rerank_k3 | linked_gold_recall | 0.5111 [0.2889, 0.7333] | 0.0039 | 15 (9) |
+| llm_drafted (graph) | proposed - hybrid_rerank_k3 | context_precision | 0.0203 [-0.0333, 0.0775] | 0.4375 | 15 (9) |
+| llm_drafted (graph) | proposed - hybrid_rerank_k3 | answer_correctness | 0.0313 [-0.0573, 0.1230] | 0.5245 | 15 (15) |
+| llm_drafted (graph) | proposed - hybrid_rerank_k3 | precision | 0.3811 [0.2137, 0.5367] | 0.0024 | 15 (12) |
+| llm_drafted (graph) | proposed - hybrid_rerank_k3 | mrr | 0.0000 [0.0000, 0.0000] | 1.0000 | 15 (0) |
+| llm_drafted (graph) | proposed - hybrid_rerank_k3 | ndcg_at_10 | 0.1863 [0.0939, 0.2781] | 0.0049 | 15 (11) |
+| llm_drafted (graph) | proposed - hybrid_rerank_k3 | faithfulness | 0.0212 [-0.0029, 0.0467] | 0.1562 | 15 (7) |
+| llm_drafted (graph) | proposed - hybrid_rerank_k3 | answer_relevancy | 0.0328 [-0.0009, 0.0722] | 0.2078 | 15 (15) |
+| llm_drafted (graph) | proposed - hybrid_rerank_k3 | context_recall | 0.1452 [0.0534, 0.2493] | 0.0078 | 15 (9) |
+
+## Link-endpoint cluster bootstrap (descriptive only)
+
+Cluster IDs are connected components of graph cases that share a `via_link` gold regulation endpoint (`document_version_id`, `article`); the dataset does not store approved link IDs. The five development cases form 5 clusters and the 15 drafted cases form 6; because these counts are small, intervals below are descriptive sensitivity estimates and no cluster-level p-values are reported.
+
+| Source group | Comparison | Metric | Mean difference [95% cluster bootstrap CI] | Clusters | Cases |
+|---|---|---|---:|---:|---:|
+| all_graph (graph) | link_all - hybrid_rerank_k3 | recall | 0.2319 [0.0796, 0.3590] | 10 | 20 |
+| all_graph (graph) | link_all - hybrid_rerank_k3 | linked_gold_recall | 0.5250 [0.2750, 0.7407] | 10 | 20 |
+| all_graph (graph) | link_all - hybrid_rerank_k3 | context_precision | -0.0608 [-0.2000, 0.0532] | 10 | 20 |
+| all_graph (graph) | link_all - hybrid_rerank_k3 | evidence_count | -0.0667 [-0.5943, 0.5833] | 10 | 20 |
+| all_graph (graph) | link_all - hybrid_rerank_k3 | answer_correctness | -0.0258 [-0.0966, 0.0663] | 10 | 20 |
+| all_graph (graph) | link_all - hybrid_rerank_k3 | retrieval_latency_seconds | 0.7106 [0.2482, 1.5977] | 10 | 20 |
+| all_graph (graph) | proposed - hybrid_rerank_k3 | recall | 0.2208 [0.0967, 0.3333] | 10 | 20 |
+| all_graph (graph) | proposed - hybrid_rerank_k3 | linked_gold_recall | 0.4833 [0.2619, 0.6833] | 10 | 20 |
+| all_graph (graph) | proposed - hybrid_rerank_k3 | context_precision | -0.0512 [-0.1926, 0.0248] | 10 | 20 |
+| all_graph (graph) | proposed - hybrid_rerank_k3 | evidence_count | -0.1500 [-0.6842, 0.5641] | 10 | 20 |
+| all_graph (graph) | proposed - hybrid_rerank_k3 | answer_correctness | 0.0179 [-0.0437, 0.1021] | 10 | 20 |
+| all_graph (graph) | proposed - hybrid_rerank_k3 | retrieval_latency_seconds | 1.2319 [1.1424, 1.3636] | 10 | 20 |
+| all_graph (graph) | proposed - link_all | recall | -0.0111 [-0.0556, 0.0294] | 10 | 20 |
+| all_graph (graph) | proposed - link_all | linked_gold_recall | -0.0417 [-0.1190, 0.0208] | 10 | 20 |
+| all_graph (graph) | proposed - link_all | context_precision | 0.0460 [0.0133, 0.0902] | 10 | 20 |
+| all_graph (graph) | proposed - link_all | evidence_count | -0.0833 [-0.3492, 0.2222] | 10 | 20 |
+| all_graph (graph) | proposed - link_all | answer_correctness | -0.0017 [-0.0189, 0.0181] | 10 | 20 |
+| all_graph (graph) | proposed - link_all | retrieval_latency_seconds | 0.5212 [-0.3491, 1.0699] | 10 | 20 |
+| existing_v2 (graph) | link_all - hybrid_rerank_k3 | recall | 0.1278 [0.0167, 0.2444] | 5 | 5 |
+| existing_v2 (graph) | link_all - hybrid_rerank_k3 | linked_gold_recall | 0.3667 [0.0667, 0.7000] | 5 | 5 |
+| existing_v2 (graph) | link_all - hybrid_rerank_k3 | context_precision | -0.3933 [-0.5000, -0.2467] | 5 | 5 |
+| existing_v2 (graph) | link_all - hybrid_rerank_k3 | evidence_count | 0.7333 [-0.1333, 1.4000] | 5 | 5 |
+| existing_v2 (graph) | link_all - hybrid_rerank_k3 | answer_correctness | -0.0687 [-0.1402, -0.0121] | 5 | 5 |
+| existing_v2 (graph) | link_all - hybrid_rerank_k3 | retrieval_latency_seconds | 0.2080 [0.1614, 0.2740] | 5 | 5 |
+| existing_v2 (graph) | proposed - hybrid_rerank_k3 | recall | 0.1500 [0.0167, 0.2833] | 5 | 5 |
+| existing_v2 (graph) | proposed - hybrid_rerank_k3 | linked_gold_recall | 0.4000 [0.1000, 0.7000] | 5 | 5 |
+| existing_v2 (graph) | proposed - hybrid_rerank_k3 | context_precision | -0.2656 [-0.4778, -0.0989] | 5 | 5 |
+| existing_v2 (graph) | proposed - hybrid_rerank_k3 | evidence_count | 1.2000 [0.2000, 2.0000] | 5 | 5 |
+| existing_v2 (graph) | proposed - hybrid_rerank_k3 | answer_correctness | -0.0222 [-0.1203, 0.0768] | 5 | 5 |
+| existing_v2 (graph) | proposed - hybrid_rerank_k3 | retrieval_latency_seconds | 1.2651 [1.1560, 1.3697] | 5 | 5 |
+| existing_v2 (graph) | proposed - link_all | recall | 0.0222 [0.0000, 0.0667] | 5 | 5 |
+| existing_v2 (graph) | proposed - link_all | linked_gold_recall | 0.0333 [0.0000, 0.1000] | 5 | 5 |
+| existing_v2 (graph) | proposed - link_all | context_precision | 0.1085 [0.0022, 0.2200] | 5 | 5 |
+| existing_v2 (graph) | proposed - link_all | evidence_count | 0.4667 [0.2000, 0.7333] | 5 | 5 |
+| existing_v2 (graph) | proposed - link_all | answer_correctness | -0.0026 [-0.0399, 0.0417] | 5 | 5 |
+| existing_v2 (graph) | proposed - link_all | retrieval_latency_seconds | 1.0571 [0.9035, 1.2107] | 5 | 5 |
+| llm_drafted (graph) | link_all - hybrid_rerank_k3 | recall | 0.2667 [0.0833, 0.4405] | 6 | 15 |
+| llm_drafted (graph) | link_all - hybrid_rerank_k3 | linked_gold_recall | 0.5778 [0.2708, 0.8889] | 6 | 15 |
+| llm_drafted (graph) | link_all - hybrid_rerank_k3 | context_precision | 0.0500 [-0.0000, 0.1500] | 6 | 15 |
+| llm_drafted (graph) | link_all - hybrid_rerank_k3 | evidence_count | -0.3333 [-0.9167, 0.3778] | 6 | 15 |
+| llm_drafted (graph) | link_all - hybrid_rerank_k3 | answer_correctness | -0.0115 [-0.1058, 0.1156] | 6 | 15 |
+| llm_drafted (graph) | link_all - hybrid_rerank_k3 | retrieval_latency_seconds | 0.8782 [0.2732, 2.0400] | 6 | 15 |
+| llm_drafted (graph) | proposed - hybrid_rerank_k3 | recall | 0.2444 [0.0980, 0.4000] | 6 | 15 |
+| llm_drafted (graph) | proposed - hybrid_rerank_k3 | linked_gold_recall | 0.5111 [0.2456, 0.8056] | 6 | 15 |
+| llm_drafted (graph) | proposed - hybrid_rerank_k3 | context_precision | 0.0203 [-0.0471, 0.0782] | 6 | 15 |
+| llm_drafted (graph) | proposed - hybrid_rerank_k3 | evidence_count | -0.6000 [-1.0667, -0.0769] | 6 | 15 |
+| llm_drafted (graph) | proposed - hybrid_rerank_k3 | answer_correctness | 0.0313 [-0.0427, 0.1355] | 6 | 15 |
+| llm_drafted (graph) | proposed - hybrid_rerank_k3 | retrieval_latency_seconds | 1.2208 [1.1133, 1.4062] | 6 | 15 |
+| llm_drafted (graph) | proposed - link_all | recall | -0.0222 [-0.0833, 0.0256] | 6 | 15 |
+| llm_drafted (graph) | proposed - link_all | linked_gold_recall | -0.0667 [-0.1667, 0.0000] | 6 | 15 |
+| llm_drafted (graph) | proposed - link_all | context_precision | 0.0252 [0.0077, 0.0422] | 6 | 15 |
+| llm_drafted (graph) | proposed - link_all | evidence_count | -0.2667 [-0.5476, 0.0238] | 6 | 15 |
+| llm_drafted (graph) | proposed - link_all | answer_correctness | -0.0014 [-0.0193, 0.0182] | 6 | 15 |
+| llm_drafted (graph) | proposed - link_all | retrieval_latency_seconds | 0.3426 [-0.7608, 1.0661] | 6 | 15 |
