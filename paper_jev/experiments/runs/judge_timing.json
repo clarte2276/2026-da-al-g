@@ -1,0 +1,34 @@
+{
+  "started_at_utc": "2026-10-17T02:28:49.082363+00:00",
+  "wall_seconds": 827.1635049999968,
+  "per_judge_wall_seconds": {
+    "jev_pair_r1": 0.01702810000278987,
+    "jev_choice_r1": 0.017560399996000342,
+    "llm_pair_r1": 0.017981900004087947,
+    "llm_list_r1": 0.010328199998184573,
+    "cascade_r1": 0.016774700001406018,
+    "jev_pair_r2": 67.90692110000236,
+    "jev_choice_r2": 65.2514549999978,
+    "llm_pair_r2": 145.71720310000092,
+    "llm_list_r2": 96.42377590000251,
+    "cascade_r2": 25.286943600003724,
+    "jev_pair_r3": 76.87217569999484,
+    "jev_choice_r3": 74.57179490000271,
+    "llm_pair_r3": 151.9600483000031,
+    "llm_list_r3": 98.2451699000012,
+    "cascade_r3": 24.848202299996046
+  },
+  "model": "gpt-5.6-luna",
+  "repeats": [
+    "r1",
+    "r2",
+    "r3"
+  ],
+  "requested_judges": [
+    "jev_pair",
+    "jev_choice",
+    "llm_pair",
+    "llm_list",
+    "cascade"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "system": "Does this guide slide require or reference this regulation article? Answer yes only when the article is directly needed to apply, explain, or support the slide's procedure. Shared topic, nearby text, or a merely plausible legal basis is not enough. For each pair, return yes/no and confidence from 0 to 1 in that decision. Return JSON with a pairs array containing pair_id, decision, and confidence for every pair.",
+  "user_shape": {
+    "relation_question": "Does this guide slide require or reference this regulation article?",
+    "decision_rule": "Answer yes only when the article is directly needed to apply, explain, or support the slide's procedure. Shared topic, nearby text, or a merely plausible legal basis is not enough.",
+    "pairs": "source text and candidate article text"
+  }
+}

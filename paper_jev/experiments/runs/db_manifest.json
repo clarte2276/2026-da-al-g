@@ -1,0 +1,32 @@
+{
+  "gold": {
+    "database": "runtime\\links_gold.sqlite",
+    "document_links": 36,
+    "link_set": "original approved records"
+  },
+  "none": {
+    "database": "runtime\\links_none.sqlite",
+    "document_links": 0,
+    "link_set": "empty"
+  },
+  "jev_pair": {
+    "database": "runtime\\links_jev_pair.sqlite",
+    "document_links": 67,
+    "link_set": "majority vote across three repeats at p>=0.5"
+  },
+  "jev_choice": {
+    "database": "runtime\\links_jev_choice.sqlite",
+    "document_links": 24,
+    "link_set": "majority vote across three repeats at p>=0.5"
+  },
+  "llm_pair": {
+    "database": "runtime\\links_llm_pair.sqlite",
+    "document_links": 141,
+    "link_set": "majority vote across three repeats at p>=0.5"
+  },
+  "cascade": {
+    "database": "runtime\\links_cascade.sqlite",
+    "document_links": 112,
+    "link_set": "majority vote across three repeats at p>=0.5"
+  }
+}

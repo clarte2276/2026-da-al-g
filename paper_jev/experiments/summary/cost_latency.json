@@ -1,0 +1,79 @@
+{
+  "jev_pair": {
+    "calls": 480,
+    "input_tokens": 5625972,
+    "cached_input_tokens": 0,
+    "output_tokens": 93120,
+    "cost_usd": 0.236290824,
+    "p50_seconds": 0.304428999996162,
+    "p95_seconds": 0.3879644999979064,
+    "total_call_seconds": 148.93776110008184,
+    "wall_seconds": 148.93776110008184
+  },
+  "jev_choice": {
+    "calls": 480,
+    "input_tokens": 2892135,
+    "cached_input_tokens": 0,
+    "output_tokens": 108781,
+    "cost_usd": 0.12146967,
+    "p50_seconds": 0.2643515000017942,
+    "p95_seconds": 0.32313930000236724,
+    "total_call_seconds": 129.75026730009267,
+    "wall_seconds": 129.75026730009267
+  },
+  "llm_pair": {
+    "calls": 74,
+    "input_tokens": 5808287,
+    "cached_input_tokens": 3191376,
+    "output_tokens": 115835,
+    "cost_usd": 0.72621172,
+    "p50_seconds": 7.36500459999661,
+    "p95_seconds": 16.979144999997516,
+    "total_call_seconds": 668.0501378999616,
+    "wall_seconds": 668.0501378999616
+  },
+  "llm_list": {
+    "calls": 61,
+    "input_tokens": 2430530,
+    "cached_input_tokens": 1576834,
+    "output_tokens": 43190,
+    "cost_usd": 0.25410388,
+    "p50_seconds": 4.579321600002004,
+    "p95_seconds": 5.277067600000009,
+    "total_call_seconds": 284.13378429998556,
+    "wall_seconds": 284.13378429998556
+  },
+  "cascade": {
+    "calls": 12,
+    "input_tokens": 708994,
+    "cached_input_tokens": 0,
+    "output_tokens": 11892,
+    "cost_usd": 0.15606920000000002,
+    "p50_seconds": 7.416607600003772,
+    "p95_seconds": 7.995382000000973,
+    "total_call_seconds": 72.54954039999575,
+    "wall_seconds": 72.54954039999575
+  },
+  "cascade_pipeline": {
+    "calls": 492,
+    "input_tokens": 6334966,
+    "cached_input_tokens": 0,
+    "output_tokens": 105012,
+    "cost_usd": 0.39236002400000003,
+    "p50_seconds": 0.3059127000014996,
+    "p95_seconds": 0.4138606000051368,
+    "total_call_seconds": 221.4873015000776,
+    "wall_seconds": 221.4873015000776
+  },
+  "score_only": {
+    "calls": 0,
+    "input_tokens": 0,
+    "cached_input_tokens": 0,
+    "output_tokens": 0,
+    "cost_usd": 0.0,
+    "p50_seconds": null,
+    "p95_seconds": null,
+    "total_call_seconds": 0.0,
+    "wall_seconds": 0.0
+  }
+}
