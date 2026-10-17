@@ -460,3 +460,90 @@ Traceback (most recent call last):
 openai.RateLimitError: Error code: 429 - {'error': {'message': 'You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.', 'type': 'insufficient_quota', 'param': None, 'code': 'credit_balance_exhausted'}}
 RETRY2_EXIT_CODE=1 WALL_TIME_SECONDS=11.05
 FAILED link_all_r1: 31/37 cases completed; initial attempt plus two --resume retries exhausted by OpenAI 429 insufficient_quota. Resume command: PYTHONPATH=. PYTHONIOENCODING=utf-8 uv run --extra eval --extra dev --extra hwp python scripts/ragas_eval.py --dataset ../paper/data/eval_set_v3.json --variant link_all --repeat-tag r1 --run-id link_all_r1 --output-dir ../paper/experiments/results --resume
+
+===== RUN link_all_r1 attempt 1 start UTC=2026-10-17T01:02:37 =====
+Traceback (most recent call last):
+  File "C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-resume-r1\back\scripts\ragas_eval.py", line 151, in <module>
+    from ragas.embeddings.base import embedding_factory
+ModuleNotFoundError: No module named 'ragas'
+===== RUN link_all_r1 attempt 1 exit=1 wall_seconds=1.7 =====
+
+===== RUN link_all_r1 attempt 2 start UTC=2026-10-17T01:03:03 =====
+Installed 73 packages in 1.20s
+Resumed checkpoint from ..\paper\experiments\results\checkpoints\link_all_r1.json (31 doc, 0 gen)
+Run ID: link_all_r1 | Ref Version: v2 | Variant: link_all | LLM: gpt-5.6-luna | Embedding: openai
+Executing: 37 document cases, 0 general cases
+================================================================================
+[REUSED] vehicle_failure: mode=rag, faithfulness=1.0000, correctness=0.9821
+[REUSED] brake_pipe: mode=rag, faithfulness=1.0000, correctness=0.8720
+[REUSED] door_failure: mode=rag, faithfulness=1.0000, correctness=0.6946
+[REUSED] rescue_train_protection: mode=rag, faithfulness=1.0000, correctness=0.6229
+[REUSED] adjacent_line_protection: mode=rag, faithfulness=1.0000, correctness=0.7848
+[REUSED] automatic_driving: mode=rag, faithfulness=0.8750, correctness=0.9290
+[REUSED] front_cab_failure: mode=rag, faithfulness=0.8000, correctness=0.9737
+[REUSED] runaway_vehicle: mode=rag, faithfulness=1.0000, correctness=0.9794
+[REUSED] storm: mode=rag, faithfulness=1.0000, correctness=0.9778
+[REUSED] flooding: mode=rag, faithfulness=1.0000, correctness=0.7729
+[REUSED] fog_or_snowstorm: mode=rag, faithfulness=1.0000, correctness=0.8971
+[REUSED] weather_alert: mode=rag, faithfulness=1.0000, correctness=0.7198
+[REUSED] guide_door: mode=rag, faithfulness=1.0000, correctness=0.7696
+[REUSED] guide_psd: mode=rag, faithfulness=1.0000, correctness=0.5965
+[REUSED] guide_pantograph: mode=rag, faithfulness=1.0000, correctness=0.7303
+[REUSED] guide_emergency_brake: mode=rag, faithfulness=0.9167, correctness=0.7351
+[REUSED] guide_atc: mode=rag, faithfulness=1.0000, correctness=0.7770
+[REUSED] graph_704_bus_failure: mode=rag, faithfulness=0.8000, correctness=0.8079
+[REUSED] graph_acm_start_failure: mode=rag, faithfulness=1.0000, correctness=0.7725
+[REUSED] graph_single_cm_failure: mode=rag, faithfulness=1.0000, correctness=0.6424
+[REUSED] graph_siv_start_failure: mode=rag, faithfulness=1.0000, correctness=0.6634
+[REUSED] graph_master_controller_failure: mode=rag, faithfulness=1.0000, correctness=0.6748
+[REUSED] graph_all_cm_failure: mode=rag, faithfulness=1.0000, correctness=0.6027
+[REUSED] graph_single_door_open_failure: mode=rag, faithfulness=1.0000, correctness=0.6710
+[REUSED] graph_all_doors_close_failure: mode=rag, faithfulness=1.0000, correctness=0.7953
+[REUSED] graph_one_car_doors_close_failure: mode=rag, faithfulness=1.0000, correctness=0.7591
+[REUSED] graph_air_pipe_rupture: mode=rag, faithfulness=1.0000, correctness=0.9510
+[REUSED] graph_parking_brake_release_failure: mode=rag, faithfulness=0.9375, correctness=0.6827
+[REUSED] graph_inverter_output_half: mode=rag, faithfulness=1.0000, correctness=0.8972
+[REUSED] graph_front_tc1_failure: mode=rag, faithfulness=1.0000, correctness=0.6395
+[REUSED] graph_rear_safety_brake_dispatch: mode=rag, faithfulness=1.0000, correctness=0.6736
+       ↳ citations: 9/10 supported, uncited=0
+         ✗ [3] 고장차 전부Tc차 운전실의 제어분전함에서 AP.CBBECU, AP.CBSU1TC, AP.CBSU2TC를 차단합니다 — AP.CBBECU, AP.CBSU1TC, AP.CBSU2TC 차단은 명시되어 있으나, 인용된 근거 3에는 이를 고장차 전부Tc차 운전실의 제어분전함에서 취급한다는 내용이 없습니다.
+[DONE] graph_front_safety_brake_rescue: mode=rag, evidence=6, recall=1.0
+       ↳ graph: chat_links=2, probe_links=2, added=2, passed=True
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] wind_threshold_report: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 5/6 supported, uncited=1
+         ✗ [1] 안개나 눈보라로 시계가 불량하고 통신기능이 불통인 경우, 역장 또는 소장은 운전관제에 상황을 수시 보고하고 선로전환기 등의 제설로 기능을 확보하 — 통신기능 불통 시의 진입 방호 조치와 시계 불량 시 보고는 근거에 있으나, 제설조치는 ‘눈보라가 심할 경우’에 한정된다. 청구는 그 조건을 생략하여 모든 해당 경우에 제설한다고 하
+[DONE] fog_station_duties: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 6/6 supported, uncited=1
+[DONE] earthquake_warning_threshold: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] earthquake_control_initial_stop: mode=rag, evidence=4, recall=1.0
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] earthquake_driver_speed: mode=rag, evidence=1, recall=1.0
+
+================================================================================
+EVALUATION SUMMARY:
+Run ID: link_all_r1 | Reference Version: v2 | Evaluation Complete: True
+Document Cases Average:
+  - faithfulness        : 0.9810 [PASS]
+  - answer_relevancy    : 0.8266 [FAIL]
+  - answer_correctness  : 0.7871 [FAIL]
+  - context_precision   : 0.8883 [FAIL]
+  - context_recall      : 0.9570 [PASS]
+Pilot criteria (docs/rag-pipeline.md):
+  - faithfulness_mean         : 0.9810 (threshold 0.95) [True]
+  - faithfulness_min          : 0.8000 (threshold 0.8) [True]
+  - context_recall_mean       : 0.9570 (threshold 0.9) [True]
+  - context_recall_min        : 0.6667 (threshold 0.67) [False]
+  - context_precision_mean    : 0.8883 (threshold 0.85) [True]
+  - answer_correctness_mean   : 0.7871 (threshold 0.75) [True]
+  - general_correctness_mean  : n/a (threshold 0.9) [None]
+  - abstention_rate           : n/a (threshold 0.9) [None]
+  - latency_p95_seconds       : 16.4500 (threshold 20.0) [True]
+  - citation_accuracy         : 0.9423 (threshold 0.9) [True]
+Pilot met (automatable items): False
+Graph check: 18/20 passed
+Greeting check: FAIL
+Targets met: NO (INCOMPLETE)
+Saved: C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-resume-r1\paper\experiments\results\ragas_results.json and C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-resume-r1\paper\experiments\results\ragas_results_link_all_r1.json
+===== RUN link_all_r1 attempt 2 exit=0 wall_seconds=397.1 =====

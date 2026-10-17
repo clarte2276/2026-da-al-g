@@ -1,0 +1,19 @@
+
+===== RUN dense_r1 attempt 1 start UTC=2026-10-17T02:27:41 =====
+Run ID: dense_r1 | Ref Version: v2 | Variant: dense | LLM: gpt-5.6-luna | Embedding: openai
+Executing: 37 document cases, 0 general cases
+================================================================================
+       ↳ citations: 0/0 supported, uncited=1
+[DONE] vehicle_failure: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 0/0 supported, uncited=1
+[DONE] brake_pipe: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 6/6 supported, uncited=0
+[DONE] door_failure: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 3/4 supported, uncited=0
+         ✗ [1] 정거장 외에서 사고로 정차한 열차가 구원열차를 요구한 경우, 해당 열차 승무원은 운전관제에 무선으로 사고 상황을 즉시 보고하고 열차방호를 하여야 — 근거에는 사고 발생 시 해당 열차 승무원의 운전관제 무선 즉시 보고와 특정 조건에서 제1종 방호 실시가 규정되어 있으나, ‘정거장 외’, ‘구원열차를 요구한 경우’라는 조건과 그 
+[DONE] rescue_train_protection: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 0/0 supported, uncited=1
+[DONE] adjacent_line_protection: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 0/0 supported, uncited=1
+[DONE] automatic_driving: mode=rag, evidence=5, recall=0.0
+===== RUN dense_r1 attempt 1 exit=-1 wall_seconds=314.9 =====

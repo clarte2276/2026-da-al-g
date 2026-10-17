@@ -1,0 +1,731 @@
+{
+  "run_id": "dense_r1",
+  "llm_model": "gpt-5.6-luna",
+  "reference_version": "v2",
+  "dataset_version": "2026.10.17-v3",
+  "rag_variant": "dense",
+  "repeat_tag": "r1",
+  "updated_at_utc": "2026-10-17T02:32:53.730147+00:00",
+  "document_cases": [
+    {
+      "case": "vehicle_failure",
+      "question": "열차 운전 중 차량고장으로 자력운전이 곤란하면 어떤 조치를 해야 하나요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 326,
+          "page": null,
+          "label": "운전취급규정 제326조",
+          "via_link": false
+        }
+      ],
+      "reference": "열차 운전 중 차량고장 등으로 자력운전이 곤란하다고 인정될 때는 운전관제에게 보고하고 구원열차를 요구하여야 합니다. 또한 무동력 또는 기타 사유로 구름의 우려가 있을 때에는 반드시 구름방지 조치를 시행하여야 합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "질문한 **열차 운전 중 차량고장으로 자력운전이 곤란한 경우의 조치**는 제공된 문서에서 확인되지 않습니다.",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 5,
+      "evidence_count": 5,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.5496,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제15조",
+          "locator": {
+            "chunk": 2,
+            "article": "제15조"
+          },
+          "text_snippet": "제15조(운전관계 직원의 적격성 유지) ① 운전관계 직원은 적격성 유지를 위하여 다음 각 호의 검사 및 교육을 이수하여야 한다.  1. 신체검사  2. 적성검사  3. 실무수습교육"
+        },
+        {
+          "hop": 0,
+          "score": 0.5496,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제16조",
+          "locator": {
+            "chunk": 2,
+            "article": "제16조"
+          },
+          "text_snippet": "제16조(정거장 외 본선의 운전) 차량을 열차로서 조성시킨 경우가 아니면 정거장 외 본선을 운전할 수 없다. 다만, 입환의 필요가 있을 때는 예외로 한다."
+        },
+        {
+          "hop": 0,
+          "score": 0.5496,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제17조",
+          "locator": {
+            "chunk": 2,
+            "article": "제17조"
+          },
+          "text_snippet": "제17조(열차의 운전위치) 열차는 운전방향의 맨 앞 운전실에서 운전하여야 한다. 다만, 사고 기타의 경우로서 불가피한 경우 및 후부자력운전 또는 되돌이운전의 경우에는 예외로 할 수"
+        },
+        {
+          "hop": 0,
+          "score": 0.5496,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제18조",
+          "locator": {
+            "chunk": 2,
+            "article": "제18조"
+          },
+          "text_snippet": "제18조(연결 및 제동기능의 확인) 열차를 조성하였을 때에는 검수원(특별한 경우에는 기관사)은 각 차량간의 연결기가 완전히 연결되어 있는가를 확인함과 동시에 제동기능시험에 의하여 "
+        },
+        {
+          "hop": 0,
+          "score": 0.5496,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제19조",
+          "locator": {
+            "chunk": 2,
+            "article": "제19조"
+          },
+          "text_snippet": "제19조(열차의 입환) ① 열차 또는 차량의 입환은 입환신호기 및 진로개통표시기 또는 입환전호에 의하여야 한다.  ② 열차를 정거장외에 정차시키고 차량의 입환을 하여서는 아니된다."
+        }
+      ],
+      "latency_seconds": 5.75,
+      "retrieval_latency_seconds": 3.0107,
+      "answer_latency_seconds": 1.3205,
+      "recall": 0.0,
+      "precision": 0.0,
+      "mrr": 0.0,
+      "ndcg_at_10": 0.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.0,
+      "answer_correctness": 0.1592465117288771,
+      "faithfulness": 1.0,
+      "context_precision": 0.0,
+      "context_recall": 0.0,
+      "token_usage": {
+        "prompt_tokens": 3778,
+        "completion_tokens": 92,
+        "total_tokens": 3870
+      },
+      "citation_check": {
+        "claims": 0,
+        "supported": 0,
+        "accuracy": null,
+        "unsupported": [],
+        "uncited": [
+          "질문한 **열차 운전 중 차량고장으로 자력운전이 곤란한 경우의 조치**는 제공된 문서에서 확인되지 않습니다"
+        ]
+      }
+    },
+    {
+      "case": "brake_pipe",
+      "question": "정거장 외에서 제동관 또는 공기관 고장으로 통기불능이면 구원과 운전을 어떻게 처리하나요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 327,
+          "page": null,
+          "label": "운전취급규정 제327조",
+          "via_link": false
+        }
+      ],
+      "reference": "정거장 외에서 제동관 또는 공기관 고장으로 통기불능일 때는 구원을 요구하여야 합니다. 다만 상황에 따라 안전하다고 인정될 때에는 최근정거장까지 주의운전할 수 있으며, 여객열차인 경우 최근정거장까지 운전하고 잔여운전에 대하여 운전관제의 지시를 받아 열차를 교환수배하여야 합니다. 운전 시에는 정차 시 수동제동기 또는 주차제동기를 걸고 출발 시 푸는 적당한 조치를 취하여야 합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "정거장 외에서 제동관 또는 공기관 고장으로 통기불능인 경우의 구원 및 운전 처리 절차는 제공된 문서에서 확인되지 않습니다.",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 5,
+      "evidence_count": 5,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.5907,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 27 · 비상제동 풀림불능 시 구원운전 방법",
+          "locator": {
+            "slide": 27
+          },
+          "text_snippet": "② 비상제동 풀림불능 시 구원운전 방법  고장차(BOU 콕크 개방)  구원차  (1) 구원준비 : 구름방지(보안제동 체결), 후부Tc차 2종방호, 구원연결 후 MR관 관통, 12핀"
+        },
+        {
+          "hop": 0,
+          "score": 0.5785,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "location": "슬라이드 22 · 전 차량 역행불능 시",
+          "locator": {
+            "slide": 22
+          },
+          "text_snippet": "전 차량 역행불능 시 관련원인 및 조치 해설도  전 차량 역행 차단 발생  주간제어기 고장 시  ※ AP.CBSU1TC • 2TC  OFF ON (TC 리셋)  전 차량 VVVF "
+        },
+        {
+          "hop": 0,
+          "score": 0.5619,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 66",
+          "locator": {
+            "slide": 66
+          },
+          "text_snippet": "4  65  신내승무사업소  제동 제어 고장 시 길라잡이  1) 비상제동 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 66 2) 일부"
+        },
+        {
+          "hop": 0,
+          "score": 0.5619,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "location": "슬라이드 1",
+          "locator": {
+            "slide": 1
+          },
+          "text_snippet": "4  65  신내승무사업소  제동 제어 고장 시 길라잡이  1) 비상제동 풀림불능 시 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ 66 2) 일부"
+        },
+        {
+          "hop": 0,
+          "score": 0.5512,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "9fa17af6-51cc-4366-9f1e-d13b4e5b8405",
+          "location": "슬라이드 83 (1부)",
+          "locator": {
+            "slide": 83,
+            "chunk": 0
+          },
+          "text_snippet": "고장코드 | 고 장 내 용 | 차 량 상 태 | 조 치 방 법 F/N 201 | ATC 비상제동 | 1. 비상제동 체결 및 등 점등\u000b2. 자동운전취소 및 역행 불가 | 1. 수동모"
+        }
+      ],
+      "latency_seconds": 3.47,
+      "retrieval_latency_seconds": 0.3498,
+      "answer_latency_seconds": 1.877,
+      "recall": 0.0,
+      "precision": 0.0,
+      "mrr": 0.0,
+      "ndcg_at_10": 0.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.0,
+      "answer_correctness": 0.18930369512785322,
+      "faithfulness": 1.0,
+      "context_precision": 0.0,
+      "context_recall": 0.0,
+      "token_usage": {
+        "prompt_tokens": 5995,
+        "completion_tokens": 174,
+        "total_tokens": 6169
+      },
+      "citation_check": {
+        "claims": 0,
+        "supported": 0,
+        "accuracy": null,
+        "unsupported": [],
+        "uncited": [
+          "정거장 외에서 제동관 또는 공기관 고장으로 통기불능인 경우의 구원 및 운전 처리 절차는 제공된 문서에서 확인되지 않습니다"
+        ]
+      }
+    },
+    {
+      "case": "door_failure",
+      "question": "열차 운전 중 출입문 고장이 발생하면 보고, 방송, 응급조치와 회송은 어떻게 하나요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 328,
+          "page": null,
+          "label": "운전취급규정 제328조",
+          "via_link": false
+        }
+      ],
+      "reference": "열차 운전 중 출입문 고장이 발생하면 운전관제에 보고하고 승객 대상 안내방송을 실시하며, 출입문이 정상작동하기 위한 응급조치를 시행합니다. 출입문 1개 이상 고장 발생으로 정상작동 불가 시 운전관제에 보고하고 지시에 의하여 회송 조치하여야 합니다(단, 마지막열차는 출입문안전막 설치 조치 후 차량교환역까지 운행 가능).",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "열차 운전 중 출입문이 열림불능이면 출입문 상태를 확인·조치한 뒤 관제센터에 보고하고 승객 안내방송을 시행하며, 출입문 1개 고장인지 2개 이상 고장인지에 따라 운행 또는 회송합니다. [근거 1]\n\n**1. 출입문 전체 열림·닫힘 동작 및 초기 보고·방송**\n\n- 출입문 전체 열림·닫힘을 수회 시행한 후 관제센터에 보고하고, 승객 안내방송을 시행한 후 인포3을 취급합니다. [근거 1]\n- TCMS 화면에서 미개방 출입문 위치를 확인하여 메모하고, 출입문안전막을 휴대하여 현장을 확인합니다. [근거 1]\n\n**2. 출입문 열림불능 응급조치**\n\n- 출입문 개별콕크의 공기 누설 또는 개방 상태를 확인하고, 개방되어 있으면 복귀합니다.\n- 출입문 포켓 내부 및 문틈의 이물질을 확인합니다.\n- 출입문벨트 간섭·절손, 도어엔진·전자변 공기 누설, 출입문전자변 수동레버 및 바이패스(DSBS) S/W 동작상태를 확인합니다.\n- 1Km/h계전기(CE.RL1KPHL/R) 접점 불량이면 가볍게 두드립니다. [근거 1]\n\n**3. 출입문 1개가 열림불능인 경우**\n\n- 미개방 출입문을 잠가 운행 중 열림을 방지하고 출입문안전막을 설치한 후 출입문바이패스(DSBS) S/W를 취급합니다.\n- 감시자(역직원)를 승차시킵니다.\n- 관제센터에 차량기동반 출동을 요청하고, 좌·우 정상 출입문을 이용하도록 승객 안내방송을 시행합니다.\n- 관제센터 지시에 따라 차량교환역까지 운행합니다. 이 절차에는 운전취급규정 제328조 제2항 및 전동차승무원업무예규 제86조 제1·2항이 연결되어 있습니다. [근거 1]\n\n**4. 출입문 2개 이상이 열림불능인 경우**\n\n- 관제센터에 보고하고 관제센터 지시에 따라 승객을 하차시킨 후 회송조치합니다. [근거 1]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 5,
+      "evidence_count": 5,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.5965,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "61b7c6ec-e756-49be-9702-9e4420e0f599",
+          "location": "슬라이드 54 · 1개 출입문 열림불능 시",
+          "locator": {
+            "slide": 54
+          },
+          "text_snippet": "현 상  (1) TCMS 화면의 해당차 출입문 닫힘상태( ) 유지 (2) TCMS 화면 하단에 관련고장 현시  - 6210호 F/N 623. 3번 출입문 열리지 않음, 왼쪽  조 "
+        },
+        {
+          "hop": 0,
+          "score": 0.5854,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "5b979a14-1f49-4499-9e0e-ca28da18f0e9",
+          "location": "제21조",
+          "locator": {
+            "chunk": 4,
+            "article": "제21조"
+          },
+          "text_snippet": "제21조 <삭제 2019.02.01.>"
+        },
+        {
+          "hop": 0,
+          "score": 0.5854,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "5b979a14-1f49-4499-9e0e-ca28da18f0e9",
+          "location": "제22조",
+          "locator": {
+            "chunk": 4,
+            "article": "제22조"
+          },
+          "text_snippet": "제22조(전차선 가압 중 기타 차량 운행범위) 기지구내에서 전차선 가압 중 입환기관차, 특수차 등의 운행은 운전취급자의 승인을 얻어 운행하여야 하며 입환, 입출고 운행에 지장을 주"
+        },
+        {
+          "hop": 0,
+          "score": 0.5854,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "5b979a14-1f49-4499-9e0e-ca28da18f0e9",
+          "location": "제23조",
+          "locator": {
+            "chunk": 4,
+            "article": "제23조"
+          },
+          "text_snippet": "제23조(열차의 입. 출고시각 시점) 기지구내 입·출고 열차의 입·출고 시각은 열차가 진행하고자 하는 방향의 입·출고 신호기를 통과(신호정지 또는 안쪽 궤도회로 점유)하는 때로 정"
+        },
+        {
+          "hop": 0,
+          "score": 0.5854,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "5b979a14-1f49-4499-9e0e-ca28da18f0e9",
+          "location": "제24조",
+          "locator": {
+            "chunk": 4,
+            "article": "제24조"
+          },
+          "text_snippet": "제24조(운전취급자의 임무) 운전취급자는 기지구내 열차 및 차량의 입환, 입·출고 열차 및 차량의 운행 감시, 통제 등 제반 운전업무를 수행하며 신호유지보수자는 신호설비의 정상기능"
+        }
+      ],
+      "latency_seconds": 8.92,
+      "retrieval_latency_seconds": 0.3582,
+      "answer_latency_seconds": 7.0616,
+      "recall": 0.0,
+      "precision": 0.0,
+      "mrr": 0.0,
+      "ndcg_at_10": 0.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.7950975680327993,
+      "answer_correctness": 0.9001860856678907,
+      "faithfulness": 1.0,
+      "context_precision": 0.9999999999,
+      "context_recall": 0.6666666666666666,
+      "token_usage": {
+        "prompt_tokens": 4010,
+        "completion_tokens": 1112,
+        "total_tokens": 5122
+      },
+      "citation_check": {
+        "claims": 6,
+        "supported": 6,
+        "accuracy": 1.0,
+        "unsupported": [],
+        "uncited": []
+      }
+    },
+    {
+      "case": "rescue_train_protection",
+      "question": "정거장 외에서 사고로 정차한 열차가 구원열차를 요구했을 때 열차방호는 어떻게 하나요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 321,
+          "page": null,
+          "label": "운전취급규정 제321조",
+          "via_link": false
+        }
+      ],
+      "reference": "정거장 외에서 열차사고 기타 등으로 정차한 열차가 구원열차를 요구하였거나 구원열차 운전 통보가 있었을 때에는 제2종 방호를 하여야 합니다. 다만 구원열차가 오지 않음이 확실한 방향은 방호를 생략할 수 있습니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "정거장 외에서 사고로 정차한 열차가 구원열차를 요구한 경우, 해당 열차 승무원은 운전관제에 무선으로 사고 상황을 즉시 보고하고 열차방호를 하여야 합니다. [근거 1]\n\n- 인접 선로에 지장이 있거나 전 차량이 탈선하여 궤도회로를 단락할 필요가 있으면 **제1종 방호**를 실시해야 합니다. 제1종 방호는 지장개소 외방 200m 이상의 지점에 정지수신호를 현시하며, 전 차량 탈선 등으로 궤도회로를 단락할 필요가 있으면 단락용 동선으로 궤도회로를 단락합니다. [근거 1]\n- 열차무선 등으로 관계 정거장 또는 운전관제에 지장 사유를 통보하고, 운전관제는 관계열차에 지장 사실을 통보합니다. 관계열차에 지장 사실이 확실히 통보된 것을 확인하면 제2종 방호는 생략할 수 있습니다. [근거 1]\n- 사고 발생 보고를 받은 운전관제는 필요하다고 인정될 때 구원수배를 하여야 합니다. [근거 4]",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 5,
+      "evidence_count": 5,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.6067,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "c6ce2457-3620-4089-909d-d616458da7f5",
+          "location": "「서도 열차방호를 하여야 하며 열차방호 방법은 「운전취급」 부분",
+          "locator": {
+            "document": true,
+            "chunk": 52
+          },
+          "text_snippet": "서도 열차방호를 하여야 하며 열차방호 방법은 「운전취급규정」 제304조(열차방호)에 의한다.  4. 사고복구 작업 시 우선순위는 인명의 구조 및 보호, 본선의 개통, 민간 및 지하"
+        },
+        {
+          "hop": 0,
+          "score": 0.6014,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제297조",
+          "locator": {
+            "chunk": 59,
+            "article": "제297조"
+          },
+          "text_snippet": "제297조(기관사가 운전실을 떠날 때의 조치) 기관사는 정차하고 있는 열차의 운전실을 떠날 때에는 제동을 걸고 필요에 따라 구름방지 조치를 하여야 한다. 다만, ATO운전 중 반복"
+        },
+        {
+          "hop": 0,
+          "score": 0.6014,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제298조",
+          "locator": {
+            "chunk": 59,
+            "article": "제298조"
+          },
+          "text_snippet": "제298조 <삭제 2017.12.21.>"
+        },
+        {
+          "hop": 0,
+          "score": 0.6014,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제299조",
+          "locator": {
+            "chunk": 59,
+            "article": "제299조"
+          },
+          "text_snippet": "제299조(사고발생시 운전관제의 처치) ① 사고발생의 보고를 받은 운전관제는 관계처에 통보함과 동시에 필요 하다고 인정될 때는 구원수배를 하여야 한다.  ② 사고복구가 장시간 걸린"
+        },
+        {
+          "hop": 0,
+          "score": 0.6014,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제300조",
+          "locator": {
+            "chunk": 59,
+            "article": "제300조"
+          },
+          "text_snippet": "제300조(정거장 구내에서 사고가 발생한 경우) 역장 또는 소장은 정거장에서 사고가 발생했을 때는 즉시 응급처치를 하는 한편 그 상황을 운전관제에게 보고하고 필요에 따라 구원을 요"
+        }
+      ],
+      "latency_seconds": 7.12,
+      "retrieval_latency_seconds": 0.3911,
+      "answer_latency_seconds": 5.2762,
+      "recall": 0.0,
+      "precision": 0.0,
+      "mrr": 0.0,
+      "ndcg_at_10": 0.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.8040225067484766,
+      "answer_correctness": 0.19256082068008495,
+      "faithfulness": 0.9,
+      "context_precision": 0.0,
+      "context_recall": 0.0,
+      "token_usage": {
+        "prompt_tokens": 4556,
+        "completion_tokens": 690,
+        "total_tokens": 5246
+      },
+      "citation_check": {
+        "claims": 4,
+        "supported": 3,
+        "accuracy": 0.75,
+        "unsupported": [
+          {
+            "claim": "정거장 외에서 사고로 정차한 열차가 구원열차를 요구한 경우, 해당 열차 승무원은 운전관제에 무선으로 사고 상황을 즉시 보고하고 열차방호를 하여야 합니다",
+            "cited": [
+              1
+            ],
+            "reason": "근거에는 사고 발생 시 해당 열차 승무원의 운전관제 무선 즉시 보고와 특정 조건에서 제1종 방호 실시가 규정되어 있으나, ‘정거장 외’, ‘구원열차를 요구한 경우’라는 조건과 그 경우 항상 열차방호를 해야 한다는 내용은 확인되지 않는다."
+          }
+        ],
+        "uncited": []
+      }
+    },
+    {
+      "case": "adjacent_line_protection",
+      "question": "정거장 외에서 인접 선로를 지장한 경우 어떤 방호와 보고를 해야 하나요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 323,
+          "page": null,
+          "label": "운전취급규정 제323조",
+          "via_link": false
+        }
+      ],
+      "reference": "정거장 외에서 탈선·전복 등으로 인접 선로를 지장하였을 때에는 후속열차 방호를 하기 전에 그 인접선로를 운전하는 열차에 대하여 지장지점 전후 양방향에 제1종 방호를 시행하여야 합니다. 자동폐색식 또는 차내신호폐색식 구간인 경우 즉시 단락용 동선으로 궤도회로를 단락하여야 합니다. 운전 중 인접선로 장애 발견 시 신속히 열차를 정차시키고 운전관제에게 보고 및 지장지역 전후 양방향에 제1종 방호를 시행하며, 보고를 받은 운전관제는 접근 열차에 비상정차 조치를 취합니다. 열차가 진행해 오지 않는 방향에 대한 방호는 생략할 수 있습니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "정거장 외에서 인접 선로를 지장한 경우의 구체적인 방호 및 보고 절차는 제공된 문서에서 확인되지 않습니다.",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 5,
+      "evidence_count": 5,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.4758,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제291조",
+          "locator": {
+            "chunk": 58,
+            "article": "제291조"
+          },
+          "text_snippet": "제291조(ATC, ATO설비구간경계표지) ① ATC, ATO설비구간의 시작지점에 ATC, ATO설비구간경계표지를 설치한다.  ② ATC, ATO설비구간은 본선로 전구간으로 한다."
+        },
+        {
+          "hop": 0,
+          "score": 0.4758,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제292조",
+          "locator": {
+            "chunk": 58,
+            "article": "제292조"
+          },
+          "text_snippet": "제292조(ATC, ATO비설비구간경계표지) ① ATC, ATO설비구간의 끝지점에 ATC, ATO비설비구간 경계표지를 설치한다.  ② ATC, ATO비설비구간경계표지의 색채, 형상"
+        },
+        {
+          "hop": 0,
+          "score": 0.4758,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제293조",
+          "locator": {
+            "chunk": 58,
+            "article": "제293조"
+          },
+          "text_snippet": "제293조(ATO 시작표지 및 끝남표지) ATO 시작표지와 끝남표지는 ATO 운전을 하는 구간의 시작지점과 끝나는 지점에 설치하며 5~8호선의 표지 형상은 다음과 같다.  1. A"
+        },
+        {
+          "hop": 0,
+          "score": 0.4758,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제294조",
+          "locator": {
+            "chunk": 58,
+            "article": "제294조"
+          },
+          "text_snippet": "제294조(정거장접근예고표지) ① 정거장접근예고표지는 전방에 정거장이 있음을 알리는 표지로서 5~8호선의 정거장 진입 전 100m 지점에 설치하여야 한다.  ② 정거장접근예고표지의"
+        },
+        {
+          "hop": 0,
+          "score": 0.4758,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제295조",
+          "locator": {
+            "chunk": 58,
+            "article": "제295조"
+          },
+          "text_snippet": "제295조(사고발생에 대한조치) ① 철도사고(이하 “사고”라 한다)가 발생한 때에는 인명구조와 인명피해 방지를 우선으로 하고 병발사고의 우려가 있을 때에는 지체없이 관계열차 또는 "
+        }
+      ],
+      "latency_seconds": 3.62,
+      "retrieval_latency_seconds": 0.3508,
+      "answer_latency_seconds": 2.186,
+      "recall": 0.0,
+      "precision": 0.0,
+      "mrr": 0.0,
+      "ndcg_at_10": 0.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": null,
+      "answer_relevancy": 0.0,
+      "answer_correctness": 0.13932480308880188,
+      "faithfulness": 1.0,
+      "context_precision": 0.0,
+      "context_recall": 0.0,
+      "token_usage": {
+        "prompt_tokens": 3661,
+        "completion_tokens": 248,
+        "total_tokens": 3909
+      },
+      "citation_check": {
+        "claims": 0,
+        "supported": 0,
+        "accuracy": null,
+        "unsupported": [],
+        "uncited": [
+          "정거장 외에서 인접 선로를 지장한 경우의 구체적인 방호 및 보고 절차는 제공된 문서에서 확인되지 않습니다"
+        ]
+      }
+    },
+    {
+      "case": "automatic_driving",
+      "question": "5~8호선 본선 구간의 운전 방식은 자동운전인가요? 수동운전 예외는 무엇인가요?",
+      "category": "doc",
+      "expected_articles": [],
+      "gold_evidence": [
+        {
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "article": 330,
+          "page": null,
+          "label": "운전취급규정 제330조",
+          "via_link": false
+        }
+      ],
+      "reference": "5~8호선 본선 구간의 운전 방식은 자동운전을 원칙으로 합니다. 다만 1) 서행 운전명령 구간 진입, 2) 정지신호로 승강장 중간 정차 후 정차위치 이동, 3) ATO 기능이상 등으로 운전관제의 수동운전 지시, 4) 수동운전 적용시간 운영, 5) 회송열차 운전 등의 경우에는 수동운전에 의합니다. 운전방식 변경을 위해 자동모드에서 다른 모드로 변경하고자 할 때에는 운전관제의 승인을 받아야 합니다.",
+      "reference_source": "..\\paper\\data\\eval_set_v3.json",
+      "response": "5~8호선 본선 구간의 자동운전 여부와 수동운전 예외는 제공된 문서에서 확인되지 않습니다.",
+      "mode": "rag",
+      "ragas_skipped": false,
+      "context_count": 5,
+      "evidence_count": 5,
+      "linked_evidence_count": 0,
+      "chat_link_count": 0,
+      "chat_hop_count": 0,
+      "evidence_details": [
+        {
+          "hop": 0,
+          "score": 0.592,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제325조",
+          "locator": {
+            "chunk": 64,
+            "article": "제325조"
+          },
+          "text_snippet": "제325조(열차방호의 해제) 기관사는 열차방호에 의하여 다른 열차를 정차시킨 경우에는 그 열차의 기관사와 협의한 후 방호를 해제하고 운전관제에게 보고하여야 한다.  제4절 차량 및"
+        },
+        {
+          "hop": 0,
+          "score": 0.592,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제326조",
+          "locator": {
+            "chunk": 64,
+            "article": "제326조"
+          },
+          "text_snippet": "제326조(차량고장인 경우) ① 열차운전 중 차량고장 기타의 사유로 응급조치를 하여도 자력으로 운전을 계속함이 곤란하다고 인정하였을 때는 운전관제에게 보고하고 구원열차를 요구하여야"
+        },
+        {
+          "hop": 0,
+          "score": 0.592,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제327조",
+          "locator": {
+            "chunk": 64,
+            "article": "제327조"
+          },
+          "text_snippet": "제327조(제동관 및 공기관 고장인 경우의 조치) ① 정거장외에서 열차의 제동관 또는 공기관 고장으로 통기불능일 때는 구원을 요구하여야 한다. 다만, 상황에 따라 안전하다고 인정될"
+        },
+        {
+          "hop": 0,
+          "score": 0.592,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제328조",
+          "locator": {
+            "chunk": 64,
+            "article": "제328조"
+          },
+          "text_snippet": "제328조(열차의 출입문 고장인 경우) ① 열차운전 중 출입문 고장이 발생 되었을 경우 운전관제에 보고하고 다음 각 호의 취급을 하여야 한다.  1. 안내방송을 실시한다.  2. "
+        },
+        {
+          "hop": 0,
+          "score": 0.592,
+          "link_id": null,
+          "relation": null,
+          "document_version_id": "35315ef6-c82f-44fd-904c-62b78bdc474a",
+          "location": "제329조",
+          "locator": {
+            "chunk": 64,
+            "article": "제329조"
+          },
+          "text_snippet": "제329조 <삭제 2017.12.21.>"
+        }
+      ],
+      "latency_seconds": 2.99,
+      "retrieval_latency_seconds": 0.3861,
+      "answer_latency_seconds": 1.3257,
+      "recall": 0.0,
+      "precision": 0.0,
+      "mrr": 0.0,
+      "ndcg_at_10": 0.0,
+      "linked_gold_recall": null,
+      "special_rule_hit": false,
+      "answer_relevancy": 0.0,
+      "answer_correctness": 0.17843053164052264,
+      "faithfulness": 1.0,
+      "context_precision": 0.0,
+      "context_recall": 0.0,
+      "token_usage": {
+        "prompt_tokens": 3820,
+        "completion_tokens": 110,
+        "total_tokens": 3930
+      },
+      "citation_check": {
+        "claims": 0,
+        "supported": 0,
+        "accuracy": null,
+        "unsupported": [],
+        "uncited": [
+          "5~8호선 본선 구간의 자동운전 여부와 수동운전 예외는 제공된 문서에서 확인되지 않습니다"
+        ]
+      }
+    }
+  ],
+  "general_cases": []
+}
