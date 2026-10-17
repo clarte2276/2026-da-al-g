@@ -67,3 +67,5 @@ Retrieval was rerun through `GraphRAGService.retrieve` for dense and hybrid, wit
 ## Finding
 
 For both cases, the stored corpus has 4,288 vectors of dimension 1,536, the query dimension matches, and all 4,288 dense scores are nonzero. Dense top-10 does not include either gold article; hybrid ranks each exact gold version/article first. This is a dense retrieval-ranking failure on these examples, not missing vectors or an evaluation-side ID mismatch.
+
+Article units inherit their parent chunk embedding. As a result, neighboring articles can have identical dense scores: for example, articles 15–22 all score 0.511470 for `vehicle_failure`. Dense-only retrieval cannot discriminate between those articles from their vectors; hybrid recovers the exact gold articles through BM25 (article 326 for `vehicle_failure`, article 327 for `brake_pipe`). This is a property of the baseline representation, not a missing-vector or evaluation bug.
