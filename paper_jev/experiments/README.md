@@ -107,3 +107,15 @@ uv run --locked --extra eval python "$env:PAPER_JEV/experiments/run_followup.py"
 ```
 
 The OpenAI and Jev budget guards include the original experiment spend, and OpenAI also includes prior downstream/RAGAS usage logs. Follow-up response caches are under `cache/followup/`; offline aggregation makes no API calls.
+
+## Offline Round 2 re-analysis
+
+Recompute the Round 1 reviewer tables, cluster-bootstrap intervals, format-parity rows, ECE denominators, grouped-CV thresholds, FP review checklist, cache-derived costs, and pending-credit estimates from existing response caches. This script reads the paper_jev snapshot and cache only; it does not import API clients or read keys. Run from the worktree root:
+
+```powershell
+$env:PAPER_JEV = (Resolve-Path "paper_jev").Path
+$env:UV_PROJECT_ENVIRONMENT = "$env:PAPER_JEV/runtime/reanalysis-venv"
+uv run --locked --project back --extra eval python paper_jev/experiments/reanalysis.py
+```
+
+Outputs are `experiments/summary/round2/round2_tables.md`, `experiments/summary/round2/pending_credit.md`, and `data/fp_review_checklist.{md,csv}` under `paper_jev/`.
