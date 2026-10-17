@@ -256,3 +256,6 @@ t_balance_exhausted'}}
 Run status: attempt 1 ended with exit code 1 after 34/37 cases; OpenAI returned 429 insufficient_quota / credit_balance_exhausted. Checkpoint retained for --resume. No final result JSON was produced.
 
 Correction: checkpoint/logs confirm 35/37 cases completed; last completed case was earthquake_warning_threshold. The 429 failure occurred while evaluating the next case.
+
+[RUN START link_all_r2 2026-10-17T10:02:05.3311498+09:00]
+[RUN STOP link_all_r2 exit=1 reason=python_traceback_details_truncated_prior_log_has_429_insufficient_quota wall_seconds=13.9]
