@@ -1,0 +1,155 @@
+
+=== hybrid_r3 attempt 1 started 2026-10-17T01:47:33.1716389Z ===
+[stdout]
+Run ID: hybrid_r3 | Ref Version: v2 | Variant: hybrid | LLM: gpt-5.6-luna | Embedding: openai
+Executing: 37 document cases, 0 general cases
+================================================================================
+       ↳ citations: 1/2 supported, uncited=0
+         ✗ [1] 무동력 또는 그 밖의 사유로 구름의 우려가 있으면 구름방지 조치를 해야 합니다 — 근거는 제326조 제1항의 경우, 즉 열차운전 중 자력운전이 곤란한 상황에서 무동력 또는 기타 사유로 구름의 우려가 있을 때 구름방지 조치를 하도록 규정합니다. 청구에는 이 적용 
+[DONE] vehicle_failure: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] brake_pipe: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] door_failure: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 1/1 supported, uncited=0
+[DONE] rescue_train_protection: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 3/6 supported, uncited=0
+         ✗ [1] 정거장 외에서 인접 선로를 지장한 경우에는 상황에 따라 신속히 열차를 정차시키고, 인접 선로의 지장지점 전후 양방향에 제1종 방호를 하며 운전관 — 제323조 제3항에 따라 열차가 진행하여 오지 않는 방향의 방호는 생략할 수 있으므로, 전후 양방향 방호를 항상 해야 한다는 주장은 근거와 다릅니다.
+         ✗ [1] 인접 선로에 장애가 발생하여 열차운전에 지장을 주는 경우**: 열차를 신속히 정차시키고 운전관제에 보고한 후, 지장지역 전후 양방향에 제1종 방 — 제323조 제3항의 방호 생략 가능 조건을 누락했고, 근거에는 보고 후 방호라는 명시적 순서도 없습니다.
+         ✗ [1] 탈선·전복으로 인접 선로를 지장한 경우에는 운전관제가 지장개소로 접근하는 열차에 대하여 신속히 비상정차 조치를 하여야 합니다 — 제323조 제4항은 운전관제가 제1항의 보고를 받은 경우에 지장개소로 접근하는 열차에 비상정차 조치를 하도록 규정하므로, 보고 수령 조건을 누락한 무조건적 표현은 근거와 다릅니다.
+[DONE] adjacent_line_protection: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] automatic_driving: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] front_cab_failure: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] runaway_vehicle: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 1/1 supported, uncited=0
+[DONE] storm: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] flooding: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 0/7 supported, uncited=0
+         ✗ [2] 안개나 눈보라로 신호 확인이 어려울 때 기관사는 확인거리 안에서 정차할 수 있는 속도로 주의운전하고, 운전관제는 신호 확인거리 등에 따라 주의· — 기관사가 안개 또는 눈보라 시 신호 확인거리 내 정차 가능한 속도로 주의운전해야 한다는 부분은 제351조 제1항에 있으나, 운전관제가 신호 확인거리 등에 따라 주의·경계신호를 현시
+         ✗ [5] 신호기의 신호현시를 확인할 수 없을 때에는 일단 정차해야 합니다. [운전취급규정 제351조 제2항 제1호] — cited_evidence인 안전관리체계관리규정 제120조에는 신호 확인 불능 시 일단 정차하라는 제351조 제2항 제1호의 내용이 없다.
+         ✗ [5] 출발신호기의 신호현시를 확인할 수 없을 때에는 운전관제, 역장 또는 소장으로부터 열차무선 또는 구두통보에 의하여 열차를 진행시켜야 합니다. [운 — cited_evidence인 안전관리체계관리규정 제120조에는 출발신호 확인 불능 시 운전관제·역장·소장의 통보로 열차를 진행시킨다는 내용이 없다.
+         ✗ [5] 기관사는 운전관제에게 안개 또는 눈보라의 상황을 통보해야 합니다. [운전취급규정 제351조 제2항 제3호] — cited_evidence인 안전관리체계관리규정 제120조에는 기관사가 운전관제에게 안개 또는 눈보라 상황을 통보해야 한다는 내용이 없다.
+         ✗ [5] 운전관제**는 역장, 소장 또는 기관사의 보고에 따라 신호 확인거리가 50m 이하라고 인정되면 장내신호기에 주의 또는 경계신호를 현시해야 합니다 — cited_evidence에는 운전관제가 역장·소장·기관사의 보고에 따라 신호 확인거리 50m 이하일 때 장내신호기에 주의 또는 경계신호를 현시해야 한다는 주체, 조건, 수치 및 
+         ✗ [5] 운전관제는 필요하다고 인정하면 열차 운전중지 명령을 하고, 그 필요가 없어지면 해제 명령을 해야 합니다. [운전취급규정 제352조] — cited_evidence에는 운전관제가 필요 시 열차 운전중지 명령을 하고 필요가 없어지면 해제 명령을 해야 한다는 조건과 순서가 없다.
+         ✗ [5] 운전중지 명령이 없을 때 기관사는 15㎞/h 이하의 속도로 운전해야 합니다. [운전취급규정 제352조] — cited_evidence에는 운전중지 명령이 없을 때 기관사가 15km/h 이하로 운전해야 한다는 조건과 수치가 없다.
+[DONE] fog_or_snowstorm: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 8/8 supported, uncited=0
+[DONE] weather_alert: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 5/6 supported, uncited=0
+         ✗ [1] 1Km/h 계전기(CE.RL1KPHL, CE.RL1KPHR)를 가볍게 두드려 본다 — 근거에는 CE.RL1KPHL·CE.RL1KPHR 1Km/h 계전기를 '두드려 본다'고 되어 있으나, '가볍게'라는 조건은 명시되어 있지 않다.
+[DONE] guide_door: mode=rag, evidence=5, recall=0.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] guide_psd: mode=rag, evidence=5, recall=0.3333333333333333
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 9/10 supported, uncited=0
+         ✗ [1] 1. 운전실제어대에서 **EPANDS(VC.PBET) 상태**를 확인하고, **주간제어기를 역행 이외의 위치**에 둡니다 — 근거는 EPANDS(VC.PBET) 상태와 주간제어기의 역행 이외 위치를 ‘확인’하라고 하며, 주간제어기를 해당 위치에 ‘둔다’는 조치는 명시하지 않습니다.
+[DONE] guide_pantograph: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] guide_emergency_brake: mode=rag, evidence=5, recall=0.3333333333333333
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 2/3 supported, uncited=1
+         ✗ [4] 6호선 전동차 ATC 장치 고장 시 운전·회송 절차 전체는 문서에서 확인되지 않으며, 다음 점검·리셋 조치만 확인됩니다. 
+
+- ATC 장치 고 — ATC 고장 시 나타나는 현상과 리셋 관련 조치는 근거에 있으나, 운전·회송 절차 전체가 문서에서 확인되지 않는다는 부정적 판단 및 해당 조치만 확인된다는 범위 한정은 근거에 명시
+[DONE] guide_atc: mode=rag, evidence=5, recall=0.25
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] graph_704_bus_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] graph_acm_start_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_single_cm_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_siv_start_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] graph_master_controller_failure: mode=rag, evidence=5, recall=1.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/5 supported, uncited=0
+         ✗ [1] 전체 차량의 주공기압축기(CM)가 구동불능으로 정거장 도중 정차한 경우, MR 압력은 8.0kg/㎠ 이하로 떨어지며 6.5kg/㎠ 이하에서는 비 — MR 압력 수치와 비상제동·주차제동 체결 조건은 근거에 있으나, '정거장 도중 정차한 경우'라는 조건은 cited_evidence에 없습니다.
+[DONE] graph_all_cm_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] graph_single_door_open_failure: mode=rag, evidence=5, recall=1.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 3/4 supported, uncited=0
+         ✗ [1] 2. 그래도 닫히지 않으면 **Tc차의 AP.CB1KPHL/R을 차단**하여 모든 출입문 전자변 공급전원을 차단합니다 — 근거에는 Tc차의 AP.CB1KPHL/R을 차단하여 모든 출입문 전자변 공급전원을 차단한다는 조치는 있으나, 이를 ‘그래도 닫히지 않으면’ 시행하는 것으로 명시하지 않는다. 오히려
+[DONE] graph_all_doors_close_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/5 supported, uncited=0
+         ✗ [1] 해당차 출입문바이패스(DSBS) S/W 4개  
+   - 인접차 **AP.CBDO1CC(좌측)** 또는 **AP.CBDO2CC(우측)** 차단  — 근거에는 인접차 차단 대상으로 'AP.CBDO1CC(좌측) 또는 2CC(우측)'라고 되어 있어, 청구의 'AP.CBDO2CC(우측)'라는 전체 명칭은 그대로 확인되지 않습니다.
+[DONE] graph_one_car_doors_close_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 6/7 supported, uncited=1
+         ✗ [1] 정거장 외에서 6호선 6300호 M2차 주공기관 또는 CM 호스가 파열되면, 6300호의 AP.CBMC를 차단하고 6400호 MR 콕크를 차단한 — 근거에는 6300호 M2차 주공기관 또는 CM 호스 파열 시 AP.CBMC 차단, 6400호 MR 콕크 차단 및 후속 취급이 명시되어 있으나, ‘정거장 외’라는 조건은 제시되어 있
+[DONE] graph_air_pipe_rupture: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 9/10 supported, uncited=0
+         ✗ [1] 정거장 외에서 주공기관이 파열되어 통기불능이고 주차제동이 풀리지 않으며 MR 압력이 3.5 kg/㎠ 이하이면, 다음 순서로 조치한 후 관제센터  — MR 압력 조건, 주공기관 파열, 주차제동 풀림불능 및 관제센터 지시에 따른 최근 정거장 승객 하차·회송은 근거에 있으나, ‘정거장 외’와 ‘통기불능’은 근거에 명시되어 있지 않다
+[DONE] graph_parking_brake_release_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 3/4 supported, uncited=0
+         ✗ [1] 조치가 불가능할 때의 수동운전 전환은 별도의 ‘승인’ 표현이 아니라, **관제센터에 보고하고 관제센터 지시에 따라** 시행합니다 — 관제센터에 보고하고 지시에 따라 수동운전한다는 내용은 있으나, 별도의 ‘승인’ 표현이 아니라는 부정적·비교적 설명은 cited_evidence에 없습니다.
+[DONE] graph_inverter_output_half: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] graph_front_tc1_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 9/9 supported, uncited=0
+[DONE] graph_rear_safety_brake_dispatch: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 3/4 supported, uncited=0
+         ✗ [1] 정거장 도중 정차한 전동차에서 전부Tc차 보안제동 S/W가 풀림불능이면, 구원차 연결 후 양쪽 전부Tc차 운전실을 다음과 같이 취급하며 구원열차 — 보안제동 S/W 수회 당김, 구원차 연결·MR관통, 12핀 점퍼선 연결 후 방송시험, BC1·2콕크 미개방, BECU·1TC·2TC NFB 차단은 근거에 있으나, ‘정거장 도중 정
+[DONE] graph_front_safety_brake_rescue: mode=rag, evidence=5, recall=1.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] wind_threshold_report: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 8/8 supported, uncited=0
+[DONE] fog_station_duties: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] earthquake_warning_threshold: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 6/6 supported, uncited=0
+[DONE] earthquake_control_initial_stop: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 5/6 supported, uncited=0
+         ✗ [1] 지진을 감지하거나 통보받은 기관사는 일단 정차한 후, 상황에 따라 다음과 같이 주의운전하고 다음 정거장에는 전방 이상 유무를 확인하면서 즉시 정 — 일단 정차하고 상황별 주의운전 및 다음 정거장 진입 시 조치 내용은 근거에 있으나, 근거는 ‘관제지시에 의하여’ 다음 정거장에 진입하는 경우로 조건을 한정한다. 주장에서 이를 일반
+[DONE] earthquake_driver_speed: mode=rag, evidence=5, recall=1.0
+
+================================================================================
+EVALUATION SUMMARY:
+Run ID: hybrid_r3 | Reference Version: v2 | Evaluation Complete: True
+Document Cases Average:
+  - faithfulness        : 0.9764 [PASS]
+  - answer_relevancy    : 0.8306 [FAIL]
+  - answer_correctness  : 0.7582 [FAIL]
+  - context_precision   : 0.8171 [FAIL]
+  - context_recall      : 0.8454 [FAIL]
+Pilot criteria (docs/rag-pipeline.md):
+  - faithfulness_mean         : 0.9764 (threshold 0.95) [True]
+  - faithfulness_min          : 0.8333 (threshold 0.8) [True]
+  - context_recall_mean       : 0.8454 (threshold 0.9) [False]
+  - context_recall_min        : 0.0952 (threshold 0.67) [False]
+  - context_precision_mean    : 0.8171 (threshold 0.85) [False]
+  - answer_correctness_mean   : 0.7582 (threshold 0.75) [True]
+  - general_correctness_mean  : n/a (threshold 0.9) [None]
+  - abstention_rate           : n/a (threshold 0.9) [None]
+  - latency_p95_seconds       : 8.8300 (threshold 20.0) [True]
+  - citation_accuracy         : 0.8798 (threshold 0.9) [False]
+Pilot met (automatable items): False
+Graph check: 0/20 passed
+Greeting check: FAIL
+Targets met: NO (INCOMPLETE)
+Saved: C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-resume-r3\paper\experiments\results\ragas_results.json and C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-resume-r3\paper\experiments\results\ragas_results_hybrid_r3.json
+
+[stderr]
+
+=== hybrid_r3 attempt 1 ended exit=0 wall_seconds=2335.8 ===

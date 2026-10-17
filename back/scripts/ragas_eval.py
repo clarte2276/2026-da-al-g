@@ -11,12 +11,12 @@ import json
 import math
 import re
 import sys
-from statistics import mean, stdev
 import time
 import uuid
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
+from statistics import mean, stdev
 from typing import Any, ClassVar, Literal
 
 
@@ -50,6 +50,18 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Resume from existing checkpoint for the run-id",
     )
+    parser.add_argument("--dataset", type=Path, help="JSON evaluation set (replaces built-in document cases)")
+    parser.add_argument(
+        "--variant",
+        choices=["bm25", "dense", "hybrid", "hybrid_rerank", "link_all", "proposed"],
+        default=None,
+        help="RAG retrieval variant for this run (defaults to RAG_VARIANT)",
+    )
+    parser.add_argument(
+        "--output-dir", type=Path, default=Path("runtime"), help="Directory for results and checkpoints"
+    )
+    parser.add_argument("--skip-ragas", action="store_true", help="Run retrieval metrics without generation or judging")
+    parser.add_argument("--repeat-tag", choices=["r1", "r2", "r3"], default=None)
     return parser.parse_args()
 
 
@@ -135,28 +147,28 @@ if __name__ == "__main__" and "--compare" in sys.argv:
 
 
 # Comparison exits before these evaluation-only imports so it needs no eval extra.
-from openai import AsyncOpenAI  # noqa: E402
-from ragas.embeddings.base import embedding_factory  # noqa: E402
-from ragas.llms import llm_factory  # noqa: E402
-from ragas.metrics.collections import (  # noqa: E402
+from openai import AsyncOpenAI
+from ragas.embeddings.base import embedding_factory
+from ragas.llms import llm_factory
+from ragas.metrics.collections import (
     AnswerCorrectness,
     AnswerRelevancy,
     ContextPrecision,
     ContextRecall,
     Faithfulness,
 )
-from ragas.metrics.collections.answer_relevancy.util import (  # noqa: E402
+from ragas.metrics.collections.answer_relevancy.util import (
     AnswerRelevanceInput,
     AnswerRelevanceOutput,
     AnswerRelevancePrompt,
 )
-from ragas.metrics.collections.context_recall.util import (  # noqa: E402
+from ragas.metrics.collections.context_recall.util import (
     ContextRecallClassification,
     ContextRecallInput,
     ContextRecallOutput,
     ContextRecallPrompt,
 )
-from ragas.metrics.collections.faithfulness.util import (  # noqa: E402
+from ragas.metrics.collections.faithfulness.util import (
     NLIStatementInput,
     NLIStatementOutput,
     NLIStatementPrompt,
@@ -165,12 +177,12 @@ from ragas.metrics.collections.faithfulness.util import (  # noqa: E402
     StatementGeneratorOutput,
     StatementGeneratorPrompt,
 )
-from sqlalchemy import select  # noqa: E402
+from sqlalchemy import select
 
-from app.config import get_settings  # noqa: E402
-from app.db import SessionLocal  # noqa: E402
-from app.main import chat_service, rag_service  # noqa: E402
-from app.models import DocumentContent, DocumentLink  # noqa: E402
+from app.config import get_settings
+from app.db import SessionLocal
+from app.main import chat_service, rag_service
+from app.models import DocumentContent, DocumentLink
 
 RULE_VERSION = "35315ef6-c82f-44fd-904c-62b78bdc474a"
 DATASET_VERSION = "2026.09.16-v2"
@@ -181,8 +193,15 @@ PROBE_TOP_K = 3
 class DocumentCase:
     name: str
     question: str
-    reference_articles: tuple[int, ...]
+    reference_articles: tuple[int, ...] = ()
     graph_required: bool = False
+    reference_answer: str | None = None
+    gold_evidence: tuple[dict[str, Any], ...] = ()
+    special_rule: bool = False
+
+    @property
+    def category(self) -> str:
+        return "graph" if self.graph_required else "doc"
 
 
 @dataclass(frozen=True, slots=True)
@@ -190,6 +209,108 @@ class GeneralCase:
     name: str
     question: str
     reference: str
+
+
+def load_dataset(path: Path) -> tuple[str, list[DocumentCase]]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict) or not isinstance(payload.get("cases"), list):
+        raise TypeError("Dataset must be an object containing a cases array")
+    version = payload.get("version")
+    if not isinstance(version, str) or not version:
+        raise ValueError("Dataset version must be a non-empty string")
+
+    cases = []
+    names = set()
+    for item in payload["cases"]:
+        if not isinstance(item, dict):
+            raise TypeError("Each dataset case must be an object")
+        name, question, category = item.get("name"), item.get("question"), item.get("category")
+        answer, gold = item.get("reference_answer"), item.get("gold_evidence")
+        if not isinstance(name, str) or not name or name in names:
+            raise ValueError(f"Dataset case names must be non-empty and unique: {name!r}")
+        if not isinstance(question, str) or not question:
+            raise ValueError(f"Dataset case {name!r} needs a question")
+        if category not in {"doc", "graph"}:
+            raise ValueError(f"Dataset case {name!r} category must be 'doc' or 'graph'")
+        if not isinstance(answer, str) or not isinstance(gold, list):
+            raise TypeError(f"Dataset case {name!r} needs reference_answer and gold_evidence")
+        if any(
+            not isinstance(entry, dict)
+            or not isinstance(entry.get("document_version_id"), str)
+            or not isinstance(entry.get("via_link"), bool)
+            for entry in gold
+        ):
+            raise ValueError(f"Dataset case {name!r} has invalid gold_evidence")
+        names.add(name)
+        cases.append(
+            DocumentCase(
+                name=name,
+                question=question,
+                graph_required=category == "graph",
+                reference_answer=answer,
+                gold_evidence=tuple(gold),
+                special_rule=bool(item.get("special_rule", False)),
+            )
+        )
+    return version, cases
+
+
+def _evidence_matches_gold(evidence: Any, gold: dict[str, Any]) -> bool:
+    fragment = evidence.fragment
+    if fragment.version_id != gold["document_version_id"]:
+        return False
+    locator = fragment.locator_json or {}
+    matched = False
+    if gold.get("article") is not None:
+        article = gold["article"]
+        article = int(article) if str(article).isdigit() else None
+        covered = set()
+        locator_article = locator.get("article")
+        if locator_article is not None:
+            numbers = re.findall(r"\d+", str(locator_article))
+            covered.update(map(int, numbers))
+        covered.update(map(int, re.findall(r"제\s*(\d+)\s*조", fragment.text or "")))
+        if article is not None:
+            matched = article in covered
+    if gold.get("page") is not None:
+        page = int(gold["page"])
+        pages = {value for key in ("page", "slide") if (value := locator.get(key)) is not None}
+        pages.update(locator.get("pages") or [])
+        pages.update((evidence.selection or {}).get("pages") or [])
+        if evidence.page is not None:
+            pages.add(evidence.page)
+        matched = matched or page in {int(value) for value in pages}
+    return matched
+
+
+def retrieval_metrics(evidence: list[Any], gold: list[dict[str, Any]], special_rule: bool) -> dict[str, Any]:
+    matched_gold: set[int] = set()
+    relevant_ranks: list[int] = []
+    linked_gold = {index for index, item in enumerate(gold) if item.get("via_link")}
+    linked_hits: set[int] = set()
+    for rank, item in enumerate(evidence, start=1):
+        match = next(
+            (index for index, target in enumerate(gold)
+             if index not in matched_gold and _evidence_matches_gold(item, target)),
+            None,
+        )
+        if match is not None:
+            matched_gold.add(match)
+            relevant_ranks.append(rank)
+            if match in linked_gold:
+                linked_hits.add(match)
+
+    idcg = sum(1 / math.log2(rank + 1) for rank in range(1, min(len(gold), 10) + 1))
+    dcg = sum(1 / math.log2(rank + 1) for rank in relevant_ranks if rank <= 10)
+    linked_recall = len(linked_hits) / len(linked_gold) if linked_gold else None
+    return {
+        "recall": len(matched_gold) / len(gold) if gold else None,
+        "precision": len(relevant_ranks) / len(evidence) if evidence else 0.0,
+        "mrr": 1 / relevant_ranks[0] if relevant_ranks else 0.0,
+        "ndcg_at_10": dcg / idcg if idcg else 0.0,
+        "linked_gold_recall": linked_recall,
+        "special_rule_hit": bool(linked_hits) if special_rule else None,
+    }
 
 
 DOCUMENT_CASES = [
@@ -724,48 +845,91 @@ def _article(text: str, number: int) -> str:
 async def _run() -> None:
     args = parse_args()
     settings = get_settings()
-    if not settings.openai_api_key:
+    if args.variant:
+        settings.rag_variant = args.variant
+    rag_service.settings.rag_variant = settings.rag_variant
+    chat_service.settings.rag_variant = settings.rag_variant
+    if not args.skip_ragas and not settings.openai_api_key:
         raise RuntimeError("OPENAI_API_KEY가 필요합니다")
 
     run_id = args.run_id or f"{datetime.now(UTC).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
     ref_version: Literal["v1", "v2"] = args.reference_version
+    dataset_version, document_cases = (
+        load_dataset(args.dataset) if args.dataset else (DATASET_VERSION, DOCUMENT_CASES)
+    )
 
-    checkpoint_dir = Path("runtime/checkpoints")
+    output_dir = args.output_dir
+    output_dir.mkdir(parents=True, exist_ok=True)
+    checkpoint_dir = output_dir / "checkpoints"
     checkpoint_dir.mkdir(parents=True, exist_ok=True)
     checkpoint_file = checkpoint_dir / f"{run_id}.json"
 
-    client = AsyncOpenAI(api_key=settings.openai_api_key, timeout=90.0)
-    evaluator_llm = llm_factory(settings.llm_model, client=client, max_tokens=8192)
-    if re.match(r"^gpt-(?:[5-9]|1[0-9])(?:[.-]|$)", settings.llm_model.lower()):
-        evaluator_llm.model_args.pop("max_tokens", None)
-        evaluator_llm.model_args.pop("top_p", None)
-        evaluator_llm.model_args["max_completion_tokens"] = 8192
-        evaluator_llm.model_args["reasoning_effort"] = "none"
-        evaluator_llm.model_args["temperature"] = 0
-    evaluator_embedding_model = "text-embedding-3-large"
-    evaluator_embeddings = embedding_factory(
-        provider="openai", model=evaluator_embedding_model, client=client
-    )
-    answer_relevancy = AnswerRelevancy(
-        llm=evaluator_llm, embeddings=evaluator_embeddings, strictness=3
-    )
-    answer_relevancy.prompt = KoreanAnswerRelevancePrompt()
-    faithfulness = Faithfulness(llm=evaluator_llm)
-    faithfulness.statement_generator_prompt = KoreanStatementGeneratorPrompt()
-    faithfulness.nli_statement_prompt = KoreanNLIStatementPrompt()
-    context_recall = ContextRecall(llm=evaluator_llm)
-    context_recall.prompt = KoreanContextRecallPrompt()
-    answer_correctness = AnswerCorrectness(
-        llm=evaluator_llm,
-        embeddings=evaluator_embeddings,
-    )
-    metrics = {
-        "faithfulness": faithfulness,
-        "answer_relevancy": answer_relevancy,
-        "answer_correctness": answer_correctness,
-        "context_precision": ContextPrecision(llm=evaluator_llm),
-        "context_recall": context_recall,
-    }
+    client = None
+    metrics = {}
+    evaluator_embedding_model = None
+    if not args.skip_ragas:
+        client = AsyncOpenAI(api_key=settings.openai_api_key, timeout=90.0)
+        evaluator_llm = llm_factory(settings.llm_model, client=client, max_tokens=8192)
+        if re.match(r"^gpt-(?:[5-9]|1[0-9])(?:[.-]|$)", settings.llm_model.lower()):
+            evaluator_llm.model_args.pop("max_tokens", None)
+            evaluator_llm.model_args.pop("top_p", None)
+            evaluator_llm.model_args["max_completion_tokens"] = 8192
+            evaluator_llm.model_args["reasoning_effort"] = "none"
+            evaluator_llm.model_args["temperature"] = 0
+        evaluator_embedding_model = "text-embedding-3-large"
+        evaluator_embeddings = embedding_factory(
+            provider="openai", model=evaluator_embedding_model, client=client
+        )
+        answer_relevancy = AnswerRelevancy(
+            llm=evaluator_llm, embeddings=evaluator_embeddings, strictness=3
+        )
+        answer_relevancy.prompt = KoreanAnswerRelevancePrompt()
+        faithfulness = Faithfulness(llm=evaluator_llm)
+        faithfulness.statement_generator_prompt = KoreanStatementGeneratorPrompt()
+        faithfulness.nli_statement_prompt = KoreanNLIStatementPrompt()
+        context_recall = ContextRecall(llm=evaluator_llm)
+        context_recall.prompt = KoreanContextRecallPrompt()
+        answer_correctness = AnswerCorrectness(
+            llm=evaluator_llm,
+            embeddings=evaluator_embeddings,
+        )
+        metrics = {
+            "faithfulness": faithfulness,
+            "answer_relevancy": answer_relevancy,
+            "answer_correctness": answer_correctness,
+            "context_precision": ContextPrecision(llm=evaluator_llm),
+            "context_recall": context_recall,
+        }
+
+    chat_capture: dict[str, Any] = {"retrieved": False, "answer_latency": None, "usages": []}
+    chat_completions = None
+    original_chat_create = None
+    if not args.skip_ragas:
+        chat_client = chat_service._get_client()
+        chat_completions = chat_client.chat.completions
+        original_chat_create = chat_completions.create
+
+        def capture_chat_create(*call_args, **call_kwargs):
+            started = time.perf_counter()
+            response = None
+            try:
+                response = original_chat_create(*call_args, **call_kwargs)
+                usage = getattr(response, "usage", None)
+                if usage:
+                    chat_capture["usages"].append({
+                        key: getattr(usage, key, None)
+                        for key in ("prompt_tokens", "completion_tokens", "total_tokens")
+                    })
+                return response
+            finally:
+                if chat_capture["retrieved"]:
+                    chat_capture["answer_latency"] = time.perf_counter() - started
+
+        try:
+            chat_completions.create = capture_chat_create
+        except AttributeError:
+            chat_completions = None
+            original_chat_create = None
 
     def graph_probe(db, question: str) -> dict[str, Any]:
         base = rag_service.retrieve(db, question, top_k=PROBE_TOP_K, max_hops=0)
@@ -790,37 +954,43 @@ async def _run() -> None:
 
     db = SessionLocal()
     try:
-        rules = db.get(DocumentContent, RULE_VERSION)
-        if not rules:
-            raise RuntimeError(f"규정 content를 찾을 수 없습니다: {RULE_VERSION}")
-        v1_references = {
-            number: _article(rules.text, number)
-            for case in DOCUMENT_CASES
-            for number in case.reference_articles
-        }
+        v1_references = {}
+        if args.dataset is None:
+            rules = db.get(DocumentContent, RULE_VERSION)
+            if not rules:
+                raise RuntimeError(f"규정 content를 찾을 수 없습니다: {RULE_VERSION}")
+            v1_references = {
+                number: _article(rules.text, number)
+                for case in document_cases
+                for number in case.reference_articles
+            }
 
         # Filter cases if --cases is specified
-        target_doc_cases = DOCUMENT_CASES
-        target_gen_cases = GENERAL_CASES
-        target_ood_cases = OUT_OF_DOC_CASES
+        target_doc_cases = document_cases
+        target_gen_cases = [] if args.dataset else GENERAL_CASES
+        target_ood_cases = [] if args.dataset else OUT_OF_DOC_CASES
 
         if args.cases:
             requested = set(args.cases)
             if "all" in requested:
                 pass
             elif "doc" in requested:
+                if args.dataset:
+                    target_doc_cases = [c for c in document_cases if c.category == "doc"]
                 target_gen_cases, target_ood_cases = [], []
             elif "general" in requested:
                 target_doc_cases, target_ood_cases = [], []
             elif "ood" in requested:
                 target_doc_cases, target_gen_cases = [], []
             elif "graph" in requested:
-                target_doc_cases = [c for c in DOCUMENT_CASES if c.graph_required]
+                target_doc_cases = [c for c in document_cases if c.graph_required]
                 target_gen_cases, target_ood_cases = [], []
             else:
-                target_doc_cases = [c for c in DOCUMENT_CASES if c.name in requested]
+                target_doc_cases = [c for c in document_cases if c.name in requested]
                 target_gen_cases = [c for c in GENERAL_CASES if c.name in requested]
                 target_ood_cases = [c for c in OUT_OF_DOC_CASES if c[0] in requested]
+        if args.skip_ragas:
+            target_gen_cases, target_ood_cases = [], []
 
         # Load existing checkpoint if resume is requested
         completed_doc_rows: dict[str, dict[str, Any]] = {}
@@ -832,6 +1002,9 @@ async def _run() -> None:
                 if (
                     cp_data.get("llm_model") == settings.llm_model
                     and cp_data.get("reference_version") == ref_version
+                    and cp_data.get("rag_variant", "proposed") == settings.rag_variant
+                    and cp_data.get("dataset_version", dataset_version) == dataset_version
+                    and cp_data.get("repeat_tag") == args.repeat_tag
                 ):
                     for r in cp_data.get("document_cases", []):
                         completed_doc_rows[r["case"]] = r
@@ -841,18 +1014,25 @@ async def _run() -> None:
             except (json.JSONDecodeError, OSError) as e:
                 print(f"Checkpoint resume failed ({e}), starting fresh.")
 
-        print(f"Run ID: {run_id} | Ref Version: {ref_version} | LLM: {settings.llm_model} | Embedding: {rag_service.embedding_provider.name}")
+        print(f"Run ID: {run_id} | Ref Version: {ref_version} | Variant: {settings.rag_variant} | LLM: {settings.llm_model} | Embedding: {rag_service.embedding_provider.name}")
         print(f"Executing: {len(target_doc_cases)} document cases, {len(target_gen_cases)} general cases\n" + "=" * 80)
 
         document_rows: list[dict[str, Any]] = []
         for case in target_doc_cases:
-            if case.name in completed_doc_rows:
+            if (
+                case.name in completed_doc_rows
+                and "recall" in completed_doc_rows[case.name]
+                and completed_doc_rows[case.name].get("ragas_skipped") == args.skip_ragas
+            ):
                 row = completed_doc_rows[case.name]
                 document_rows.append(row)
                 print(f"[REUSED] {case.name}: mode={row['mode']}, faithfulness={row.get('faithfulness', 0):.4f}, correctness={row.get('answer_correctness', 0):.4f}")
                 continue
 
-            if ref_version == "v2" and case.name in REFERENCE_V2:
+            if case.reference_answer is not None:
+                reference = case.reference_answer
+                ref_source = str(args.dataset)
+            elif ref_version == "v2" and case.name in REFERENCE_V2:
                 ref_info = REFERENCE_V2[case.name]
                 reference = ref_info["reference"]
                 ref_source = ref_info["source_doc"] + " - " + ref_info["source_location"]
@@ -860,56 +1040,112 @@ async def _run() -> None:
                 reference = "\n\n".join(v1_references[number] for number in case.reference_articles)
                 ref_source = f"운전취급규정 {case.reference_articles}조"
 
-            started = time.perf_counter()
-            result = chat_service.respond(db, case.question, [])
-            latency = time.perf_counter() - started
-            evidence = result.evidence
+            if args.skip_ragas:
+                started = time.perf_counter()
+                evidence = rag_service.retrieve(db, case.question, top_k=5, max_hops=2)
+                evidence = chat_service._limit_evidence(chat_service._unique_evidence(evidence), 5)
+                retrieval_latency = time.perf_counter() - started
+                latency = retrieval_latency
+                answer_latency = None
+                answer = ""
+                mode = "retrieval_only"
+            else:
+                retrieval_times = []
+                chat_capture.update(retrieved=False, answer_latency=None, usages=[])
+                original_retrieve = rag_service.retrieve
+
+                def timed_retrieve(
+                    db,
+                    question,
+                    *retrieve_args,
+                    _original_retrieve=original_retrieve,
+                    _retrieval_times=retrieval_times,
+                    _capture=chat_capture,
+                    **retrieve_kwargs,
+                ):
+                    started = time.perf_counter()
+                    try:
+                        return _original_retrieve(db, question, *retrieve_args, **retrieve_kwargs)
+                    finally:
+                        _retrieval_times.append(time.perf_counter() - started)
+                        _capture["retrieved"] = True
+
+                rag_service.retrieve = timed_retrieve
+                started = time.perf_counter()
+                try:
+                    result = chat_service.respond(db, case.question, [])
+                finally:
+                    latency = time.perf_counter() - started
+                    rag_service.retrieve = original_retrieve
+                retrieval_latency = sum(retrieval_times)
+                answer_latency = chat_capture["answer_latency"]
+                if answer_latency is None:
+                    answer_latency = max(0.0, latency - retrieval_latency)
+                evidence = result.evidence
+                answer = result.answer
+                mode = result.mode
+
             contexts = [
                 item.fragment.text or ""
                 for item in evidence
                 if (item.fragment.text or "").strip()
             ]
             scores: dict[str, float] = {}
-            scores["answer_relevancy"] = (
-                await metrics["answer_relevancy"].ascore(
-                    user_input=case.question, response=result.answer
-                )
-            ).value
-            scores["answer_correctness"] = (
-                await metrics["answer_correctness"].ascore(
-                    user_input=case.question,
-                    response=result.answer,
-                    reference=reference,
-                )
-            ).value
-            if contexts:
-                scores["faithfulness"] = (
-                    await metrics["faithfulness"].ascore(
-                        user_input=case.question,
-                        response=result.answer,
-                        retrieved_contexts=contexts,
+            if not args.skip_ragas:
+                scores["answer_relevancy"] = (
+                    await metrics["answer_relevancy"].ascore(
+                        user_input=case.question, response=answer
                     )
                 ).value
-                scores["context_precision"] = (
-                    await metrics["context_precision"].ascore(
+                scores["answer_correctness"] = (
+                    await metrics["answer_correctness"].ascore(
                         user_input=case.question,
+                        response=answer,
                         reference=reference,
-                        retrieved_contexts=contexts,
                     )
                 ).value
-                scores["context_recall"] = (
-                    await metrics["context_recall"].ascore(
-                        user_input=case.question,
-                        reference=reference,
-                        retrieved_contexts=contexts,
+                if contexts:
+                    scores["faithfulness"] = (
+                        await metrics["faithfulness"].ascore(
+                            user_input=case.question,
+                            response=answer,
+                            retrieved_contexts=contexts,
+                        )
+                    ).value
+                    scores["context_precision"] = (
+                        await metrics["context_precision"].ascore(
+                            user_input=case.question,
+                            reference=reference,
+                            retrieved_contexts=contexts,
+                        )
+                    ).value
+                    scores["context_recall"] = (
+                        await metrics["context_recall"].ascore(
+                            user_input=case.question,
+                            reference=reference,
+                            retrieved_contexts=contexts,
+                        )
+                    ).value
+                else:
+                    scores.update(
+                        faithfulness=0.0,
+                        context_precision=0.0,
+                        context_recall=0.0,
                     )
-                ).value
-            else:
-                scores.update(
-                    faithfulness=0.0,
-                    context_precision=0.0,
-                    context_recall=0.0,
-                )
+
+            gold = list(case.gold_evidence)
+            if args.dataset is None:
+                gold = [
+                    {
+                        "document_version_id": RULE_VERSION,
+                        "article": number,
+                        "page": None,
+                        "label": f"운전취급규정 제{number}조",
+                        "via_link": False,
+                    }
+                    for number in case.reference_articles
+                ]
+            retrieval = retrieval_metrics(evidence, gold, case.special_rule)
 
             evidence_details = [
                 {
@@ -917,6 +1153,7 @@ async def _run() -> None:
                     "score": round(item.score, 4),
                     "link_id": item.link_id,
                     "relation": item.via_relation,
+                    "document_version_id": item.fragment.version_id,
                     "location": item.location,
                     "locator": item.fragment.locator_json,
                     "text_snippet": (item.fragment.text or "")[:100].replace("\n", " "),
@@ -927,31 +1164,44 @@ async def _run() -> None:
             row: dict[str, Any] = {
                 "case": case.name,
                 "question": case.question,
+                "category": case.category,
                 "expected_articles": list(case.reference_articles),
+                "gold_evidence": gold,
                 "reference": reference,
                 "reference_source": ref_source,
-                "response": result.answer,
-                "mode": result.mode,
+                "response": answer,
+                "mode": mode,
+                "ragas_skipped": args.skip_ragas,
                 "context_count": len(contexts),
+                "evidence_count": len(evidence),
+                "linked_evidence_count": sum(item.hop > 0 or bool(item.link_id) for item in evidence),
                 "chat_link_count": sum(bool(item.link_id) for item in evidence),
                 "chat_hop_count": sum(item.hop > 0 for item in evidence),
                 "evidence_details": evidence_details,
                 "latency_seconds": round(latency, 2),
-                "citation_check": await citation_check(
-                    client,
-                    settings.llm_model,
-                    result.answer,
-                    # The model sees each passage's source name and location too, so the check does.
-                    [f"({item.filename} · {item.location})\n{item.fragment.text or ''}" for item in evidence],
-                ),
+                "retrieval_latency_seconds": round(retrieval_latency, 4),
+                "answer_latency_seconds": None if answer_latency is None else round(answer_latency, 4),
+                **retrieval,
                 **scores,
             }
-
-            if case.graph_required:
-                probe = graph_probe(db, case.question)
-                chat_used = bool(result.evidence) and any(
-                    item.hop > 0 or item.link_id for item in result.evidence
+            token_usage = {
+                key: sum(usage[key] for usage in chat_capture["usages"] if usage.get(key) is not None)
+                for key in ("prompt_tokens", "completion_tokens", "total_tokens")
+            }
+            if any(token_usage.values()):
+                row["token_usage"] = token_usage
+            if not args.skip_ragas:
+                row["citation_check"] = await citation_check(
+                    client,
+                    settings.llm_model,
+                    answer,
+                    # The model sees each passage's source name and location too, so the check does.
+                    [f"({item.filename} · {item.location})\n{item.fragment.text or ''}" for item in evidence],
                 )
+
+            if case.graph_required and not args.skip_ragas:
+                probe = graph_probe(db, case.question)
+                chat_used = bool(evidence) and any(item.hop > 0 or item.link_id for item in evidence)
                 row["graph_check"] = {
                     **probe,
                     "chat_used": chat_used,
@@ -961,15 +1211,13 @@ async def _run() -> None:
             document_rows.append(row)
             completed_doc_rows[case.name] = row
 
-            check = row["citation_check"]
-            print(f"       ↳ citations: {check['supported']}/{check['claims']} supported, uncited={len(check['uncited'])}")
-            for bad in check["unsupported"]:
-                print(f"         ✗ {bad['cited']} {bad['claim'][:80]} — {bad['reason'][:100]}")
-            print(
-                f"[DONE] {case.name}: mode={result.mode}, contexts={len(contexts)} | "
-                + " | ".join(f"{k}={scores[k]:.4f}" for k in ("faithfulness", "answer_relevancy", "answer_correctness", "context_precision", "context_recall"))
-            )
-            if case.graph_required:
+            if "citation_check" in row:
+                check = row["citation_check"]
+                print(f"       ↳ citations: {check['supported']}/{check['claims']} supported, uncited={len(check['uncited'])}")
+                for bad in check["unsupported"]:
+                    print(f"         ✗ {bad['cited']} {bad['claim'][:80]} — {bad['reason'][:100]}")
+            print(f"[DONE] {case.name}: mode={mode}, evidence={len(evidence)}, recall={retrieval['recall']}")
+            if case.graph_required and "graph_check" in row:
                 check = row["graph_check"]
                 print(
                     f"       ↳ graph: chat_links={row['chat_link_count']}, "
@@ -982,6 +1230,9 @@ async def _run() -> None:
                 "run_id": run_id,
                 "llm_model": settings.llm_model,
                 "reference_version": ref_version,
+                "dataset_version": dataset_version,
+                "rag_variant": settings.rag_variant,
+                "repeat_tag": args.repeat_tag,
                 "updated_at_utc": datetime.now(UTC).isoformat(),
                 "document_cases": document_rows,
                 "general_cases": list(completed_gen_rows.values()),
@@ -1034,6 +1285,9 @@ async def _run() -> None:
                 "run_id": run_id,
                 "llm_model": settings.llm_model,
                 "reference_version": ref_version,
+                "dataset_version": dataset_version,
+                "rag_variant": settings.rag_variant,
+                "repeat_tag": args.repeat_tag,
                 "updated_at_utc": datetime.now(UTC).isoformat(),
                 "document_cases": document_rows,
                 "general_cases": general_rows,
@@ -1059,38 +1313,38 @@ async def _run() -> None:
             print(f"[DONE] ood:{name}: mode={result.mode}, abstained={abstained}, {latency:.1f}s")
 
         # Aggregations
-        document_metric_names = (
+        document_metric_names = () if args.skip_ragas else (
             "faithfulness",
             "answer_relevancy",
             "answer_correctness",
             "context_precision",
             "context_recall",
         )
-        general_metric_names = ("answer_correctness", "answer_relevancy")
+        general_metric_names = () if args.skip_ragas else ("answer_correctness", "answer_relevancy")
 
         direct_doc_rows = [r for r in document_rows if "graph_check" not in r]
         graph_doc_rows = [r for r in document_rows if "graph_check" in r]
         knowledge_gen_rows = [r for r in general_rows if r["case"] != "greeting"]
 
         averages: dict[str, dict[str, float]] = {}
-        if document_rows:
+        if document_rows and document_metric_names:
             averages["document"] = {
                 key: sum(float(r[key]) for r in document_rows) / len(document_rows)
                 for key in document_metric_names
             }
-        if direct_doc_rows:
+        if direct_doc_rows and document_metric_names:
             averages["document_direct"] = {
                 key: sum(float(r[key]) for r in direct_doc_rows) / len(direct_doc_rows)
                 for key in document_metric_names
             }
-        if graph_doc_rows:
+        if graph_doc_rows and document_metric_names:
             averages["document_graph"] = {
                 key: sum(float(r[key]) for r in graph_doc_rows) / len(graph_doc_rows)
                 for key in document_metric_names
             }
         minimums = {
             key: min(float(r[key]) for r in document_rows) for key in document_metric_names
-        } if document_rows else {}
+        } if document_rows and document_metric_names else {}
         latencies = [r["latency_seconds"] for r in document_rows if "latency_seconds" in r]
         abstention_rate = (sum(r["abstained"] for r in ood_rows) / len(ood_rows)) if ood_rows else None
         doc_avg = averages.get("document", {})
@@ -1103,7 +1357,7 @@ async def _run() -> None:
             "answer_correctness_mean": doc_avg.get("answer_correctness"),
             "general_correctness_mean": None,
             "abstention_rate": abstention_rate,
-            "latency_p95_seconds": _p95(latencies) if latencies else None,
+            "latency_p95_seconds": _p95(latencies) if latencies and not args.skip_ragas else None,
             "citation_accuracy": (
                 sum(r["citation_check"]["supported"] for r in document_rows if "citation_check" in r)
                 / max(1, sum(r["citation_check"]["claims"] for r in document_rows if "citation_check" in r))
@@ -1132,6 +1386,27 @@ async def _run() -> None:
         graph_passed = sum(bool(r.get("graph_check", {}).get("passed")) for r in graph_doc_rows)
         greeting_passed = any(r["case"] == "greeting" and r["routing_pass"] for r in general_rows)
 
+        retrieval_metric_names = (
+            "recall", "precision", "mrr", "ndcg_at_10", "linked_gold_recall", "special_rule_hit",
+            "evidence_count", "linked_evidence_count", "retrieval_latency_seconds", "answer_latency_seconds",
+        )
+        retrieval_averages = {}
+        for group, rows in (
+            ("doc", [row for row in document_rows if row["category"] == "doc"]),
+            ("graph", [row for row in document_rows if row["category"] == "graph"]),
+            ("all", document_rows),
+        ):
+            group_means = {}
+            for key in retrieval_metric_names:
+                values = [
+                    float(row[key]) if isinstance(row.get(key), bool) else row[key]
+                    for row in rows
+                    if isinstance(row.get(key), (int, float, bool))
+                ]
+                if values:
+                    group_means[key] = sum(values) / len(values)
+            retrieval_averages[group] = group_means
+
         # Check target satisfaction
         doc_targets_met = bool(
             averages.get("document")
@@ -1142,11 +1417,16 @@ async def _run() -> None:
             and all(averages["general_knowledge"][m] >= 0.9 for m in general_metric_names)
         )
         all_targets_met = doc_targets_met and gen_targets_met and greeting_passed and (graph_passed == len(graph_doc_rows))
-        evaluation_complete = (
-            len(document_rows) == len(DOCUMENT_CASES)
-            and len(general_rows) == len(GENERAL_CASES)
-            and len(ood_rows) == len(OUT_OF_DOC_CASES)
-        )
+        if args.skip_ragas:
+            evaluation_complete = len(document_rows) == len(target_doc_cases)
+        elif args.dataset:
+            evaluation_complete = len(document_rows) == len(document_cases)
+        else:
+            evaluation_complete = (
+                len(document_rows) == len(DOCUMENT_CASES)
+                and len(general_rows) == len(GENERAL_CASES)
+                and len(ood_rows) == len(OUT_OF_DOC_CASES)
+            )
         pilot_met = evaluation_complete and all(pilot_checks.values()) and greeting_passed and (
             graph_passed == len(graph_doc_rows)
         )
@@ -1154,7 +1434,11 @@ async def _run() -> None:
         payload = {
             "run_id": run_id,
             "evaluated_at_utc": datetime.now(UTC).isoformat(),
-            "dataset_version": DATASET_VERSION,
+            "dataset_version": dataset_version,
+            "dataset": str(args.dataset) if args.dataset else None,
+            "rag_variant": settings.rag_variant,
+            "repeat_tag": args.repeat_tag,
+            "ragas_skipped": args.skip_ragas,
             "reference_version": ref_version,
             "embedding_provider": rag_service.embedding_provider.name,
             "embedding_model": rag_service.embedding_provider.model,
@@ -1175,43 +1459,52 @@ async def _run() -> None:
                 "passed": greeting_passed,
             },
             "averages": averages,
+            "retrieval_averages": retrieval_averages,
             "minimums": minimums,
             "out_of_doc_cases": ood_rows,
             "pilot": {"values": pilot, "thresholds": PILOT_CRITERIA, "checks": pilot_checks, "met": pilot_met},
         }
 
-        output = Path("runtime/ragas_results.json")
+        output = output_dir / "ragas_results.json"
         output.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
         # Also keep run-specific results archive
-        archive_file = Path(f"runtime/ragas_results_{run_id}.json")
+        archive_file = output_dir / f"ragas_results_{run_id}.json"
         archive_file.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
         print("\n" + "=" * 80)
         print("EVALUATION SUMMARY:")
         print(f"Run ID: {run_id} | Reference Version: {ref_version} | Evaluation Complete: {evaluation_complete}")
-        if "document" in averages:
-            print("Document Cases Average (17 cases):")
-            for m in document_metric_names:
-                status = "PASS" if averages["document"][m] >= 0.9 else "FAIL"
-                print(f"  - {m:20s}: {averages['document'][m]:.4f} [{status}]")
-        if "general_knowledge" in averages:
-            print("General Knowledge Average (4 cases, greeting excluded):")
-            for m in general_metric_names:
-                status = "PASS" if averages["general_knowledge"][m] >= 0.9 else "FAIL"
-                print(f"  - {m:20s}: {averages['general_knowledge'][m]:.4f} [{status}]")
-        print("Pilot criteria (docs/rag-pipeline.md):")
-        for key, value in pilot.items():
-            shown = "n/a" if value is None else f"{value:.4f}"
-            print(f"  - {key:26s}: {shown} (threshold {PILOT_CRITERIA[key]}) [{pilot_checks[key]}]")
-        print(f"Pilot met (automatable items): {pilot_met}")
-        print(f"Graph check: {graph_passed}/{len(graph_doc_rows)} passed")
-        print(f"Greeting check: {'PASS' if greeting_passed else 'FAIL'}")
-        print(f"Targets met: {'YES (COMPLETED)' if all_targets_met else 'NO (INCOMPLETE)'}")
+        if args.skip_ragas:
+            print(f"Retrieval means ({settings.rag_variant}):")
+            for key, value in retrieval_averages["all"].items():
+                print(f"  - {key:26s}: {value:.4f}")
+        else:
+            if "document" in averages:
+                print("Document Cases Average:")
+                for m in document_metric_names:
+                    status = "PASS" if averages["document"][m] >= 0.9 else "FAIL"
+                    print(f"  - {m:20s}: {averages['document'][m]:.4f} [{status}]")
+            if "general_knowledge" in averages:
+                print("General Knowledge Average (greeting excluded):")
+                for m in general_metric_names:
+                    status = "PASS" if averages["general_knowledge"][m] >= 0.9 else "FAIL"
+                    print(f"  - {m:20s}: {averages['general_knowledge'][m]:.4f} [{status}]")
+            print("Pilot criteria (docs/rag-pipeline.md):")
+            for key, value in pilot.items():
+                shown = "n/a" if value is None else f"{value:.4f}"
+                print(f"  - {key:26s}: {shown} (threshold {PILOT_CRITERIA[key]}) [{pilot_checks[key]}]")
+            print(f"Pilot met (automatable items): {pilot_met}")
+            print(f"Graph check: {graph_passed}/{len(graph_doc_rows)} passed")
+            print(f"Greeting check: {'PASS' if greeting_passed else 'FAIL'}")
+            print(f"Targets met: {'YES (COMPLETED)' if all_targets_met else 'NO (INCOMPLETE)'}")
         print(f"Saved: {output.resolve()} and {archive_file.resolve()}")
     finally:
         db.close()
-        await client.close()
+        if chat_completions is not None and original_chat_create is not None:
+            chat_completions.create = original_chat_create
+        if client:
+            await client.close()
 
 
 if __name__ == "__main__":

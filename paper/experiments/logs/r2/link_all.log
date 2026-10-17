@@ -1,0 +1,357 @@
+Run ID: link_all_r2 | Ref Version: v2 | Variant: link_all | LLM: gpt-5.6-luna | Embedding: openai
+Executing: 37 document cases, 0 general cases
+================================================================================
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] vehicle_failure: mode=rag, evidence=3, recall=1.0
+       ↳ citations: 6/6 supported, uncited=0
+[DONE] brake_pipe: mode=rag, evidence=3, recall=1.0
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] door_failure: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] rescue_train_protection: mode=rag, evidence=4, recall=1.0
+       ↳ citations: 3/4 supported, uncited=0
+         ✗ [1] 정거장 외에서 인접 선로를 지장한 경우에는 열차를 신속히 정차시키고, 운전관제에 보고한 뒤 지장지역 전후 양방향에 제1종 방호를 해야 합니다 — 정거장 외 인접선로 장애 시 신속한 정차, 운전관제 보고, 전후 양방향 제1종 방호는 근거에 있으나, ‘보고한 뒤’라는 조치의 순서는 명시되어 있지 않습니다.
+[DONE] adjacent_line_protection: mode=rag, evidence=4, recall=1.0
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] automatic_driving: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] front_cab_failure: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 4/4 supported, uncited=1
+[DONE] runaway_vehicle: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 1/1 supported, uncited=0
+[DONE] storm: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 8/8 supported, uncited=0
+[DONE] flooding: mode=rag, evidence=2, recall=1.0
+       ↳ citations: 5/6 supported, uncited=0
+         ✗ [1] 안개나 눈보라로 신호 확인이 어려울 때 기관사는 감속·정차·보고 조치를 하고, 운전관제는 신호 확인거리와 상황에 따라 운전중지 등을 명령합니다. — 기관사의 주의운전·정차·보고 조치는 근거에 있으나, 운전관제가 신호 확인거리와 상황에 따라 운전중지 등을 명령한다는 내용은 cited_evidence에 없다.
+[DONE] fog_or_snowstorm: mode=rag, evidence=3, recall=1.0
+       ↳ citations: 7/8 supported, uncited=0
+         ✗ [3] 이상기후 경보는 열차운전에 미치는 영향에 따라 예보·경보·비상경보로 구분하고, 운전 규제는 위험 정도에 따라 감속·일시중지·운행취소 등으로 정합 — 경보의 구분과 각 의미는 근거에 있으나, 감속·일시중지·운행취소 등의 운전 규제 내용은 cited_evidence에 없다.
+[DONE] weather_alert: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 11/11 supported, uncited=0
+[DONE] guide_door: mode=rag, evidence=3, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] guide_psd: mode=rag, evidence=2, recall=0.6666666666666666
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 8/9 supported, uncited=0
+         ✗ [1, 4] 6호선 전동차 판토그래프 상승불능 시에는 먼저 운전관제에 상황을 보고한 후 다음 사항을 점검합니다 — 근거에는 판토그래프 상승불능 시 점검 조치와 운전관제 보고 의무는 있으나, 점검에 앞서 먼저 보고해야 한다는 순서가 명시되어 있지 않습니다.
+[DONE] guide_pantograph: mode=rag, evidence=4, recall=0.5
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] guide_emergency_brake: mode=rag, evidence=5, recall=0.6666666666666666
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 9/9 supported, uncited=0
+[DONE] guide_atc: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=1, probe_links=2, added=3, passed=True
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] graph_704_bus_failure: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] graph_acm_start_failure: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_single_cm_failure: mode=rag, evidence=2, recall=0.5
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 6/7 supported, uncited=0
+         ✗ [1] 5. 연장급전 및 부하감소는 연장급전 완료 후 약 2분 10초가 소요되며, 다음 순서로 시행합니다 — 근거는 연장급전 완료에 약 2분 10초가 소요되고 연장급전 및 부하감소의 순서가 있음을 제시하지만, ‘연장급전 완료 후’ 해당 시간이 소요된다고 명시하지 않습니다.
+[DONE] graph_siv_start_failure: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] graph_master_controller_failure: mode=rag, evidence=3, recall=1.0
+       ↳ graph: chat_links=1, probe_links=2, added=2, passed=True
+       ↳ citations: 3/4 supported, uncited=0
+         ✗ [1] 전체 차량의 주공기압축기(CM)가 구동불능으로 정거장 도중 정차하여 구원을 요청한 경우, MR 압력은 8.0kg/㎠ 이하로 떨어지며 6.5kg/ — MR 압력 수치와 비상제동·주차제동 조건, 구동불능 후 구원요청은 근거에 있으나, ‘정거장 도중 정차하여 구원을 요청한 경우’라는 전체 조건이 해당 근거에 명시되어 있지 않다.
+[DONE] graph_all_cm_failure: mode=rag, evidence=4, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] graph_single_door_open_failure: mode=rag, evidence=3, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] graph_all_doors_close_failure: mode=rag, evidence=2, recall=0.5
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 5/6 supported, uncited=0
+         ✗ [2] 3. 해당차 출입문이 계속 닫히지 않으면 관제센터에 보고하고 지시에 따라 승객을 하차시킨 후 회송 조치합니다. 이때 다음을 취급합니다 — 근거 2에는 관제 보고 및 지시에 따른 회송은 있으나, 승객을 하차시킨다는 조치가 명시되어 있지 않다.
+[DONE] graph_one_car_doors_close_failure: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 5/6 supported, uncited=0
+         ✗ [1] 정거장 외에서 6호선 6300호 M2차의 주공기관 또는 CM 호스가 파열되어 통기불능이 되면, 다음과 같이 취급하고 원칙적으로 구원을 요구해야  — 근거에는 6300호 M2차의 주공기관 또는 CM 호스 파열 시 AP.CBMC 차단, 6400호 MR 콕크 차단 및 후속 조치가 있으나, ‘정거장 외’, ‘통기불능’ 및 ‘원칙적으로
+[DONE] graph_air_pipe_rupture: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 13/14 supported, uncited=0
+         ✗ [1] 정거장 외 주공기관 파열로 통기불능이고 주차제동이 풀리지 않으며 MR 압력이 3.5kg/㎠ 이하이면, 다음 순서로 주차제동을 해제한 뒤 관제센터 — 근거 1에는 정거장 외에서 통기불능이라는 조건이 명시되어 있지 않습니다. 주공기관 파열로 주차제동 풀림불능 및 MR 압력 3.5kg/㎠ 이하의 조치 순서는 확인되지만, 해당 조건을
+[DONE] graph_parking_brake_release_failure: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 1/2 supported, uncited=0
+         ✗ [2] 자동모드에서 수동모드로 변경하려면 **운전관제의 승인**을 받아야 합니다 — cited_evidence에는 자동모드에서 다른 모드로 변경할 때 운전관제의 승인이 필요하다고 되어 있으나, 제330조 제1항 제5호에 따른 수동모드 변경은 예외라고 명시되어 있어
+[DONE] graph_inverter_output_half: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 8/8 supported, uncited=0
+[DONE] graph_front_tc1_failure: mode=rag, evidence=4, recall=1.0
+       ↳ graph: chat_links=1, probe_links=1, added=1, passed=True
+       ↳ citations: 12/12 supported, uncited=0
+[DONE] graph_rear_safety_brake_dispatch: mode=rag, evidence=5, recall=1.0
+       ↳ graph: chat_links=2, probe_links=1, added=1, passed=True
+       ↳ citations: 6/6 supported, uncited=0
+[DONE] graph_front_safety_brake_rescue: mode=rag, evidence=6, recall=1.0
+       ↳ graph: chat_links=2, probe_links=2, added=2, passed=True
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] wind_threshold_report: mode=rag, evidence=2, recall=1.0
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] fog_station_duties: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 6/6 supported, uncited=1
+[DONE] earthquake_warning_threshold: mode=rag, evidence=1, recall=1.0
+uv.exe : Traceback (most recent call last):
+위치 줄:2 문자:853
++ ... riant.log"; & uv run --extra dev --extra hwp --extra eval python scri ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+  File "C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r2\back\.venv\Lib\site-packages\instructor\core\re
+try.py", line 439, in retry_async
+    raise e
+  File "C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r2\back\.venv\Lib\site-packages\instructor\core\re
+try.py", line 349, in retry_async
+    response: ChatCompletion = await func(*args, **kwargs)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r2\back\.venv\Lib\site-packages\openai\resources\c
+hat\completions\completions.py", line 2585, in create
+    return await self._post(
+           ^^^^^^^^^^^^^^^^^
+    ...<48 lines>...
+    )
+    ^
+  File "C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r2\back\.venv\Lib\site-packages\openai\_base_clien
+t.py", line 1794, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r2\back\.venv\Lib\site-packages\openai\_base_clien
+t.py", line 1594, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'You have no credits remaining. Add credits to continue
+using the API at https://platform.openai.com/settings/organization/billing/.', 'type': 'insufficient_quota', 'param': N
+one, 'code': 'credit_balance_exhausted'}}
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r2\back\.venv\Lib\site-packages\instructor\core\re
+try.py", line 344, in retry_async
+    async for attempt in max_retries:
+    ...<94 lines>...
+                raise e
+  File "C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r2\back\.venv\Lib\site-packages\tenacity\asyncio\_
+_init__.py", line 170, in __anext__
+    do = await self.iter(retry_state=self._retry_state)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r2\back\.venv\Lib\site-packages\tenacity\asyncio\_
+_init__.py", line 157, in iter
+    result = await action(retry_state)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r2\back\.venv\Lib\site-packages\tenacity\_utils.py
+", line 111, in inner
+    return call(*args, **kwargs)
+  File "C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r2\back\.venv\Lib\site-packages\tenacity\__init__.
+py", line 414, in exc_check
+    raise retry_exc from fut.exception()
+tenacity.RetryError: RetryError[<Future at 0x219f931f650 state=finished raised RateLimitError>]
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r2\back\scripts\ragas_eval.py", line 1511, in <mod
+ule>
+    asyncio.run(_run())
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\colin_laptop\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\asyncio\runners.py", line
+196, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\colin_laptop\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\asyncio\runners.py", line
+119, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\colin_laptop\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\asyncio\base_events.py", l
+ine 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r2\back\scripts\ragas_eval.py", line 1096, in _run
+    await metrics["answer_relevancy"].ascore(
+        user_input=case.question, response=answer
+    )
+  File "C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r2\back\.venv\Lib\site-packages\ragas\metrics\coll
+ections\answer_relevancy\metric.py", line 120, in ascore
+    result = await self.llm.agenerate(prompt_string, AnswerRelevanceOutput)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r2\back\.venv\Lib\site-packages\ragas\llms\base.py
+", line 1109, in agenerate
+    result = await self.client.chat.completions.create(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r2\back\.venv\Lib\site-packages\instructor\core\cl
+ient.py", line 649, in create
+    return await self.create_fn(
+           ^^^^^^^^^^^^^^^^^^^^^
+    ...<8 lines>...
+    )
+    ^
+  File "C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r2\back\.venv\Lib\site-packages\instructor\core\pa
+tch.py", line 188, in new_create_async
+    response = await retry_async(
+               ^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-exp-r2\back\.venv\Lib\site-packages\instructor\core\re
+try.py", line 442, in retry_async
+    raise InstructorRetryException(
+    ...<10 lines>...
+    ) from e
+instructor.core.exceptions.InstructorRetryException: <failed_attempts>
+
+<generation number="1">
+<exception>
+    Error code: 429 - {'error': {'message': 'You have no credits remaining. Add credits to continue using the API at ht
+tps://platform.openai.com/settings/organization/billing/.', 'type': 'insufficient_quota', 'param': None, 'code': 'credi
+t_balance_exhausted'}}
+</exception>
+<completion>
+    None
+</completion>
+</generation>
+
+<generation number="2">
+<exception>
+    Error code: 429 - {'error': {'message': 'You have no credits remaining. Add credits to continue using the API at ht
+tps://platform.openai.com/settings/organization/billing/.', 'type': 'insufficient_quota', 'param': None, 'code': 'credi
+t_balance_exhausted'}}
+</exception>
+<completion>
+    None
+</completion>
+</generation>
+
+<generation number="3">
+<exception>
+    Error code: 429 - {'error': {'message': 'You have no credits remaining. Add credits to continue using the API at ht
+tps://platform.openai.com/settings/organization/billing/.', 'type': 'insufficient_quota', 'param': None, 'code': 'credi
+t_balance_exhausted'}}
+</exception>
+<completion>
+    None
+</completion>
+</generation>
+
+</failed_attempts>
+
+<last_exception>
+    Error code: 429 - {'error': {'message': 'You have no credits remaining. Add credits to continue using the API at ht
+tps://platform.openai.com/settings/organization/billing/.', 'type': 'insufficient_quota', 'param': None, 'code': 'credi
+t_balance_exhausted'}}
+</last_exception>
+
+Run status: attempt 1 ended with exit code 1 after 34/37 cases; OpenAI returned 429 insufficient_quota / credit_balance_exhausted. Checkpoint retained for --resume. No final result JSON was produced.
+
+Correction: checkpoint/logs confirm 35/37 cases completed; last completed case was earthquake_warning_threshold. The 429 failure occurred while evaluating the next case.
+
+[RUN START link_all_r2 2026-10-17T10:02:05.3311498+09:00]
+[RUN STOP link_all_r2 exit=1 reason=traceback_truncated; later_capture_found_missing_ragas_eval_extra wall_seconds=13.9]
+
+[RUN RETRY link_all_r2 2026-10-17T10:07:04.9718417+09:00]
+uv.exe : Traceback (most recent call last):
+위치 줄:2 문자:1462
++ ... FileName(); & uv run --extra dev --extra hwp python scripts/ragas_eva ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+  File "C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-resume-r2\back\scripts\ragas_eval.py", line 151, in <m
+odule>
+    from ragas.embeddings.base import embedding_factory
+ModuleNotFoundError: No module named 'ragas'
+
+[RUN END link_all_r2 exit=1 wall_seconds=0.9 2026-10-17T10:07:05.9307071+09:00]
+
+[RUN RETRY2 link_all_r2 2026-10-17T10:07:35.0250417+09:00 extras=dev,hwp,eval]
+uv.exe : Installed 73 packages in 1.03s
+위치 줄:2 문자:1483
++ ... FileName(); & uv run --extra dev --extra hwp --extra eval python scri ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Installed 73 packages in 1.03s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+Resumed checkpoint from ..\paper\experiments\results\checkpoints\link_all_r2.json (35 doc, 0 gen)
+Run ID: link_all_r2 | Ref Version: v2 | Variant: link_all | LLM: gpt-5.6-luna | Embedding: openai
+Executing: 37 document cases, 0 general cases
+================================================================================
+[REUSED] vehicle_failure: mode=rag, faithfulness=1.0000, correctness=0.9779
+[REUSED] brake_pipe: mode=rag, faithfulness=1.0000, correctness=0.5938
+[REUSED] door_failure: mode=rag, faithfulness=1.0000, correctness=0.8479
+[REUSED] rescue_train_protection: mode=rag, faithfulness=1.0000, correctness=0.5037
+[REUSED] adjacent_line_protection: mode=rag, faithfulness=1.0000, correctness=0.5895
+[REUSED] automatic_driving: mode=rag, faithfulness=1.0000, correctness=0.8899
+[REUSED] front_cab_failure: mode=rag, faithfulness=1.0000, correctness=0.9786
+[REUSED] runaway_vehicle: mode=rag, faithfulness=1.0000, correctness=0.9040
+[REUSED] storm: mode=rag, faithfulness=0.5000, correctness=0.9778
+[REUSED] flooding: mode=rag, faithfulness=1.0000, correctness=0.3879
+[REUSED] fog_or_snowstorm: mode=rag, faithfulness=1.0000, correctness=0.7495
+[REUSED] weather_alert: mode=rag, faithfulness=0.9545, correctness=0.6371
+[REUSED] guide_door: mode=rag, faithfulness=1.0000, correctness=0.7041
+[REUSED] guide_psd: mode=rag, faithfulness=1.0000, correctness=0.6533
+[REUSED] guide_pantograph: mode=rag, faithfulness=1.0000, correctness=0.7360
+[REUSED] guide_emergency_brake: mode=rag, faithfulness=1.0000, correctness=0.8104
+[REUSED] guide_atc: mode=rag, faithfulness=1.0000, correctness=0.8042
+[REUSED] graph_704_bus_failure: mode=rag, faithfulness=0.9091, correctness=0.8857
+[REUSED] graph_acm_start_failure: mode=rag, faithfulness=1.0000, correctness=0.8038
+[REUSED] graph_single_cm_failure: mode=rag, faithfulness=1.0000, correctness=0.8459
+[REUSED] graph_siv_start_failure: mode=rag, faithfulness=0.9286, correctness=0.8345
+[REUSED] graph_master_controller_failure: mode=rag, faithfulness=1.0000, correctness=0.6734
+[REUSED] graph_all_cm_failure: mode=rag, faithfulness=1.0000, correctness=0.8283
+[REUSED] graph_single_door_open_failure: mode=rag, faithfulness=1.0000, correctness=0.6012
+[REUSED] graph_all_doors_close_failure: mode=rag, faithfulness=0.8889, correctness=0.7921
+[REUSED] graph_one_car_doors_close_failure: mode=rag, faithfulness=1.0000, correctness=0.7845
+[REUSED] graph_air_pipe_rupture: mode=rag, faithfulness=1.0000, correctness=0.9113
+[REUSED] graph_parking_brake_release_failure: mode=rag, faithfulness=0.9583, correctness=0.8320
+[REUSED] graph_inverter_output_half: mode=rag, faithfulness=1.0000, correctness=0.8230
+[REUSED] graph_front_tc1_failure: mode=rag, faithfulness=1.0000, correctness=0.6523
+[REUSED] graph_rear_safety_brake_dispatch: mode=rag, faithfulness=1.0000, correctness=0.6046
+[REUSED] graph_front_safety_brake_rescue: mode=rag, faithfulness=1.0000, correctness=0.7446
+[REUSED] wind_threshold_report: mode=rag, faithfulness=1.0000, correctness=0.9726
+[REUSED] fog_station_duties: mode=rag, faithfulness=1.0000, correctness=0.8926
+[REUSED] earthquake_warning_threshold: mode=rag, faithfulness=1.0000, correctness=0.9646
+       ↳ citations: 1/1 supported, uncited=0
+[DONE] earthquake_control_initial_stop: mode=rag, evidence=4, recall=1.0
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] earthquake_driver_speed: mode=rag, evidence=1, recall=1.0
+
+================================================================================
+EVALUATION SUMMARY:
+Run ID: link_all_r2 | Reference Version: v2 | Evaluation Complete: True
+Document Cases Average:
+  - faithfulness        : 0.9767 [PASS]
+  - answer_relevancy    : 0.8207 [FAIL]
+  - answer_correctness  : 0.7840 [FAIL]
+  - context_precision   : 0.8786 [FAIL]
+  - context_recall      : 0.9670 [PASS]
+Pilot criteria (docs/rag-pipeline.md):
+  - faithfulness_mean         : 0.9767 (threshold 0.95) [True]
+  - faithfulness_min          : 0.5000 (threshold 0.8) [False]
+  - context_recall_mean       : 0.9670 (threshold 0.9) [True]
+  - context_recall_min        : 0.6667 (threshold 0.67) [False]
+  - context_precision_mean    : 0.8786 (threshold 0.85) [True]
+  - answer_correctness_mean   : 0.7840 (threshold 0.75) [True]
+  - general_correctness_mean  : n/a (threshold 0.9) [None]
+  - abstention_rate           : n/a (threshold 0.9) [None]
+  - latency_p95_seconds       : 13.8900 (threshold 20.0) [True]
+  - citation_accuracy         : 0.9510 (threshold 0.9) [True]
+Pilot met (automatable items): False
+Graph check: 19/20 passed
+Greeting check: FAIL
+Targets met: NO (INCOMPLETE)
+Saved: C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-resume-r2\paper\experiments\results\ragas_results.json and C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-resume-r2\paper\experiments\results\ragas_results_link_all_r2.json
+
+[RUN END link_all_r2 exit=0 wall_seconds=103 2026-10-17T10:09:18.0197489+09:00]
+[NOTE] Full-mode resume completed after adding --extra eval; prior 429 entries above are from the earlier attempt, not this run.

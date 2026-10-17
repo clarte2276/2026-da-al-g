@@ -1,0 +1,139 @@
+
+===== RUN hybrid_rerank_r1 attempt 1 start UTC=2026-10-17T01:11:03 =====
+Run ID: hybrid_rerank_r1 | Ref Version: v2 | Variant: hybrid_rerank | LLM: gpt-5.6-luna | Embedding: openai
+Executing: 37 document cases, 0 general cases
+================================================================================
+       ↳ citations: 2/2 supported, uncited=1
+[DONE] vehicle_failure: mode=rag, evidence=3, recall=1.0
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] brake_pipe: mode=rag, evidence=2, recall=1.0
+       ↳ citations: 6/6 supported, uncited=0
+[DONE] door_failure: mode=rag, evidence=4, recall=1.0
+       ↳ citations: 1/1 supported, uncited=0
+[DONE] rescue_train_protection: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] adjacent_line_protection: mode=rag, evidence=4, recall=1.0
+       ↳ citations: 6/7 supported, uncited=0
+         ✗ [1] 운전제어장치 고장 등 특별한 사유로 자동모드에서 다른 모드로 변경하려는 경우에는 운전관제의 승인을 받아야 하며, 수동운전 적용시간을 따로 정한  — 근거는 예외가 제1항 제5호에 따라 운전모드를 수동모드로 변경하는 경우에 한정된다고 규정하지만, claim은 수동운전 적용시간을 따로 정한 경우 전반에 대해 예외인 것처럼 조건을 
+[DONE] automatic_driving: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] front_cab_failure: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] runaway_vehicle: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 1/1 supported, uncited=0
+[DONE] storm: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] flooding: mode=rag, evidence=2, recall=1.0
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] fog_or_snowstorm: mode=rag, evidence=3, recall=1.0
+       ↳ citations: 6/7 supported, uncited=0
+         ✗ [1] 이상기후 경보는 운전관제가 열차운전에 미치는 영향에 따라 예보·경보·비상경보로 구분해 발령하고, 운전 규제는 재해 발생 여부와 운전 위험에 따라 — 경보의 세 가지 구분과 발령 기준은 근거에 있으나, 운전 규제를 재해 발생 여부와 운전 위험에 따라 정한다는 내용은 cited_evidence에 없다.
+[DONE] weather_alert: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 9/9 supported, uncited=0
+[DONE] guide_door: mode=rag, evidence=4, recall=0.6666666666666666
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] guide_psd: mode=rag, evidence=2, recall=0.6666666666666666
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] guide_pantograph: mode=rag, evidence=5, recall=0.25
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 8/8 supported, uncited=0
+[DONE] guide_emergency_brake: mode=rag, evidence=4, recall=0.6666666666666666
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 1/2 supported, uncited=1
+         ✗ [1] 6호선 전동차 ATC 장치 고장 시에는 ATC 리셋 또는 ATC 제어 차단기 복귀를 먼저 시행하고, 복귀되지 않으면 관제센터 보고 후 지시에 따 — ATC 리셋 또는 제어 차단기 복귀, 출입문 닫힘 후 시행, 약 30초 후 속도코드 현시, 복귀불능 시 관제센터 보고 및 지령식 운행은 근거에 있으나, ‘회송에 관한 별도 조치는 
+[DONE] guide_atc: mode=rag, evidence=4, recall=0.25
+       ↳ graph: chat_links=0, probe_links=0, added=1, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_704_bus_failure: mode=rag, evidence=1, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] graph_acm_start_failure: mode=rag, evidence=1, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_single_cm_failure: mode=rag, evidence=1, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] graph_siv_start_failure: mode=rag, evidence=1, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] graph_master_controller_failure: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/5 supported, uncited=0
+         ✗ [1] 전체 차량의 주공기압축기(CM)가 구동불능으로 정거장 도중 정차하여 구원을 요청한 경우, MR 압력이 8.0kg/㎠ 이하로 떨어지며, 6.5kg — MR 압력 수치와 비상제동·주차제동 체결 조건, 전체 차량 주공기압축기 구동불능 및 구원요청은 근거에 있으나, 해당 상태에서 실제로 ‘정거장 도중 정차하여 구원을 요청한 경우’라는
+[DONE] graph_all_cm_failure: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 10/10 supported, uncited=0
+[DONE] graph_single_door_open_failure: mode=rag, evidence=2, recall=1.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] graph_all_doors_close_failure: mode=rag, evidence=1, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] graph_one_car_doors_close_failure: mode=rag, evidence=1, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 2/4 supported, uncited=1
+         ✗ [1] 정거장 외에서 6호선 6300호 M2차의 주공기관 또는 CM 호스가 파열한 경우, 다음과 같이 취급합니다.
+
+1. 해당 차의 **AP.CBMC를 — 근거에는 6300호 M2차의 주공기관 또는 CM 호스 파열 시 AP.CBMC를 차단하여 CM을 정지한다는 내용은 있으나, ‘정거장 외에서’라는 조건은 제시되어 있지 않습니다.
+         ✗ [1] 2. **6300호의 MR 콕크를 차단**합니다 — 6300호 파손 시 차단하는 MR 콕크는 6300호가 아니라 6400호로 명시되어 있습니다.
+[DONE] graph_air_pipe_rupture: mode=rag, evidence=3, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 6/9 supported, uncited=0
+         ✗ [1] 정거장 외 주공기관 파열로 통기불능이고 주차제동이 풀리지 않으며 MR 압력이 3.5 kg/㎠ 이하이면 다음 순서로 조치한 후, 관제센터 보고 및 — 근거에는 MR 압력 3.5 kg/㎠ 이하, 주공기관 파열로 주차제동 풀림불능 및 조치 순서는 있으나, '정거장 외'와 '통기불능' 조건은 명시되어 있지 않습니다.
+         ✗ [1] 6. 주차제동당김고리 좌우 2개를 당깁니다. 후부 TC차는 4개를 당깁니다 — 근거는 주차제동당김고리 좌우 2개와 '후부 Tc차 포함 4개'를 명시하지만, 후부 TC차 자체가 4개라고 명시하지는 않습니다.
+         ✗ [1] 운전·회송은 관제센터에 보고하고 관제센터의 지시에 따라 최근 정거장에서 승객을 하차시킨 후 회송합니다 — 근거에는 관제센터 보고 및 지시에 따른 승객 하차 후 회송은 명시되어 있으나, '운전'이라는 별도 사실은 명시되어 있지 않습니다.
+[DONE] graph_parking_brake_release_failure: mode=rag, evidence=1, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_inverter_output_half: mode=rag, evidence=1, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/6 supported, uncited=1
+         ✗ [1] 전부 TC1 고장이 RESET으로 복구되지 않으면 전부 Tc차의 AP.CBSU1TC를 차단하여 TC2로 강제 절체하고, HCR 여자 상태를 확인 — AP.CBSU1TC 차단, TC2 강제 절체, HCR 여자상태 확인, 관제센터 승인 후 비상운전 및 수/수 운전은 근거에 있으나, '전부 TC1 고장이 RESET으로 복구되지 않으
+         ✗ [1] 복구되지 않으면 전부 Tc차 AP.CBSU1TC를 차단하여 TC2로 강제 절체합니다 — 전부 Tc차 AP.CBSU1TC 차단으로 TC2 강제 절체한다는 내용은 있으나, '복구되지 않으면'이라는 조건은 해당 문구에 명시되어 있지 않습니다.
+[DONE] graph_front_tc1_failure: mode=rag, evidence=1, recall=0.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 9/9 supported, uncited=0
+[DONE] graph_rear_safety_brake_dispatch: mode=rag, evidence=3, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 8/8 supported, uncited=0
+[DONE] graph_front_safety_brake_rescue: mode=rag, evidence=3, recall=1.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=1
+[DONE] wind_threshold_report: mode=rag, evidence=2, recall=1.0
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] fog_station_duties: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 6/6 supported, uncited=1
+[DONE] earthquake_warning_threshold: mode=rag, evidence=1, recall=1.0
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] earthquake_control_initial_stop: mode=rag, evidence=4, recall=1.0
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] earthquake_driver_speed: mode=rag, evidence=1, recall=1.0
+
+================================================================================
+EVALUATION SUMMARY:
+Run ID: hybrid_rerank_r1 | Reference Version: v2 | Evaluation Complete: True
+Document Cases Average:
+  - faithfulness        : 0.9561 [PASS]
+  - answer_relevancy    : 0.8166 [FAIL]
+  - answer_correctness  : 0.7860 [FAIL]
+  - context_precision   : 0.9347 [PASS]
+  - context_recall      : 0.8702 [FAIL]
+Pilot criteria (docs/rag-pipeline.md):
+  - faithfulness_mean         : 0.9561 (threshold 0.95) [True]
+  - faithfulness_min          : 0.3750 (threshold 0.8) [False]
+  - context_recall_mean       : 0.8702 (threshold 0.9) [False]
+  - context_recall_min        : 0.3333 (threshold 0.67) [False]
+  - context_precision_mean    : 0.9347 (threshold 0.85) [True]
+  - answer_correctness_mean   : 0.7860 (threshold 0.75) [True]
+  - general_correctness_mean  : n/a (threshold 0.9) [None]
+  - abstention_rate           : n/a (threshold 0.9) [None]
+  - latency_p95_seconds       : 10.6700 (threshold 20.0) [True]
+  - citation_accuracy         : 0.9412 (threshold 0.9) [True]
+Pilot met (automatable items): False
+Graph check: 0/20 passed
+Greeting check: FAIL
+Targets met: NO (INCOMPLETE)
+Saved: C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-resume-r1\paper\experiments\results\ragas_results.json and C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-resume-r1\paper\experiments\results\ragas_results_hybrid_rerank_r1.json
+===== RUN hybrid_rerank_r1 attempt 1 exit=0 wall_seconds=2185.8 =====

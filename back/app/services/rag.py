@@ -329,10 +329,12 @@ class _Corpus:
         by_id = {units[i].id: heading for i, heading in sections.items() if heading}
         return cls([_detached(unit) for unit in units], term_counts, lengths, idf, vectors, by_id)
 
-    def scores(self, query_vector: list[float], question_tokens: set[str]) -> list[float]:
+    def score_components(
+        self, query_vector: list[float], question_tokens: set[str]
+    ) -> tuple[list[float], list[float]]:
         query = np.asarray(query_vector, dtype=np.float32)
         norm = float(np.linalg.norm(query))
-        vector_scores = (
+        dense_scores = (
             self.vectors @ (query / norm)
             if norm and query.shape[0] == self.vectors.shape[1]
             else np.zeros(len(self.units), dtype=np.float32)
@@ -342,7 +344,7 @@ class _Corpus:
         # chunks no longer win just by containing more of the question's words.
         total_q_idf = sum(self.idf.get(t, 1.0) for t in question_tokens) or 1.0
         average_length = (sum(self.lengths) / len(self.lengths)) if self.lengths else 1.0
-        results = []
+        bm25_scores = []
         for index, counts in enumerate(self.term_counts):
             norm_length = BM25_K1 * (1 - BM25_B + BM25_B * self.lengths[index] / average_length)
             lexical = sum(
@@ -350,8 +352,12 @@ class _Corpus:
                 for t in question_tokens
                 if t in counts
             ) / total_q_idf
-            results.append(float(vector_scores[index]) * 0.6 + lexical * 0.4)
-        return results
+            bm25_scores.append(lexical)
+        return bm25_scores, [float(score) for score in dense_scores]
+
+    def scores(self, query_vector: list[float], question_tokens: set[str]) -> list[float]:
+        bm25_scores, dense_scores = self.score_components(query_vector, question_tokens)
+        return [dense * 0.6 + bm25 * 0.4 for bm25, dense in zip(bm25_scores, dense_scores, strict=True)]
 
 
 def _embedding_values(value: bytes | bytearray | memoryview | str | None) -> np.ndarray:
@@ -436,9 +442,12 @@ class GraphRAGService:
         max_hops: int | None = None,
         relation_types: list[str] | None = None,
     ) -> list[Evidence]:
+        variant = self.settings.rag_variant
+        if variant not in {"bm25", "dense", "hybrid", "hybrid_rerank", "link_all", "proposed"}:
+            raise ValueError(f"Unknown RAG variant: {variant}")
         max_hops = self.settings.default_graph_hops if max_hops is None else max_hops
-        query_vector = self.embedding_provider.embed([question])[0]
-        candidates = self._vector_candidates(db, query_vector, top_k)
+        query_vector = self.embedding_provider.embed([question])[0] if variant != "bm25" else []
+        candidates = self._vector_candidates(db, query_vector, top_k) if query_vector else []
         corpus = (
             _Corpus.build(self._article_units(self._search_units(db, candidates), db))
             if candidates
@@ -446,13 +455,25 @@ class GraphRAGService:
         )
         fragments = corpus.units
         question_tokens = _search_tokens(question)
+        bm25_scores, dense_scores = corpus.score_components(query_vector, question_tokens)
+        scores = (
+            bm25_scores
+            if variant == "bm25"
+            else dense_scores
+            if variant == "dense"
+            else [dense * 0.6 + bm25 * 0.4 for bm25, dense in zip(bm25_scores, dense_scores, strict=True)]
+        )
         scored = sorted(
-            zip(fragments, corpus.scores(query_vector, question_tokens), strict=True),
+            zip(fragments, scores, strict=True),
             key=lambda item: item[1],
             reverse=True,
         )
-        seeds = self._rerank(question, scored, top_k, corpus.sections)
-        if max_hops <= 0 or not seeds:
+        seeds = (
+            self._rerank(question, scored, top_k, corpus.sections)
+            if variant in {"hybrid_rerank", "link_all", "proposed"}
+            else scored[:top_k]
+        )
+        if max_hops <= 0 or not seeds or variant not in {"link_all", "proposed"}:
             direct = [Evidence(fragment=f, score=s, hop=0, path=[f.id]) for f, s in seeds]
             self._attach_sources(db, direct, corpus.sections)
             return direct
@@ -546,6 +567,13 @@ class GraphRAGService:
                 break
 
         self._expand_links(db, evidence, max_hops, allowed, question_tokens)
+        if variant == "link_all":
+            ranked = sorted(
+                evidence.values(),
+                key=lambda item: (item.hop > 0, item.hop, -item.score),
+            )[: top_k * 3]
+            self._attach_sources(db, ranked, corpus.sections)
+            return ranked
         direct = [item for item in evidence.values() if item.hop == 0]
         linked = sorted((item for item in evidence.values() if item.hop > 0), key=lambda item: item.score, reverse=True)
         by_id = {item.fragment.id: item for item in linked}
@@ -652,6 +680,12 @@ class GraphRAGService:
             logging.getLogger(__name__).debug("Reranking failed", exc_info=exc)
             return fallback
         picked = [pool[n] for n in dict.fromkeys(numbers) if n < len(pool)][:top_k]
+        minimum = min(max(self.settings.rag_rerank_min_keep, 0), top_k)
+        if len(picked) < minimum:
+            selected_ids = {fragment.id for fragment, _ in picked}
+            picked += [
+                item for item in pool if item[0].id not in selected_ids
+            ][: minimum - len(picked)]
         return picked or fallback
 
     def _full_corpus(self, db: Session) -> _Corpus:
