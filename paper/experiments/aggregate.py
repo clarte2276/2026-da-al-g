@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 import json
 import math
+import random
 import re
 from collections import defaultdict
 from pathlib import Path
@@ -12,7 +13,6 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parent
 RESULTS = ROOT / "results"
-CHECKPOINTS = ROOT / "logs"
 SUMMARY = ROOT / "summary"
 EVAL_SET = ROOT.parent / "data" / "eval_set_v3.json"
 DATA_README = ROOT.parent / "data" / "README.md"
@@ -23,8 +23,8 @@ CATEGORIES = ("doc", "graph", "all")
 EXPECTED_CASES = {"doc": 17, "graph": 20, "all": 37}
 SOURCE_GROUPS = ("existing_v2", "llm_drafted")
 SOURCE_METRICS = (
-    "precision", "recall", "mrr", "context_precision", "context_recall", "answer_correctness",
-    "retrieval_latency_seconds",
+    "precision", "recall", "linked_gold_recall", "mrr", "context_precision", "context_recall",
+    "answer_correctness", "retrieval_latency_seconds",
 )
 RETRIEVAL_METRICS = (
     "recall",
@@ -45,19 +45,21 @@ ANSWER_METRICS = (
     "context_precision",
     "context_recall",
 )
-METRICS = RETRIEVAL_METRICS + ANSWER_METRICS
+METRICS = tuple(dict.fromkeys(RETRIEVAL_METRICS + ANSWER_METRICS))
 PAIRED_METRICS = (
-    "precision",
     "recall",
+    "linked_gold_recall",
+    "context_precision",
+    "answer_correctness",
+    "precision",
     "mrr",
     "ndcg_at_10",
     "faithfulness",
     "answer_relevancy",
-    "answer_correctness",
-    "context_precision",
     "context_recall",
 )
-TODO = "TODO(실험 미완료)"
+COMPARISONS = (("link_all", "hybrid_rerank"), ("proposed", "hybrid_rerank"), ("proposed", "link_all"))
+BOOTSTRAPS = 10_000
 
 
 def _load(path: Path, source: str) -> dict[str, Any]:
@@ -79,40 +81,26 @@ def _load(path: Path, source: str) -> dict[str, Any]:
 
 
 def _load_runs(notes: list[str]) -> list[dict[str, Any]]:
-    candidates: list[dict[str, Any]] = []
-    paths = [(p, "results") for p in sorted(RESULTS.glob("*.json"))]
-    paths += [(p, "checkpoint") for p in sorted(CHECKPOINTS.glob("r*/checkpoints/link_all_r*.json"))]
-    for path, source in paths:
+    runs: list[dict[str, Any]] = []
+    for path in sorted(RESULTS.glob("*.json")):
         try:
-            candidates.append(_load(path, source))
+            run = _load(path, "results")
         except (OSError, json.JSONDecodeError) as exc:
             notes.append(f"- Could not read `{path.relative_to(ROOT)}`: {exc}.")
-
-    selected: dict[tuple[str, str], dict[str, Any]] = {}
-    for run in candidates:
-        key = (run["variant"], run["repeat"])
-        current = selected.get(key)
-        rank = (
-            run["source"] == "results",
-            bool(run["payload"].get("evaluation_complete")),
-            len(run["rows"]),
-            str(run["path"]),
-        )
-        if current is None:
-            selected[key] = run
             continue
-        current_rank = (
-            current["source"] == "results",
-            bool(current["payload"].get("evaluation_complete")),
-            len(current["rows"]),
-            str(current["path"]),
-        )
-        if rank > current_rank:
-            notes.append(f"- `{current['path'].relative_to(ROOT)}` superseded by `{run['path'].relative_to(ROOT)}` for {key[0]} {key[1]}.")
-            selected[key] = run
-        else:
-            notes.append(f"- `{run['path'].relative_to(ROOT)}` ignored in favor of `{current['path'].relative_to(ROOT)}` for {key[0]} {key[1]}.")
-    return sorted(selected.values(), key=lambda r: (r["variant"], r["repeat"]))
+        runs.append(run)
+    runs.sort(key=lambda r: (r["variant"], r["repeat"]))
+    expected = {(variant, repeat) for variant in VARIANTS for repeat in REPEATS}
+    found = [(run["variant"], run["repeat"]) for run in runs]
+    if len(found) != len(expected) or set(found) != expected:
+        raise ValueError(f"Expected one result for every variant/repeat; found {found}")
+    for run in runs:
+        cases = [row.get("case") for row in run["rows"]]
+        if len(cases) != EXPECTED_CASES["all"] or len(set(cases)) != len(cases):
+            raise ValueError(f"{run['path'].name} must contain 37 unique cases")
+        if not run["payload"].get("evaluation_complete") or run["payload"].get("ragas_skipped"):
+            raise ValueError(f"{run['path'].name} is not a complete full evaluation")
+    return runs
 
 
 def _number(value: Any) -> float | None:
@@ -174,7 +162,6 @@ def _source_summaries(
                     "std": stdev(repeat_means) if len(repeat_means) > 1 else None,
                     "repeats": len(repeat_means),
                     "case_counts": case_counts,
-                    "partial": any(count < len(names) for count in case_counts),
                 }
     return summaries
 
@@ -225,13 +212,31 @@ def _exact_wilcoxon(differences: list[float]) -> tuple[float | None, int]:
     return min(1.0, 2 * min(lower, upper) / total), len(values)
 
 
+def _bootstrap_ci(differences: list[float], seed: str) -> tuple[float | None, float | None]:
+    if not differences:
+        return None, None
+    rng = random.Random(seed)
+    n = len(differences)
+    samples = sorted(
+        mean(differences[rng.randrange(n)] for _ in range(n))
+        for _ in range(BOOTSTRAPS)
+    )
+
+    def percentile(p: float) -> float:
+        position = (len(samples) - 1) * p
+        lower = math.floor(position)
+        upper = math.ceil(position)
+        return samples[lower] + (samples[upper] - samples[lower]) * (position - lower)
+
+    return percentile(0.025), percentile(0.975)
+
+
 def _summaries(runs: list[dict[str, Any]]) -> dict[tuple[str, str, str], dict[str, Any]]:
     summaries: dict[tuple[str, str, str], dict[str, Any]] = {}
     for variant in VARIANTS:
         variant_runs = [run for run in runs if run["variant"] == variant]
         for category in CATEGORIES:
             case_counts = [len(_rows_for(run, category)) for run in variant_runs]
-            partial = any(count < EXPECTED_CASES[category] for count in case_counts)
             for metric in METRICS:
                 repeat_means = [
                     value
@@ -243,19 +248,18 @@ def _summaries(runs: list[dict[str, Any]]) -> dict[tuple[str, str, str], dict[st
                     "std": stdev(repeat_means) if len(repeat_means) > 1 else None,
                     "repeats": len(repeat_means),
                     "case_counts": case_counts,
-                    "partial": partial,
                 }
     return summaries
 
 
 def _format(value: float | None) -> str:
-    return f"{value:.4f}" if value is not None else TODO
+    return f"{value:.4f}" if value is not None else "—"
 
 
 def _format_cell(summary: dict[str, Any]) -> str:
     value = summary["mean"]
     if value is None:
-        return TODO
+        return "—"
     sd = "—" if summary["std"] is None else f"{summary['std']:.4f}"
     return f"{value:.4f} ± {sd} (n={summary['repeats']})"
 
@@ -267,71 +271,59 @@ def _comparison_rows(
         variant: {run["repeat"]: run for run in runs if run["variant"] == variant}
         for variant in VARIANTS
     }
+    group_cases = {"all_graph": set.union(*graph_cases.values()), **graph_cases}
     rows: list[dict[str, Any]] = []
-    for source, names in graph_cases.items():
-        for comparator in ("link_all", "hybrid_rerank"):
+    for source, names in group_cases.items():
+        for first, second in COMPARISONS:
             for metric in PAIRED_METRICS:
-                left: dict[str, list[float]] = defaultdict(list)
-                right: dict[str, list[float]] = defaultdict(list)
-                repeat_counts: dict[str, list[int]] = {"proposed": [], comparator: []}
-                for variant, values in (("proposed", left), (comparator, right)):
+                case_values: dict[str, dict[str, list[float]]] = {first: defaultdict(list), second: defaultdict(list)}
+                for variant in (first, second):
                     for repeat in REPEATS:
                         run = by_variant[variant].get(repeat)
                         run_values = _metric_values(run, "graph", metric) if run else {}
-                        repeat_counts[variant].append(sum(case in names for case in run_values))
                         for case, value in run_values.items():
                             if case in names:
-                                values[case].append(value)
-                common = sorted(left.keys() & right.keys())
-                differences = [mean(left[case]) - mean(right[case]) for case in common]
+                                case_values[variant][case].append(value)
+                common = sorted(case_values[first].keys() & case_values[second].keys())
+                differences = [
+                    mean(case_values[first][case]) - mean(case_values[second][case])
+                    for case in common
+                ]
                 p_value, nonzero = _exact_wilcoxon(differences)
                 if len(common) > len(names):
                     raise ValueError(f"Paired comparison exceeded {source} graph case count")
+                ci_lower, ci_upper = _bootstrap_ci(
+                    differences, f"{source}|{first}-{second}|{metric}"
+                )
                 rows.append({
                     "source_group": source,
-                    "comparison": f"proposed - {comparator}",
+                    "comparison": f"{first} - {second}",
                     "category": "graph",
                     "metric": metric,
                     "mean_difference": mean(differences) if differences else None,
+                    "ci_lower": ci_lower,
+                    "ci_upper": ci_upper,
                     "p_value": p_value,
                     "n": len(differences),
                     "n_nonzero": nonzero,
-                    "proposed_case_counts": repeat_counts["proposed"],
-                    "comparator_case_counts": repeat_counts[comparator],
-                    "partial": any(
-                        count != len(names)
-                        for counts in repeat_counts.values()
-                        for count in counts
-                    ),
                 })
     return rows
 
 
-def _coverage_notes(runs: list[dict[str, Any]], notes: list[str]) -> list[str]:
+def _coverage_notes(runs: list[dict[str, Any]]) -> list[str]:
     lines = ["## Input coverage", ""]
     if not runs:
         lines.append("- No readable result files were found.")
         return lines
     for run in runs:
         row_counts = {cat: len(_rows_for(run, cat)) for cat in CATEGORIES}
-        complete = run["payload"].get("evaluation_complete")
-        failed = run["payload"].get("failed") or run["payload"].get("error")
-        state = "failed" if failed or complete is False else (
-            "full" if row_counts["all"] == EXPECTED_CASES["all"] else "partial"
-        )
-        extra = "; retrieval only" if run["payload"].get("ragas_skipped") else ""
         lines.append(
-            f"- `{run['variant']} {run['repeat']}`: {state}, "
+            f"- `{run['variant']} {run['repeat']}`: "
             f"doc {row_counts['doc']}/{EXPECTED_CASES['doc']}, "
             f"graph {row_counts['graph']}/{EXPECTED_CASES['graph']}, "
             f"all {row_counts['all']}/{EXPECTED_CASES['all']} "
-            f"(`{run['path'].relative_to(ROOT)}`){extra}."
+            f"(`{run['path'].relative_to(ROOT)}`)."
         )
-    for variant in VARIANTS:
-        present = {run["repeat"] for run in runs if run["variant"] == variant}
-        missing = [repeat for repeat in REPEATS if repeat not in present]
-        if missing:
-            notes.append(f"- {variant}: missing repeat(s) {', '.join(missing)}.")
     return lines
 
 
@@ -340,22 +332,19 @@ def _write_markdown(
     summaries: dict[tuple[str, str, str], dict[str, Any]],
     source_summaries: dict[tuple[str, str, str], dict[str, Any]],
     comparisons: list[dict[str, Any]],
-    notes: list[str],
 ) -> None:
     lines = [
         "# Aggregated experiment results",
         "",
-        "Each cell is the mean of repeat-level case means ± sample SD across repeats. "
-        "`n` is the number of repeats with that metric; `—` means the SD is undefined for one repeat. "
-        "Partial runs remain in the summary and are identified below. Unavailable metrics are omitted; "
-        "all reported p-values are unadjusted exploratory results.",
+        "Variant metrics are means of repeat-level case means ± sample SD across r1–r3; `n` is the number "
+        "of repeats. All six variants have complete 37-case runs. Unavailable case-level metrics are omitted.",
         "",
-        *_coverage_notes(runs, notes),
+        *_coverage_notes(runs),
         "",
         "## Variant metrics",
         "",
-        "| Variant | Category | Metric | Mean ± SD | Cases per repeat | Partial |",
-        "|---|---|---|---:|---|:---:|",
+        "| Variant | Category | Metric | Mean ± SD | Cases per repeat |",
+        "|---|---|---|---:|---|",
     ]
     for variant in VARIANTS:
         for category in CATEGORIES:
@@ -363,21 +352,19 @@ def _write_markdown(
                 item = summaries[(variant, category, metric)]
                 if item["mean"] is None:
                     continue
-                counts = ", ".join(str(value) for value in item["case_counts"]) or "—"
-                lines.append(
-                    f"| {variant} | {category} | {metric} | {_format_cell(item)} | {counts} | "
-                    f"{'yes' if item['partial'] else 'no'} |"
-                )
+                counts = ", ".join(str(value) for value in item["case_counts"])
+                lines.append(f"| {variant} | {category} | {metric} | {_format_cell(item)} | {counts} |")
 
     lines += [
         "",
         "## Source-separated graph metrics",
         "",
-        "`existing_v2` is development data; `llm_drafted` is the 20-case new set, whose labels remain unreviewed. "
+        "`existing_v2` is development data (5 graph cases); `llm_drafted` is held-out data (15 graph cases), "
+        "whose labels remain unreviewed. "
         "Metrics are averaged within each repeat and then across repeats.",
         "",
-        "| Source | Variant | Metric | Mean ± SD | Cases per repeat | Partial |",
-        "|---|---|---|---:|---|:---:|",
+        "| Source | Variant | Metric | Mean ± SD | Cases per repeat |",
+        "|---|---|---|---:|---|",
     ]
     for source in SOURCE_GROUPS:
         for variant in VARIANTS:
@@ -385,37 +372,27 @@ def _write_markdown(
                 item = source_summaries[(variant, source, metric)]
                 if item["mean"] is None:
                     continue
-                counts = ", ".join(str(value) for value in item["case_counts"]) or "—"
-                lines.append(
-                    f"| {source} (graph) | {variant} | {metric} | {_format_cell(item)} | {counts} | "
-                    f"{'yes' if item['partial'] else 'no'} |"
-                )
+                counts = ", ".join(str(value) for value in item["case_counts"])
+                lines.append(f"| {source} (graph) | {variant} | {metric} | {_format_cell(item)} | {counts} |")
 
     lines += [
         "",
         "## Paired case-level comparisons",
         "",
-        "Comparisons use graph cases separated by `label_source`; mixed document/graph and development/new-set "
-        "tests are omitted. Each case is averaged over available repeats before pairing by case name. "
-        "Differences are proposed minus comparator; p-values use a two-sided exact Wilcoxon signed-rank test "
-        "with zero differences omitted and are unadjusted exploratory values. The per-repeat counts expose "
-        "uneven coverage; `n` is the number of paired cases (the test uses nonzero pairs).",
+        "Each graph case is averaged over r1–r3, then paired by case name. Mean differences are first variant "
+        "minus second variant; 95% CIs are percentile bootstrap intervals over cases (10,000 resamples, fixed "
+        "seed), and p-values are two-sided exact Wilcoxon signed-rank tests with zero differences omitted. "
+        "`n` is the number of paired cases (nonzero pairs); p-values are unadjusted exploratory results.",
         "",
-        "| Source group | Comparison | Metric | Mean difference | p-value | n paired (nonzero) | Proposed cases/repeat | Comparator cases/repeat | Coverage |",
-        "|---|---|---|---:|---:|---:|---|---|---|",
+        "| Source group | Comparison | Metric | Mean difference [95% CI] | p-value | n paired (nonzero) |",
+        "|---|---|---|---:|---:|---:|",
     ]
     for item in comparisons:
-        if not item["n"]:
-            continue
-        difference = _format(item["mean_difference"])
-        p_value = _format(item["p_value"])
-        n = f"{item['n']} ({item['n_nonzero']})" if item["n"] else "0"
-        coverage = "partial" if item["partial"] else ("available" if item["n"] else "not run")
-        proposed_counts = ", ".join(map(str, item["proposed_case_counts"]))
-        comparator_counts = ", ".join(map(str, item["comparator_case_counts"]))
+        ci = f"[{_format(item['ci_lower'])}, {_format(item['ci_upper'])}]"
+        n = f"{item['n']} ({item['n_nonzero']})"
         lines.append(
-            f"| {item['source_group']} (graph) | {item['comparison']} | {item['metric']} | {difference} | "
-            f"{p_value} | {n} | {proposed_counts} | {comparator_counts} | {coverage} |"
+            f"| {item['source_group']} (graph) | {item['comparison']} | {item['metric']} | "
+            f"{_format(item['mean_difference'])} {ci} | {_format(item['p_value'])} | {n} |"
         )
     (SUMMARY / "main_table.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -427,8 +404,7 @@ def _write_csv(
 ) -> None:
     columns = (
         "record_type", "variant", "comparison", "source_group", "category", "metric", "mean", "std",
-        "repeat_count", "case_counts", "proposed_case_counts", "comparator_case_counts",
-        "mean_difference", "p_value", "n", "n_nonzero", "partial",
+        "repeat_count", "case_counts", "mean_difference", "ci_lower", "ci_upper", "p_value", "n", "n_nonzero",
     )
     with (SUMMARY / "main_table.csv").open("w", encoding="utf-8-sig", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=columns)
@@ -443,7 +419,6 @@ def _write_csv(
                 "std": item["std"],
                 "repeat_count": item["repeats"],
                 "case_counts": ",".join(map(str, item["case_counts"])),
-                "partial": item["partial"],
             })
         for (variant, source, metric), item in source_summaries.items():
             writer.writerow({
@@ -456,7 +431,6 @@ def _write_csv(
                 "std": item["std"],
                 "repeat_count": item["repeats"],
                 "case_counts": ",".join(map(str, item["case_counts"])),
-                "partial": item["partial"],
             })
         for item in comparisons:
             writer.writerow({
@@ -465,13 +439,12 @@ def _write_csv(
                 "source_group": item["source_group"],
                 "category": item["category"],
                 "metric": item["metric"],
-                "proposed_case_counts": ",".join(map(str, item["proposed_case_counts"])),
-                "comparator_case_counts": ",".join(map(str, item["comparator_case_counts"])),
                 "mean_difference": item["mean_difference"],
+                "ci_lower": item["ci_lower"],
+                "ci_upper": item["ci_upper"],
                 "p_value": item["p_value"],
                 "n": item["n"],
                 "n_nonzero": item["n_nonzero"],
-                "partial": item["partial"],
             })
 
 
@@ -489,9 +462,8 @@ def main() -> None:
     notes = [
         "# Aggregation notes",
         "",
-        "Expected repeats are r1–r3; high variation is flagged at between-repeat SD ≥ 0.10. "
-        "`link_all` checkpoints are partial until a complete result file for that repeat appears; "
-        "a result in `results/` takes precedence over a checkpoint for the same variant and repeat.",
+        "Expected input is 18 complete result JSONs: six variants × r1–r3, each with 37 cases. "
+        "Between-repeat SD ≥ 0.10 is flagged below.",
         "",
     ]
     runs = _load_runs(notes)
@@ -499,24 +471,11 @@ def main() -> None:
     summaries = _summaries(runs)
     source_summaries = _source_summaries(runs, source_graph_cases)
     comparisons = _comparison_rows(runs, source_graph_cases)
-    coverage = _coverage_notes(runs, notes)
+    assert len(comparisons) == 3 * len(COMPARISONS) * len(PAIRED_METRICS)
+    assert _exact_wilcoxon([1.0, -1.0]) == (1.0, 2)
+    assert _bootstrap_ci([0.25, 0.25], "self-check") == (0.25, 0.25)
     _variance_notes(summaries, notes)
 
-    link_runs = [run for run in runs if run["variant"] == "link_all"]
-    if link_runs:
-        counts = [len(run["rows"]) for run in link_runs]
-        if any(count < EXPECTED_CASES["all"] for count in counts):
-            notes.append(
-                f"- link_all comparison uses only case-name intersections; partial run sizes are "
-                f"{', '.join(map(str, counts))}/{EXPECTED_CASES['all']} cases."
-            )
-    bm25_runs = [run for run in runs if run["variant"] == "bm25"]
-    if any(run["payload"].get("ragas_skipped") for run in bm25_runs):
-        notes.append("- BM25 has retrieval-only results; answer-generation/RAGAS metrics are unavailable.")
-    if not any(run["variant"] == "proposed" for run in runs):
-        notes.append("- No proposed results were found; proposed comparisons are unavailable.")
-    if not any(run["variant"] == "hybrid_rerank" for run in runs):
-        notes.append("- hybrid_rerank was not run; no variant or paired-comparison metrics are available.")
     notes.append("- Source split: existing_v2 has 12 doc/5 graph cases (17 total); llm_drafted has 5 doc/15 graph cases (20 total).")
     for field, label in (
         ("llm_model", "Generation and evaluation judge model"),
@@ -527,16 +486,16 @@ def main() -> None:
         if values:
             notes.append(f"- {label}: {', '.join(f'`{value}`' for value in values)} (result metadata).")
     notes.append(
-        "- Paired tests are restricted to graph cases and split by source group; mixed development/new-set "
-        "tests are omitted. Each case averages available repeats, so partial `link_all` coverage can give "
-        "unequal repeat counts. P-values are unadjusted and exploratory; new labels remain unreviewed."
+        "- Paired comparisons cover the 20 graph cases and separately report the 5-case development and "
+        "15-case held-out groups. Each case is averaged over all three repeats. Bootstrap intervals are "
+        "percentile intervals over cases; exact Wilcoxon p-values are unadjusted. Cases can share regulations "
+        "or links, and the held-out labels remain unreviewed."
     )
     used_links, approved_links = _link_coverage()
     notes.append(f"- New graph cases cover {used_links}/{approved_links} distinct approved links, based on the human-review checklist.")
-    if coverage:
-        notes += ["", *coverage]
+    notes += ["", *_coverage_notes(runs)]
     (SUMMARY / "notes.md").write_text("\n".join(notes) + "\n", encoding="utf-8")
-    _write_markdown(runs, summaries, source_summaries, comparisons, notes)
+    _write_markdown(runs, summaries, source_summaries, comparisons)
     _write_csv(summaries, source_summaries, comparisons)
     print(f"Wrote {SUMMARY / 'main_table.md'}, {SUMMARY / 'main_table.csv'}, and {SUMMARY / 'notes.md'}")
 

@@ -7,7 +7,7 @@ from pathlib import Path
 
 from docx import Document
 from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT, WD_TABLE_ALIGNMENT
-from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_BREAK
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Cm, Pt
@@ -33,6 +33,11 @@ def _blocks(lines: list[str]) -> list[tuple[str, object]]:
         line = raw.strip()
         if not line:
             flush()
+            i += 1
+            continue
+        if line == "<!-- columnbreak -->":
+            flush()
+            blocks.append(("columnbreak", None))
             i += 1
             continue
         if line.startswith("|"):
@@ -122,7 +127,9 @@ def _table_borders(table) -> None:
 
 def _table_layout(table) -> None:
     # Keep tables within one column; python-docx otherwise uses the full page width.
-    widths = (Cm(2.4), Cm(2.0), Cm(2.0), Cm(2.0))
+    widths = (Cm(2.4), Cm(3.2), Cm(1.4), Cm(1.5)) if len(table.rows) > 7 else (
+        Cm(2.0), Cm(2.2), Cm(2.2), Cm(2.2)
+    )
     table.autofit = False
     table.alignment = WD_TABLE_ALIGNMENT.LEFT
     table_width = table._tbl.tblPr.find(qn("w:tblW"))
@@ -133,10 +140,12 @@ def _table_layout(table) -> None:
     table_width.set(qn("w:type"), "dxa")
     for column, width in zip(table.columns, widths):
         column.width = width
-    for row in table.rows:
+    for row_index, row in enumerate(table.rows):
         row._tr.get_or_add_trPr().append(OxmlElement("w:cantSplit"))
         for cell, width in zip(row.cells, widths):
             cell.width = width
+            for paragraph in cell.paragraphs:
+                paragraph.paragraph_format.keep_with_next = row_index < len(table.rows) - 1
     header = OxmlElement("w:tblHeader")
     header.set(qn("w:val"), "true")
     table.rows[0]._tr.get_or_add_trPr().append(header)
@@ -162,6 +171,11 @@ def _write_text(p: Paragraph, lines: list[tuple[str, bool]], *, size: float, bol
 def _insert_blocks(doc, cursor, parent, blocks, image_dir: Path, *, before: bool = False):
     anchor = cursor
     for kind, value in blocks:
+        if kind == "columnbreak":
+            p, element = _paragraph_after(cursor, parent)
+            p.add_run().add_break(WD_BREAK.COLUMN)
+            cursor = element
+            continue
         if kind == "table":
             rows = value
             table = doc.add_table(rows=len(rows), cols=max(map(len, rows)))
@@ -187,7 +201,7 @@ def _insert_blocks(doc, cursor, parent, blocks, image_dir: Path, *, before: bool
                         if part_index:
                             p.add_run().add_break()
                         run = p.add_run(part)
-                        _set_run(run, size=9, bold=row_index == 0)
+                        _set_run(run, size=7.5 if rows[0][0].startswith("비교") else 8, bold=row_index == 0)
             continue
 
         p, element = (
