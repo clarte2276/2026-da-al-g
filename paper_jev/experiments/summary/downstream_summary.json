@@ -1,0 +1,137 @@
+{
+  "gold": {
+    "cases": 37,
+    "graph_cases": 20,
+    "metrics": {
+      "all": {
+        "recall": 0.9121621621621622,
+        "recall_n": 37,
+        "mrr": 0.9819819819819819,
+        "mrr_n": 37,
+        "ndcg_at_10": 0.9185728294756084,
+        "ndcg_at_10_n": 37,
+        "linked_gold_recall": 0.75,
+        "linked_gold_recall_n": 20
+      },
+      "graph": {
+        "recall": 0.8375,
+        "recall_n": 20,
+        "mrr": 0.9666666666666667,
+        "mrr_n": 20,
+        "ndcg_at_10": 0.8493597345298753,
+        "ndcg_at_10_n": 20,
+        "linked_gold_recall": 0.75,
+        "linked_gold_recall_n": 20
+      }
+    },
+    "output": "experiments\\runs\\downstream\\gold\\ragas_results.json"
+  },
+  "none": {
+    "cases": 37,
+    "graph_cases": 20,
+    "metrics": {
+      "all": {
+        "recall": 0.7725225225225225,
+        "recall_n": 37,
+        "mrr": 0.9864864864864865,
+        "mrr_n": 37,
+        "ndcg_at_10": 0.8153790838323346,
+        "ndcg_at_10_n": 37,
+        "linked_gold_recall": 0.2,
+        "linked_gold_recall_n": 20
+      },
+      "graph": {
+        "recall": 0.5791666666666666,
+        "recall_n": 20,
+        "mrr": 0.975,
+        "mrr_n": 20,
+        "ndcg_at_10": 0.6584513050898191,
+        "ndcg_at_10_n": 20,
+        "linked_gold_recall": 0.2,
+        "linked_gold_recall_n": 20
+      }
+    },
+    "output": "experiments\\runs\\downstream\\none\\ragas_results.json"
+  },
+  "jev_pair": {
+    "cases": 37,
+    "graph_cases": 20,
+    "metrics": {
+      "all": {
+        "recall": 0.8175675675675675,
+        "recall_n": 37,
+        "mrr": 0.9864864864864865,
+        "mrr_n": 37,
+        "ndcg_at_10": 0.8506338646011543,
+        "ndcg_at_10_n": 37,
+        "linked_gold_recall": 0.35,
+        "linked_gold_recall_n": 20
+      },
+      "graph": {
+        "recall": 0.6625,
+        "recall_n": 20,
+        "mrr": 0.975,
+        "mrr_n": 20,
+        "ndcg_at_10": 0.7236726495121354,
+        "ndcg_at_10_n": 20,
+        "linked_gold_recall": 0.35,
+        "linked_gold_recall_n": 20
+      }
+    },
+    "output": "experiments\\runs\\downstream\\jev_pair\\ragas_results.json"
+  },
+  "llm_pair": {
+    "cases": 37,
+    "graph_cases": 20,
+    "metrics": {
+      "all": {
+        "recall": 0.8130630630630631,
+        "recall_n": 37,
+        "mrr": 0.9684684684684685,
+        "mrr_n": 37,
+        "ndcg_at_10": 0.8398948242592243,
+        "ndcg_at_10_n": 37,
+        "linked_gold_recall": 0.4,
+        "linked_gold_recall_n": 20
+      },
+      "graph": {
+        "recall": 0.6541666666666667,
+        "recall_n": 20,
+        "mrr": 0.9666666666666667,
+        "mrr_n": 20,
+        "ndcg_at_10": 0.7191341046987015,
+        "ndcg_at_10_n": 20,
+        "linked_gold_recall": 0.4,
+        "linked_gold_recall_n": 20
+      }
+    },
+    "output": "experiments\\runs\\downstream\\llm_pair\\ragas_results.json"
+  },
+  "cascade": {
+    "cases": 37,
+    "graph_cases": 20,
+    "metrics": {
+      "all": {
+        "recall": 0.8400900900900901,
+        "recall_n": 37,
+        "mrr": 0.9864864864864865,
+        "mrr_n": 37,
+        "ndcg_at_10": 0.8690915596876517,
+        "ndcg_at_10_n": 37,
+        "linked_gold_recall": 0.45,
+        "linked_gold_recall_n": 20
+      },
+      "graph": {
+        "recall": 0.7041666666666666,
+        "recall_n": 20,
+        "mrr": 0.975,
+        "mrr_n": 20,
+        "ndcg_at_10": 0.7578193854221558,
+        "ndcg_at_10_n": 20,
+        "linked_gold_recall": 0.45,
+        "linked_gold_recall_n": 20
+      }
+    },
+    "output": "experiments\\runs\\downstream\\cascade\\ragas_results.json"
+  }
+}

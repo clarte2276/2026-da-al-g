@@ -1,0 +1,52 @@
+{
+  "gold": {
+    "calls": 93,
+    "input_tokens": 251783,
+    "cached_input_tokens": 0,
+    "output_tokens": 421,
+    "cost_usd": 0.05048506000000002,
+    "p50_seconds": 0.8601887000040733,
+    "p95_seconds": 1.2084025000003749,
+    "total_call_seconds": 65.60465790004673
+  },
+  "none": {
+    "calls": 74,
+    "input_tokens": 238794,
+    "cached_input_tokens": 236590,
+    "output_tokens": 310,
+    "cost_usd": 0.00516786,
+    "p50_seconds": 0.23050259999581613,
+    "p95_seconds": 1.216395100003865,
+    "total_call_seconds": 42.73837880002975
+  },
+  "jev_pair": {
+    "calls": 85,
+    "input_tokens": 249558,
+    "cached_input_tokens": 236590,
+    "output_tokens": 396,
+    "cost_usd": 0.007423860000000002,
+    "p50_seconds": 0.7947331999966991,
+    "p95_seconds": 1.239977600002021,
+    "total_call_seconds": 53.53905390002183
+  },
+  "llm_pair": {
+    "calls": 89,
+    "input_tokens": 259749,
+    "cached_input_tokens": 236590,
+    "output_tokens": 434,
+    "cost_usd": 0.009507660000000003,
+    "p50_seconds": 0.8538366000066162,
+    "p95_seconds": 1.345305399998324,
+    "total_call_seconds": 61.46449949999078
+  },
+  "cascade": {
+    "calls": 91,
+    "input_tokens": 261403,
+    "cached_input_tokens": 238015,
+    "output_tokens": 451,
+    "cost_usd": 0.009602360000000002,
+    "p50_seconds": 0.8351108999995631,
+    "p95_seconds": 1.2514011000021128,
+    "total_call_seconds": 59.43929300000309
+  }
+}

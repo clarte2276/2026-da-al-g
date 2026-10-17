@@ -1,0 +1,116 @@
+{
+  "_api_call": true,
+  "provider": "jev",
+  "judge": "jev_pair",
+  "repeat": "r1",
+  "model": "jev-latest",
+  "latency_seconds": 0.2945603000043775,
+  "usage": {
+    "input_tokens": 10442,
+    "cached_input_tokens": 0,
+    "output_tokens": 194
+  },
+  "cost_usd": 0.000438564,
+  "response": {
+    "model": "jev-1.13.0",
+    "answers": {
+      "q000": {
+        "type": "noul",
+        "noul": 0.4
+      },
+      "q001": {
+        "type": "noul",
+        "noul": 0.57
+      },
+      "q002": {
+        "type": "noul",
+        "noul": 0.63
+      },
+      "q003": {
+        "type": "noul",
+        "noul": 0.25
+      },
+      "q004": {
+        "type": "noul",
+        "noul": 0.1
+      },
+      "q005": {
+        "type": "noul",
+        "noul": 0.79
+      },
+      "q006": {
+        "type": "noul",
+        "noul": 0.04
+      },
+      "q007": {
+        "type": "noul",
+        "noul": 0.32
+      },
+      "q008": {
+        "type": "noul",
+        "noul": 0.27
+      },
+      "q009": {
+        "type": "noul",
+        "noul": 0.12
+      }
+    },
+    "usage": {
+      "input_tokens": 10442,
+      "output_tokens": 194
+    }
+  },
+  "created_at_utc": "2026-10-17T02:02:18.745349+00:00",
+  "parsed_scores": [
+    {
+      "source_id": "slide_9fa17af6_049",
+      "candidate_id": "article_35315ef6_25",
+      "probability": 0.4
+    },
+    {
+      "source_id": "slide_9fa17af6_049",
+      "candidate_id": "article_35315ef6_105",
+      "probability": 0.57
+    },
+    {
+      "source_id": "slide_9fa17af6_049",
+      "candidate_id": "article_35315ef6_29",
+      "probability": 0.63
+    },
+    {
+      "source_id": "slide_9fa17af6_049",
+      "candidate_id": "article_35315ef6_27",
+      "probability": 0.25
+    },
+    {
+      "source_id": "slide_9fa17af6_049",
+      "candidate_id": "article_35315ef6_23",
+      "probability": 0.1
+    },
+    {
+      "source_id": "slide_9fa17af6_049",
+      "candidate_id": "article_35315ef6_104",
+      "probability": 0.79
+    },
+    {
+      "source_id": "slide_9fa17af6_049",
+      "candidate_id": "article_35315ef6_109",
+      "probability": 0.04
+    },
+    {
+      "source_id": "slide_9fa17af6_049",
+      "candidate_id": "article_35315ef6_72",
+      "probability": 0.32
+    },
+    {
+      "source_id": "slide_9fa17af6_049",
+      "candidate_id": "article_35315ef6_181",
+      "probability": 0.27
+    },
+    {
+      "source_id": "slide_9fa17af6_049",
+      "candidate_id": "article_35315ef6_26",
+      "probability": 0.12
+    }
+  ]
+}

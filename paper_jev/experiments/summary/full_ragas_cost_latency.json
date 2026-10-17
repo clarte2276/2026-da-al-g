@@ -1,0 +1,32 @@
+{
+  "gold": {
+    "calls": 538,
+    "input_tokens": 1031398,
+    "cached_input_tokens": 226968,
+    "output_tokens": 132800,
+    "cost_usd": 0.3222378399999998,
+    "p50_seconds": 1.4431848000022,
+    "p95_seconds": 7.428255000006175,
+    "total_call_seconds": 1235.0219409000492
+  },
+  "jev_choice": {
+    "calls": 505,
+    "input_tokens": 936320,
+    "cached_input_tokens": 439490,
+    "output_tokens": 130971,
+    "cost_usd": 0.2628259800000002,
+    "p50_seconds": 1.5128221999984817,
+    "p95_seconds": 7.247030200000154,
+    "total_call_seconds": 1187.2320813999686
+  },
+  "llm_pair": {
+    "calls": 542,
+    "input_tokens": 1074933,
+    "cached_input_tokens": 524132,
+    "output_tokens": 145376,
+    "cost_usd": 0.2925146099999999,
+    "p50_seconds": 1.5262545000005048,
+    "p95_seconds": 8.183060600000317,
+    "total_call_seconds": 1315.1547586000888
+  }
+}

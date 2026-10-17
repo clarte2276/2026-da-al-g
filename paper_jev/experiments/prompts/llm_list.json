@@ -1,0 +1,8 @@
+{
+  "system": "Does this guide slide require or reference this regulation article? Answer yes only when the article is directly needed to apply, explain, or support the slide's procedure. Shared topic, nearby text, or a merely plausible legal basis is not enough. For each slide_key, select zero or more candidate_keys and return p_yes in [0,1] for every candidate_key. Return JSON items with slide_key, selected_candidate_keys, and p_yes mapping candidate_key to probability.",
+  "user_shape": {
+    "relation_question": "Does this guide slide require or reference this regulation article?",
+    "decision_rule": "Answer yes only when the article is directly needed to apply, explain, or support the slide's procedure. Shared topic, nearby text, or a merely plausible legal basis is not enough.",
+    "slides": "source text and candidate article lists"
+  }
+}

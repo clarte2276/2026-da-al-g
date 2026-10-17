@@ -1,0 +1,81 @@
+{
+  "_api_call": true,
+  "provider": "openai",
+  "judge": "cascade",
+  "repeat": "r1",
+  "model": "gpt-5.6-luna",
+  "latency_seconds": 1.5451826999997138,
+  "usage": {
+    "input_tokens": 5894,
+    "cached_input_tokens": 0,
+    "output_tokens": 75
+  },
+  "cost_usd": 0.0012688,
+  "response": {
+    "id": "chatcmpl-EZoEa8srUTDfCVrs1ug2iH2KbYRUK",
+    "object": "chat.completion",
+    "created": 1792203288,
+    "model": "gpt-5.6-luna",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "{\"pairs\":[{\"pair_id\":\"p000\",\"decision\":\"no\",\"confidence\":0.99},{\"pair_id\":\"p001\",\"decision\":\"no\",\"confidence\":0.98},{\"pair_id\":\"p002\",\"decision\":\"yes\",\"confidence\":0.97},{\"pair_id\":\"p003\",\"decision\":\"yes\",\"confidence\":0.9}]}",
+          "refusal": null,
+          "annotations": []
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 5894,
+      "completion_tokens": 75,
+      "total_tokens": 5969,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 5891,
+        "audio_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0,
+        "accepted_prediction_tokens": 0,
+        "rejected_prediction_tokens": 0
+      }
+    },
+    "service_tier": "default",
+    "system_fingerprint": null
+  },
+  "created_at_utc": "2026-10-17T02:14:49.719340+00:00",
+  "parsed_scores": [
+    {
+      "source_id": "slide_9fa17af6_077_sample01",
+      "candidate_id": "article_35315ef6_29",
+      "decision": "no",
+      "confidence": 0.99,
+      "probability": 0.010000000000000009
+    },
+    {
+      "source_id": "slide_9fa17af6_082_sample01",
+      "candidate_id": "article_35315ef6_105",
+      "decision": "no",
+      "confidence": 0.98,
+      "probability": 0.020000000000000018
+    },
+    {
+      "source_id": "slide_9fa17af6_082_sample01",
+      "candidate_id": "article_35315ef6_182",
+      "decision": "yes",
+      "confidence": 0.97,
+      "probability": 0.97
+    },
+    {
+      "source_id": "slide_9fa17af6_082_sample01",
+      "candidate_id": "article_35315ef6_330",
+      "decision": "yes",
+      "confidence": 0.9,
+      "probability": 0.9
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "_api_call": true,
+  "provider": "jev",
+  "judge": "jev_choice",
+  "repeat": "r3",
+  "model": "jev-latest",
+  "latency_seconds": 0.3206362999990233,
+  "usage": {
+    "input_tokens": 7683,
+    "cached_input_tokens": 0,
+    "output_tokens": 223
+  },
+  "cost_usd": 0.00032268600000000003,
+  "response": {
+    "model": "jev-1.13.0",
+    "answers": {
+      "q_slide_61b7c6ec_048": {
+        "type": "choice",
+        "choice": "none",
+        "confidence": 0.34,
+        "probabilities": {
+          "article_35315ef6_181": 0.0,
+          "article_35315ef6_46": 0.35,
+          "article_35315ef6_29": 0.21,
+          "article_35315ef6_72": 0.01,
+          "article_35315ef6_180": 0.0,
+          "article_35315ef6_105": 0.0,
+          "article_35315ef6_246": 0.01,
+          "article_35315ef6_104": 0.02,
+          "article_35315ef6_30": 0.0,
+          "article_35315ef6_205": 0.0,
+          "none": 0.4
+        }
+      }
+    },
+    "usage": {
+      "input_tokens": 7683,
+      "output_tokens": 223
+    }
+  },
+  "created_at_utc": "2026-10-17T02:23:08.427309+00:00",
+  "parsed_scores": [
+    {
+      "source_id": "slide_61b7c6ec_048",
+      "candidate_id": "article_35315ef6_181",
+      "probability": 0.0,
+      "choice": "none"
+    },
+    {
+      "source_id": "slide_61b7c6ec_048",
+      "candidate_id": "article_35315ef6_46",
+      "probability": 0.35,
+      "choice": "none"
+    },
+    {
+      "source_id": "slide_61b7c6ec_048",
+      "candidate_id": "article_35315ef6_29",
+      "probability": 0.21,
+      "choice": "none"
+    },
+    {
+      "source_id": "slide_61b7c6ec_048",
+      "candidate_id": "article_35315ef6_72",
+      "probability": 0.01,
+      "choice": "none"
+    },
+    {
+      "source_id": "slide_61b7c6ec_048",
+      "candidate_id": "article_35315ef6_180",
+      "probability": 0.0,
+      "choice": "none"
+    },
+    {
+      "source_id": "slide_61b7c6ec_048",
+      "candidate_id": "article_35315ef6_105",
+      "probability": 0.0,
+      "choice": "none"
+    },
+    {
+      "source_id": "slide_61b7c6ec_048",
+      "candidate_id": "article_35315ef6_246",
+      "probability": 0.01,
+      "choice": "none"
+    },
+    {
+      "source_id": "slide_61b7c6ec_048",
+      "candidate_id": "article_35315ef6_104",
+      "probability": 0.02,
+      "choice": "none"
+    },
+    {
+      "source_id": "slide_61b7c6ec_048",
+      "candidate_id": "article_35315ef6_30",
+      "probability": 0.0,
+      "choice": "none"
+    },
+    {
+      "source_id": "slide_61b7c6ec_048",
+      "candidate_id": "article_35315ef6_205",
+      "probability": 0.0,
+      "choice": "none"
+    }
+  ]
+}
