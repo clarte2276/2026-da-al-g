@@ -1,0 +1,146 @@
+
+=== dense_r3 attempt 1 started 2026-10-17T02:27:11.2458981Z ===
+[stdout]
+Run ID: dense_r3 | Ref Version: v2 | Variant: dense | LLM: gpt-5.6-luna | Embedding: openai
+Executing: 37 document cases, 0 general cases
+================================================================================
+       ↳ citations: 0/0 supported, uncited=1
+[DONE] vehicle_failure: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 0/0 supported, uncited=1
+[DONE] brake_pipe: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 6/6 supported, uncited=0
+[DONE] door_failure: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 1/2 supported, uncited=0
+         ✗ [2] 정거장과 정거장 사이에서 사고로 정차한 열차가 구원열차 운전 요지를 통보받았을 때에는, 열차의 앞 또는 뒤쪽에서 진행하여 오는 열차로부터 보기  — 근거에는 ‘정거장과 정거장 사이에서 정차한 열차’라고만 되어 있으며, 사고로 정차했다는 사실은 명시되어 있지 않습니다. 그 외의 제2종 방호 요건과 위치는 일치합니다.
+[DONE] rescue_train_protection: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 0/0 supported, uncited=1
+[DONE] adjacent_line_protection: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 0/0 supported, uncited=1
+[DONE] automatic_driving: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 0/0 supported, uncited=1
+[DONE] front_cab_failure: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 0/0 supported, uncited=1
+[DONE] runaway_vehicle: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 1/1 supported, uncited=0
+[DONE] storm: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 0/0 supported, uncited=1
+[DONE] flooding: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 10/10 supported, uncited=0
+[DONE] fog_or_snowstorm: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 5/6 supported, uncited=0
+         ✗ [4] 이상기후 경보는 열차운전에 미치는 영향에 따라 **예보·경보·비상경보**로 구분하고, 운전 규제는 위험 정도에 따라 감속·일시중지·운행취소 등으 — 경보의 세 가지 구분은 근거에 있으나, 운전 규제를 감속·일시중지·운행취소로 정한다는 내용은 해당 인용문에 없다.
+[DONE] weather_alert: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] guide_door: mode=rag, evidence=5, recall=0.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] guide_psd: mode=rag, evidence=5, recall=0.3333333333333333
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 5/8 supported, uncited=1
+         ✗ [1] 2. **6100호차 AP.CBET**를 확인하고, 차단되어 있으면 복귀한다 — 근거에는 6100호차 AP.CBET의 설치 위치와 명칭은 있으나, 확인 후 차단 시 복귀하라는 조치 내용은 명시되어 있지 않다.
+         ✗ [1] 3. **M1차(2호, 6호)의 AP.CBSUCC, AP.CBDO5CC, AP.CBLBC**를 확인하고, 차단되어 있으면 복귀한다 — 근거에는 해당 차단기들의 명칭과 설치 위치는 있으나, 세 장치를 확인하고 차단 시 복귀하라는 조치 내용은 명시되어 있지 않다.
+         ✗ [1] 4. 위 조치 후 **판토상승 S/W를 취급**한다. 그래도 상승하지 않으면 운행 상황에 따라 조치한다 — 인용 근거에는 판토상승 S/W 자체는 제시되어 있으나, 위 조치 후 취급하고 운행 상황별로 대응하라는 절차와 조건이 모두 명시되어 있지 않다.
+[DONE] guide_pantograph: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 9/9 supported, uncited=0
+[DONE] guide_emergency_brake: mode=rag, evidence=5, recall=0.3333333333333333
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 9/10 supported, uncited=1
+         ✗ [4] 6호선 전동차 ATC 장치 고장 시 운전 조치는 고장 유형별로 다르며, 회송 조치는 제공된 문서에서 확인되지 않습니다.
+
+- **제어 ATC 통 — F/N 101(132)의 고장 상태와 조치 내용은 근거에 있으나, ‘회송 조치는 제공된 문서에서 확인되지 않는다’는 부재 판단이 cited_evidence에 명시되어 있지 않습니다
+[DONE] guide_atc: mode=rag, evidence=5, recall=0.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] graph_704_bus_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] graph_acm_start_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_single_cm_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] graph_siv_start_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 2/3 supported, uncited=1
+         ✗ [2] 주간제어기 출력전압 이상이 RESET으로 복구되지 않으면, 관제센터 보고 후 후부Tc차 자력운전 또는 구원운전을 시행합니다 — 근거에는 ‘관제센터 보고 후 RESET 시도’ 후 복귀불능이면 후부Tc차 자력운전 또는 구원운전을 시행한다고 되어 있어, claim의 ‘RESET으로 복구되지 않으면 관제센터 보고
+[DONE] graph_master_controller_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 5/6 supported, uncited=0
+         ✗ [1] 전체 차량의 주공기압축기(CM)가 구동불능으로 정거장 도중 정차한 경우, MR 압력은 **8.0kg/㎠ 이하로 떨어지며, 6.5kg/㎠ 이하에서 — MR 압력의 8.0kg/㎠ 이하, 6.5kg/㎠ 이하 비상제동, 3.5kg/㎠ 이하 주차제동은 근거에 있으나, '정거장 도중 정차한 경우'라는 조건은 cited_evidence에 
+[DONE] graph_all_cm_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] graph_single_door_open_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 3/4 supported, uncited=0
+         ✗ [1] 위 조치 후에도 출입문대표등이 소등된 상태로 계속 닫힘불능이면, **관제센터에 보고하고 지시에 따라 승객하차 및 전체출입문바이패스(ADBP) S — 근거에는 해당차 출입문 닫힘불능 시 관제센터 보고, 지시에 따른 승객하차, 출입문바이패스 및 회송조치가 명시되어 있으나, ‘위 조치 후에도’라는 선행 조치 후의 조건은 cited_
+[DONE] graph_all_doors_close_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] graph_one_car_doors_close_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 8/9 supported, uncited=0
+         ✗ [5] 검색된 자료상 **CM 호스 파열을 별도로 명시한 절차는 확인되지 않으며**, **주공기관 파열로 주차제동이 풀리지 않는 경우**에는 다음과 같 — 증거에는 주공기관 파열로 주차제동 풀림불능 시의 조치와 MR 압력 3.5 kg/㎠ 이하 조건, 최근 정거장 승객 하차 후 회송은 있으나, CM 호스 파열 절차가 별도로 명시되지 않
+[DONE] graph_air_pipe_rupture: mode=rag, evidence=5, recall=0.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 9/10 supported, uncited=0
+         ✗ [2] 운전·회송은 관제센터에 보고하고 지시에 따라 결정하며, 최근 정거장에서 승객을 하차시킨 후 회송합니다 — 근거는 관제센터 보고 및 지시에 따라 최근 정거장에서 승객 하차 후 회송한다고만 명시하며, ‘운전·회송은 관제센터가 결정한다’는 내용은 직접 포함하지 않는다.
+[DONE] graph_parking_brake_release_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] graph_inverter_output_half: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 0/0 supported, uncited=1
+[DONE] graph_front_tc1_failure: mode=rag, evidence=5, recall=0.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 9/9 supported, uncited=0
+[DONE] graph_rear_safety_brake_dispatch: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 3/4 supported, uncited=1
+         ✗ [1] 정거장 도중 정차한 전동차에서 전부Tc차 보안제동 S/W가 풀리지 않아 구원열차를 요구하는 경우, 다음과 같이 취급합니다.
+
+- 보안제동 S/W — 보안제동 S/W 풀림불능 상태에서 TCMS 확인 및 BECU·1TC·2TC NFB 차단 조치는 근거에 있으나, ‘정거장 도중 정차한 전동차’ 및 ‘구원열차를 요구하는 경우’라는 조
+[DONE] graph_front_safety_brake_rescue: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 0/0 supported, uncited=1
+[DONE] wind_threshold_report: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] fog_station_duties: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] earthquake_warning_threshold: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 1/1 supported, uncited=0
+[DONE] earthquake_control_initial_stop: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 5/5 supported, uncited=1
+[DONE] earthquake_driver_speed: mode=rag, evidence=5, recall=1.0
+
+================================================================================
+EVALUATION SUMMARY:
+Run ID: dense_r3 | Reference Version: v2 | Evaluation Complete: True
+Document Cases Average:
+  - faithfulness        : 0.9607 [PASS]
+  - answer_relevancy    : 0.6219 [FAIL]
+  - answer_correctness  : 0.6037 [FAIL]
+  - context_precision   : 0.4266 [FAIL]
+  - context_recall      : 0.5663 [FAIL]
+Pilot criteria (docs/rag-pipeline.md):
+  - faithfulness_mean         : 0.9607 (threshold 0.95) [True]
+  - faithfulness_min          : 0.5000 (threshold 0.8) [False]
+  - context_recall_mean       : 0.5663 (threshold 0.9) [False]
+  - context_recall_min        : 0.0000 (threshold 0.67) [False]
+  - context_precision_mean    : 0.4266 (threshold 0.85) [False]
+  - answer_correctness_mean   : 0.6037 (threshold 0.75) [False]
+  - general_correctness_mean  : n/a (threshold 0.9) [None]
+  - abstention_rate           : n/a (threshold 0.9) [None]
+  - latency_p95_seconds       : 9.1200 (threshold 20.0) [True]
+  - citation_accuracy         : 0.9178 (threshold 0.9) [True]
+Pilot met (automatable items): False
+Graph check: 0/20 passed
+Greeting check: FAIL
+Targets met: NO (INCOMPLETE)
+Saved: C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-resume-r3\paper\experiments\results\ragas_results.json and C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-resume-r3\paper\experiments\results\ragas_results_dense_r3.json
+
+[stderr]
+
+=== dense_r3 attempt 1 ended exit=0 wall_seconds=2361.9 ===

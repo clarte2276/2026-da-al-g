@@ -1,0 +1,146 @@
+
+=== bm25_r3 attempt 1 started 2026-10-17T03:07:22.8572038Z ===
+[stdout]
+Run ID: bm25_r3 | Ref Version: v2 | Variant: bm25 | LLM: gpt-5.6-luna | Embedding: openai
+Executing: 37 document cases, 0 general cases
+================================================================================
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] vehicle_failure: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] brake_pipe: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] door_failure: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] rescue_train_protection: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 3/4 supported, uncited=0
+         ✗ [1] 정거장 외 운전 중 인접 선로에 장애가 발생하여 열차운전에 지장을 주는 경우, 신속히 열차를 정차시키고 운전관제에 보고한 뒤 지장지역 전후 양방 — 정거장 외 운전 중 인접선로 장애 시 신속히 정차하고 운전관제에 보고하며 전후 양방향에 제1종 방호를 해야 한다는 내용은 있으나, ‘보고한 뒤’라는 조치 순서는 근거에 명시되어 있
+[DONE] adjacent_line_protection: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] automatic_driving: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] front_cab_failure: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 2/2 supported, uncited=0
+[DONE] runaway_vehicle: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 1/1 supported, uncited=0
+[DONE] storm: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 7/7 supported, uncited=0
+[DONE] flooding: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 4/5 supported, uncited=1
+         ✗ [3] 안개나 눈보라로 신호 확인이 어려울 때 기관사는 확인거리 내에서 정차할 수 있는 속도로 주의운전하고, 신호를 확인할 수 없으면 정차한 뒤 운전관 — 주의운전 및 신호 확인 불가 시 일단 정차는 근거에 있으나, 운전관제 등의 통보를 받아 진행하는 조건은 일반적인 신호 확인 불가가 아니라 ‘출발신호기의 신호현시를 확인할 수 없을 
+[DONE] fog_or_snowstorm: mode=rag, evidence=5, recall=0.5
+       ↳ citations: 2/3 supported, uncited=0
+         ✗ [5] 이상기후 경보의 **구체적인 종류는 제공된 근거에서 확인되지 않으며**, 열차 운전 규제는 재해 발생 여부 또는 발생 우려와 운전 위험에 따라  — 근거에는 이상기후 경보의 구체적인 종류가 없다는 점이나 운전 규제가 재해 발생 여부 또는 운전 위험에 따라 정해진다는 내용이 없고, 제344조의 경보 발령 주체·조건·대체 발령 및
+[DONE] weather_alert: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 5/6 supported, uncited=0
+         ✗ [1] 3. **전부 Tc차에서의 조치**
+   1. AP.CB1KPHL/R을 확인하고, 차단된 경우 복귀합니다.
+   2. 1Km/h계전기(CE.RL — 근거에는 해당 장치들의 위치·명칭과 1Km/h 계전기를 두드리는 조치는 있으나, AP.CB1KPHL/R 및 AP.CBDO4TC가 차단된 경우 복귀한다는 조건부 조치가 cited_e
+[DONE] guide_door: mode=rag, evidence=5, recall=0.3333333333333333
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] guide_psd: mode=rag, evidence=5, recall=0.6666666666666666
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 8/8 supported, uncited=0
+[DONE] guide_pantograph: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 6/6 supported, uncited=0
+[DONE] guide_emergency_brake: mode=rag, evidence=5, recall=0.3333333333333333
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 0/1 supported, uncited=1
+         ✗ [2] 6호선 전동차 **ATC 장치 고장 시 운전은 비상모드 운전이 가능하다고 확인되지만, 회송 조치는 문서에서 확인되지 않습니다.**
+
+- **TC — TC1 고장 시 ATC/ATO 작동불능, TC2의 최소한의 열차제어에 따른 비상모드 운전 및 출입문 기능 가능은 근거에 있으나, ‘회송 조치는 문서에서 확인되지 않는다’는 부재 판
+[DONE] guide_atc: mode=rag, evidence=5, recall=0.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_704_bus_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] graph_acm_start_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_single_cm_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 3/3 supported, uncited=0
+[DONE] graph_siv_start_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_master_controller_failure: mode=rag, evidence=5, recall=1.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/5 supported, uncited=0
+         ✗ [2] 전체 차량 주공기압축기(CM) 구동불능으로 정거장 도중 정차 후 구원을 요청한 경우, MR 압력이 8.0kg/㎠ 이하로 떨어지며 6.5kg/㎠  — MR 압력 8.0kg/㎠ 이하, 6.5kg/㎠ 이하에서 비상제동, 3.5kg/㎠ 이하에서 주차제동 및 구원요청 조치는 근거에 있으나, ‘정거장 도중 정차 후’라는 조건은 cited
+[DONE] graph_all_cm_failure: mode=rag, evidence=5, recall=1.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 13/13 supported, uncited=0
+[DONE] graph_single_door_open_failure: mode=rag, evidence=5, recall=1.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_all_doors_close_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 8/8 supported, uncited=0
+[DONE] graph_one_car_doors_close_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 5/7 supported, uncited=1
+         ✗ [1] 주공기관 파열 시에는 6400호 MR 콕크를 차단합니다 — 근거는 6300호 M2차 파손 시에 한하여 6400호 MR 콕크를 차단한다고 명시한다. 모든 주공기관 파열 시 6400호를 차단한다는 조건과 범위는 근거에 없다.
+         ✗ [1] 주차제동당김고리의 전·후 각 2개를 당긴 후, 전부 Tc차 제어분전함 내 주차제동바이패스(VC.PBBP) S/W를 취급합니다 — 근거 1에는 주차제동당김고리 취급 후 주차제동바이패스 S/W를 취급한다는 내용은 있으나, 해당 S/W가 전부 Tc차 제어분전함 내에 있다는 위치 정보는 cited_evidence에
+[DONE] graph_air_pipe_rupture: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 9/10 supported, uncited=1
+         ✗ [1] 정거장 외 주공기관 파열로 통기불능이고 주차제동이 풀리지 않으며 MR 압력이 3.5 kg/㎠ 이하이면 다음 순서로 조치하고, 관제센터 보고 및  — 주공기관 파열, MR 압력 3.5 kg/㎠ 이하, 조치 순서 및 관제센터 보고·최근 정거장 승객 하차 후 회송은 근거에 있으나, ‘정거장 외’와 ‘통기불능’ 조건은 근거에 명시되어
+[DONE] graph_parking_brake_release_failure: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 4/4 supported, uncited=0
+[DONE] graph_inverter_output_half: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 6/6 supported, uncited=0
+[DONE] graph_front_tc1_failure: mode=rag, evidence=5, recall=1.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 8/8 supported, uncited=0
+[DONE] graph_rear_safety_brake_dispatch: mode=rag, evidence=5, recall=0.5
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 9/9 supported, uncited=0
+[DONE] graph_front_safety_brake_rescue: mode=rag, evidence=5, recall=1.0
+       ↳ graph: chat_links=0, probe_links=0, added=0, passed=False
+       ↳ citations: 5/5 supported, uncited=0
+[DONE] wind_threshold_report: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 4/5 supported, uncited=1
+         ✗ [1] 안개·눈보라로 시계가 불량하고 통신기능이 불통인 경우, 역장 또는 소장은 다음 조치를 해야 합니다.
+
+- 안개 또는 눈보라로 시계가 불량하다고  — 근거는 안개·눈보라로 시계가 불량한 경우의 보고 의무와 통신기능 불통 시 별도 조치를 규정하지만, 두 조건이 동시에 발생한 경우에 해당 보고 의무가 적용된다고 명시하지 않는다.
+[DONE] fog_station_duties: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 6/6 supported, uncited=1
+[DONE] earthquake_warning_threshold: mode=rag, evidence=5, recall=1.0
+       ↳ citations: 4/4 supported, uncited=1
+[DONE] earthquake_control_initial_stop: mode=rag, evidence=5, recall=0.0
+       ↳ citations: 6/6 supported, uncited=0
+[DONE] earthquake_driver_speed: mode=rag, evidence=5, recall=1.0
+
+================================================================================
+EVALUATION SUMMARY:
+Run ID: bm25_r3 | Reference Version: v2 | Evaluation Complete: True
+Document Cases Average:
+  - faithfulness        : 0.9794 [PASS]
+  - answer_relevancy    : 0.8217 [FAIL]
+  - answer_correctness  : 0.7441 [FAIL]
+  - context_precision   : 0.7511 [FAIL]
+  - context_recall      : 0.8123 [FAIL]
+Pilot criteria (docs/rag-pipeline.md):
+  - faithfulness_mean         : 0.9794 (threshold 0.95) [True]
+  - faithfulness_min          : 0.8000 (threshold 0.8) [True]
+  - context_recall_mean       : 0.8123 (threshold 0.9) [False]
+  - context_recall_min        : 0.0000 (threshold 0.67) [False]
+  - context_precision_mean    : 0.7511 (threshold 0.85) [False]
+  - answer_correctness_mean   : 0.7441 (threshold 0.75) [False]
+  - general_correctness_mean  : n/a (threshold 0.9) [None]
+  - abstention_rate           : n/a (threshold 0.9) [None]
+  - latency_p95_seconds       : 9.0600 (threshold 20.0) [True]
+  - citation_accuracy         : 0.9462 (threshold 0.9) [True]
+Pilot met (automatable items): False
+Graph check: 0/20 passed
+Greeting check: FAIL
+Targets met: NO (INCOMPLETE)
+Saved: C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-resume-r3\paper\experiments\results\ragas_results.json and C:\Users\colin_laptop\orca\workspaces\2026-da-al-g\paper-resume-r3\paper\experiments\results\ragas_results_bm25_r3.json
+
+[stderr]
+
+=== bm25_r3 attempt 1 ended exit=0 wall_seconds=2333.4 ===
