@@ -23,6 +23,7 @@ HERE = Path(__file__).resolve().parent
 FORM = HERE.parent / "references" / "forms" / "kiise_review_form.docx"
 FONT = "함초롬돋움"  # the form's font
 HEADING_PT, BODY_PT, SMALL_PT = 10, 9, 9  # the form requires >= 9pt everywhere
+LINE_PT = 13  # exact leading for 9pt body text (form default is 15pt for 10pt)
 WIDE = "<!-- wide -->"
 FIG_CM = 6.8  # one-column figure width; smaller keeps the paper within 3 pages
 
@@ -47,7 +48,7 @@ def _form_spacing(p, *, exact: bool = True) -> None:
     fmt = p.paragraph_format
     fmt.space_before = fmt.space_after = Pt(0)
     if exact:
-        fmt.line_spacing = Pt(15)
+        fmt.line_spacing = Pt(LINE_PT)
     else:
         fmt.line_spacing = 1.0
 
