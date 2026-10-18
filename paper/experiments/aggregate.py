@@ -66,6 +66,8 @@ COMPARISONS = (
     ("proposed", "hybrid_rerank_k3"),
 )
 CLUSTER_COMPARISONS = (
+    ("link_all", "hybrid_rerank"),
+    ("proposed", "hybrid_rerank"),
     ("link_all", "hybrid_rerank_k3"),
     ("proposed", "hybrid_rerank_k3"),
     ("proposed", "link_all"),
@@ -481,8 +483,9 @@ def _write_markdown(
         "",
         "## Source-separated graph metrics",
         "",
-        "`existing_v2` is development data (5 graph cases); `llm_drafted` is held-out data (15 graph cases), "
-        "whose labels remain unreviewed. "
+        "`existing_v2` is development data (5 graph cases); `llm_drafted` is newly drafted data (15 graph cases). "
+        "A railway operations expert reviewed the 20 newly drafted labels once without blinding; all were marked "
+        "OK, with no edits or deletions. These cases are not an independent holdout. "
         "Metrics are averaged within each repeat and then across repeats.",
         "",
         "| Source | Variant | Metric | Mean ± SD | Cases per repeat |",
@@ -522,7 +525,7 @@ def _write_markdown(
         "",
         "Cluster IDs are connected components of graph cases that share a `via_link` gold regulation endpoint "
         "(`document_version_id`, `article`); the dataset does not store approved link IDs. The five development "
-        "cases form 5 clusters and the 15 drafted cases form 6; because these counts are small, intervals below "
+        "cases form 5 clusters and the 15 newly drafted cases form 6; because these counts are small, intervals below "
         "are descriptive sensitivity estimates and no cluster-level p-values are reported.",
         "",
         "| Source group | Comparison | Metric | Mean difference [95% cluster bootstrap CI] | Clusters | Cases |",
@@ -647,13 +650,14 @@ def main() -> None:
             notes.append(f"- {label}: {', '.join(f'`{value}`' for value in values)} (result metadata).")
     notes.append(
         "- Paired comparisons cover the 20 graph cases and separately report the 5-case development and "
-        "15-case held-out groups. Each case is averaged over all three repeats. Bootstrap intervals are "
+        "15-case newly drafted groups. Each case is averaged over all three repeats. Bootstrap intervals are "
         "percentile intervals over cases; exact Wilcoxon p-values are unadjusted. Cluster bootstrap IDs are "
         "connected components of cases sharing a linked gold endpoint (`document_version_id`, `article`): "
         f"{len(set(graph_cluster_ids.values()))} overall, "
         f"{len({graph_cluster_ids[name] for name in source_graph_cases['existing_v2']})} development, "
-        f"{len({graph_cluster_ids[name] for name in source_graph_cases['llm_drafted']})} held-out. "
-        "These small counts support descriptive sensitivity only; held-out labels remain unreviewed."
+        f"{len({graph_cluster_ids[name] for name in source_graph_cases['llm_drafted']})} newly drafted. "
+        "These small counts support descriptive sensitivity only. The newly drafted labels were reviewed once "
+        "without blinding (20/20 marked OK; no edits or deletions), which does not make the cases an independent holdout."
     )
     notes.append(
         "- `hybrid_rerank_k3` uses one full RAGAS repeat (r1) and two retrieval-only repeats (r2/r3); "

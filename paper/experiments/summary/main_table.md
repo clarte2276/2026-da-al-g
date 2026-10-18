@@ -341,7 +341,7 @@ Variant metrics are means of repeat-level case means ± sample SD across r1–r3
 
 ## Source-separated graph metrics
 
-`existing_v2` is development data (5 graph cases); `llm_drafted` is held-out data (15 graph cases), whose labels remain unreviewed. Metrics are averaged within each repeat and then across repeats.
+`existing_v2` is development data (5 graph cases); `llm_drafted` is newly drafted data (15 graph cases). A railway operations expert reviewed the 20 newly drafted labels once without blinding; all were marked OK, with no edits or deletions. These cases are not an independent holdout. Metrics are averaged within each repeat and then across repeats.
 
 | Source | Variant | Metric | Mean ± SD | Cases per repeat |
 |---|---|---|---:|---|
@@ -631,10 +631,22 @@ Each graph case is averaged over r1–r3, then paired by case name. Mean differe
 
 ## Link-endpoint cluster bootstrap (descriptive only)
 
-Cluster IDs are connected components of graph cases that share a `via_link` gold regulation endpoint (`document_version_id`, `article`); the dataset does not store approved link IDs. The five development cases form 5 clusters and the 15 drafted cases form 6; because these counts are small, intervals below are descriptive sensitivity estimates and no cluster-level p-values are reported.
+Cluster IDs are connected components of graph cases that share a `via_link` gold regulation endpoint (`document_version_id`, `article`); the dataset does not store approved link IDs. The five development cases form 5 clusters and the 15 newly drafted cases form 6; because these counts are small, intervals below are descriptive sensitivity estimates and no cluster-level p-values are reported.
 
 | Source group | Comparison | Metric | Mean difference [95% cluster bootstrap CI] | Clusters | Cases |
 |---|---|---|---:|---:|---:|
+| all_graph (graph) | link_all - hybrid_rerank | recall | 0.2639 [0.1300, 0.3907] | 10 | 20 |
+| all_graph (graph) | link_all - hybrid_rerank | linked_gold_recall | 0.5167 [0.2604, 0.7319] | 10 | 20 |
+| all_graph (graph) | link_all - hybrid_rerank | context_precision | -0.0685 [-0.1547, -0.0075] | 10 | 20 |
+| all_graph (graph) | link_all - hybrid_rerank | evidence_count | 1.0000 [0.6222, 1.3333] | 10 | 20 |
+| all_graph (graph) | link_all - hybrid_rerank | answer_correctness | 0.0128 [-0.0311, 0.0951] | 10 | 20 |
+| all_graph (graph) | link_all - hybrid_rerank | retrieval_latency_seconds | 0.6341 [0.1069, 1.5513] | 10 | 20 |
+| all_graph (graph) | proposed - hybrid_rerank | recall | 0.2528 [0.1462, 0.3549] | 10 | 20 |
+| all_graph (graph) | proposed - hybrid_rerank | linked_gold_recall | 0.4750 [0.2500, 0.6667] | 10 | 20 |
+| all_graph (graph) | proposed - hybrid_rerank | context_precision | -0.0225 [-0.0942, 0.0293] | 10 | 20 |
+| all_graph (graph) | proposed - hybrid_rerank | evidence_count | 0.9167 [0.7193, 1.1297] | 10 | 20 |
+| all_graph (graph) | proposed - hybrid_rerank | answer_correctness | 0.0111 [-0.0335, 0.0944] | 10 | 20 |
+| all_graph (graph) | proposed - hybrid_rerank | retrieval_latency_seconds | 1.1553 [1.0665, 1.2389] | 10 | 20 |
 | all_graph (graph) | link_all - hybrid_rerank_k3 | recall | 0.2319 [0.0796, 0.3590] | 10 | 20 |
 | all_graph (graph) | link_all - hybrid_rerank_k3 | linked_gold_recall | 0.5250 [0.2750, 0.7407] | 10 | 20 |
 | all_graph (graph) | link_all - hybrid_rerank_k3 | context_precision | -0.0608 [-0.2000, 0.0532] | 10 | 20 |
@@ -653,6 +665,18 @@ Cluster IDs are connected components of graph cases that share a `via_link` gold
 | all_graph (graph) | proposed - link_all | evidence_count | -0.0833 [-0.3492, 0.2222] | 10 | 20 |
 | all_graph (graph) | proposed - link_all | answer_correctness | -0.0017 [-0.0189, 0.0181] | 10 | 20 |
 | all_graph (graph) | proposed - link_all | retrieval_latency_seconds | 0.5212 [-0.3491, 1.0699] | 10 | 20 |
+| existing_v2 (graph) | link_all - hybrid_rerank | recall | 0.1889 [0.0722, 0.2833] | 5 | 5 |
+| existing_v2 (graph) | link_all - hybrid_rerank | linked_gold_recall | 0.3333 [0.0333, 0.7000] | 5 | 5 |
+| existing_v2 (graph) | link_all - hybrid_rerank | context_precision | -0.2356 [-0.3189, -0.1522] | 5 | 5 |
+| existing_v2 (graph) | link_all - hybrid_rerank | evidence_count | 0.6667 [0.2000, 1.1333] | 5 | 5 |
+| existing_v2 (graph) | link_all - hybrid_rerank | answer_correctness | 0.0037 [-0.0385, 0.0459] | 5 | 5 |
+| existing_v2 (graph) | link_all - hybrid_rerank | retrieval_latency_seconds | 0.2080 [0.1018, 0.3313] | 5 | 5 |
+| existing_v2 (graph) | proposed - hybrid_rerank | recall | 0.2111 [0.1000, 0.2944] | 5 | 5 |
+| existing_v2 (graph) | proposed - hybrid_rerank | linked_gold_recall | 0.3667 [0.0667, 0.7000] | 5 | 5 |
+| existing_v2 (graph) | proposed - hybrid_rerank | context_precision | -0.1270 [-0.2489, -0.0052] | 5 | 5 |
+| existing_v2 (graph) | proposed - hybrid_rerank | evidence_count | 1.1333 [0.8667, 1.4667] | 5 | 5 |
+| existing_v2 (graph) | proposed - hybrid_rerank | answer_correctness | 0.0011 [-0.0535, 0.0786] | 5 | 5 |
+| existing_v2 (graph) | proposed - hybrid_rerank | retrieval_latency_seconds | 1.2652 [1.0925, 1.4312] | 5 | 5 |
 | existing_v2 (graph) | link_all - hybrid_rerank_k3 | recall | 0.1278 [0.0167, 0.2444] | 5 | 5 |
 | existing_v2 (graph) | link_all - hybrid_rerank_k3 | linked_gold_recall | 0.3667 [0.0667, 0.7000] | 5 | 5 |
 | existing_v2 (graph) | link_all - hybrid_rerank_k3 | context_precision | -0.3933 [-0.5000, -0.2467] | 5 | 5 |
@@ -671,6 +695,18 @@ Cluster IDs are connected components of graph cases that share a `via_link` gold
 | existing_v2 (graph) | proposed - link_all | evidence_count | 0.4667 [0.2000, 0.7333] | 5 | 5 |
 | existing_v2 (graph) | proposed - link_all | answer_correctness | -0.0026 [-0.0399, 0.0417] | 5 | 5 |
 | existing_v2 (graph) | proposed - link_all | retrieval_latency_seconds | 1.0571 [0.9035, 1.2107] | 5 | 5 |
+| llm_drafted (graph) | link_all - hybrid_rerank | recall | 0.2889 [0.1154, 0.4615] | 6 | 15 |
+| llm_drafted (graph) | link_all - hybrid_rerank | linked_gold_recall | 0.5778 [0.2857, 0.8810] | 6 | 15 |
+| llm_drafted (graph) | link_all - hybrid_rerank | context_precision | -0.0128 [-0.0623, 0.0532] | 6 | 15 |
+| llm_drafted (graph) | link_all - hybrid_rerank | evidence_count | 1.1111 [0.6667, 1.5000] | 6 | 15 |
+| llm_drafted (graph) | link_all - hybrid_rerank | answer_correctness | 0.0158 [-0.0389, 0.1279] | 6 | 15 |
+| llm_drafted (graph) | link_all - hybrid_rerank | retrieval_latency_seconds | 0.7761 [0.0732, 1.9519] | 6 | 15 |
+| llm_drafted (graph) | proposed - hybrid_rerank | recall | 0.2667 [0.1333, 0.4167] | 6 | 15 |
+| llm_drafted (graph) | proposed - hybrid_rerank | linked_gold_recall | 0.5111 [0.2500, 0.8000] | 6 | 15 |
+| llm_drafted (graph) | proposed - hybrid_rerank | context_precision | 0.0123 [-0.0215, 0.0705] | 6 | 15 |
+| llm_drafted (graph) | proposed - hybrid_rerank | evidence_count | 0.8444 [0.6190, 1.0769] | 6 | 15 |
+| llm_drafted (graph) | proposed - hybrid_rerank | answer_correctness | 0.0144 [-0.0396, 0.1227] | 6 | 15 |
+| llm_drafted (graph) | proposed - hybrid_rerank | retrieval_latency_seconds | 1.1187 [0.9870, 1.2311] | 6 | 15 |
 | llm_drafted (graph) | link_all - hybrid_rerank_k3 | recall | 0.2667 [0.0833, 0.4405] | 6 | 15 |
 | llm_drafted (graph) | link_all - hybrid_rerank_k3 | linked_gold_recall | 0.5778 [0.2708, 0.8889] | 6 | 15 |
 | llm_drafted (graph) | link_all - hybrid_rerank_k3 | context_precision | 0.0500 [-0.0000, 0.1500] | 6 | 15 |

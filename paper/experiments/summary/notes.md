@@ -32,7 +32,7 @@ Expected input is 21 complete result JSONs: seven variants × r1–r3, each with
 - Generation and evaluation judge model: `gpt-5.6-luna` (result metadata).
 - Search embedding model: `text-embedding-3-small` (result metadata).
 - Evaluation embedding model: `text-embedding-3-large` (result metadata).
-- Paired comparisons cover the 20 graph cases and separately report the 5-case development and 15-case held-out groups. Each case is averaged over all three repeats. Bootstrap intervals are percentile intervals over cases; exact Wilcoxon p-values are unadjusted. Cluster bootstrap IDs are connected components of cases sharing a linked gold endpoint (`document_version_id`, `article`): 10 overall, 5 development, 6 held-out. These small counts support descriptive sensitivity only; held-out labels remain unreviewed.
+- Paired comparisons cover the 20 graph cases and separately report the 5-case development and 15-case newly drafted groups. Each case is averaged over all three repeats. Bootstrap intervals are percentile intervals over cases; exact Wilcoxon p-values are unadjusted. Cluster bootstrap IDs are connected components of cases sharing a linked gold endpoint (`document_version_id`, `article`): 10 overall, 5 development, 6 newly drafted. These small counts support descriptive sensitivity only. The newly drafted labels were reviewed once without blinding (20/20 marked OK; no edits or deletions), which does not make the cases an independent holdout.
 - `hybrid_rerank_k3` uses one full RAGAS repeat (r1) and two retrieval-only repeats (r2/r3); matched answer-metric comparisons use r1 from both variants.
 - New graph cases cover 15/36 distinct approved links, based on the human-review checklist.
 
