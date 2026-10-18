@@ -78,10 +78,13 @@ def _replace_text(p_el, text: str) -> None:
     r = OxmlElement("w:r")
     if rpr is not None:
         r.append(rpr)
-    t = OxmlElement("w:t")
-    t.text = text
-    t.set(qn("xml:space"), "preserve")
-    r.append(t)
+    for index, part in enumerate(text.split("<br>")):  # <br> = manual line break (titles)
+        if index:
+            r.append(OxmlElement("w:br"))
+        t = OxmlElement("w:t")
+        t.text = part
+        t.set(qn("xml:space"), "preserve")
+        r.append(t)
     p_el.append(r)
 
 
