@@ -22,6 +22,7 @@ from build_docx import _blocks
 HERE = Path(__file__).resolve().parent
 FORM = HERE.parent / "references" / "forms" / "kiise_review_form.docx"
 FONT = "바탕"  # author choice (form ships with 함초롬돋움)
+LATIN_FONT = "Times New Roman"
 HEADING_PT, BODY_PT, SMALL_PT = 10, 9, 9  # the form requires >= 9pt everywhere
 LINE_PT = 15  # exact leading, as in the form
 WIDE = "<!-- wide -->"
@@ -37,8 +38,9 @@ def _fonts(run, size: float, bold: bool = False, italic: bool = False) -> None:
     if fonts is None:
         fonts = OxmlElement("w:rFonts")
         rpr.insert(0, fonts)
-    for key in ("ascii", "eastAsia", "hAnsi", "cs"):
-        fonts.set(qn(f"w:{key}"), FONT)
+    for key in ("ascii", "hAnsi", "cs"):
+        fonts.set(qn(f"w:{key}"), LATIN_FONT)
+    fonts.set(qn("w:eastAsia"), FONT)
 
 
 def _form_spacing(p, *, exact: bool = True) -> None:
