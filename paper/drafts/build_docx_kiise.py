@@ -258,7 +258,7 @@ def build(source: Path, output: Path) -> Path:
 
     props = doc.core_properties  # review copy must not carry an author identity
     props.author = props.last_modified_by = props.subject = props.comments = props.keywords = ""
-    props.title = title
+    props.title = title.replace("<br>", " ")
     doc.save(output)
     return output
 
