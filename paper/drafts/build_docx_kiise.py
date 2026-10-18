@@ -22,7 +22,7 @@ from build_docx import _blocks
 HERE = Path(__file__).resolve().parent
 FORM = HERE.parent / "references" / "forms" / "kiise_review_form.docx"
 FONT = "함초롬돋움"  # the form's font
-BODY_PT, SMALL_PT = 10, 9  # form body is 10pt; the form requires >= 9pt everywhere
+HEADING_PT, BODY_PT, SMALL_PT = 10, 9, 9  # the form requires >= 9pt everywhere
 WIDE = "<!-- wide -->"
 FIG_CM = 6.8  # one-column figure width; smaller keeps the paper within 3 pages
 
@@ -204,7 +204,7 @@ def build(source: Path, output: Path) -> Path:
             if not text.startswith("1. "):
                 p.paragraph_format.space_before = Pt(4)
             p.paragraph_format.keep_with_next = True
-            _fonts(p.add_run(text), BODY_PT, bold=True)
+            _fonts(p.add_run(text), HEADING_PT, bold=True)
         elif kind == "image":
             alt, rel = value
             p = doc.add_paragraph()
@@ -252,6 +252,7 @@ def build(source: Path, output: Path) -> Path:
                 _write(p, para_lines, SMALL_PT)
             else:
                 p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+                p.paragraph_format.first_line_indent = Pt(BODY_PT)  # one-character indent
                 _write(p, para_lines, BODY_PT)
 
     props = doc.core_properties  # review copy must not carry an author identity
