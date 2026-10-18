@@ -24,6 +24,7 @@ FORM = HERE.parent / "references" / "forms" / "kiise_review_form.docx"
 FONT = "함초롬돋움"  # the form's font
 BODY_PT, SMALL_PT = 10, 9  # form body is 10pt; the form requires >= 9pt everywhere
 WIDE = "<!-- wide -->"
+FIG_CM = 6.8  # one-column figure width; smaller keeps the paper within 3 pages
 
 
 def _fonts(run, size: float, bold: bool = False, italic: bool = False) -> None:
@@ -201,7 +202,7 @@ def build(source: Path, output: Path) -> Path:
             p = doc.add_paragraph()
             _form_spacing(p)
             if not text.startswith("1. "):
-                p.paragraph_format.space_before = Pt(6)
+                p.paragraph_format.space_before = Pt(4)
             p.paragraph_format.keep_with_next = True
             _fonts(p.add_run(text), BODY_PT, bold=True)
         elif kind == "image":
@@ -210,7 +211,7 @@ def build(source: Path, output: Path) -> Path:
             p.alignment = WD_ALIGN_PARAGRAPH.CENTER
             p.paragraph_format.space_before = Pt(4)
             p.paragraph_format.keep_with_next = True
-            shape = p.add_run().add_picture(str((HERE / rel).resolve()), width=Cm(8.4))
+            shape = p.add_run().add_picture(str((HERE / rel).resolve()), width=Cm(FIG_CM))
             shape._inline.docPr.set("descr", alt)
         elif kind == "table":
             if wide_next:
@@ -221,7 +222,7 @@ def build(source: Path, output: Path) -> Path:
                 _table(doc, value, 8.6)
             spacer = doc.add_paragraph()  # breathing room after each table
             _form_spacing(spacer)
-            spacer.paragraph_format.line_spacing = Pt(6)
+            spacer.paragraph_format.line_spacing = Pt(3)
         elif kind == "paragraph":
             para_lines = value
             if para_lines[0][0] == WIDE:
