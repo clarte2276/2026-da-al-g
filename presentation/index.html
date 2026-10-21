@@ -405,7 +405,7 @@ video, img { display: block; }
     <h2><span class="ln"><span>하이브리드 검색과 서로 링크된 문서까지 반영</span></span></h2>
     <div style="display:grid;grid-template-columns:1fr 470px;gap:56px;flex:1;min-height:0;margin-top:40px;">
       <figure class="r" style="--i:1;background:#fff;display:flex;align-items:center;justify-content:center;padding:24px;min-height:0;">
-        <img src="assets/pipeline.png" alt="색인 단계: 원본 문서를 파싱·청킹·임베딩해 문서 조각 DB에 넣고, 관리자 웹에서 승인한 링크를 승인 링크 DB에 넣는다. 질의 단계: 사용자 질문 → 하이브리드 검색(벡터 0.6 + BM25 0.4) → LLM 재정렬(직접 근거 5개) → 링크 확장·선별 → 근거 기반 답변" style="width:100%;height:100%;object-fit:contain;">
+        <img src="assets/fig1-overview.png" alt="색인 단계: 원본 문서를 파싱·임베딩해 문서 조각 DB에 넣고, 관리자 웹에서 승인한 링크를 승인 링크 DB에 넣는다. 질의 단계: 사용자 질문 → 하이브리드 검색(벡터 + BM25) → LLM 재정렬(직접 근거 선택) → 링크 확장(연결 근거 추가) → 근거 기반 답변([근거 n] 인용). 직접 근거는 그대로 유지" style="width:100%;height:100%;object-fit:contain;">
       </figure>
       <div style="display:flex;flex-direction:column;justify-content:center;gap:34px;">
         <p class="s r" style="--i:2"><b>하이브리드 검색:</b> 벡터 유사도 점수 0.6, BM25 키워드 점수 0.4의 가중합으로 검색</p>

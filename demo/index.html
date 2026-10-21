@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>다알지 서비스 구성도</title>
+<style>
+@font-face { font-family: "Pretendard"; src: url("../presentation/assets/PretendardVariable.woff2") format("woff2-variations"); font-weight: 45 920; }
+html, body { margin: 0; background: #fff; }
+svg { display: block; width: 100%; max-width: 1600px; height: auto; margin: 0 auto; font-family: "Pretendard", system-ui, sans-serif; }
+.t { font-size: 15px; font-weight: 700; fill: #1C1A18; }
+.s { font-size: 12.5px; fill: #6E655E; }
+.g { font-size: 14px; font-weight: 600; }
+.lbl { font-size: 13px; font-weight: 700; fill: #1C1A18; }
+.box { fill: #fff; stroke: #C9C2BB; stroke-width: 1.2; }
+.ln { stroke: #1C1A18; stroke-width: 2.2; fill: none; }
+.dash { stroke-dasharray: 6 5; }
+</style>
+</head>
+<body>
+<svg viewBox="0 0 1600 850" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="다알지 서비스 구성도">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1C1A18"/></marker>
+    <g id="folder"><path d="M0 8h20l6 6h30v36H0z" fill="#E5E1DC" stroke="#6E655E" stroke-width="1.5"/></g>
+  </defs>
+
+  <!-- ===== 사용자 ===== -->
+  <g transform="translate(95,60)">
+    <rect width="60" height="60" rx="8" fill="#3B82C4"/>
+    <path d="M17 40h26a9 9 0 0 0 0-18a13 13 0 0 0-25-2a10 10 0 0 0-1 20z" fill="#fff"/>
+  </g>
+  <text class="t" x="125" y="142" text-anchor="middle">Open-Meteo</text>
+  <text class="s" x="125" y="160" text-anchor="middle">날씨·대기질</text>
+  <path class="ln dash" d="M125 228V172" marker-end="url(#a)"/>
+
+  <g transform="translate(103,232)">
+    <rect width="44" height="76" rx="8" fill="none" stroke="#1C1A18" stroke-width="3"/>
+    <rect x="6" y="10" width="32" height="50" fill="#E5E1DC"/>
+    <circle cx="22" cy="67" r="3" fill="#1C1A18"/>
+  </g>
+  <text class="t" x="125" y="332" text-anchor="middle">승무원</text>
+  <text class="s" x="125" y="350" text-anchor="middle">사용자 앱 (Flutter)</text>
+  <text class="s" x="125" y="367" text-anchor="middle">Android · iOS · Web</text>
+
+  <g transform="translate(85,520)">
+    <rect x="8" width="64" height="44" rx="3" fill="none" stroke="#1C1A18" stroke-width="3"/>
+    <rect x="14" y="6" width="52" height="32" fill="#E5E1DC"/>
+    <path d="M0 50h80v6H0z" fill="#1C1A18"/>
+  </g>
+  <text class="t" x="125" y="600" text-anchor="middle">관리자</text>
+  <text class="s" x="125" y="618" text-anchor="middle">브라우저 · /admin/</text>
+
+  <path class="ln" d="M162 270H280V350H306" marker-start="url(#a)" marker-end="url(#a)"/>
+  <path class="ln" d="M172 545H280V385H306" marker-start="url(#a)" marker-end="url(#a)"/>
+  <text class="lbl" x="220" y="262" text-anchor="middle">API Call</text>
+  <text class="lbl" x="220" y="537" text-anchor="middle">API Call</text>
+
+  <!-- ===== Railway ===== -->
+  <rect x="250" y="30" width="950" height="800" fill="none" stroke="#853BCE" stroke-width="1.5"/>
+  <rect x="250" y="30" width="26" height="26" fill="#853BCE"/>
+  <path d="M256 49h14M256 43h14M258 37h10" stroke="#fff" stroke-width="2.2"/>
+  <text class="g" x="284" y="48" fill="#853BCE">Railway</text>
+
+  <!-- Docker 컨테이너 -->
+  <rect x="290" y="80" width="880" height="560" fill="none" stroke="#1D63ED" stroke-width="1.5"/>
+  <rect x="290" y="80" width="26" height="26" fill="#1D63ED"/>
+  <path d="M295 94h5v5h-5zM301 94h5v5h-5zM307 94h5v5h-5zM301 88h5v5h-5z" fill="#fff"/>
+  <text class="g" x="324" y="98" fill="#1D63ED">Docker 컨테이너 · 단일 서비스</text>
+  <text class="s" x="1160" y="98" text-anchor="end">이미지 1개로 API · 관리자 웹 · 사용자 웹을 함께 배포</text>
+
+  <!-- 진입점 -->
+  <rect x="310" y="327" width="80" height="80" rx="10" fill="#05998B"/>
+  <path d="M356 340l-20 32h14l-6 24 22-34h-14z" fill="#fff"/>
+  <text class="t" x="350" y="430" text-anchor="middle">FastAPI</text>
+  <text class="s" x="350" y="448" text-anchor="middle">Uvicorn</text>
+  <path class="ln" d="M390 367H440M440 142V600"/>
+
+  <!-- 모듈 -->
+  <path class="ln" d="M440 142H466M440 232H466M440 322H466M440 412H466M440 502H466M440 592H466" marker-end="url(#a)"/>
+  <rect class="box" x="470" y="110" width="260" height="64"/><rect x="470" y="110" width="6" height="64" fill="#02569B"/>
+  <text class="t" x="488" y="137">사용자 웹</text><text class="s" x="488" y="157">Flutter Web 정적 파일</text>
+  <rect class="box" x="470" y="200" width="260" height="64"/><rect x="470" y="200" width="6" height="64" fill="#149ECA"/>
+  <text class="t" x="488" y="227">관리자 사이트</text><text class="s" x="488" y="247">React · 문서·링크·회원·근무표 관리</text>
+  <rect class="box" x="470" y="290" width="260" height="64"/><rect x="470" y="290" width="6" height="64" fill="#6E655E"/>
+  <text class="t" x="488" y="317">인증·회원 API</text><text class="s" x="488" y="337">Bearer 세션 · 계정 발급 · 관리자 권한</text>
+  <rect class="box" x="470" y="380" width="260" height="64"/><rect x="470" y="380" width="6" height="64" fill="#CB6015"/>
+  <text class="t" x="488" y="407">채팅 API</text><text class="s" x="488" y="427">/api/chat · 스트리밍 답변 · 피드백</text>
+  <rect class="box" x="470" y="470" width="260" height="64"/><rect x="470" y="470" width="6" height="64" fill="#CB6015"/>
+  <text class="t" x="488" y="497">문서·링크 API</text><text class="s" x="488" y="517">문서 업로드 · 구절·페이지 연결 승인</text>
+  <rect class="box" x="470" y="560" width="260" height="64"/><rect x="470" y="560" width="6" height="64" fill="#6E655E"/>
+  <text class="t" x="488" y="587">승무원 부가 기능 API</text><text class="s" x="488" y="607">근무표·교체 · 안전 알림 · 뉴스·식단</text>
+
+  <!-- Graph RAG -->
+  <path class="ln" d="M730 412H755V300H776" marker-end="url(#a)"/>
+  <rect x="780" y="110" width="370" height="290" fill="#FBF3EC" stroke="#CB6015" stroke-width="1.8"/>
+  <text class="t" x="800" y="138" style="fill:#CB6015">Graph RAG 검색·답변</text>
+  <g transform="translate(800,158)"><circle cx="12" cy="13" r="11" fill="#CB6015"/><text x="12" y="18" text-anchor="middle" fill="#fff" font-weight="800" font-size="13">1</text>
+    <text class="t" x="32" y="12" style="font-size:14px">하이브리드 검색</text><text class="s" x="32" y="30">임베딩 유사도 0.6 + BM25 0.4 · 조문·슬라이드 단위</text></g>
+  <g transform="translate(800,204)"><circle cx="12" cy="13" r="11" fill="#CB6015"/><text x="12" y="18" text-anchor="middle" fill="#fff" font-weight="800" font-size="13">2</text>
+    <text class="t" x="32" y="12" style="font-size:14px">LLM 재정렬</text><text class="s" x="32" y="30">상위 20개 중 질문 조건에 맞는 5개 선택</text></g>
+  <g transform="translate(800,250)"><circle cx="12" cy="13" r="11" fill="#CB6015"/><text x="12" y="18" text-anchor="middle" fill="#fff" font-weight="800" font-size="13">3</text>
+    <text class="t" x="32" y="12" style="font-size:14px">승인 링크 확장</text><text class="s" x="32" y="30">실무자가 연결한 문서까지 최대 2단계</text></g>
+  <g transform="translate(800,296)"><circle cx="12" cy="13" r="11" fill="#CB6015"/><text x="12" y="18" text-anchor="middle" fill="#fff" font-weight="800" font-size="13">4</text>
+    <text class="t" x="32" y="12" style="font-size:14px">연결 근거 재정렬</text><text class="s" x="32" y="30">링크로 온 근거 중 필요한 것만 유지</text></g>
+  <g transform="translate(800,342)"><circle cx="12" cy="13" r="11" fill="#CB6015"/><text x="12" y="18" text-anchor="middle" fill="#fff" font-weight="800" font-size="13">5</text>
+    <text class="t" x="32" y="12" style="font-size:14px">근거 기반 답변</text><text class="s" x="32" y="30">문장마다 [근거 n] 표기 · 인용 번호 교정</text></g>
+
+  <!-- 문서 수집 -->
+  <path class="ln" d="M730 502H776" marker-end="url(#a)"/>
+  <rect x="780" y="420" width="370" height="155" fill="#fff" stroke="#1C1A18" stroke-width="1.5"/>
+  <text class="t" x="800" y="446">문서 수집</text>
+  <text class="s" x="872" y="446">HWP · HWPX · DOCX · PDF · PPTX</text>
+  <g font-size="12.5" font-weight="600" fill="#1C1A18">
+    <rect x="800" y="462" width="62" height="30" fill="#E5E1DC"/><text x="831" y="482" text-anchor="middle">파싱</text>
+    <rect x="880" y="462" width="104" height="30" fill="#E5E1DC"/><text x="932" y="482" text-anchor="middle">조문·슬라이드</text>
+    <rect x="1002" y="462" width="62" height="30" fill="#E5E1DC"/><text x="1033" y="482" text-anchor="middle">임베딩</text>
+    <rect x="1082" y="462" width="52" height="30" fill="#E5E1DC"/><text x="1108" y="482" text-anchor="middle">저장</text>
+  </g>
+  <g stroke="#1C1A18" stroke-width="1.6"><path d="M864 477h11" marker-end="url(#a)"/><path d="M986 477h11" marker-end="url(#a)"/><path d="M1066 477h11" marker-end="url(#a)"/></g>
+  <text class="s" x="800" y="520">원본 폴더를 60초마다 확인해 새 문서를 자동 처리</text>
+  <text class="s" x="800" y="540">LibreOffice + H2Orestart로 표시용 PDF·페이지 PNG 변환</text>
+  <text class="s" x="800" y="560">OCR 미지원 (이미지 전용 문서는 검색 제외)</text>
+
+  <!-- 컨테이너 ↔ Volume -->
+  <path class="ln" d="M440 604V666" marker-start="url(#a)" marker-end="url(#a)"/>
+  <path class="ln" d="M965 579V666" marker-start="url(#a)" marker-end="url(#a)"/>
+  <text class="lbl" x="452" y="660">읽기·쓰기</text>
+  <text class="lbl" x="977" y="660">원본 읽기 · 조각·임베딩 저장</text>
+
+  <!-- Volume -->
+  <rect x="290" y="670" width="880" height="140" fill="none" stroke="#6E655E" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <rect x="290" y="670" width="26" height="26" fill="#6E655E"/>
+  <rect x="297" y="677" width="12" height="12" fill="none" stroke="#fff" stroke-width="2"/>
+  <text class="g" x="324" y="688" fill="#6E655E">Volume · /data</text>
+
+  <g transform="translate(330,718)">
+    <path d="M0 10v56a32 10 0 0 0 64 0V10" fill="#CB6015"/>
+    <ellipse cx="32" cy="10" rx="32" ry="10" fill="#E07B36"/>
+    <path d="M0 30a32 10 0 0 0 64 0M0 50a32 10 0 0 0 64 0" fill="none" stroke="#fff" stroke-width="2"/>
+  </g>
+  <text class="t" x="410" y="738">daalgi.db · SQLite</text>
+  <text class="s" x="410" y="758">문서·버전·조각·임베딩 (1,536차원)</text>
+  <text class="s" x="410" y="776">승인 문서 링크 37개 · 회원 · 대화</text>
+  <text class="s" x="410" y="794">PostgreSQL + pgvector로 전환 가능</text>
+
+  <use href="#folder" x="680" y="725"/>
+  <text class="t" x="750" y="745">documents/</text>
+  <text class="s" x="750" y="765">사규·매뉴얼 원본 401건</text>
+  <text class="s" x="750" y="783">약 2,244쪽</text>
+
+  <use href="#folder" x="930" y="725"/>
+  <text class="t" x="1000" y="745">storage/</text>
+  <text class="s" x="1000" y="765">표시용 PDF · 페이지 PNG</text>
+  <text class="s" x="1000" y="783">근무표 · 대기충당 이미지</text>
+
+  <!-- ===== 외부 서비스 ===== -->
+  <rect x="1230" y="80" width="345" height="560" fill="none" stroke="#6E655E" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text class="g" x="1250" y="108" fill="#6E655E">외부 서비스</text>
+
+  <path class="ln" d="M1150 190H1256" marker-end="url(#a)"/>
+  <text class="lbl" x="1160" y="182">임베딩·LLM</text>
+  <path class="ln" d="M1150 440H1215V215H1256" marker-end="url(#a)"/>
+  <path class="ln" d="M730 600H957a8 8 0 0 1 16 0H1200V470H1252M1200 580H1252"/>
+  <path d="M1250 464l9 6l-9 6zM1250 574l9 6l-9 6z" fill="#1C1A18"/>
+
+  <rect x="1260" y="172" width="60" height="60" rx="10" fill="#1C1A18"/>
+  <g transform="translate(1290,202)" fill="none" stroke="#fff" stroke-width="3">
+    <path d="M0-16L14-8V8L0 16L-14 8V-8z"/><circle r="5"/>
+  </g>
+  <text class="t" x="1336" y="192">OpenAI</text>
+  <text class="s" x="1336" y="212">임베딩 text-embedding-3-small</text>
+  <text class="s" x="1336" y="230">재정렬 · 답변 생성 LLM</text>
+
+  <rect x="1260" y="440" width="60" height="60" rx="10" fill="#3B82C4"/>
+  <g transform="translate(1290,470)" fill="none" stroke="#fff" stroke-width="2.6">
+    <circle r="17"/><ellipse rx="7" ry="17"/><path d="M-17 0H17"/>
+  </g>
+  <text class="t" x="1336" y="463">서울 열린데이터</text>
+  <text class="s" x="1336" y="483">6호선 실시간 열차 위치</text>
+
+  <rect x="1260" y="550" width="60" height="60" rx="10" fill="#E07B36"/>
+  <g transform="translate(1272,594)" fill="none" stroke="#fff" stroke-width="3.5">
+    <path d="M0-24a24 24 0 0 1 24 24M0-13a13 13 0 0 1 13 13"/>
+  </g>
+  <circle cx="1275" cy="591" r="4" fill="#fff"/>
+  <text class="t" x="1336" y="573">Google News RSS</text>
+  <text class="s" x="1336" y="593">6호선 관련 뉴스</text>
+</svg>
+</body>
+</html>
