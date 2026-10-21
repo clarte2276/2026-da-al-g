@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>다알지 중간 발표</title>
+<script>
+document.documentElement.classList.add('js');
+MathJax = { tex: { inlineMath: [['$','$']] }, svg: { fontCache: 'global' } };
+</script>
+<script src="assets/mathjax-tex-svg.js" async></script>
+<style>
+@font-face {
+  font-family: 'Pretendard';
+  src: url('assets/PretendardVariable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: block;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ground:   #F5F4F2;
+  --surface:  #E5E1DC;  /* Warm Gray 1 계열 */
+  --ink:      #1C1A18;
+  --soft:     #6E655E;  /* Warm Gray 9 C보다 한 단계 짙게 (본문 대비 확보) */
+  --accent:   #CB6015;  /* 동국대 UI PANTONE 159 C */
+  --dark:     #1C1A18;
+  --on-dark:  #F5F4F2;
+  --on-dark-soft: #A59C94;  /* Warm Gray 7 C 계열 */
+
+  /* 다섯 단계 글자 크기 (1920×1080 캔버스 기준) */
+  --xl: 210px;
+  --l:  84px;
+  --m:  40px;
+  --s:  28px;
+  --xs: 22px;
+
+  --mx: 96px;  /* 좌우 여백 */
+  --ease: cubic-bezier(.2, .8, .2, 1);
+}
+
+html, body { height: 100%; }
+body {
+  font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
+  background: #0B0B0B;
+  color: var(--ink);
+  overflow: hidden;
+  word-break: keep-all;
+  font-feature-settings: 'tnum' 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 1920×1080 고정 캔버스를 창 크기에 맞춰 축소 */
+.deck { position: absolute; width: 1920px; height: 1080px; overflow: hidden; transform-origin: top left; background: var(--ground); }
+
+.slide {
+  position: absolute; inset: 0;
+  padding: 88px var(--mx) 150px;
+  display: flex; flex-direction: column;
+  background: var(--ground);
+  opacity: 0; visibility: hidden;
+  transition: opacity .35s ease, visibility 0s linear .35s;
+}
+.slide.active { opacity: 1; visibility: visible; transition: opacity .35s ease; }
+.slide.field  { background: var(--accent); color: #fff; }  /* 159 C 배경 위에는 흰색 (UI 가이드) */
+.slide.dark   { background: var(--dark); color: var(--on-dark); }
+
+/* 글자 크기 */
+.xl { font-size: var(--xl); font-weight: 800; letter-spacing: -0.045em; line-height: 0.95; }
+h1, h2, .l { font-size: var(--l); font-weight: 750; letter-spacing: -0.035em; line-height: 1.08; }
+.m  { font-size: var(--m); font-weight: 500; letter-spacing: -0.02em; line-height: 1.35; }
+.s  { font-size: var(--s); font-weight: 400; line-height: 1.55; }
+.xs { font-size: var(--xs); font-weight: 400; line-height: 1.5; }
+b, strong { font-weight: 700; }
+.soft { color: var(--soft); }
+.dark .soft { color: var(--on-dark-soft); }
+.accent { color: var(--accent); }
+.num { font-variant-numeric: tabular-nums; }
+
+/* 12칸 그리드 */
+.grid { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 48px; }
+
+/* 제목 줄 마스크 등장 */
+.ln { display: block; overflow: hidden; padding-bottom: .08em; margin-bottom: -.08em; }
+.ln > span { display: inline-block; white-space: nowrap; }
+.js .ln > span { transform: translateY(105%); }
+.js .active .ln > span { transform: none; transition: transform .9s var(--ease); }
+.js .active .ln:nth-child(2) > span { transition-delay: .11s; }
+
+/* 요소 순차 등장 */
+.js .r { opacity: 0; transform: translateY(24px); }
+.js .active .r { opacity: 1; transform: none; transition: opacity .6s ease, transform .7s var(--ease); transition-delay: calc(250ms + var(--i, 0) * 80ms); }
+
+/* 출처 */
+.cite { font-size: var(--xs); color: var(--soft); line-height: 1.5; }
+
+/* ── 노선 (하단 내비게이션) ── */
+.route { position: absolute; left: var(--mx); right: var(--mx); bottom: 44px; height: 56px; display: flex; align-items: center; z-index: 10; }
+.route .track { position: absolute; left: 16px; right: 16px; top: 13px; height: 6px; background: var(--surface); }
+.route .done  { position: absolute; left: 16px; top: 13px; height: 6px; background: var(--accent); transition: width .6s var(--ease); }
+.route ol { position: absolute; left: 16px; right: 16px; top: 0; height: 56px; list-style: none; }
+.route li { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; }  /* 역 점의 중심을 같은 간격에 둔다 */
+.route li button {
+  all: unset; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 10px;
+  font-size: var(--xs); color: var(--soft); font-family: inherit;
+}
+.route .stop { width: 32px; height: 32px; border-radius: 50%; background: var(--ground); border: 6px solid var(--surface); transition: transform .2s var(--ease), border-color .3s; }
+.route li.passed .stop { border-color: var(--accent); }
+.route li.here .stop { background: var(--accent); border-color: var(--accent); transform: scale(1.2); }
+.route li.here button { color: var(--ink); font-weight: 700; }
+.route li button:hover .stop, .route li button:focus-visible .stop { transform: scale(1.3); border-color: var(--accent); }
+.route li button:focus-visible { outline: 3px solid var(--accent); outline-offset: 6px; }
+.route.on-dark .track { background: #3D3833; }
+.route.on-dark .stop { background: var(--dark); border-color: #3D3833; }
+.route.on-dark li.passed .stop { border-color: var(--accent); }
+.route.on-dark li.here .stop { background: var(--accent); border-color: var(--accent); }
+.route.on-dark li button { color: var(--on-dark-soft); }
+.route.on-dark li.here button { color: var(--on-dark); }
+.route.on-field { display: none; }
+.pageno { position: absolute; right: var(--mx); top: 40px; font-size: var(--xs); color: var(--soft); z-index: 10; font-variant-numeric: tabular-nums; }
+.pageno.on-dark { color: var(--on-dark-soft); }
+.pageno.on-field { display: none; }
+
+/* ── 표지 / 마무리 ── */
+.cover-top, .cover-bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; }
+.cover-mid { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 40px; }
+
+/* ── 목차 노선도 ── */
+.map { flex: 1; position: relative; display: flex; align-items: center; }
+.map .bar { position: absolute; left: 32px; right: calc(100% / 6 - 32px); top: 50%; height: 16px; margin-top: -8px; background: var(--accent); }
+.map ol { list-style: none; position: relative; width: 100%; display: grid; grid-template-columns: repeat(6, 1fr); }
+.map li { display: grid; grid-template-rows: 1fr 64px 1fr; justify-items: start; height: 440px; }
+.map .name { align-self: end; padding-bottom: 28px; }
+.map .stop { width: 64px; height: 64px; border-radius: 50%; background: var(--ground); border: 14px solid var(--accent); }
+.map .desc { padding-top: 28px; padding-right: 32px; }
+.map button { all: unset; cursor: pointer; display: contents; }
+.map li:hover .stop, .map li:focus-within .stop { background: var(--accent); }
+/* RAG 설명용 5단계 노선 */
+.map.compact ol { grid-template-columns: repeat(5, 1fr); }
+.map.compact .bar { right: calc(100% / 5 - 32px); }
+.map.compact li { height: 300px; }
+
+/* ── 숫자 장부 ── */
+.ledger { display: flex; flex-direction: column; gap: 22px; }
+.ledger .row { display: grid; grid-template-columns: 120px 260px 1fr; align-items: baseline; }
+.ledger .whole { text-align: right; }
+.ledger .frac  { text-align: left; }
+
+/* ── 결과 표 ── */
+.results { width: 100%; border-collapse: collapse; }
+.results th { text-align: right; font-weight: 500; padding: 0 0 18px; }
+.results th:first-child, .results td:first-child { text-align: left; }
+.results td { text-align: right; padding: 14px 0; vertical-align: baseline; }
+
+/* ── 수식 패널 ── */
+.formula { background: var(--surface); padding: 26px 30px; font-size: 28px; display: flex; align-items: center; justify-content: center; min-height: 128px; }
+
+/* ── 영상, 그림 ── */
+video, img { display: block; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .ln > span, .js .r { transform: none !important; opacity: 1 !important; transition: none !important; }
+  .slide { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- 표지 -->
+  <section class="slide field active" aria-label="표지">
+    <div class="cover-top s">
+      <span class="r" style="--i:0">종합설계 2 중간 발표</span>
+      <span class="r num" style="--i:0">2026. 10. 23</span>
+    </div>
+    <div class="cover-mid">
+      <h1 class="xl"><span class="ln"><span>다알지</span></span></h1>
+      <p class="m r" style="--i:2;max-width:1200px;">사규와 매뉴얼을 근거로 답하는 승무원 마스터 가이드 Da-Al-G</p>
+    </div>
+    <div class="cover-bottom s">
+      <span class="r" style="--i:4"><b>희귀종 박물관</b> · 팀장 조명기 · 동국대학교</span>
+      <span class="r" style="--i:4">서울교통공사 6호선 승무사업소 협업</span>
+    </div>
+  </section>
+
+  <!-- 목차: 노선도 -->
+  <section class="slide" aria-label="발표 순서">
+    <h2><span class="ln"><span>목차</span></span></h2>
+    <div class="map">
+      <div class="bar"></div>
+      <ol>
+        <li class="r" style="--i:1"><button data-go="배경"><span class="m name"><b>배경</b></span><span class="stop"></span><span class="s soft desc">방대한 문서와 정보 탐색의 어려움</span></button></li>
+        <li class="r" style="--i:2"><button data-go="목표"><span class="m name"><b>목표</b></span><span class="stop"></span><span class="s soft desc">벡터 RAG의 한계와 Hybrid RAG</span></button></li>
+        <li class="r" style="--i:3"><button data-go="선행 연구"><span class="m name"><b>선행 연구</b></span><span class="stop"></span><span class="s soft desc">HybridRAG, KG²RAG, 지하철&nbsp;정비&nbsp;AI</span></button></li>
+        <li class="r" style="--i:4"><button data-go="1학기"><span class="m name"><b>1학기</b></span><span class="stop"></span><span class="s soft desc">옵시디언 링크를 기반으로 한 그래프&nbsp;RAG</span></button></li>
+        <li class="r" style="--i:5"><button data-go="2학기"><span class="m name"><b>2학기</b></span><span class="stop"></span><span class="s soft desc">링크 관리 UI, 검색 구조, 성능 평가</span></button></li>
+        <li class="r" style="--i:6"><button data-go="남은 과제"><span class="m name"><b>남은 과제</b></span><span class="stop"></span><span class="s soft desc">현장 편의 기능 탑재 예정</span></button></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 배경 -->
+  <section class="slide" data-station="배경" aria-label="프로젝트 배경">
+    <h2><span class="ln"><span>현장 문서 탐색의 어려움</span></span></h2>
+    <div class="grid" style="flex:1;margin-top:56px;min-height:0;">
+      <div style="grid-column:1 / 7;display:flex;flex-direction:column;gap:40px;">
+        <p class="m r" style="--i:1">철도 운전 업무에는 운전 매뉴얼, 회사 사규, 부록, 고장 조치 가이드 등 참조 문서가 많으나, 분량이 방대하고 구조가 복잡함</p>
+        <div class="num r" style="--i:2;display:grid;grid-template-columns:1fr 1fr;gap:40px;">
+          <p><span class="l accent">401건</span><br><span class="s">사규 399건, 6호선 전동차고장조치 길라잡이 2권</span></p>
+          <p><span class="l accent">2,244쪽</span><br><span class="s">사규 2,087쪽, 길라잡이 157쪽 (사규는 관제·운전·안전 등 6개 분야)</span></p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;">
+          <p class="s r" style="--i:2"><b>구두 전달 의존:</b> <span class="soft">현장에서는 문서 확인보다 구두 전달에 의존하는 경우가 많아, 정보 누락·왜곡 가능성 존재</span></p>
+          <p class="s r" style="--i:3"><b>개발 목표:</b> <span class="soft">자연어 질문에 대해 관련 문서를 검색하고, 답변과 근거를 함께 제시하는 AI 어시스턴트</span></p>
+        </div>
+      </div>
+      <figure class="r" style="--i:2;grid-column:7 / 13;min-height:0;display:flex;flex-direction:column;gap:14px;">
+        <img src="assets/manual-rescue.png" alt="6호선 매뉴얼의 구원운전 방법 페이지. 차량 그림, 조작 순서, 운전실기기 취급표가 한 장에 빽빽하게 들어 있다" style="width:100%;flex:1;min-height:0;object-fit:contain;object-position:top left;">
+        <figcaption class="xs soft">6호선 전동차고장조치 길라잡이: 비상제동 풀림불능 시 구원운전 방법</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 목표: RAG 설명 -->
+  <section class="slide" data-station="목표" aria-label="RAG란">
+    <div class="grid" style="align-items:start;">
+      <h2 style="grid-column:1 / 8;"><span class="ln"><span>검색 증강 생성(RAG)의</span></span><span class="ln"><span>구조와 한계</span></span></h2>
+      <p class="s r" style="--i:1;grid-column:8 / 13;padding-top:12px;"><b>Retrieval-Augmented Generation:</b> 외부 문서를 검색해 LLM의 답변 근거로 활용하는 기법. 특정 문서 기반 질의응답에 주로 사용되며, 기본 형태는 벡터 RAG</p>
+    </div>
+    <div class="map compact">
+      <div class="bar"></div>
+      <ol>
+        <li class="r" style="--i:2"><span class="m name"><b>문서</b></span><span class="stop"></span><span class="s soft desc">사규·매뉴얼 원문</span></li>
+        <li class="r" style="--i:3"><span class="m name"><b>청크</b></span><span class="stop"></span><span class="s soft desc">텍스트를 일정 길이 단위로 분할</span></li>
+        <li class="r" style="--i:4"><span class="m name"><b>벡터 임베딩</b></span><span class="stop"></span><span class="s soft desc">청크별 의미를 벡터로 변환</span></li>
+        <li class="r" style="--i:5"><span class="m name"><b>유사도 검색</b></span><span class="stop"></span><span class="s soft desc">질문과 의미적으로 유사한 청크 검색</span></li>
+        <li class="r" style="--i:6"><span class="m name"><b>LLM 답변</b></span><span class="stop"></span><span class="s soft desc">검색된 청크를 근거로 답변 생성</span></li>
+      </ol>
+    </div>
+    <div class="grid" style="align-items:stretch;">
+      <p class="s r" style="--i:7;grid-column:1 / 7;align-self:center;"><b>강점:</b> 표현이 달라도 의미가 유사한 문장의 검색에 강함</p>
+      <p class="s r" style="--i:8;grid-column:7 / 13;background:var(--ink);color:var(--ground);padding:28px 34px;"><b>한계:</b> 텍스트상 연관성이 없는 문서를 연결해 답해야 하는 다알지와 같은 과제에서는 충분한 성능을 보장하지 못함</p>
+    </div>
+  </section>
+
+  <!-- 목표: 숨은 연결 -->
+  <section class="slide" data-station="목표" aria-label="문서 간 숨은 연결">
+    <div class="grid" style="align-items:start;">
+      <h2 style="grid-column:1 / 9;"><span class="ln"><span>글에서는 연관성이 떨어지지만</span></span><span class="ln"><span>실무에서는 함께 참조되는 문서</span></span></h2>
+      <p class="s r" style="--i:1;grid-column:9 / 13;padding-top:12px;">구원운전 시 매뉴얼의 조작 절차와 운전취급규정의 전령법 조항을 함께 참조해야 함. 그러나 두 문서 간 상호 참조 문장이 없어, 의미 유사도 기반의 <b>벡터 RAG</b>로는 연결 불가</p>
+    </div>
+    <div style="flex:1;display:flex;align-items:center;gap:40px;">
+      <div class="r" style="--i:2;flex-shrink:0;">
+        <p class="s soft" style="margin-bottom:12px;">6호선 매뉴얼</p>
+        <p class="xl" style="font-size:160px;">구원운전</p>
+        <p class="s" style="margin-top:24px;width:15em;">비상제동 풀림불능 시 구원차를 연결해 고장차를 이동시키는 절차</p>
+      </div>
+      <div class="r num" style="--i:4;flex:1;display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:-30px;text-align:center;">
+        <p class="m accent"><b>유사도 0.465</b></p>
+        <div style="width:100%;height:16px;background:var(--accent);"></div>
+        <p class="xs">규정 청크 1,550개 중 <b>454위</b><br>검색 상위 5위 경계 0.600에 미달</p>
+      </div>
+      <div class="r" style="--i:3;flex-shrink:0;">
+        <p class="s soft" style="margin-bottom:12px;">운전취급규정 제163조</p>
+        <p class="xl" style="font-size:160px;">전령법</p>
+        <p class="s" style="margin-top:24px;width:15em;">“후속열차로서 고장열차를 구원할 때에는 운전관제가 시행한다.”</p>
+      </div>
+    </div>
+    <p class="cite r" style="--i:5;">측정: 운영 벡터 DB(text-embedding-3-small), 길라잡이 ‘비상제동 풀림불능 시 구원운전 방법’ 청크와 운전취급규정 제163조 포함 청크 간 코사인 유사도. 규정 청크 전체 평균 0.427</p>
+  </section>
+
+  <!-- 목표: 벡터 RAG 점수 -->
+  <section class="slide" data-station="목표" aria-label="벡터 RAG 성능">
+    <div class="grid" style="flex:1;align-items:center;">
+      <div style="grid-column:1 / 6;">
+        <h2><span class="ln"><span>벡터 RAG</span></span><span class="ln"><span>성능 평가 결과</span></span></h2>
+        <p class="s r" style="--i:2;margin-top:40px;max-width:24em;">문서를 청크 단위로 분할·임베딩한 초기 시스템의 RAGAS 점수. 네 지표 모두 실사용 기준(약 0.8)에 크게 미달</p>
+      </div>
+      <div class="ledger num" style="grid-column:7 / 13;">
+        <div class="row r" style="--i:1"><span class="l whole accent">0</span><span class="l frac accent">.141</span><span class="s">Faithfulness</span></div>
+        <div class="row r" style="--i:2"><span class="l whole accent">0</span><span class="l frac accent">.156</span><span class="s">Answer Relevancy</span></div>
+        <div class="row r" style="--i:3"><span class="l whole accent">0</span><span class="l frac accent">.220</span><span class="s">Context Precision</span></div>
+        <div class="row r" style="--i:4"><span class="l whole accent">0</span><span class="l frac accent">.100</span><span class="s">Context Recall</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 목표: RAGAS -->
+  <section class="slide" data-station="목표" aria-label="RAGAS 평가 지표">
+    <div class="grid" style="align-items:start;">
+      <h2 style="grid-column:1 / 7;"><span class="ln"><span>RAGAS 평가 지표</span></span></h2>
+      <p class="s r" style="--i:1;grid-column:7 / 13;padding-top:12px;"><b>RAG Assessment:</b> RAG 파이프라인의 성능을 정량적으로 평가하는 오픈소스 프레임워크. 모든 지표는 0~1 범위이며, 일반적으로 <b>0.8 이상</b>을 실사용 가능 수준으로 봄</p>
+    </div>
+    <div class="grid" style="flex:1;margin-top:44px;row-gap:28px;grid-template-rows:auto 1fr 1fr;">
+      <p class="s r" style="--i:2;grid-column:1 / 7;"><b>검색 품질</b> <span class="soft">· Retriever</span></p>
+      <p class="s r" style="--i:2;grid-column:7 / 13;"><b>답변 품질</b> <span class="soft">· Generator</span></p>
+
+      <div class="r" style="--i:3;grid-column:1 / 7;display:flex;flex-direction:column;gap:12px;">
+        <p class="s"><b>Context Precision</b> <span class="soft">상위 검색 결과 중 관련 문맥의 비율</span></p>
+        <div class="formula">$\text{CP@}K=\dfrac{\sum_{k=1}^{K}\left(\text{Precision@}k \times v_k\right)}{\text{상위 } K \text{개 중 관련 문맥 수}}$</div>
+      </div>
+      <div class="r" style="--i:4;grid-column:7 / 13;display:flex;flex-direction:column;gap:12px;">
+        <p class="s"><b>Faithfulness</b> <span class="soft">답변 진술이 검색 문맥에 근거하는 정도</span></p>
+        <div class="formula">$\dfrac{\text{문맥이 뒷받침하는 답변 진술 수}}{\text{답변의 전체 진술 수}}$</div>
+      </div>
+      <div class="r" style="--i:5;grid-column:1 / 7;display:flex;flex-direction:column;gap:12px;">
+        <p class="s"><b>Context Recall</b> <span class="soft">정답에 필요한 정보의 검색 누락 여부</span></p>
+        <div class="formula">$\dfrac{\text{검색 문맥이 뒷받침하는 정답 진술 수}}{\text{정답의 전체 진술 수}}$</div>
+      </div>
+      <div class="r" style="--i:6;grid-column:7 / 13;display:flex;flex-direction:column;gap:12px;">
+        <p class="s"><b>Answer Relevancy</b> <span class="soft">답변과 질문의 관련성</span></p>
+        <div class="formula">$\dfrac{1}{N}\sum_{i=1}^{N}\cos\left(E_{g_i},\,E_{o}\right)$</div>
+      </div>
+    </div>
+    <p class="cite r" style="--i:7;margin-top:20px;">Es et al., “RAGAS: Automated Evaluation of Retrieval Augmented Generation,” EACL 2024 System Demonstrations. $v_k$: $k$번째 문맥의 관련 여부, $g_i$: 답변에서 역생성한 질문, $o$: 원래 질문.</p>
+  </section>
+
+  <!-- 목표: Hybrid RAG -->
+  <section class="slide field" data-station="목표" aria-label="Hybrid RAG 목표">
+    <div class="grid" style="flex:1;align-items:center;padding-bottom:0;">
+      <div style="grid-column:1 / 7;">
+        <h2><span class="ln"><span>실무 연관성을 반영한</span></span><span class="ln"><span>Hybrid RAG 도입</span></span></h2>
+        <p class="m r" style="--i:1;margin-top:48px;"><b>목표: RAGAS 4개 지표 모두 0.8 이상</b></p>
+      </div>
+      <div style="grid-column:8 / 13;display:flex;flex-direction:column;gap:44px;">
+        <div class="r" style="--i:2;">
+          <p class="m"><b>벡터 RAG</b></p>
+          <p class="s" style="margin-top:10px;">텍스트를 청크 단위로 분할·임베딩하여 의미 유사도로 검색. 텍스트상 연결되지 않은 문서는 검색 불가</p>
+        </div>
+        <div class="r" style="--i:3;background:var(--ink);color:var(--ground);padding:36px 40px;">
+          <p class="m"><b>Hybrid RAG</b></p>
+          <p class="s" style="margin-top:10px;">벡터·키워드 검색에 실무자가 승인한 문서 간 링크를 결합하여, 실무상 연관 문서까지 근거로 활용</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 선행 연구 -->
+  <section class="slide" data-station="선행 연구" aria-label="선행 연구">
+    <h2><span class="ln"><span>선행 연구</span></span></h2>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:40px;">
+      <div class="grid r" style="--i:1;align-items:baseline;">
+        <p class="m" style="grid-column:1 / 5;"><b>HybridRAG</b><br><span class="s soft">2024 · ICAIF ’24</span></p>
+        <div style="grid-column:5 / 13;">
+          <p class="s">벡터 검색과 지식 그래프 검색을 결합하여, 전문 용어가 많은 금융 문서에서 성능 향상</p>
+          <p class="cite">Sarmah et al., “HybridRAG: Integrating Knowledge Graphs and Vector Retrieval Augmented Generation for Efficient Information Extraction,” ICAIF ’24, pp. 608–616.</p>
+        </div>
+      </div>
+      <div class="grid r" style="--i:2;align-items:baseline;">
+        <p class="m" style="grid-column:1 / 5;"><b>KG²RAG</b><br><span class="s soft">2025 · NAACL 2025</span></p>
+        <div style="grid-column:5 / 13;">
+          <p class="s">청크 단위 개별 검색 시 청크 간 관계가 누락되는 문제를 지적하고, 지식 그래프 기반으로 관련 청크를 확장 및 정렬</p>
+          <p class="cite">Zhu et al., “Knowledge Graph-Guided Retrieval Augmented Generation,” NAACL 2025, pp. 8912–8924.</p>
+        </div>
+      </div>
+      <div class="grid r" style="--i:3;align-items:baseline;">
+        <p class="m" style="grid-column:1 / 5;"><b>지하철 정비 AI</b><br><span class="s soft">2024 · ICAICE 2024 · 본 과제와 가장 유사</span></p>
+        <div style="grid-column:5 / 13;">
+          <p class="s">정비 기술문서와 운영 매뉴얼로 지식 그래프와 벡터 DB를 구축하고, 두 방식으로 검색하되 그래프 기반 답변을 우선 사용</p>
+          <p class="cite">Yang et al., “Knowledge-Enhanced Large Language Model-Based Assistance Training System for Subway Maintenance Personnel,” ICAICE 2024, pp. 25–29.</p>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--accent);color:#fff;margin:0 calc(var(--mx) * -1);padding:30px var(--mx);" class="r" >
+      <p class="s" style="--i:4;"><b>차별점:</b> 지식 그래프를 새로 추출하지 않고 문서 자체를 검색하며, 실무자가 승인한 문서 간 연결을 따라 근거를 재정렬</p>
+    </div>
+  </section>
+
+  <!-- 1학기 -->
+  <section class="slide" data-station="1학기" aria-label="1학기 진행 사항" style="padding-right:0;">
+    <div style="display:grid;grid-template-columns:1fr 700px;gap:72px;flex:1;min-height:0;">
+      <div style="display:flex;flex-direction:column;min-height:0;">
+        <h2><span class="ln"><span>1학기 구현 방향성:</span></span><span class="ln"><span>옵시디언 링크 기반 그래프 RAG</span></span></h2>
+        <p class="s r" style="--i:1;margin-top:32px;">선행 연구와 Karpathy의 LLM Wiki를 참고하여, 전체 문서를 마크다운으로 정리하고 문서 간 링크를 옵시디언 형식으로 저장</p>
+        <div class="num r" style="--i:2;display:grid;grid-template-columns:1fr 1fr;gap:20px 40px;margin-top:36px;">
+          <p><span class="m"><b>0.782</b></span><br><span class="xs soft">Faithfulness</span></p>
+          <p><span class="m"><b>0.589</b></span><br><span class="xs soft">Answer Relevancy</span></p>
+          <p><span class="m"><b>0.743</b></span><br><span class="xs soft">Context Precision</span></p>
+          <p><span class="m"><b>0.623</b></span><br><span class="xs soft">Context Recall</span></p>
+        </div>
+        <p class="s r" style="--i:3;margin-top:36px;"><b>한계:</b> <span class="soft">성능은 향상되었으나 마크다운 변환 과정의 오류가 많고, 서울교통공사 측의 유지·보수가 어려움</span></p>
+        <p class="cite r" style="--i:4;margin-top:auto;">A. Karpathy, “LLM Wiki: A pattern for building personal knowledge bases using LLMs,” GitHub Gist, 2026.</p>
+      </div>
+      <figure class="r" style="--i:1;background:#1E1E1E;margin:-88px 0 -36px;display:flex;align-items:center;justify-content:center;">
+        <img src="assets/obsidian-graph.png" alt="옵시디언 그래프 뷰. 수백 개 문서 노드가 링크로 이어져 원형 군집을 이룬다" style="width:640px;height:auto;">
+      </figure>
+    </div>
+  </section>
+
+  <!-- 2학기: 관리자 화면 -->
+  <section class="slide" data-station="2학기" aria-label="링크 관리 화면">
+    <div class="grid" style="align-items:start;">
+      <h2 style="grid-column:1 / 8;"><span class="ln"><span>문서 간 링크 관리 UI</span></span></h2>
+      <p class="s r" style="--i:1;grid-column:8 / 13;padding-top:12px;">1학기 방식은 구간 연결 문법을 별도로 익혀 직접 작성해야 했으나, 2학기 관리자 UI에서는 텍스트를 드래그해 등록하는 것만으로 노드 간 연결 가능</p>
+    </div>
+    <div class="r" style="--i:2;flex:1;min-height:0;margin-top:40px;background:var(--dark);margin-left:calc(var(--mx) * -1);margin-right:calc(var(--mx) * -1);display:flex;justify-content:center;">
+      <video src="assets/admin-demo.mp4" muted loop playsinline style="height:100%;width:auto;max-width:100%;" aria-label="관리자 화면 시연: 매뉴얼 슬라이드와 운전취급규정 조문을 나란히 열고, 문장을 드래그해 링크로 등록한다"></video>
+    </div>
+  </section>
+
+  <!-- 2학기: 구조 -->
+  <section class="slide" data-station="2학기" aria-label="답변 생성 구조">
+    <h2><span class="ln"><span>하이브리드 검색과 서로 링크된 문서까지 반영</span></span></h2>
+    <div style="display:grid;grid-template-columns:1fr 470px;gap:56px;flex:1;min-height:0;margin-top:40px;">
+      <figure class="r" style="--i:1;background:#fff;display:flex;align-items:center;justify-content:center;padding:24px;min-height:0;">
+        <img src="assets/pipeline.png" alt="색인 단계: 원본 문서를 파싱·청킹·임베딩해 문서 조각 DB에 넣고, 관리자 웹에서 승인한 링크를 승인 링크 DB에 넣는다. 질의 단계: 사용자 질문 → 하이브리드 검색(벡터 0.6 + BM25 0.4) → LLM 재정렬(직접 근거 5개) → 링크 확장·선별 → 근거 기반 답변" style="width:100%;height:100%;object-fit:contain;">
+      </figure>
+      <div style="display:flex;flex-direction:column;justify-content:center;gap:34px;">
+        <p class="s r" style="--i:2"><b>하이브리드 검색:</b> 벡터 유사도 점수 0.6, BM25 키워드 점수 0.4의 가중합으로 검색</p>
+        <p class="s r" style="--i:3"><b>BM25:</b> 질문 단어의 문서 내 출현 빈도에 기반한 키워드 검색 알고리즘. “제25조”, “제륜자” 등 특정 용어 검색에 유리</p>
+        <p class="s r" style="--i:4"><b>재정렬 및 링크 확장:</b> LLM이 근거를 재정렬한 뒤, 링크된 문서가 있으면 이를 추가 근거로 활용해 답변 생성</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2학기: 결과 -->
+  <section class="slide dark" data-station="2학기" aria-label="RAGAS 결과">
+    <div class="grid" style="flex:1;align-items:center;">
+      <div style="grid-column:1 / 6;">
+        <h2><span class="ln"><span>RAGAS 4개 지표</span></span><span class="ln"><span>모두 0.8 이상 달성</span></span></h2>
+        <p class="s soft r" style="--i:1;margin-top:36px;max-width:20em;">동일 평가셋 기준 단계별 RAGAS 점수 비교 (실사용 기준 약 0.8)</p>
+      </div>
+      <table class="results num r" style="--i:2;grid-column:7 / 13;">
+        <thead>
+          <tr class="s soft"><th></th><th>벡터 RAG</th><th>1학기</th><th style="color:var(--on-dark);">2학기</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="s">Faithfulness</td><td class="m soft">0.141</td><td class="m soft">0.782</td><td class="l accent">0.961</td></tr>
+          <tr><td class="s">Answer Relevancy</td><td class="m soft">0.156</td><td class="m soft">0.589</td><td class="l accent">0.852</td></tr>
+          <tr><td class="s">Context Precision</td><td class="m soft">0.220</td><td class="m soft">0.743</td><td class="l accent">0.932</td></tr>
+          <tr><td class="s">Context Recall</td><td class="m soft">0.100</td><td class="m soft">0.623</td><td class="l accent">1.000</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 2학기: 앱 시연 -->
+  <section class="slide" data-station="2학기" aria-label="앱 시연">
+    <div style="display:grid;grid-template-columns:1fr 520px;gap:96px;flex:1;min-height:0;">
+      <div style="display:flex;flex-direction:column;min-height:0;">
+        <h2><span class="ln"><span>다알지 앱 시연</span></span></h2>
+        <p class="s r" style="--i:1;margin-top:32px;">승무원용 앱에서 질문 입력부터 근거 기반 답변 확인까지의 흐름</p>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:40px;">
+          <p class="s r" style="--i:2"><b>질문 입력:</b> <span class="soft">고장·이례 상황을 자연어로 질문</span></p>
+          <p class="s r" style="--i:3"><b>근거 검색:</b> <span class="soft">하이브리드 검색 후 승인 링크로 연결된 문서까지 확장</span></p>
+          <p class="s r" style="--i:4"><b>답변 확인:</b> <span class="soft">답변의 각 문장에 [근거 n]으로 출처 문서와 조항 표시</span></p>
+        </div>
+      </div>
+      <div class="r" style="--i:1;background:var(--dark);display:flex;align-items:center;justify-content:center;min-height:0;">
+        <video src="assets/app-demo.mp4" muted loop playsinline controls style="height:100%;width:auto;max-width:100%;" aria-label="다알지 앱 시연: 질문을 입력하고 근거가 표시된 답변을 확인한다"></video>
+      </div>
+    </div>
+  </section>
+
+  <!-- 남은 과제 -->
+  <section class="slide" data-station="남은 과제" aria-label="남은 과제">
+    <div class="grid" style="align-items:start;">
+      <h2 style="grid-column:1 / 7;"><span class="ln"><span>남은 과제</span></span></h2>
+      <p class="s r" style="--i:1;grid-column:7 / 13;padding-top:12px;">서울교통공사 요청 편의 기능 추가 및 문서 수정·추가 시 RAG 시스템의 안정성 검증</p>
+    </div>
+    <ul style="list-style:none;flex:1;display:flex;flex-direction:column;justify-content:center;gap:20px;">
+      <li class="r" style="--i:2;display:flex;justify-content:space-between;align-items:baseline;gap:40px;"><span class="l">교번표 조회 및 교환</span><span class="s soft">승무원 교번 확인 및 교환 요청</span></li>
+      <li class="r" style="--i:3;display:flex;justify-content:space-between;align-items:baseline;gap:40px;"><span class="l">실시간 근무 조회</span><span class="s soft">근무 현황 실시간 조회</span></li>
+      <li class="r" style="--i:4;display:flex;justify-content:space-between;align-items:baseline;gap:40px;"><span class="l">승무사업소 이전</span><span class="s soft">6호선 승무사업소 환경으로 시스템 이전</span></li>
+      <li class="r" style="--i:5;display:flex;justify-content:space-between;align-items:baseline;gap:40px;"><span class="l">문서 변경 안정성 검증</span><span class="s soft">문서 수정·추가 후 성능 유지 여부 확인</span></li>
+    </ul>
+  </section>
+
+  <!-- 마무리 -->
+  <section class="slide field" aria-label="감사합니다">
+    <div class="cover-top s">
+      <span>희귀종 박물관</span>
+      <span>승무원 마스터 가이드</span>
+    </div>
+    <div class="cover-mid">
+      <h2 class="xl"><span class="ln"><span>감사합니다</span></span></h2>
+    </div>
+    <div class="cover-bottom s">
+      <span class="r" style="--i:2"><b>다알지</b> · 서울교통공사 6호선 승무사업소 협업</span>
+      <span class="r" style="--i:2">팀장 조명기 · 동국대학교</span>
+    </div>
+  </section>
+
+  <nav class="route" id="route" aria-label="발표 노선">
+    <div class="track"></div><div class="done" id="done"></div>
+    <ol id="stops"></ol>
+  </nav>
+  <div class="pageno" id="pageno"></div>
+</div>
+
+<script>
+const deck = document.getElementById('deck');
+function scaleDeck() {
+  const s = Math.min(innerWidth / 1920, innerHeight / 1080);
+  deck.style.transform = `scale(${s})`;
+  deck.style.left = `${(innerWidth - 1920 * s) / 2}px`;
+  deck.style.top  = `${(innerHeight - 1080 * s) / 2}px`;
+}
+scaleDeck();
+addEventListener('resize', scaleDeck);
+
+const slides = [...document.querySelectorAll('.slide')];
+const N = slides.length;
+const stations = [...new Set(slides.map(s => s.dataset.station).filter(Boolean))];
+const firstOf = name => slides.findIndex(s => s.dataset.station === name);
+
+// 하단 노선: 역을 누르면 그 구간 첫 슬라이드로
+const stopsEl = document.getElementById('stops');
+stations.forEach(name => {
+  const li = document.createElement('li');
+  li.innerHTML = `<button><span class="stop"></span><span>${name}</span></button>`;
+  li.querySelector('button').onclick = () => goTo(firstOf(name));
+  li.style.left = `${(stations.indexOf(name) / (stations.length - 1)) * 100}%`;
+  stopsEl.appendChild(li);
+});
+document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => goTo(firstOf(b.dataset.go)));
+
+const route = document.getElementById('route');
+const pageno = document.getElementById('pageno');
+let cur = 0;
+
+function render() {
+  const s = slides[cur];
+  const name = s.dataset.station;
+  const tone = s.classList.contains('dark') ? 'on-dark' : s.classList.contains('field') ? 'on-field' : '';
+  route.className = 'route ' + tone;
+  route.style.display = name ? '' : 'none';
+  pageno.className = 'pageno ' + tone;
+  pageno.textContent = cur ? `${cur + 1} / ${N}` : '';
+  const k = stations.indexOf(name);
+  [...stopsEl.children].forEach((li, i) => {
+    li.classList.toggle('here', i === k);
+    li.classList.toggle('passed', i < k);
+  });
+  document.getElementById('done').style.width = `calc((100% - 32px) * ${k > 0 ? k / (stations.length - 1) : 0})`;
+  slides.forEach((sl, i) => sl.querySelectorAll('video').forEach(v => i === cur ? v.play().catch(() => {}) : v.pause()));
+}
+
+function goTo(n) {
+  n = Math.max(0, Math.min(N - 1, n));
+  if (n === cur) return;
+  slides[cur].classList.remove('active');
+  cur = n;
+  slides[cur].classList.add('active');
+  render();
+}
+const go = d => goTo(cur + d);
+
+addEventListener('keydown', e => {
+  if (['ArrowRight', 'ArrowDown', ' ', 'PageDown', 'Enter'].includes(e.key)) { e.preventDefault(); go(1); }
+  if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); go(-1); }
+  if (e.key === 'Home') goTo(0);
+  if (e.key === 'End') goTo(N - 1);
+  if (e.key === 'f') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+});
+deck.addEventListener('click', e => { if (!e.target.closest('button, video, a')) go(1); });
+
+render();
+// index.html#5 처럼 특정 슬라이드로 바로 열기
+if (location.hash) goTo(parseInt(location.hash.slice(1), 10) - 1 || 0);
+</script>
+</body>
+</html>
