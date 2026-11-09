@@ -4,9 +4,9 @@
   gap: 10px;
   min-height: 570px;
   padding: 16px !important;
-  color: #1f1f1f;
-  background: #fff;
-  font-family: "Segoe UI Variable", "Segoe UI", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--surface);
+  font-family: var(--font);
   font-size: 13px;
 }
 
@@ -14,6 +14,8 @@
   display: flex;
   align-items: baseline;
   gap: 12px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--rule);
 }
 
 .explorer-heading h2 {
@@ -23,7 +25,7 @@
 }
 
 .explorer-heading span {
-  color: #666;
+  color: var(--muted);
 }
 
 .explorer-empty {
@@ -38,9 +40,9 @@
   gap: 4px;
   min-height: 44px;
   padding: 4px 8px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid var(--rule);
   border-radius: 8px;
-  background: #f3f3f3;
+  background: var(--sunk);
 }
 
 .explorer-commandbar button,
@@ -62,18 +64,18 @@
 
 .explorer-commandbar button:hover:not(:disabled),
 .explorer-view-toggle button:hover {
-  border-color: #c8e2f6;
-  background: #e5f3ff;
+  border-color: var(--line6-ink);
+  background: var(--line6-wash);
 }
 
 .explorer-commandbar button:active:not(:disabled),
 .explorer-view-toggle button[aria-pressed="true"] {
-  border-color: #99d1ff;
-  background: #cce8ff;
+  border-color: var(--line6);
+  background: var(--line6-wash);
 }
 
 .explorer-commandbar button:disabled {
-  color: #999;
+  color: var(--muted);
   cursor: default;
 }
 
@@ -92,11 +94,11 @@
 .explorer-root select,
 .explorer-sort select {
   max-width: 180px;
-  border: 1px solid #d2d2d2;
+  border: 1px solid var(--rule-strong);
   border-radius: 5px;
   padding: 5px 26px 5px 8px;
-  color: #1f1f1f;
-  background: #fff;
+  color: var(--ink);
+  background: var(--surface);
   font: inherit;
 }
 
@@ -104,7 +106,7 @@
   width: 1px;
   height: 24px;
   margin: 0 5px;
-  background: #d5d5d5;
+  background: var(--rule-strong);
 }
 
 .explorer-icon {
@@ -126,9 +128,9 @@
   align-items: center;
   margin-left: auto;
   padding: 2px;
-  border: 1px solid #d8d8d8;
+  border: 1px solid var(--rule-strong);
   border-radius: 7px;
-  background: #fff;
+  background: var(--surface);
 }
 
 .explorer-view-toggle button {
@@ -138,13 +140,13 @@
 
 .explorer-upload {
   margin-left: 4px;
-  border-color: #0067c0 !important;
-  color: white !important;
-  background: #0067c0 !important;
+  border-color: var(--line6-ink) !important;
+  color:var(--button-contrast) !important;
+  background: var(--line6-ink) !important;
 }
 
 .explorer-upload:hover:not(:disabled) {
-  background: #005a9e !important;
+  background: var(--line6) !important;
 }
 
 .explorer-workspace {
@@ -154,9 +156,9 @@
   height: min(68vh, 760px);
   min-height: 430px;
   overflow: hidden;
-  border: 1px solid #e5e5e5;
+  border: 1px solid var(--rule);
   border-radius: 8px;
-  background: #f3f3f3;
+  background: var(--sunk);
 }
 
 .explorer-filemanager,
@@ -171,33 +173,33 @@
 
 .explorer-filemanager {
   overflow: hidden;
-  border-right: 1px solid #e5e5e5;
+  border-right: 1px solid var(--rule);
 }
 
 .explorer-page .wx-willow-theme {
-  --wx-font-family: "Segoe UI Variable", "Segoe UI", Arial, sans-serif;
+  --wx-font-family: var(--font);
   --wx-font-size: 13px;
   --wx-line-height: 1.35;
-  --wx-color-primary: #0067c0;
-  --wx-color-primary-selected: #cce8ff;
-  --wx-background: #fff;
-  --wx-background-alt: #f3f3f3;
-  --wx-background-hover: #e5f3ff;
-  --wx-fm-background: #f3f3f3;
+  --wx-color-primary: var(--line6-ink);
+  --wx-color-primary-selected: var(--line6-wash);
+  --wx-background: var(--surface);
+  --wx-background-alt: var(--sunk);
+  --wx-background-hover: var(--sunk);
+  --wx-fm-background: var(--surface);
   --wx-fm-box-shadow: none;
-  --wx-fm-select-background: #cce8ff;
-  --wx-fm-grid-border: 1px solid #e5e5e5;
-  --wx-fm-grid-header-color: #f3f3f3;
-  --wx-fm-button-font-color: #333;
+  --wx-fm-select-background: var(--line6-wash);
+  --wx-fm-grid-border: 1px solid var(--rule);
+  --wx-fm-grid-header-color: var(--sunk);
+  --wx-fm-button-font-color: var(--ink-soft);
   --wx-fm-toolbar-height: 44px;
-  --wx-table-select-background: #cce8ff;
-  --wx-table-select-focus-background: #cce8ff;
+  --wx-table-select-background: var(--line6-wash);
+  --wx-table-select-focus-background: var(--line6-wash);
 }
 
 .explorer-filemanager .wx-filemanager {
   border-radius: 0;
-  color: #1f1f1f;
-  font-family: "Segoe UI Variable", "Segoe UI", Arial, sans-serif;
+  color: var(--ink);
+  font-family: var(--font);
 }
 
 .explorer-filemanager .wx-sidebar,
@@ -274,25 +276,25 @@
 
 .explorer-filemanager .wx-toolbar {
   height: 44px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid var(--rule);
 }
 
 .explorer-filemanager .wx-breadcrumbs {
   height: 40px;
   flex-basis: 40px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid var(--rule);
   font-size: 13px;
 }
 
 .explorer-filemanager .wx-item:hover,
 .explorer-filemanager .wx-folder:hover,
 .explorer-filemanager .wx-row:hover {
-  background-color: #e5f3ff;
+  background-color: var(--line6-wash);
 }
 
 .explorer-filemanager .wx-selected {
-  background-color: #cce8ff !important;
-  outline: 1px solid #99d1ff;
+  background-color: var(--line6-wash) !important;
+  outline: 1px solid var(--line6);
 }
 
 .explorer-filemanager .wx-row {
@@ -303,7 +305,7 @@
 .explorer-filemanager .wx-header {
   height: 42px !important;
   min-height: 42px !important;
-  background: #f3f3f3;
+  background: var(--sunk);
 }
 
 .explorer-filemanager .wx-cell[data-col-id=":date"] {
@@ -313,7 +315,7 @@
 .explorer-filemanager .wx-cards {
   gap: 2px;
   padding: 12px;
-  background: #fff;
+  background: var(--surface);
 }
 
 .explorer-filemanager .wx-cards .wx-item {
@@ -325,7 +327,7 @@
 }
 
 .explorer-filemanager .wx-cards .wx-item:hover {
-  border-color: #c8e2f6;
+  border-color: var(--line6-ink);
 }
 
 .explorer-filemanager .wx-list .wx-table,
@@ -337,7 +339,7 @@
   min-width: 0;
   padding: 14px;
   overflow: auto;
-  background: #fff;
+  background: var(--surface);
 }
 
 .explorer-details > header {
@@ -345,7 +347,7 @@
   align-items: center;
   gap: 8px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid var(--rule);
 }
 
 .explorer-details h3 {
@@ -356,7 +358,7 @@
 
 .explorer-detail-empty {
   margin: 16px 0;
-  color: #666;
+  color: var(--muted);
 }
 
 .explorer-detail-title {
@@ -388,7 +390,7 @@
 
 .explorer-detail-title span,
 .explorer-details dd {
-  color: #666;
+  color: var(--muted);
 }
 
 .explorer-details dl {
@@ -397,7 +399,7 @@
   gap: 8px 10px;
   margin: 0;
   padding-top: 12px;
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid var(--rule);
 }
 
 .explorer-details dt,
@@ -407,7 +409,7 @@
 }
 
 .explorer-details dt {
-  color: #555;
+  color: var(--ink-soft);
 }
 
 .explorer-detail-path {
@@ -424,21 +426,21 @@
 .explorer-detail-actions button {
   min-height: 32px;
   padding: 0 10px;
-  border: 1px solid #c8c8c8;
+  border: 1px solid var(--rule-strong);
   border-radius: 5px;
-  color: #1f1f1f;
-  background: #fafafa;
+  color: var(--ink);
+  background: var(--surface);
   font: inherit;
   cursor: pointer;
 }
 
 .explorer-detail-actions button:hover:not(:disabled) {
-  border-color: #99d1ff;
-  background: #e5f3ff;
+  border-color: var(--line6);
+  background: var(--line6-wash);
 }
 
 .explorer-detail-actions button:disabled {
-  color: #999;
+  color: var(--muted);
   cursor: default;
 }
 
@@ -448,10 +450,10 @@
   gap: 12px;
   min-height: 28px;
   padding: 5px 10px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid var(--rule);
   border-radius: 6px;
-  color: #555;
-  background: #f8f8f8;
+  color: var(--ink-soft);
+  background: var(--sunk);
   font-size: 12px;
 }
 
