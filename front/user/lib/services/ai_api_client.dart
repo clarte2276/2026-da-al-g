@@ -146,6 +146,24 @@ class AiApiClient {
     await _send('POST', '/api/auth/logout', token: accessToken);
   }
 
+  Future<void> registerPushToken(String pushToken, String accessToken) async {
+    await _send(
+      'POST',
+      '/api/push/token',
+      token: accessToken,
+      body: {'token': pushToken},
+    );
+  }
+
+  Future<void> unregisterPushToken(String pushToken, String accessToken) async {
+    await _send(
+      'DELETE',
+      '/api/push/token',
+      token: accessToken,
+      body: {'token': pushToken},
+    );
+  }
+
   Future<AuthUser> fetchCurrentUser(String accessToken) async {
     final decoded = await _send('GET', '/api/auth/me', token: accessToken);
     return AuthUser.fromJson(decoded as Map<String, dynamic>);

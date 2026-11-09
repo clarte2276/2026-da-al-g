@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/conversation_store.dart';
 import 'ai_api_client.dart';
+import 'push_service.dart';
 
 class AuthSession {
   AuthSession._();
@@ -37,6 +38,7 @@ class AuthSession {
           await _storage.delete(key: _storageKey);
         } else {
           current = session;
+          unawaited(PushService.instance.register(session.accessToken));
           await ConversationStore.instance.load(session.user.id);
           await _syncData(session.user.id);
         }
@@ -54,6 +56,7 @@ class AuthSession {
     );
     await ConversationStore.instance.load(response.user.id);
     await _syncData(response.user.id);
+    unawaited(PushService.instance.register(response.accessToken));
   }
 
   static Future<void> passwordChanged() async {
@@ -103,6 +106,9 @@ class AuthSession {
 
   static Future<void> signOut() async {
     final token = current?.accessToken;
+    if (token != null && token.isNotEmpty) {
+      await PushService.instance.unregister(token);
+    }
     current = null;
     ConversationStore.instance.clear();
     await _storage.delete(key: _storageKey);
