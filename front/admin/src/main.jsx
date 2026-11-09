@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { LinkGenerator } from "./link-generator";
 import { Management } from "./management";
 import { DocumentManager } from "./document-manager";
+import { Glossary } from "./glossary";
 import "./admin.css";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
@@ -46,7 +47,8 @@ const lines = [
     ["duty", "근무표", "월별 교번 근무표 엑셀을 올려 앱에 반영합니다."],
     ["feedback", "고객문의/피드백", "고객문의와 답변 피드백을 확인하고 답변합니다."],
   ]],
-  ["RAG 링크", [
+  ["RAG 지식", [
+    ["glossary", "도해 사전", "부품·장비 사진과 용어 설명을 한 장씩 입력해 검색에 등록합니다."],
     ["edit", "문서 연결", "두 문서를 나란히 열고 구절이나 페이지를 서로 연결합니다."],
     ["review", "연결 검토", "저장된 연결을 확인하고, 잘못된 연결은 반려해 검색에서 뺍니다."],
     ["search", "검색 검증", "질문을 넣어 답변과 근거가 제대로 나오는지 확인합니다."],
@@ -127,7 +129,7 @@ function App() {
       <header className="page-header"><h1>{title}</h1><p>{description}</p></header>
       {ragStops.has(section)
         ? <LinkGenerator tab={section} onTab={setSection} api={api} apiBase={API_BASE} token={token} user={user} onUnauthorized={clearSession} />
-        : section === "documents" ? <DocumentManager api={api} /> : <Management section={section} api={api} />}
+        : section === "documents" ? <DocumentManager api={api} /> : section === "glossary" ? <Glossary api={api} /> : <Management section={section} api={api} />}
     </main>
   </div>;
 }
