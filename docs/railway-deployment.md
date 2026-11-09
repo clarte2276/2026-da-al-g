@@ -75,10 +75,21 @@ https://<railway-domain>/admin/
 
 Railway 도메인을 API 주소로 넣어 Android APK를 만듭니다.
 
+릴리스 서명용 키 저장소는 Git 저장소 밖에서 관리하고 `front/user/android/upload-keystore.jks`에 둡니다. 다음 내용을 `front/user/android/key.properties`에 저장합니다. `storeFile` 경로는 `android/app` 기준입니다.
+
+```properties
+storePassword=키저장소_비밀번호
+keyPassword=키_비밀번호
+keyAlias=키_별칭
+storeFile=../upload-keystore.jks
+```
+
+키 저장소와 `key.properties`를 안전한 곳에 함께 백업하세요. 서명 키를 잃으면 기존 사용자가 앱 업데이트를 받을 수 없습니다.
+
 ```powershell
 cd front/user
 flutter pub get
-flutter build apk --release --dart-define=API_BASE_URL=https://<railway-domain>
+flutter build apk --release --dart-define=API_BASE_URL=https://2026-da-al-g-production.up.railway.app
 ```
 
 APK는 `front/user/build/app/outputs/flutter-apk/app-release.apk`입니다. Flutter Web으로 배포하려면 다음 명령으로 `build/web`을 만들고 정적 호스팅에 올립니다.
