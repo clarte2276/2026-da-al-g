@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'core/colors.dart';
 import 'core/personal_store.dart';
 import 'core/theme_controller.dart';
@@ -8,9 +9,11 @@ import 'screens/password_setup_screen.dart';
 import 'services/ai_api_client.dart';
 import 'services/auth_session.dart';
 import 'services/duty_alarm.dart';
+import 'services/push_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await PushService.instance.init();
   await ThemeController.instance.init();
   try {
     await AuthSession.restore();
@@ -20,6 +23,9 @@ void main() async {
   await PersonalStore.instance.init();
   await DutyAlarm.instance.init();
   runApp(const DaAlGApp());
+  SchedulerBinding.instance.addPostFrameCallback(
+    (_) => PushService.instance.openPendingTap(),
+  );
 }
 
 class DaAlGApp extends StatelessWidget {
@@ -36,6 +42,7 @@ class DaAlGApp extends StatelessWidget {
   Widget _buildApp() {
     final dark = ThemeController.instance.isDark;
     return MaterialApp(
+      navigatorKey: PushService.instance.navigatorKey,
       title: 'Da-Al-G',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

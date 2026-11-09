@@ -9,6 +9,7 @@ import 'package:timezone/timezone.dart' as tz;
 import '../core/duty_data.dart';
 import '../core/personal_store.dart';
 import 'auth_session.dart';
+import 'push_service.dart';
 
 enum DutyAlarmRule {
   preparationBefore,
@@ -337,7 +338,14 @@ class DutyAlarm extends ChangeNotifier {
           requestSoundPermission: false,
         ),
       ),
+      onDidReceiveNotificationResponse:
+          PushService.instance.handleLocalNotificationResponse,
     );
+    final launch = await _plugin.getNotificationAppLaunchDetails();
+    final response = launch?.notificationResponse;
+    if (launch?.didNotificationLaunchApp == true && response != null) {
+      PushService.instance.handleLocalNotificationResponse(response);
+    }
     _seoul = tz.getLocation('Asia/Seoul');
   }
 
