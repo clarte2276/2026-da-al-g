@@ -419,11 +419,10 @@ button[aria-pressed="true"], .status-draft { color:var(--warn); background:var(-
  .admin-app { grid-template-columns:minmax(0,1fr); }
  .route-map { position:sticky; z-index:5; top:0; height:auto; min-height:58px; flex-direction:row; flex-wrap:wrap; align-items:center; gap:6px 12px; padding:8px 12px; }
  .route-map .brand { font-size:13px; }
- .route-map nav { display:flex; min-width:0; flex:1; gap:6px; overflow-x:auto; }
+ .route-map nav { display:flex; min-width:0; max-width:100%; flex:1; gap:6px; margin:0; overflow-x:auto; padding:0 0 4px; }
  .route-map nav section { display:contents; }
  .route-map nav h2 { display:none; }
  .route-map ol { display:flex; flex:0 0 auto; gap:4px; }
- .route-map li button:not([aria-current]) { display:none; }
  .route-map li button { min-height:32px; white-space:nowrap; }
  .account { display:flex; flex:0 0 auto; align-items:center; gap:8px; margin:0; border:0; padding:0; }
  .account span { display:none; }
