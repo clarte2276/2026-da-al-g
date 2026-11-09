@@ -108,7 +108,7 @@ Railway Volume 백업에서 일일 또는 주간 일정을 설정합니다. 백�
 
 ## 푸시 알림 (FCM)
 
-1. Firebase 프로젝트를 만들고 Android 앱을 패키지 이름 `kr.daalgi.app`으로 등록합니다.
+1. Firebase 프로젝트를 만들고 Android 앱을 패키지 이름 `kr.daalg.app`으로 등록합니다.
 2. `google-services.json`을 내려받아 `front/user/android/app/`에 둡니다.
 3. Firebase Project settings → Service accounts → Generate new private key에서 서비스 계정 키를 만듭니다.
 4. Railway 서비스 변수 `FIREBASE_SERVICE_ACCOUNT_JSON`에 내려받은 서비스 계정 JSON 전체 내용을 설정합니다.
