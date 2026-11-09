@@ -40,6 +40,7 @@ from .models import (
     KnowledgeEdge,
     new_id,
 )
+from .push import router as push_router
 from .schemas import (
     ChatFeedbackRequest,
     ChatRequest,
@@ -94,6 +95,7 @@ app.include_router(auth_router)
 app.include_router(links_router)
 app.include_router(management_router)
 app.include_router(crew_router)
+app.include_router(push_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[origin.strip() for origin in settings.cors_origins.split(",") if origin.strip()]

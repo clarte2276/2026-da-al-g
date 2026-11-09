@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Annotated, Any, Literal
 from zoneinfo import ZoneInfo
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
+from fastapi import APIRouter, BackgroundTasks, Depends, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 from sqlalchemy import func, select
@@ -41,6 +41,7 @@ from .models import (
     VoiceReply,
     VoiceThread,
 )
+from .push import send_to_names
 
 router = APIRouter(prefix="/api")
 DB = Annotated[Session, Depends(get_db)]
@@ -189,7 +190,7 @@ def list_exchange_posts(db: DB, user: CurrentUser,
 
 
 @router.post("/exchange/posts", status_code=201)
-def create_exchange_post(payload: ExchangeCreate, db: DB, user: CurrentUser) -> dict:
+def create_exchange_post(payload: ExchangeCreate, db: DB, user: CurrentUser, background_tasks: BackgroundTasks) -> dict:
     for d in payload.dates:
         _check_date(d)
     if len(set(payload.dates)) != len(payload.dates):
@@ -210,11 +211,15 @@ def create_exchange_post(payload: ExchangeCreate, db: DB, user: CurrentUser) -> 
     db.add(post)
     db.commit()
     db.refresh(post)
+    if payload.type == "direct":
+        background_tasks.add_task(send_to_names, [post.target_name], "교번교체 요청",
+                                  f"{user.display_name}님이 {', '.join(post.dates)} 교체를 요청했습니다",
+                                  {"type": "exchange", "post_id": post.id})
     return _post_out(post, [], user.display_name, db)
 
 
 @router.post("/exchange/posts/{post_id}/respond")
-def respond_exchange(post_id: str, payload: ExchangeRespond, db: DB, user: CurrentUser) -> dict:
+def respond_exchange(post_id: str, payload: ExchangeRespond, db: DB, user: CurrentUser, background_tasks: BackgroundTasks) -> dict:
     post = db.get(ExchangePost, post_id)
     if not post:
         raise HTTPException(404, "Post not found")
@@ -232,13 +237,17 @@ def respond_exchange(post_id: str, payload: ExchangeRespond, db: DB, user: Curre
         post.decline_reason = payload.reason
     db.commit()
     db.refresh(post)
+    action = "수락" if payload.action == "accept" else "거절"
+    background_tasks.add_task(send_to_names, [post.requester_name], f"교번교체 {action}",
+                              f"{user.display_name}님이 {', '.join(post.dates)} 교체를 {action}했습니다",
+                              {"type": "exchange", "post_id": post.id})
     vols = list(db.scalars(select(ExchangeVolunteer).where(
         ExchangeVolunteer.post_id == post.id)).all())
     return _post_out(post, vols, user.display_name, db)
 
 
 @router.post("/exchange/posts/{post_id}/volunteers", status_code=201)
-def volunteer_exchange(post_id: str, db: DB, user: CurrentUser) -> dict:
+def volunteer_exchange(post_id: str, db: DB, user: CurrentUser, background_tasks: BackgroundTasks) -> dict:
     post = db.get(ExchangePost, post_id)
     if not post:
         raise HTTPException(404, "Post not found")
@@ -257,11 +266,14 @@ def volunteer_exchange(post_id: str, db: DB, user: CurrentUser) -> dict:
     db.add(vol)
     db.commit()
     db.refresh(vol)
+    background_tasks.add_task(send_to_names, [post.requester_name], "교번교체 지원",
+                              f"{user.display_name}님이 {', '.join(post.dates)} 교체에 지원했습니다",
+                              {"type": "exchange", "post_id": post.id})
     return _volunteer_out(vol)
 
 
 @router.post("/exchange/posts/{post_id}/volunteers/{vid}/accept")
-def accept_volunteer(post_id: str, vid: str, db: DB, user: CurrentUser) -> dict:
+def accept_volunteer(post_id: str, vid: str, db: DB, user: CurrentUser, background_tasks: BackgroundTasks) -> dict:
     post = db.get(ExchangePost, post_id)
     if not post:
         raise HTTPException(404, "Post not found")
@@ -281,13 +293,16 @@ def accept_volunteer(post_id: str, vid: str, db: DB, user: CurrentUser) -> dict:
         other.status = "rejected"
     db.commit()
     db.refresh(post)
+    background_tasks.add_task(send_to_names, [vol.person_name], "교번교체 성사",
+                              f"{user.display_name}님이 {', '.join(post.dates)} 교체 지원을 수락했습니다",
+                              {"type": "exchange", "post_id": post.id})
     vols = list(db.scalars(select(ExchangeVolunteer).where(
         ExchangeVolunteer.post_id == post.id)).all())
     return _post_out(post, vols, user.display_name, db)
 
 
 @router.post("/exchange/posts/{post_id}/revert", status_code=201)
-def revert_exchange(post_id: str, db: DB, user: CurrentUser) -> dict:
+def revert_exchange(post_id: str, db: DB, user: CurrentUser, background_tasks: BackgroundTasks) -> dict:
     post = db.get(ExchangePost, post_id)
     if not post:
         raise HTTPException(404, "Post not found")
@@ -310,6 +325,9 @@ def revert_exchange(post_id: str, db: DB, user: CurrentUser) -> dict:
     db.add(revert)
     db.commit()
     db.refresh(revert)
+    background_tasks.add_task(send_to_names, [other], "교번교체 되돌리기 요청",
+                              f"{user.display_name}님이 {', '.join(revert.dates)} 교체 되돌리기를 요청했습니다",
+                              {"type": "exchange", "post_id": revert.id})
     return _post_out(revert, [], user.display_name, db)
 
 
