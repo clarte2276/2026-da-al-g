@@ -44,21 +44,6 @@ class PushService {
       FirebaseMessaging.onBackgroundMessage(
         _firebaseMessagingBackgroundHandler,
       );
-      await _notifications.initialize(
-        settings: const InitializationSettings(
-          android: AndroidInitializationSettings('@mipmap/ic_launcher'),
-        ),
-        onDidReceiveNotificationResponse: (response) {
-          if (response.payload case final payload?) {
-            _handleTap(jsonDecode(payload));
-          }
-        },
-      );
-      final launch = await _notifications.getNotificationAppLaunchDetails();
-      final payload = launch?.notificationResponse?.payload;
-      if (launch?.didNotificationLaunchApp == true && payload != null) {
-        _handleTap(jsonDecode(payload));
-      }
       await _notifications
           .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin
@@ -149,6 +134,11 @@ class PushService {
     if (data is! Map || data['type'] != 'exchange') return;
     _pendingTap = Map<String, dynamic>.from(data);
     openPendingTap();
+  }
+
+  void handleLocalNotificationResponse(NotificationResponse response) {
+    final payload = response.payload;
+    if (payload != null) _handleTap(jsonDecode(payload));
   }
 
   void openPendingTap() {
