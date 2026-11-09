@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { forceCenter, forceCollide, forceLink, forceManyBody, forceSimulation } from "d3-force";
 import "./link-graph.css";
 
-const statusColor = { approved: "#4b8b68", draft: "#b7922f", rejected: "#b8564b" };
+const statusColor = { approved: "var(--ok)", draft: "var(--warn)", rejected: "var(--bad)" };
 
 function graphData(links) {
   const nodes = new Map(), pairs = new Map();
