@@ -39,6 +39,7 @@ class Settings(BaseSettings):
     seoul_subway_api_key: str | None = None
     realtime_trains_mock: bool = False
     cors_origins: str = "*"
+    firebase_service_account_json: str | None = None
 
     # Always `back/.env`, regardless of the working directory.
     model_config = SettingsConfigDict(env_file=BACK_ENV, env_prefix="", extra="ignore")

@@ -105,3 +105,10 @@ Flutter Web을 별도 도메인에 올릴 때는 그 도메인을 `CORS_ORIGINS`
 Railway Volume 백업에서 일일 또는 주간 일정을 설정합니다. 백업은 복구 수단이지 별도 외부 백업을 대신하지 않으므로 중요한 데이터는 DB와 `/data/storage`를 주기적으로 다른 저장소에도 보관합니다. [Railway 백업 문서](https://docs.railway.com/volumes/backups)
 
 문서 업로드·변환은 요청 안에서 동기 처리됩니다. Railway의 공개 네트워크는 업로드 완료와 응답에 제한이 있으므로 큰 파일이나 여러 사용자의 동시 업로드가 필요해지면 ingestion 작업을 별도 worker로 분리합니다.
+
+## 푸시 알림 (FCM)
+
+1. Firebase 프로젝트를 만들고 Android 앱을 패키지 이름 `kr.daalgi.app`으로 등록합니다.
+2. `google-services.json`을 내려받아 `front/user/android/app/`에 둡니다.
+3. Firebase Project settings → Service accounts → Generate new private key에서 서비스 계정 키를 만듭니다.
+4. Railway 서비스 변수 `FIREBASE_SERVICE_ACCOUNT_JSON`에 내려받은 서비스 계정 JSON 전체 내용을 설정합니다.
