@@ -454,3 +454,25 @@ class GameScore(Base):
     player_name: Mapped[str] = mapped_column(String(100))
     score: Mapped[int] = mapped_column(Integer)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class GlossaryEntry(Base):
+    __tablename__ = "glossary_entries"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    category: Mapped[str] = mapped_column(String(32), default="부품")
+    title: Mapped[str] = mapped_column(String(200))
+    code: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    aliases: Mapped[str] = mapped_column(Text, default="")
+    scope: Mapped[str] = mapped_column(Text, default="")
+    location: Mapped[str] = mapped_column(Text, default="")
+    photo_path: Mapped[str | None] = mapped_column(String(2000), nullable=True)
+    photo_media_type: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    photo_caption: Mapped[str] = mapped_column(Text, default="")
+    definition: Mapped[str] = mapped_column(Text, default="")
+    symptoms: Mapped[str] = mapped_column(Text, default="")
+    actions: Mapped[str] = mapped_column(Text, default="")
+    regulations: Mapped[str] = mapped_column(Text, default="")
+    status: Mapped[str] = mapped_column(String(16), default="draft")
+    document_id: Mapped[str | None] = mapped_column(ForeignKey("documents.id", ondelete="SET NULL"), nullable=True)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)

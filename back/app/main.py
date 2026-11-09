@@ -26,6 +26,7 @@ from .crew import router as crew_router
 from .db import SessionLocal, get_db, init_db
 from .links import get_version
 from .links import router as links_router
+from .glossary import router as glossary_router
 from .management import backfill_feedback_inquiries
 from .management import router as management_router
 from .models import (
@@ -92,6 +93,7 @@ def _pdf_twin(document: Document, version: DocumentVersion) -> tuple[Path, str]:
 app = FastAPI(title=settings.app_name, version="0.1.0")
 app.include_router(auth_router)
 app.include_router(links_router)
+app.include_router(glossary_router)
 app.include_router(management_router)
 app.include_router(crew_router)
 app.add_middleware(
