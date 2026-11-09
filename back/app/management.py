@@ -22,6 +22,7 @@ from .models import (
     AuditEvent,
     AuthSession,
     ConversationRecord,
+    DeviceToken,
     DutyRoute,
     DutySchedule,
     Inquiry,
@@ -327,7 +328,7 @@ def delete_user(user_id: str, db: DB, admin: AdminUser) -> dict:
     if user.role != "user" or user.id == admin.id:
         raise HTTPException(403, "Cannot delete administrators or yourself")
     inquiry_ids = select(Inquiry.id).where(Inquiry.user_id == user.id)
-    for model in (AuthSession, ConversationRecord):
+    for model in (AuthSession, ConversationRecord, DeviceToken):
         db.execute(delete(model).where(model.user_id == user.id))
     db.execute(delete(InquiryReply).where(InquiryReply.inquiry_id.in_(inquiry_ids)))
     db.execute(delete(Inquiry).where(Inquiry.user_id == user.id))

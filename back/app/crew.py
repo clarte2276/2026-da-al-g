@@ -18,7 +18,7 @@ from zoneinfo import ZoneInfo
 from fastapi import APIRouter, BackgroundTasks, Depends, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
-from sqlalchemy import func, select
+from sqlalchemy import delete, func, select
 from sqlalchemy.orm import Session
 
 from .auth import AdminUser, CurrentUser
@@ -343,6 +343,20 @@ def cancel_exchange(post_id: str, db: DB, user: CurrentUser) -> dict:
     post.status = "cancelled"
     db.commit()
     return {"status": "ok"}
+
+
+@router.delete("/admin/exchange/posts/{post_id}")
+def delete_exchange_post(post_id: str, db: DB, admin: AdminUser) -> dict:
+    post = db.get(ExchangePost, post_id)
+    if not post:
+        raise HTTPException(404, "Post not found")
+    if db.scalar(select(DutyOverride.id).where(DutyOverride.post_id == post.id).limit(1)) is not None:
+        raise HTTPException(409, "적용된 교체는 삭제할 수 없습니다")
+    db.execute(delete(ExchangeVolunteer).where(ExchangeVolunteer.post_id == post.id))
+    db.delete(post)
+    _audit(db, admin.id, "exchange.post.deleted", "exchange_post", post.id)
+    db.commit()
+    return {"deleted": True}
 
 
 @router.get("/exchange/match")

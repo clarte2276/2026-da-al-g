@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
-from app import auth, crew, push
+from app import auth, crew, management, push
 from app.config import Settings
 from app.db import Base, get_db
 from app.models import DeviceToken
@@ -13,7 +13,8 @@ from app.models import DeviceToken
 def setup_client(tmp_path, monkeypatch):
     engine = create_engine("sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool)
     Base.metadata.create_all(engine)
-    settings = Settings(_env_file=None, storage_root=tmp_path)
+    settings = Settings(_env_file=None, storage_root=tmp_path, bootstrap_admin_username="admin",
+                        bootstrap_admin_password="safe-password")
     monkeypatch.setattr(auth, "get_settings", lambda: settings)
     db = Session(engine, expire_on_commit=False)
     auth.ensure_bootstrap_accounts(db)
@@ -26,12 +27,13 @@ def setup_client(tmp_path, monkeypatch):
     app.include_router(auth.router)
     app.include_router(push.router)
     app.include_router(crew.router)
+    app.include_router(management.router)
     app.dependency_overrides[get_db] = lambda: db
     return TestClient(app), db, settings
 
 
-def headers(client, username):
-    token = client.post("/api/auth/login", json={"username": username, "password": "pw"}).json()["access_token"]
+def headers(client, username, password="pw"):
+    token = client.post("/api/auth/login", json={"username": username, "password": password}).json()["access_token"]
     return {"Authorization": f"Bearer {token}"}
 
 
@@ -46,6 +48,17 @@ def test_token_upsert_and_owned_delete(tmp_path, monkeypatch):
     assert db.query(DeviceToken).count() == 1
     assert client.request("DELETE", "/api/push/token", headers=two, json={"token": "fcm"}).status_code == 200
     assert db.query(DeviceToken).count() == 0
+
+
+def test_admin_user_delete_removes_device_tokens(tmp_path, monkeypatch):
+    client, db, _ = setup_client(tmp_path, monkeypatch)
+    user = db.query(auth.User).filter_by(username="u1").one()
+    db.add(DeviceToken(user_id=user.id, token="registered"))
+    db.commit()
+    admin = headers(client, "admin", "safe-password")
+    response = client.delete(f"/api/admin/users/{user.id}", headers=admin)
+    assert response.status_code == 200
+    assert db.query(DeviceToken).filter_by(user_id=user.id).count() == 0
 
 
 def test_direct_exchange_schedules_send(tmp_path, monkeypatch):

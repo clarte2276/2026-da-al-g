@@ -12,7 +12,7 @@ from sqlalchemy.pool import StaticPool
 from app import auth, crew, management
 from app.config import Settings
 from app.db import Base, get_db
-from app.models import DutySchedule
+from app.models import DutyOverride, DutySchedule, ExchangePost, ExchangeVolunteer
 
 
 @pytest.fixture
@@ -45,6 +45,40 @@ def client(tmp_path, monkeypatch):
 def login(client, username, password):
     res = client.post("/api/auth/login", json={"username": username, "password": password})
     return {"Authorization": f"Bearer {res.json()['access_token']}"}
+
+
+def test_admin_hard_delete_cancelled_exchange_post(client):
+    user = login(client, "user1", "pw")
+    admin = login(client, "admin", "safe-password")
+    post = client.post("/api/exchange/posts", headers=user, json={
+        "type": "open", "dates": ["2026-06-01"]
+    }).json()
+    volunteer = client.post(f"/api/exchange/posts/{post['id']}/volunteers",
+                            headers=login(client, "user2", "pw")).json()
+    assert client.delete(f"/api/exchange/posts/{post['id']}", headers=user).status_code == 200
+    response = client.delete(f"/api/admin/exchange/posts/{post['id']}", headers=admin)
+    assert response.status_code == 200 and response.json() == {"deleted": True}
+    assert client.db.get(ExchangePost, post["id"]) is None
+    assert client.db.get(ExchangeVolunteer, volunteer["id"]) is None
+
+
+def test_admin_hard_delete_refuses_applied_exchange_post(client):
+    admin = login(client, "admin", "safe-password")
+    post = ExchangePost(type="open", requester_name="User One", dates=["2026-06-01"])
+    client.db.add(post)
+    client.db.flush()
+    client.db.add(DutyOverride(driver_name="User One", date="2026-06-01", code="A",
+                               original_code="B", post_id=post.id))
+    client.db.commit()
+    response = client.delete(f"/api/admin/exchange/posts/{post.id}", headers=admin)
+    assert response.status_code == 409
+    assert response.json()["detail"] == "적용된 교체는 삭제할 수 없습니다"
+    assert client.db.get(ExchangePost, post.id) is not None
+
+
+def test_exchange_hard_delete_requires_admin(client):
+    response = client.delete("/api/admin/exchange/posts/missing", headers=login(client, "user1", "pw"))
+    assert response.status_code == 403
 
 def test_exchange_direct(client):
     u1 = login(client, "user1", "pw")
